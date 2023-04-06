@@ -1,0 +1,11 @@
+// telerik kendo for angular style package
+@import "@progress/kendo-theme-default/dist/all.scss";
+
+/* You can add global styles to this file, and also import other style files */
+
+@import './scss/common-styles';
+
+html, body {
+  margin: 0;
+  height: 100%;
+}

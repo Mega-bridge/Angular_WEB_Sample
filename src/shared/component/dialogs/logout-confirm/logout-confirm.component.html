@@ -1,0 +1,27 @@
+<!--<p style="text-align: center">로그아웃 하시겠습니까?</p>-->
+<!--<div class="dialog-button-area">-->
+<!--  <div class="btn-line-area">-->
+<!--    <button class="btn-item-style"(click)="close()">No</button>-->
+<!--  </div>-->
+<!--  <div class="btn-line-area">-->
+<!--    <button class="btn-item-style"(click)="onLoggedout();">Yes</button>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<h1 mat-dialog-title>Delete file</h1>-->
+<!--<div mat-dialog-content>-->
+<!--  Would you like to delete cat.jpeg?-->
+<!--</div>-->
+<!--<div mat-dialog-actions>-->
+<!--  <button mat-button mat-dialog-close>No</button>-->
+<!--  <button mat-button mat-dialog-close cdkFocusInitial>Ok</button>-->
+<!--</div>-->
+
+<div style="margin-bottom: 14px; padding-bottom: 5px;border-bottom: #b7b7b7 1px solid;">
+  <p style="font-size: 16px; padding: 3px">정말로 <b>로그아웃</b>하시겠습니까?</p>
+</div>
+
+<div style="display: flex; justify-content: space-evenly;">
+  <button kendoButton class="btn-style" (click)="closeDialog()">취소</button>
+  <button kendoButton class="btn-style highlight" (click)="submit()">확인</button>
+</div>

@@ -1,0 +1,29 @@
+.layout-container {
+  display: flex;
+  position: absolute;
+  //top: 76.81px;
+  top: 79.38px;;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 95.6%;
+
+
+
+  .sidenav-container {
+    flex: 1;
+    .sidenav {
+      width: 250px;
+      background-color: #f6f6f6;
+      border-right: #a7a7a7 solid 1px;
+      box-shadow:  4px 0 4px -4px #a7a7a7;
+    }
+    .main-container {
+      padding: 16px;
+    }
+  }
+}
+app-top-nav{
+  border-bottom: #a7a7a7 1px solid;
+  box-shadow:  0 4px 4px -4px #a7a7a7;
+}

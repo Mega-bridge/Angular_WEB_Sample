@@ -1,0 +1,34 @@
+
+/** Kendo-Dialog Title 영역 초기화 */
+.k-dialog-wrapper .k-dialog {
+  overflow: hidden;
+  //background-color: #333333;
+  //color: #FFFFFF;
+  box-shadow: 1px 1px 5px 1px #FFFFFF;
+
+  .k-dialog-titlebar {
+    //background-color: #FFFFFF;
+    //color: #333333;
+    //background-color: #333333;
+    //color: #FFFFFF;
+    //margin: 0 1rem;
+    border-bottom: 1px solid #b7b7b7;
+  }
+
+  .k-dialog-title {
+    font-size: 22px;
+  }
+
+  // 다이얼로그 상단 바 닫기 버튼 제거
+  //.k-dialog-actions {
+  //  display: none;
+  //}
+
+  .k-dialog-actions .k-icon-button .k-icon {
+    font-size: 20px;
+  }
+
+  .k-window-content {
+    padding: 10px 16px;
+  }
+}

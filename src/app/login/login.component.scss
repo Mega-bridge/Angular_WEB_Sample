@@ -1,0 +1,70 @@
+.header-logo{
+  display: flex;
+  align-items:center;
+  padding: 1%;
+  height: 2%;
+
+  border-bottom: #a7a7a7 1px solid;
+  box-shadow:  0 4px 4px -4px #a7a7a7;
+
+  .logo-img{
+    width: 70px;
+    height: 70px;
+    margin-right: 2px;
+    vertical-align:middle;
+  }
+
+  &.dark-1{
+    background: #000000;
+
+  }
+  &.dark-2{
+    background: #000000;
+  }
+}
+
+.login-page-wrap{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 96%;
+  position: relative;
+
+  .content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .app-name {
+      vertical-align:middle;
+      font-size: 40px;
+      margin: 15px;
+    }
+
+    .login-form {
+      padding: 200px 300px;
+      max-width: 500px;
+      box-shadow: 0 0 20px #ddd;
+      display: flex;
+      flex-direction: column;
+
+      .form-title {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+      }
+
+      .form-input{
+        background-color:rgba(255, 255, 255, 0.1);
+        border: #3f52b5 1px solid;
+        margin-bottom: 3px;
+      }
+    }
+  }
+}
+
+.button-notification{
+  padding: 10px 10px;
+  color: #ffffff;
+  font-size: 20px;
+}

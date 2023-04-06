@@ -1,0 +1,118 @@
+{
+  "users" : [
+    {
+      "id": 1,
+      "name": "Sally",
+      "email": "seoyoon24@megabridge.co.kr",
+      "password": "Sally"
+    },
+    {
+      "id": 2,
+      "name": "Lynn",
+      "email": "yerin08@megabridge.co.kr",
+      "password": "Lynn"
+    }
+  ],
+  "posts": [
+      {
+        "id":1,
+        "date": "2022.07.19",
+        "companyName":"MegaBridge",
+        "visitCount": 11233,
+        "dailyAvg":362,
+        "Increase": 8.56,
+        "employeeCount": 23423,
+        "companyEstablishDate": "2022.07.19"
+      },
+      {
+        "id":2,
+        "date": "2014.07.09",
+        "companyName":"Samsung",
+        "visitCount": 11233,
+        "dailyAvg":362,
+        "Increase": 8.56,
+        "employeeCount": 23423,
+        "companyEstablishDate": "2000.00.00"
+      },
+      {
+        "id":3,
+        "date": "2014.07.09",
+        "companyName":"LG",
+        "visitCount": 11233,
+        "dailyAvg":362,
+        "Increase": 8.56,
+        "employeeCount": 23423,
+        "companyEstablishDate": "2000.00.00"
+      },
+      {
+        "id":4,
+        "date": "2014.07.09",
+        "companyName":"test",
+        "visitCount": 11233,
+        "dailyAvg":362,
+        "Increase": 8.56,
+        "employeeCount": 23423,
+        "companyEstablishDate": "2000.00.00"
+      },
+      {
+        "id":5,
+        "date": "2014.07.09",
+        "companyName":"Samsung",
+        "visitCount": 11233,
+        "dailyAvg":362,
+        "Increase": 8.56,
+        "employeeCount": 23423,
+        "companyEstablishDate": "2000.00.00"
+      },
+      {
+        "id":6,
+        "date": "2014.07.09",
+        "companyName":"Samsung",
+        "visitCount": 11233,
+        "dailyAvg":362,
+        "Increase": 8.56,
+        "employeeCount": 23423,
+        "companyEstablishDate": "2000.00.00"
+      },
+      {
+        "id":7,
+        "date": "2014.07.09",
+        "companyName":"Samsung",
+        "visitCount": 11233,
+        "dailyAvg":362,
+        "Increase": 8.56,
+        "employeeCount": 23423,
+        "companyEstablishDate": "2000.00.00"
+      },
+      {
+        "id":8,
+        "date": "2014.07.09",
+        "companyName":"Samsung",
+        "visitCount": 11233,
+        "dailyAvg":362,
+        "Increase": 8.56,
+        "employeeCount": 23423,
+        "companyEstablishDate": "2000.00.00"
+      },
+      {
+        "id":9,
+        "date": "2014.07.09",
+        "companyName":"Samsung",
+        "visitCount": 11233,
+        "dailyAvg":362,
+        "Increase": 8.56,
+        "employeeCount": 23423,
+        "companyEstablishDate": "2000.00.00"
+      },
+      {
+        "id":10,
+        "date": "2014.07.09",
+        "companyName":"Samsung",
+        "visitCount": 11233,
+        "dailyAvg":362,
+        "Increase": 8.56,
+        "employeeCount": 23423,
+        "companyEstablishDate": "2000.00.00"
+      }
+    ]
+}
