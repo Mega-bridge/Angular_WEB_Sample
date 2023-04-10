@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --proxy-config proxy.conf.json --open --disable-host-check",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -40,11 +40,13 @@
     "@progress/kendo-angular-popup": "11.4.0",
     "@progress/kendo-angular-progressbar": "11.4.0",
     "@progress/kendo-angular-treeview": "11.4.0",
+    "@progress/kendo-angular-utils": "^11.4.0",
     "@progress/kendo-data-query": "^1.0.0",
     "@progress/kendo-drawing": "^1.17.2",
     "@progress/kendo-licensing": "^1.0.2",
     "@progress/kendo-svg-icons": "^1.0.0",
     "@progress/kendo-theme-default": "^6.2.0",
+    "cors": "^2.8.5",
     "hammerjs": "^2.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
