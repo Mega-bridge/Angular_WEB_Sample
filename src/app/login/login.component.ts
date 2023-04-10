@@ -45,9 +45,11 @@ export class LoginComponent implements OnInit {
   }
 
   /**
-   * 로그인 시 대시보드로 이동 이벤트
+   * 로그인
    */
   onLogin() {
+
+    // 로그인 form
     const request: LoginRequestModel = {
       email: this.registerForm.controls['email'].value,
       password: this.registerForm.controls['password'].value
@@ -58,7 +60,6 @@ export class LoginComponent implements OnInit {
         .subscribe({
             next: async (data) => {
               if (data) {
-                console.log(data);
                 this.router.navigateByUrl(`/dashboard`);
               }
             },
