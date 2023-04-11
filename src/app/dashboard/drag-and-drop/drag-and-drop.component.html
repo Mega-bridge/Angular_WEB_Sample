@@ -1,0 +1,84 @@
+<!--<div class="container">-->
+<!--    <div *ngFor="let dropTarget of dropTargets"-->
+<!--         kendoDropTarget-->
+<!--         (dragEnter)="handleDragEnter(dropTarget)"-->
+<!--         (dragLeave)="handleDragLeave()"-->
+<!--         (drop)="handleDrop(dropTarget)"-->
+<!--         [ngClass]="{'my-drop': true, 'entered': enteredBox === dropTarget && enteredBox !== currentBox}">-->
+<!--        <button kendoButton kendoDragTarget-->
+<!--                *ngIf="currentBox === dropTarget"-->
+<!--                [hintTemplate]="hint"-->
+<!--                themeColor="primary"-->
+<!--                (press)="handlePress()">-->
+<!--            <span class="k-icon k-i-move k-icon-md"></span>-->
+<!--            {{btnText}}-->
+<!--        </button>-->
+<!--        <button kendoButton kendoDragTarget-->
+<!--                *ngIf="currentBox === 'B'"-->
+<!--                [hintTemplate]="hint"-->
+<!--                themeColor="primary"-->
+<!--                (press)="handlePress()">-->
+<!--            <span class="k-icon k-i-move k-icon-md"></span>-->
+<!--            {{btnText}}-->
+<!--        </button>-->
+<!--        {{currentBox !== dropTarget ? 'Drop Here' : ''}}-->
+<!--    </div>-->
+
+<!--</div>-->
+
+<!--<ng-template #hint>-->
+<!--    <div class="k-button-md k-button-solid-primary k-rounded-md">-->
+<!--        <span class="k-icon k-i-move k-icon-md"></span>-->
+<!--        {{hintText}}-->
+<!--    </div>-->
+<!--</ng-template>-->
+<div style="display: flex;">
+    <div>
+        <button (click)="showFish = !showFish"> 물고기 </button>
+    </div>
+
+    <div *ngIf="showFish" style="display:flex; flex-direction: column;">
+        <img
+                kendoDragTarget
+                (press)="handlePress()"
+                (dragStart)="handleDragStart()"
+                (release)="reset()"
+                (dragEnd)="reset()"
+                src="assets/img/fish.png" style="width: 200px;">
+        <img
+                kendoDragTarget
+                (press)="handlePress()"
+                (dragStart)="handleDragStart()"
+                (release)="reset()"
+                (dragEnd)="reset()"
+                src="assets/img/fish.png" style="width: 200px;">
+        <img
+                kendoDragTarget
+                (press)="handlePress()"
+                (dragStart)="handleDragStart()"
+                (release)="reset()"
+                (dragEnd)="reset()"
+                src="assets/img/fish.png" style="width: 200px;">
+    </div>
+
+    <div style="width: 800px; height: 800px;justify-content: center;">
+        <img src="assets/img/fishPort.png" style="object-fit: cover">
+    </div>
+
+
+
+
+</div>
+
+<!--<button-->
+<!--        kendoButton-->
+<!--        kendoDragTarget-->
+<!--        (press)="handlePress()"-->
+<!--        (dragStart)="handleDragStart()"-->
+<!--        (release)="reset()"-->
+<!--        (dragEnd)="reset()"-->
+<!--        [themeColor]="dragged ? 'primary' : 'base'"-->
+<!--&gt;-->
+<!--    <span class="k-icon k-i-move k-icon-md"></span>-->
+<!--    {{ btnText }}-->
+<!--</button>-->
