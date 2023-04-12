@@ -4,10 +4,8 @@ import { RouterModule } from '@angular/router';
 import {TableModule} from "../table/table.module";
 import {ChartModule} from "../charts/charts.module";
 import {SharedModule} from "../../shared/shared.module";
-import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component";
-import {DragAndDropModule} from "@progress/kendo-angular-utils";
-import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {ButtonsModule} from "@progress/kendo-angular-buttons";
+import {DragAndDropComponent } from "./draw-fish-family/drag-and-drop/drag-and-drop.component"
+import {DrawFishFamilyComponent} from "./draw-fish-family/draw-fish-family.component";
 
 
 @NgModule({
@@ -20,22 +18,21 @@ import {ButtonsModule} from "@progress/kendo-angular-buttons";
       },
 
       {
-        path: 'dragAndDrop',
-        component: DragAndDropComponent
+        path: 'DrawFishFamily',
+        component: DrawFishFamilyComponent
       },
     ]),
     TableModule,
     ChartModule,
     SharedModule,
-    DragAndDropModule,
-    NgClass,
-    ButtonsModule,
-    NgForOf,
-    NgIf
   ],
   declarations: [
       DashBoardComponent,
     DragAndDropComponent,
+    DrawFishFamilyComponent
   ],
+  providers: [
+    DrawFishFamilyComponent
+  ]
 })
 export class DashBoardModule { }

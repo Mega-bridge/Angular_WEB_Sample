@@ -1,0 +1,42 @@
+<div class="container">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">Free Drawing Mode</div>
+            <div class="card-body">
+                <div class="input-group">
+                    <div class="input-group-append">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" checked id="customSwitch1" (click)="drawMode()">
+                            <label class="custom-control-label" for="customSwitch1">Enable / Disable</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Fish</div>
+            <div class="card-body max-height">
+                <img (click)="getImgPolaroid($event)" style="width: 48%;" src="../assets/img/whaleAngryWithWater.svg"  alt=""/>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <app-dashboard-drag-and-drop #canvas></app-dashboard-drag-and-drop>
+    </div>
+
+    <div class="col">
+        <div class="card">
+            <div class="card-header">Options</div>
+            <div class="card-body text-center">
+                <div class="btn-group">
+                    <button data-toggle="tooltip" data-placement="bottom" title="Delete element" type="button"
+                            (click)="removeSelected();"> delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
