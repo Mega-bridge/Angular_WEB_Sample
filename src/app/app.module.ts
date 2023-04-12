@@ -12,6 +12,7 @@ import { GridModule } from '@progress/kendo-angular-grid';
 import { ChartsModule } from '@progress/kendo-angular-charts';
 import 'hammerjs';
 import { NotificationModule } from '@progress/kendo-angular-notification';
+import {DashBoardModule} from "./dashboard/dash-board.module";
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { NotificationModule } from '@progress/kendo-angular-notification';
     ChartsModule,
     AppRoutingModule,
     SharedModule,
-    NotificationModule
+    NotificationModule,
+    DashBoardModule
   ],
   providers: [DataService],
   bootstrap: [AppComponent]
