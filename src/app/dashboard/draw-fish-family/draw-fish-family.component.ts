@@ -56,8 +56,6 @@ export class DrawFishFamilyComponent {
     combineSelectOption(img: string):void{
         var finalFish: string = '';
 
-
-
         if (this.selectFish.includes('Smile')){
             if(img.includes('Dense')){
                 finalFish =  'fishSmileDenseScales';
@@ -78,7 +76,14 @@ export class DrawFishFamilyComponent {
     }
 
     public getImgPolaroid(event:any) {
-        this.canvas.getImgPolaroid(event,this.selectedFamilyType);
+        console.log(event.srcElement.currentSrc);
+        if(typeof event === 'string'){
+            this.canvas.getImgPolaroid(event,this.selectedFamilyType);
+        }
+        else{
+            this.canvas.getImgPolaroid(event.srcElement.currentSrc,this.selectedFamilyType);
+        }
+
     }
 
     public drawMode() {
@@ -100,5 +105,36 @@ export class DrawFishFamilyComponent {
 
     public rasterize() {
         this.canvas.rasterize();
+    }
+
+
+    isPopupVisible1 = false;
+    isPopupVisible2 = false;
+    isPopupVisible3 = false;
+    isPopupVisible4 = false;
+
+    showPopup1() {
+        this.isPopupVisible1 = !this.isPopupVisible1 ;
+        this.isPopupVisible2=false;
+        this.isPopupVisible3=false;
+        this.isPopupVisible4=false;
+    }
+    showPopup2(){
+        this.isPopupVisible2 = !this.isPopupVisible2 ;
+        this.isPopupVisible1=false;
+        this.isPopupVisible3=false;
+        this.isPopupVisible4=false;
+    }
+    showPopup3(){
+        this.isPopupVisible3 = !this.isPopupVisible3 ;
+        this.isPopupVisible1=false;
+        this.isPopupVisible2=false;
+        this.isPopupVisible4=false;
+    }
+    showPopup4(){
+        this.isPopupVisible4 = !this.isPopupVisible4 ;
+        this.isPopupVisible1=false;
+        this.isPopupVisible2=false;
+        this.isPopupVisible3=false;
     }
 }

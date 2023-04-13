@@ -202,7 +202,7 @@ export class DragAndDropComponent implements AfterViewInit{
 
     }
 
-    getImgPolaroid(event: any, familyType: string) {
+    getImgPolaroid(event: any, familyType?: string) {
         const el = event;
         fabric.loadSVGFromURL(el, (objects, options) => {
             const image = fabric.util.groupSVGElements(objects, options);
