@@ -4,6 +4,7 @@ import {DragAndDrop3Component} from "./drag-and-drop3.component";
 import {SharedModule} from "@progress/kendo-angular-grid";
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {CanvasComponent} from "./canvas/canvas.component";
+import {FormsModule} from "@angular/forms";
 @NgModule({
     imports: [
         RouterModule.forChild([
@@ -14,6 +15,7 @@ import {CanvasComponent} from "./canvas/canvas.component";
         ]),
         SharedModule,
         DragDropModule,
+        FormsModule,
     ],
     declarations: [DragAndDrop3Component,CanvasComponent],
     exports: [
