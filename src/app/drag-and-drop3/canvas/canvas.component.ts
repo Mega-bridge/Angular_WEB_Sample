@@ -38,18 +38,6 @@ export class CanvasComponent implements AfterViewInit{
             isDrawingMode: false
         });
 
-        this.canvas.on({
-            'object:moving': (e) => { },
-            // 'object:modified': (e) => { },
-            'object:selected': (e) => {
-                const selectedObject = e.target;
-                this.selected = selectedObject;
-            },
-            'selection:cleared': (e) => {
-                this.selected = null;
-                this.resetPanels();
-            }
-        });
 
         this.canvas.setWidth(this.size.width);
         this.canvas.setHeight(this.size.height);
