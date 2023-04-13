@@ -6,6 +6,9 @@ import {ChartModule} from "../charts/charts.module";
 import {SharedModule} from "../../shared/shared.module";
 import {DragAndDropComponent } from "./draw-fish-family/drag-and-drop/drag-and-drop.component"
 import {DrawFishFamilyComponent} from "./draw-fish-family/draw-fish-family.component";
+import {NgForOf, NgIf, NgStyle} from "@angular/common";
+import {ButtonModule, ChipModule} from "@progress/kendo-angular-buttons";
+import {InputsModule} from "@progress/kendo-angular-inputs";
 
 
 @NgModule({
@@ -25,6 +28,12 @@ import {DrawFishFamilyComponent} from "./draw-fish-family/draw-fish-family.compo
     TableModule,
     ChartModule,
     SharedModule,
+    NgIf,
+    NgForOf,
+    NgStyle,
+    ButtonModule,
+    InputsModule,
+    ChipModule,
   ],
   declarations: [
       DashBoardComponent,
