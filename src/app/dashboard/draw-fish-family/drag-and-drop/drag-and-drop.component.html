@@ -1,1 +1,4 @@
-<canvas id="canvas" #htmlCanvas style="background: url('assets/img/originPort.png') no-repeat; background-size: 100% 100%; "></canvas>
+<canvas id="canvas"
+        #htmlCanvas
+        [ngStyle] = "{'background-image': 'url('+waterUrl+')'}"
+        style=" background-repeat: no-repeat; background-size: 100% 100%; "></canvas>
