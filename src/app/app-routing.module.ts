@@ -4,6 +4,8 @@ import {TableComponent} from "./table/table.component";
 import {LoginComponent} from "./login/login.component";
 import {LayoutComponent} from "../shared/layout/layout.component";
 import {ChartsComponent} from "./charts/charts.component";
+import {DragAndDrop2Component} from "./drag-and-drop2/drag-and-drop2.component";
+import {DragAndDrop3Component} from "./drag-and-drop3/drag-and-drop3.component";
 
 const routes: Routes = [
 
@@ -34,6 +36,16 @@ const routes: Routes = [
         path: 'table',
         component: TableComponent,
         loadChildren: () => import('./table/table.module').then(i => i.TableModule),
+      },
+      {
+        path: 'test',
+        component: DragAndDrop2Component,
+        loadChildren: () => import('./drag-and-drop2/drag-and-drop2.module').then(i => i.DragAndDrop2Module),
+      },
+      {
+        path: 'test2',
+        component: DragAndDrop3Component,
+        loadChildren: () => import('./drag-and-drop3/drag-and-drop3.module').then(i => i.DragAndDrop3Module),
       },
     ]
   },
