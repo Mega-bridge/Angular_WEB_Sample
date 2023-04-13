@@ -65,12 +65,12 @@
 <div class="example-boundary">
     <div style="height: 100%;width:10%;background-color: #a7a7a7" >
             <div>
-                <img src="../../assets/img/기본고래_1지느러미.png" style="display:block; position:absolute;  z-index:1; width:150px;" >
+                <img src="../../assets/img/상어기본_지느러미.svg" style="display:block; position:absolute;  z-index:1; width:150px;" >
                 <div class="example-box"
                      cdkDrag
                      cdkDragBoundary=".example-boundary"
                      (cdkDragEnded)="onDragEnded_1($event)">
-                    <img src="../../assets/img/기본고래_1지느러미.png" style="display:block; position:absolute;  z-index:2; width:150px;" >
+                    <img src="../../assets/img/상어기본_지느러미.svg" style="display:block; position:absolute;  z-index:2; width:150px;" >
                     <ng-container *ngFor="let position of imagePositions1; let i = index">
                         <div class="example-box"
                              cdkDrag
@@ -78,16 +78,16 @@
                              (cdkDragEnded)="onDragEnded_1($event)"
                              *ngIf="draggedImageIndex != i">
                             <img style="width: 150px;position:absolute;"[ngStyle]="{'left':position.x+'px','top':position.y+'px'}"
-                                 src="../../assets/img/기본고래_1지느러미.png">
+                                 src="../../assets/img/상어기본_지느러미.svg">
                         </div>
                     </ng-container>
                 </div>
-                <img src="../../assets/img/둥근물고기_기본.png" style="display:block; position:absolute;  z-index:1; width:150px;" >
+                <img src="../../assets/img/둥근물고기_기본-_1_.svg" style="display:block; position:absolute;  z-index:1; width:150px;" >
                 <div class="example-box"
                      cdkDrag
                      cdkDragBoundary=".example-boundary"
                      (cdkDragEnded)="onDragEnded_2($event)">
-                    <img src="../../assets/img/둥근물고기_기본.png" style="display:block; position:absolute;  z-index:2; width:150px;" >
+                    <img src="../../assets/img/둥근물고기_기본-_1_.svg" style="display:block; position:absolute;  z-index:2; width:150px;" >
                     <ng-container *ngFor="let position of imagePositions2; let i = index">
                         <div class="example-box"
                              cdkDrag
@@ -95,16 +95,16 @@
                              (cdkDragEnded)="onDragEnded_2($event)"
                              *ngIf="draggedImageIndex != i">
                             <img style="width: 150px;position:absolute;"[ngStyle]="{'left':position.x+'px','top':position.y+'px'}"
-                                 src="../../assets/img/둥근물고기_기본.png">
+                                 src="../../assets/img/둥근물고기_기본-_1_.svg">
                         </div>
                     </ng-container>
                 </div>
-                <img src="../../assets/img/삐진상어_지느러미.png" style="display:block; position:absolute;  z-index:1; width:150px;" >
+                <img src="../../assets/img/기본고래_물.svg" style="display:block; position:absolute;  z-index:1; width:150px;" >
                 <div class="example-box"
                      cdkDrag
                      cdkDragBoundary=".example-boundary"
                      (cdkDragEnded)="onDragEnded_3($event)">
-                    <img src="../../assets/img/삐진상어_지느러미.png" style="display:block; position:absolute;  z-index:2; width:150px;" >
+                    <img src="../../assets/img/기본고래_물.svg" style="display:block; position:absolute;  z-index:2; width:150px;" >
                     <ng-container *ngFor="let position of imagePositions3; let i = index">
                         <div class="example-box"
                              cdkDrag
@@ -112,7 +112,7 @@
                              (cdkDragEnded)="onDragEnded_3($event)"
                              *ngIf="draggedImageIndex != i">
                             <img style="width: 150px;position:absolute;"[ngStyle]="{'left':position.x+'px','top':position.y+'px'}"
-                                 src="../../assets/img/삐진상어_지느러미.png">
+                                 src="../../assets/img/기본고래_물.svg">
                         </div>
                     </ng-container>
                 </div>
