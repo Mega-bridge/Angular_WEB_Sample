@@ -21,13 +21,35 @@
         <div>
         <app-dashboard-drag-and-drop #canvas></app-dashboard-drag-and-drop>
         </div>
+
+            <div *ngIf="showFishes" class="select-image">
+                <div class="img-card-header sub">표정 선택</div>
+                <div class="img-card-body max-height">
+                    <div *ngFor="let img of fishImg" class="img-wrap">
+                        <img  (click)="selectFishImg($event,img)" [src]="img"  alt="smile"
+                              [style.box-shadow]="selectFish === img ? '0 0 4px blue' : ''"/>
+                    </div>
+                </div>
+                <div class="img-card-header sub">비늘 선택</div>
+                <div class="img-card-body max-height">
+                    <div *ngFor="let scalesImg of fishScalesImg;let i = index"  class="img-wrap">
+                        <img  (click)="selectFishScalesImg($event,scalesImg,'fish')" [src]="scalesImg"  alt=""
+                              [style.box-shadow]="selectFishScale === scalesImg ? '0 0 4px blue' : ''"/>
+                    </div>
+                </div>
+            </div>
+
+
+
         <div class="row">
+
             <div class="img-card">
                 <div class="img-card-header">가족 선택</div>
                 <div class="img-card-body max-height">
                     <kendo-chiplist
                             selection="single"
-                            (selectedChange)="selectFamilyType($event)">
+                            (selectedChange)="selectFamilyType($event)"
+                    >
                         <kendo-chip
                                 *ngFor="let family of familyTypeList;"
                                 [label]="family.label"
@@ -53,26 +75,14 @@
             </div>
 
             <div class="img-card">
+
+
+            <div class="img-card">
                 <div class="img-card-header" >
-                    <img style="width: 100%;height: 100%;" src="../assets/img/fish.svg" (click)="showFishes = !showFishes">&nbsp;
-                    일반물고기
+                    <img class="img-card-style" src="../assets/img/fish.svg" (click)="showFishes = !showFishes">
                 </div>
-                <div *ngIf="showFishes" >
-                    <div class="img-card-header sub">표정 선택</div>
-                    <div class="img-card-body max-height">
-                        <div *ngFor="let img of fishImg" class="img-wrap">
-                            <img  (click)="selectFishImg($event,img)" [src]="img"  alt="smile"
-                                  [style.box-shadow]="selectFish === img ? '0 0 4px blue' : ''"/>
-                        </div>
-                    </div>
-                    <div class="img-card-header sub">비늘 선택</div>
-                    <div class="img-card-body max-height">
-                        <div *ngFor="let scalesImg of fishScalesImg;let i = index"  class="img-wrap">
-                            <img  (click)="selectFishScalesImg($event,scalesImg,'fish')" [src]="scalesImg"  alt=""
-                                  [style.box-shadow]="selectFishScale === scalesImg ? '0 0 4px blue' : ''"/>
-                        </div>
-                    </div>
-                </div>
+
+
             </div>
 
             <div class="img-card">
