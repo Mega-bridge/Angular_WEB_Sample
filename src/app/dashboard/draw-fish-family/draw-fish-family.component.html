@@ -15,21 +15,36 @@
         </div>
 
         <div class="card">
+            <div class="card-header">가족 선택</div>
+            <div class="card-body max-height">
+                <kendo-chiplist
+                        selection="single"
+                        (selectedChange)="selectFamilyType($event)">
+                    <kendo-chip
+                            *ngFor="let family of familyTypeList"
+                            [label]="family.label"
+                            [selected]="family.selected"
+                    >
+                    </kendo-chip>
+                </kendo-chiplist>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" (click)="showWaterPort = !showWaterPort">어항</div>
+            <div *ngIf="showWaterPort">
+                <div class="card-body text-center">
+                    <div *ngFor="let img of waterPortImg"  class="img-wrap">
+                        <img  (click)="selectWater(img)" [src]="img" alt=""
+                              [style.box-shadow]="selectWaterPort === img ? '0 0 4px blue' : ''" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
             <div class="card-header" (click)="showFishes = !showFishes">일반물고기</div>
             <div *ngIf="showFishes" >
-                <div class="card-header sub">가족 선택</div>
-                <div class="card-body max-height">
-                    <kendo-chiplist
-                            selection="single"
-                            (selectedChange)="selectFamilyType($event)">
-                        <kendo-chip
-                                *ngFor="let family of familyTypeList"
-                                [label]="family.label"
-                                [selected]="family.selected"
-                        >
-                        </kendo-chip>
-                    </kendo-chiplist>
-                </div>
                 <div class="card-header sub">표정 선택</div>
                 <div class="card-body max-height">
                     <div *ngFor="let img of fishImg" class="img-wrap">
@@ -149,13 +164,7 @@
         <div class="card">
             <div class="card-header" (click)="showEct = !showEct">더보기</div>
             <div *ngIf="showEct">
-                <div class="card-header sub">어항</div>
-                <div class="card-body text-center">
-                    <div *ngFor="let img of waterPortImg"  class="img-wrap">
-                    <img  (click)="selectWater(img)" [src]="img" alt=""
-                          [style.box-shadow]="selectWaterPort === img ? '0 0 4px blue' : ''" />
-                    </div>
-                </div>
+
                 <div class="card-header sub">돌</div>
                 <div class="card-header sub">물풀</div>
                 <div class="card-header sub">물방울</div>

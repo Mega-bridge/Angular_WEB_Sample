@@ -25,6 +25,8 @@ export class DrawFishFamilyComponent {
     public showEct: boolean = false;
     /** 물고기 외 선택 */
     public showFishEct: boolean = false;
+    /** 물고기 외 선택 */
+    public showWaterPort: boolean = false;
 
     // object 이미지 경로 리스트
     /** 일반 물고기 표정 img list */
