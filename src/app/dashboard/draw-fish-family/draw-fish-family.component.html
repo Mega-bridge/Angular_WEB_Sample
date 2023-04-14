@@ -40,7 +40,7 @@
                 <div class="card-header sub">비늘 선택</div>
                 <div class="card-body max-height">
                     <div *ngFor="let scalesImg of fishScalesImg;let i = index"  class="img-wrap">
-                    <img  (click)="selectFishScalesImg($event,scalesImg)" [src]="scalesImg"  alt=""
+                    <img  (click)="selectFishScalesImg($event,scalesImg,'fish')" [src]="scalesImg"  alt=""
                           [style.box-shadow]="selectFishScale === scalesImg ? '0 0 4px blue' : ''"/>
                     </div>
                 </div>

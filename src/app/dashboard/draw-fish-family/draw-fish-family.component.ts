@@ -106,8 +106,9 @@ export class DrawFishFamilyComponent {
     /**
      * 선택된 물고기 표정 + 비늘 합치기
      * @param img
+     * @param type 물고기 종류
      */
-    combineSelectOption(img: string):void{
+    combineSelectOption(img: string, type: string):void{
         // 최종 선택된 물고기
         var finalFish: string = '';
 
@@ -115,7 +116,7 @@ export class DrawFishFamilyComponent {
         if (this.selectFish.includes('Smile')){
             // 빼곡한 비늘
             if(img.includes('Dense')){
-                finalFish =  'fishSmileDenseScales';
+                finalFish =  type+'SmileDenseScales';
                 this.getImgPolaroid('../assets/img/'+finalFish+'.svg');
             }
         }
@@ -137,10 +138,11 @@ export class DrawFishFamilyComponent {
      * 물고기 비늘 선택
      * @param event
      * @param select
+     * @param type 물고기 종류
      */
-    selectFishScalesImg(event: any, select:string){
+    selectFishScalesImg(event: any, select:string, type:string){
         this.selectFishScale = select;
-        this.combineSelectOption(select);
+        this.combineSelectOption(select,type);
     }
 
     /**
