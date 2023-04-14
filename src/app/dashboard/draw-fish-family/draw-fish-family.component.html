@@ -22,26 +22,33 @@
         <app-dashboard-drag-and-drop #canvas></app-dashboard-drag-and-drop>
         </div>
 
-            <div *ngIf="showFishes" class="select-image">
-                <div class="img-card-header sub">표정 선택</div>
-                <div class="img-card-body max-height">
-                    <div *ngFor="let img of fishImg" class="img-wrap">
-                        <img  (click)="selectFishImg($event,img)" [src]="img"  alt="smile"
-                              [style.box-shadow]="selectFish === img ? '0 0 4px blue' : ''"/>
-                    </div>
+
+        <kendo-popup [anchor]="anchor"
+                     [anchorAlign]="anchorAlign"
+                     [popupAlign]="popupAlign"
+                     *ngIf="showFishes">
+
+            <div  class="select-image">
+
+                <div *ngFor="let img of fishImg" class="img-wrap">
+                    <img  (click)="selectFishImg($event,img)" [src]="img"  alt="smile"
+                          [style.box-shadow]="selectFish === img ? '0 0 4px blue' : ''"/>
                 </div>
-                <div class="img-card-header sub">비늘 선택</div>
-                <div class="img-card-body max-height">
-                    <div *ngFor="let scalesImg of fishScalesImg;let i = index"  class="img-wrap">
-                        <img  (click)="selectFishScalesImg($event,scalesImg,'fish')" [src]="scalesImg"  alt=""
-                              [style.box-shadow]="selectFishScale === scalesImg ? '0 0 4px blue' : ''"/>
-                    </div>
+                <div style="border: #a7a7a7 solid 2px;"></div>
+
+
+                <div *ngFor="let scalesImg of fishScalesImg;let i = index"  class="img-wrap">
+                    <img  (click)="selectFishScalesImg($event,scalesImg,'fish')" [src]="scalesImg"  alt=""
+                          [style.box-shadow]="selectFishScale === scalesImg ? '0 0 4px blue' : ''"/>
                 </div>
             </div>
+        </kendo-popup>
 
 
 
-        <div class="row">
+
+
+        <div class="row"  #anchor >
 
             <div class="img-card">
                 <div class="img-card-header">가족 선택</div>
@@ -63,7 +70,7 @@
             </div>
 
             <div class="img-card">
-                <div class="img-card-header" (click)="showWaterPort = !showWaterPort">어항</div>
+                <div class="img-card-header"  (click)="showWaterPort = !showWaterPort">어항</div>
                 <div *ngIf="showWaterPort">
                     <div class="card-body text-center">
                         <div *ngFor="let img of waterPortImg"  class="img-wrap">
@@ -77,7 +84,7 @@
 
 
             <div class="img-card">
-                <div class="img-card-header" >
+                <div class="img-card-header">
                     <img class="img-card-style" src="../assets/img/fish.svg" (click)="showFishes = !showFishes">
                 </div>
 

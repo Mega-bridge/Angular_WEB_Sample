@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component"
 import {DataService} from "../../../shared/service/data.service";
+import {Align} from "@progress/kendo-angular-popup";
 
 @Component({
     selector: 'app-dashboard-draw-fish-family',
@@ -91,6 +92,11 @@ export class DrawFishFamilyComponent implements OnInit{
         },
 
     ];
+
+
+
+    public anchorAlign: Align = { horizontal: "center", vertical: "top" };
+    public popupAlign: Align = { horizontal: "center", vertical: "bottom" };
 
 
 
@@ -205,6 +211,8 @@ export class DrawFishFamilyComponent implements OnInit{
         this.familyTypeList[this.selectedFamilyType].selected=false;
         // 물고기 선택 후 가족 관계 Disabled True
         this.isDisabled=false;
+
+        this.showFishes = !this.showFishes;
 
     }
 

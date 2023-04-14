@@ -13,6 +13,8 @@ import { ChartsModule } from '@progress/kendo-angular-charts';
 import 'hammerjs';
 import { NotificationModule } from '@progress/kendo-angular-notification';
 import {DashBoardModule} from "./dashboard/dash-board.module";
+import { PopupModule } from '@progress/kendo-angular-popup';
+
 
 
 @NgModule({
@@ -31,7 +33,8 @@ import {DashBoardModule} from "./dashboard/dash-board.module";
     AppRoutingModule,
     SharedModule,
     NotificationModule,
-    DashBoardModule
+    DashBoardModule,
+    PopupModule
   ],
   providers: [DataService],
   bootstrap: [AppComponent]
