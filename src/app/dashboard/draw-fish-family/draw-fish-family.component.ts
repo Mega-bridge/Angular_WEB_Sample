@@ -229,37 +229,4 @@ export class DrawFishFamilyComponent implements OnInit{
         this.canvas.rasterize();
     }
 
-    /**
-     * 물고기 종류 선택 팝업창
-     */
-    isPopupVisible1 = false;
-    isPopupVisible2 = false;
-    isPopupVisible3 = false;
-    isPopupVisible4 = false;
-
-    showPopup1() {
-        this.isPopupVisible1 = !this.isPopupVisible1 ;
-        this.isPopupVisible2=false;
-        this.isPopupVisible3=false;
-        this.isPopupVisible4=false;
-    }
-    showPopup2(){
-        this.isPopupVisible2 = !this.isPopupVisible2 ;
-        this.isPopupVisible1=false;
-        this.isPopupVisible3=false;
-        this.isPopupVisible4=false;
-    }
-    showPopup3(){
-        this.isPopupVisible3 = !this.isPopupVisible3 ;
-        this.isPopupVisible1=false;
-        this.isPopupVisible2=false;
-        this.isPopupVisible4=false;
-    }
-    showPopup4(){
-        this.isPopupVisible4 = !this.isPopupVisible4 ;
-        this.isPopupVisible1=false;
-        this.isPopupVisible2=false;
-        this.isPopupVisible3=false;
-    }
-
 }
