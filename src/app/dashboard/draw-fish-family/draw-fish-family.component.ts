@@ -61,7 +61,7 @@ export class DrawFishFamilyComponent {
     public familyTypeList = [
         {
             label: "나",
-            selected: true,
+            selected: false,
             value: 0
         },
         {
