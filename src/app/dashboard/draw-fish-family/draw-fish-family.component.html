@@ -137,8 +137,8 @@
             </div>
         </div>
     </div>
-<!--    <button style="height:40pt;position:absolute; top:80px;left:2090px" (click)="resultVisible=!resultVisible">결과보기</button>-->
-    <div class="col">
+    <button style="height:40pt;position:absolute; top:80px;left:99%;width:50px;" (click)="resultVisible=!resultVisible">결과보기</button>
+    <div class="col" *ngIf="resultVisible">
         <div class="card">
             <div class="card-header">Options</div>
             <div class="card-body text-center">
