@@ -29,9 +29,11 @@
                             selection="single"
                             (selectedChange)="selectFamilyType($event)">
                         <kendo-chip
-                                *ngFor="let family of familyTypeList"
+                                *ngFor="let family of familyTypeList;"
                                 [label]="family.label"
                                 [selected]="family.selected"
+                                [disabled]="isDisabled"
+
                         >
                         </kendo-chip>
                     </kendo-chiplist>

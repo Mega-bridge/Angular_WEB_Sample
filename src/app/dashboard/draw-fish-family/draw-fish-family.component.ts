@@ -57,6 +57,9 @@ export class DrawFishFamilyComponent {
     /** 선택된 가족 관계 */
     public selectedFamilyType: number = 0;
 
+    /** 가족 선택 Disabled 여부 **/
+    public isDisabled: boolean = false;
+
     // 가족관계 리스트
     public familyTypeList = [
         {
@@ -113,7 +116,11 @@ export class DrawFishFamilyComponent {
      * @param e
      */
     selectFamilyType(e:any){
+        console.log(e)
+        console.log(this.familyTypeList[e])
         this.selectedFamilyType = this.familyTypeList[e].value;
+        // 가족 관계 선택 시 버튼 막기
+        this.isDisabled=true;
     }
 
     /**
@@ -171,6 +178,12 @@ export class DrawFishFamilyComponent {
         else{
             this.canvas.getImgPolaroid(event.srcElement.currentSrc,this.selectedFamilyType);
         }
+
+        // if (this.selectedFamilyType==1){
+        //     this.familyTypeList[1].selected=false;
+        // }
+        // 물고기 선택 후 가족 관계 Disabled True
+        this.isDisabled=false;
 
     }
 
