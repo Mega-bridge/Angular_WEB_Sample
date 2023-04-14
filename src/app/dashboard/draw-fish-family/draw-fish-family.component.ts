@@ -63,6 +63,12 @@ export class DrawFishFamilyComponent implements OnInit{
     /** 가족 선택 Disabled 여부 **/
     public isDisabled: boolean = false;
 
+    /** 결과 화면 보여주기 여부 **/
+    public resultVisible: boolean =false;
+
+    /** 가족 선택 전 물고기 이미지 선택 여부 **/
+    public isFamilyAfterFish: boolean = false;
+
     // 가족관계 리스트
     public familyTypeList = [
         {
@@ -98,8 +104,6 @@ export class DrawFishFamilyComponent implements OnInit{
     public anchorAlign: Align = { horizontal: "center", vertical: "top" };
     public popupAlign: Align = { horizontal: "center", vertical: "bottom" };
 
-
-
     @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
 
     /**
@@ -121,8 +125,6 @@ export class DrawFishFamilyComponent implements OnInit{
                     }
                 },
             })
-
-
     }
 
 
@@ -145,6 +147,8 @@ export class DrawFishFamilyComponent implements OnInit{
         this.familyTypeList[e].selected = true;
         // 가족 관계 선택 시 버튼 막기
         this.isDisabled=true;
+        // 가족 관계를 선택해야 물고기 선택 가능
+        this.isFamilyAfterFish=true;
     }
 
 
@@ -168,7 +172,9 @@ export class DrawFishFamilyComponent implements OnInit{
         // 물고기 선택 후 버튼 해제
         this.familyTypeList[this.selectedFamilyType].selected=false;
         // 물고기 선택 후 가족 관계 Disabled True
-        this.isDisabled=false;
+        this.isDisabled = false;
+        // 물고기 선택 후 클릭 막기
+        this.isFamilyAfterFish = false;
 
     }
 

@@ -83,9 +83,9 @@
 
 
 
-            <div class="img-card">
+            <div class="img-card" >
                 <div class="img-card-header">
-                    <img class="img-card-style" src="../assets/img/fish.svg" (click)="showFishes = !showFishes">
+                    <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/fish.svg" (click)="showFishes = !showFishes">
                 </div>
 
 
@@ -137,7 +137,7 @@
             </div>
         </div>
     </div>
-
+<!--    <button style="height:40pt;position:absolute; top:80px;left:2090px" (click)="resultVisible=!resultVisible">결과보기</button>-->
     <div class="col">
         <div class="card">
             <div class="card-header">Options</div>
