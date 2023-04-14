@@ -21,7 +21,7 @@
                 <div class="card-body max-height">
                     <kendo-chiplist
                             selection="single"
-                            (selectedChange)="selectedChange($event)">
+                            (selectedChange)="selectFamilyType($event)">
                         <kendo-chip
                                 *ngFor="let family of familyTypeList"
                                 [label]="family.label"
@@ -149,7 +149,7 @@
         <div class="card">
             <div class="card-header" (click)="showEct = !showEct">더보기</div>
             <div *ngIf="showEct">
-                <div class="card-header sub">어힝</div>
+                <div class="card-header sub">어항</div>
                 <div class="card-body text-center">
                     <div *ngFor="let img of waterPortImg"  class="img-wrap">
                     <img  (click)="selectWater(img)" [src]="img" alt=""
