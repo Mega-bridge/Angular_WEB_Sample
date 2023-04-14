@@ -30,9 +30,9 @@ export class DrawFishFamilyComponent {
 
     // object 이미지 경로 리스트
     /** 일반 물고기 표정 img list */
-    public fishImg:string[] = ['../assets/img/fish.svg','../assets/img/fishSmile.svg'];
+    public fishImg:string[] = ['../assets/img/fish.svg','assets/img/fishSmile.svg'];
     /** 물고기 비늘 img list */
-    public fishScalesImg:string[] = ['../assets/img/fish.svg','../assets/img/fishNonScales.png','../assets/img/fishSingleScales.png','../assets/img/fishDenseScales.png'];
+    public fishScalesImg:string[] = ['../assets/img/fish.svg','../assets/img/fishNonScales.png','../assets/img/fishSingleScales.png','assets/img/fishDenseScales.png'];
     /** 고래 img list */
     public whaleImg:string[] = ['../assets/img/whale.svg','../assets/img/whaleAngryWithWater.svg'];
     /** 상어 img list */
@@ -60,7 +60,7 @@ export class DrawFishFamilyComponent {
     // 가족관계 리스트
     public familyTypeList = [
         {
-            label: "엄마",
+            label: "나",
             selected: true,
             value: 0
         },
@@ -70,10 +70,21 @@ export class DrawFishFamilyComponent {
             value: 1
         },
         {
-            label: "나",
+            label: "엄마",
             selected: false,
             value: 2
-        }
+        },
+        {
+            label: "형제",
+            selected: false,
+            value: 3
+        },
+        {
+            label: "자매",
+            selected: false,
+            value: 4
+        },
+
     ];
 
 

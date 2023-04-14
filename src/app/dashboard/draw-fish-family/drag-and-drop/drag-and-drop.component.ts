@@ -7,7 +7,8 @@ import { fabric } from 'fabric';
     templateUrl: 'drag-and-drop.component.html',
     styles: [`
         #canvas {
-            border: 2px dashed #cccccc;
+           
+            
         }
     `]
 })
@@ -97,7 +98,7 @@ export class DragAndDropComponent implements AfterViewInit{
         // this.canvas.setWidth(this.size.width);
         // this.canvas.setHeight(this.size.height);
 
-        this.canvas.setWidth(window.innerWidth * 0.6);
+        this.canvas.setWidth(window.innerWidth * 0.61);
         this.canvas.setHeight(window.innerHeight * 0.7);
 
 

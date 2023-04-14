@@ -14,102 +14,107 @@
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-header">가족 선택</div>
-            <div class="card-body max-height">
-                <kendo-chiplist
-                        selection="single"
-                        (selectedChange)="selectFamilyType($event)">
-                    <kendo-chip
-                            *ngFor="let family of familyTypeList"
-                            [label]="family.label"
-                            [selected]="family.selected"
-                    >
-                    </kendo-chip>
-                </kendo-chiplist>
-            </div>
-        </div>
 
-        <div class="card">
-            <div class="card-header" (click)="showWaterPort = !showWaterPort">어항</div>
-            <div *ngIf="showWaterPort">
-                <div class="card-body text-center">
-                    <div *ngFor="let img of waterPortImg"  class="img-wrap">
-                        <img  (click)="selectWater(img)" [src]="img" alt=""
-                              [style.box-shadow]="selectWaterPort === img ? '0 0 4px blue' : ''" />
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header" (click)="showFishes = !showFishes">일반물고기</div>
-            <div *ngIf="showFishes" >
-                <div class="card-header sub">표정 선택</div>
-                <div class="card-body max-height">
-                    <div *ngFor="let img of fishImg" class="img-wrap">
-                    <img  (click)="selectFishImg($event,img)" [src]="img"  alt="smile"
-                         [style.box-shadow]="selectFish === img ? '0 0 4px blue' : ''"/>
-                    </div>
-                </div>
-                <div class="card-header sub">비늘 선택</div>
-                <div class="card-body max-height">
-                    <div *ngFor="let scalesImg of fishScalesImg;let i = index"  class="img-wrap">
-                    <img  (click)="selectFishScalesImg($event,scalesImg,'fish')" [src]="scalesImg"  alt=""
-                          [style.box-shadow]="selectFishScale === scalesImg ? '0 0 4px blue' : ''"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header" (click)="showWhales = !showWhales">고래</div>
-            <div  *ngIf="showWhales"  class="card-body max-height">
-                <div *ngFor="let img of whaleImg"  class="img-wrap">
-                    <img (click)="getImgPolaroid($event)" [src]="img"  alt=""/>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header" (click)="showSharks = !showSharks">상어</div>
-            <div *ngIf="showSharks"  class="card-body max-height">
-                <div *ngFor="let img of sharkImg"  class="img-wrap">
-                    <img (click)="getImgPolaroid($event)" [src]="img"  alt=""/>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header" (click)="showEels = !showEels">장어</div>
-            <div *ngIf="showEels"  class="card-body max-height">
-                <div *ngFor="let img of eelImg"  class="img-wrap">
-                <img (click)="getImgPolaroid($event)" [src]="img"  alt=""/>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header" (click)="showRoundFishes = !showRoundFishes">둥근물고기</div>
-            <div *ngIf="showRoundFishes"  class="card-body max-height">
-                <div *ngFor="let img of roundFishImg"  class="img-wrap">
-                <img (click)="getImgPolaroid($event)" [src]="img"  alt=""/>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header" (click)="showFishEct = !showFishEct">물고기 외</div>
-            <div *ngIf="showFishEct"  class="card-body max-height">
-<!--                <div *ngFor="let img of ectImg"  class="img-wrap">-->
-<!--                    <img src="">-->
-<!--                </div>-->
-            </div>
-        </div>
     </div>
 
     <div class="canvas-wrap">
+        <div>
         <app-dashboard-drag-and-drop #canvas></app-dashboard-drag-and-drop>
+        </div>
+        <div class="row">
+            <div class="card">
+                <div class="card-header">가족 선택</div>
+                <div class="card-body max-height">
+                    <kendo-chiplist
+                            selection="single"
+                            (selectedChange)="selectFamilyType($event)">
+                        <kendo-chip
+                                *ngFor="let family of familyTypeList"
+                                [label]="family.label"
+                                [selected]="family.selected"
+                        >
+                        </kendo-chip>
+                    </kendo-chiplist>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header" (click)="showWaterPort = !showWaterPort">어항</div>
+                <div *ngIf="showWaterPort">
+                    <div class="card-body text-center">
+                        <div *ngFor="let img of waterPortImg"  class="img-wrap">
+                            <img  (click)="selectWater(img)" [src]="img" alt=""
+                                  [style.box-shadow]="selectWaterPort === img ? '0 0 4px blue' : ''" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header" (click)="showFishes = !showFishes">일반물고기</div>
+                <div *ngIf="showFishes" >
+                    <div class="card-header sub">표정 선택</div>
+                    <div class="card-body max-height">
+                        <div *ngFor="let img of fishImg" class="img-wrap">
+                            <img  (click)="selectFishImg($event,img)" [src]="img"  alt="smile"
+                                  [style.box-shadow]="selectFish === img ? '0 0 4px blue' : ''"/>
+                        </div>
+                    </div>
+                    <div class="card-header sub">비늘 선택</div>
+                    <div class="card-body max-height">
+                        <div *ngFor="let scalesImg of fishScalesImg;let i = index"  class="img-wrap">
+                            <img  (click)="selectFishScalesImg($event,scalesImg,'fish')" [src]="scalesImg"  alt=""
+                                  [style.box-shadow]="selectFishScale === scalesImg ? '0 0 4px blue' : ''"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header" (click)="showWhales = !showWhales">고래</div>
+                <div  *ngIf="showWhales"  class="card-body max-height">
+                    <div *ngFor="let img of whaleImg"  class="img-wrap">
+                        <img (click)="getImgPolaroid($event)" [src]="img"  alt=""/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header" (click)="showSharks = !showSharks">상어</div>
+                <div *ngIf="showSharks"  class="card-body max-height">
+                    <div *ngFor="let img of sharkImg"  class="img-wrap">
+                        <img (click)="getImgPolaroid($event)" [src]="img"  alt=""/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header" (click)="showEels = !showEels">장어</div>
+                <div *ngIf="showEels"  class="card-body max-height">
+                    <div *ngFor="let img of eelImg"  class="img-wrap">
+                        <img (click)="getImgPolaroid($event)" [src]="img"  alt=""/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header" (click)="showRoundFishes = !showRoundFishes">둥근물고기</div>
+                <div *ngIf="showRoundFishes"  class="card-body max-height">
+                    <div *ngFor="let img of roundFishImg"  class="img-wrap">
+                        <img (click)="getImgPolaroid($event)" [src]="img"  alt=""/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header" (click)="showFishEct = !showFishEct">물고기 외</div>
+                <div *ngIf="showFishEct"  class="card-body max-height">
+                    <!--                <div *ngFor="let img of ectImg"  class="img-wrap">-->
+                    <!--                    <img src="">-->
+                    <!--                </div>-->
+                </div>
+            </div>
+        </div>
 
         <div class="select-wrap">
             <div style="width:750px;height:150px;background-color: rgb(247 244 245);border-radius:30px" [hidden]="!isPopupVisible1">
@@ -166,5 +171,8 @@
             </div>
         </div>
     </div>
+
+
 </div>
+
 
