@@ -116,9 +116,8 @@ export class DrawFishFamilyComponent {
      * @param e
      */
     selectFamilyType(e:any){
-        console.log(e)
-        console.log(this.familyTypeList[e])
         this.selectedFamilyType = this.familyTypeList[e].value;
+        this.familyTypeList[e].selected = true;
         // 가족 관계 선택 시 버튼 막기
         this.isDisabled=true;
     }
@@ -140,6 +139,10 @@ export class DrawFishFamilyComponent {
                 this.getImgPolaroid('../assets/img/'+finalFish+'.svg');
             }
         }
+        // 물고기 선택 후 버튼 해제
+        this.familyTypeList[this.selectedFamilyType].selected=false;
+        // 물고기 선택 후 가족 관계 Disabled True
+        this.isDisabled=false;
 
     }
 
@@ -178,10 +181,8 @@ export class DrawFishFamilyComponent {
         else{
             this.canvas.getImgPolaroid(event.srcElement.currentSrc,this.selectedFamilyType);
         }
-
-        // if (this.selectedFamilyType==1){
-        //     this.familyTypeList[1].selected=false;
-        // }
+        // 물고기 선택 후 버튼 해제
+        this.familyTypeList[this.selectedFamilyType].selected=false;
         // 물고기 선택 후 가족 관계 Disabled True
         this.isDisabled=false;
 
