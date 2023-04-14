@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 })
 export class DataService {
 
-  public JSON_URL = 'http://localhost:3000';
+  public OBJECT_IMG_URL = ' http://localhost:8080/mindReader/objectImage';
 
   /**
    * 생성자
@@ -23,7 +23,8 @@ export class DataService {
    * 포스트 정보 불러오기
    */
   getData(): Observable<any> {
-    return this.http.get(`${this.JSON_URL}/posts`);
+    console.log(this.http.get(`${this.OBJECT_IMG_URL}`));
+    return this.http.get(`${this.OBJECT_IMG_URL}`);
   }
 
 }

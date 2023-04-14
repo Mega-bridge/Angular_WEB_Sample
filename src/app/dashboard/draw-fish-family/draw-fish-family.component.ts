@@ -1,5 +1,6 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component"
+import {DataService} from "../../../shared/service/data.service";
 
 @Component({
     selector: 'app-dashboard-draw-fish-family',
@@ -7,9 +8,10 @@ import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component"
     styleUrls: ['draw-fish-family.component.scss']
 })
 
-export class DrawFishFamilyComponent {
+export class DrawFishFamilyComponent implements OnInit{
 
 
+    public data:any;
     // object 선택 팝업 확장 여부
     /** 고래 선택 */
     public showWhales: boolean = false;
@@ -97,8 +99,25 @@ export class DrawFishFamilyComponent {
     /**
      * 생성자
      */
-    constructor() {}
+    constructor(
+        private dataService:DataService
+    ) {}
 
+    ngOnInit() {
+        this.dataService.getData()
+            .subscribe({
+                next: async (data) => {
+                    if (data) {
+                        console.log(data);
+                        // this.data = data[0].path;
+                        // this.fishImg[0] = this.data;
+
+                    }
+                },
+            })
+
+
+    }
 
 
     /**
@@ -121,6 +140,7 @@ export class DrawFishFamilyComponent {
         // 가족 관계 선택 시 버튼 막기
         this.isDisabled=true;
     }
+
 
     /**
      * 선택된 물고기 표정 + 비늘 합치기
@@ -241,4 +261,5 @@ export class DrawFishFamilyComponent {
         this.isPopupVisible2=false;
         this.isPopupVisible3=false;
     }
+
 }
