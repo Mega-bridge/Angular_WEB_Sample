@@ -113,29 +113,24 @@
 
         <div class="select-wrap">
             <div style="width:750px;height:150px;background-color: rgb(247 244 245);border-radius:30px" [hidden]="!isPopupVisible1">
-
-                <img style="width:180px;" (click)="getImgPolaroid($event)" src="../assets/img/fish.svg" >
-                <img style="width:180px;" (click)="getImgPolaroid($event)" src="../../assets/img/화난둥근물고기_비늘없슴.svg" >
-                <img style="width:180px;" (click)="getImgPolaroid($event)" src="../../assets/img/슬픈둥근물고기_비늘없슴.svg" >
-                <img style="width:180px;" (click)="getImgPolaroid($event)" src="../../assets/img/웃는둥근물고기_비늘없슴.svg" >
+                <ng-container *ngFor="let image of roundFishImg">
+                    <img  class="select-image-card" (click)="getImgPolaroid($event)" [src]="image">
+                </ng-container>
             </div>
             <div style="width:750px;height:150px;background-color: rgb(247 244 245)" [hidden]="!isPopupVisible2">
-                <img style="width:180px;" (click)="getImgPolaroid($event)" src="../../assets/img/기본고래_물.svg" >
-                <img style="width:180px;" (click)="getImgPolaroid($event)" src="../../assets/img/whaleAngryWithWater.svg" >
-                <img style="width:180px;" (click)="getImgPolaroid($event)" src="../../assets/img/삐진고래_물.svg" >
-                <img style="width:180px;" (click)="getImgPolaroid($event)" src="../../assets/img/웃는고래_1지느러미.svg" >
+                <ng-container *ngFor="let image of whaleImg">
+                    <img class="select-image-card" (click)="getImgPolaroid($event)" [src]="image">
+                </ng-container>
             </div>
             <div style="width:750px;height:150px;background-color: rgb(247 244 245)" [hidden]="!isPopupVisible3">
-                <img style="width:180px;" (click)="getImgPolaroid($event)" src="../../assets/img/상어기본_지느러미.svg" >
-                <img style="width:180px;" (click)="getImgPolaroid($event)" src="../../assets/img/화난상어_지느러미.svg" >
-                <img style="width:180px;" (click)="getImgPolaroid($event)" src="../../assets/img/슬픈상어_지느러미.svg" >
-                <img style="width:180px;" (click)="getImgPolaroid($event)" src="../../assets/img/웃는상어_지느러미.svg" >
+                <ng-container *ngFor="let image of sharkImg">
+                    <img class="select-image-card" (click)="getImgPolaroid($event)" [src]="image">
+                </ng-container>
             </div>
             <div style="width:750px;height:150px;background-color: rgb(247 244 245)" [hidden]="!isPopupVisible4">
-                <img style="width:180px;" (click)="getImgPolaroid($event)" src="../../assets/img/장어_기본.svg" >
-                <img style="width:180px;" (click)="getImgPolaroid($event)" src="../../assets/img/장어_화난.svg" >
-                <img style="width:180px;" (click)="getImgPolaroid($event)" src="../../assets/img/장어_슬픈.svg" >
-                <img style="width:180px;" (click)="getImgPolaroid($event)" src="../../assets/img/장어_웃는.svg" >
+                <ng-container *ngFor="let image of eelImg">
+                    <img class="select-image-card" (click)="getImgPolaroid($event)" [src]="image">
+                </ng-container>
             </div>
             <div >
                 <img style="width:180px;background-color: rgb(243 244 245);" (click)="showPopup1()" src="../assets/img/fish.svg" >&nbsp;

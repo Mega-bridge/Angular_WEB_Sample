@@ -184,7 +184,9 @@ export class DrawFishFamilyComponent {
         this.canvas.rasterize();
     }
 
-
+    /**
+     * 물고기 종류 선택 팝업창
+     */
     isPopupVisible1 = false;
     isPopupVisible2 = false;
     isPopupVisible3 = false;
