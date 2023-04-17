@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 })
 export class DataService {
 
-  public OBJECT_IMG_URL = ' http://localhost:8080/mindReader/objectImage';
+  public OBJECT_IMG_URL = 'http://localhost:8080/mindReader/objectImage';
 
   /**
    * 생성자

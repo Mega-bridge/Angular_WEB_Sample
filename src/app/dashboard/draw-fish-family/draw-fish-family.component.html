@@ -59,10 +59,9 @@
                     >
                         <kendo-chip
                                 *ngFor="let family of familyTypeList;"
-                                [label]="family.label"
-                                [selected]="family.selected"
+                                [label]="family.description"
                                 [disabled]="isDisabled"
-
+                                [selected]="family.selected"
                         >
                         </kendo-chip>
                     </kendo-chiplist>

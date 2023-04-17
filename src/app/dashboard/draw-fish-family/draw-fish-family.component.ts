@@ -2,6 +2,8 @@ import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component"
 import {DataService} from "../../../shared/service/data.service";
 import {Align} from "@progress/kendo-angular-popup";
+import {FamilyService} from "../../../shared/service/family.service";
+import {MrFamilyCodeResponse} from "../../../shared/model/response/mr-family-code.response.model";
 
 @Component({
     selector: 'app-dashboard-draw-fish-family',
@@ -64,39 +66,42 @@ export class DrawFishFamilyComponent implements OnInit{
     public isDisabled: boolean = false;
 
     // 가족관계 리스트
-    public familyTypeList = [
-        {
-            label: "나",
-            selected: false,
-            value: 0
-        },
-        {
-            label: "아빠",
-            selected: false,
-            value: 1
-        },
-        {
-            label: "엄마",
-            selected: false,
-            value: 2
-        },
-        {
-            label: "형제",
-            selected: false,
-            value: 3
-        },
-        {
-            label: "자매",
-            selected: false,
-            value: 4
-        },
+    // public familyTypeList = [
+    //     {
+    //         label: "나",
+    //         selected: false,
+    //         value: 0
+    //     },
+    //     {
+    //         label: "아빠",
+    //         selected: false,
+    //         value: 1
+    //     },
+    //     {
+    //         label: "엄마",
+    //         selected: false,
+    //         value: 2
+    //     },
+    //     {
+    //         label: "형제",
+    //         selected: false,
+    //         value: 3
+    //     },
+    //     {
+    //         label: "자매",
+    //         selected: false,
+    //         value: 4
+    //     },
+    //
+    // ];
 
-    ];
-
+    public familyTypeList : MrFamilyCodeResponse[] = [];
 
 
     public anchorAlign: Align = { horizontal: "center", vertical: "top" };
     public popupAlign: Align = { horizontal: "center", vertical: "bottom" };
+
+    public selectedBtn: string = 'non-select';
 
 
 
@@ -106,7 +111,8 @@ export class DrawFishFamilyComponent implements OnInit{
      * 생성자
      */
     constructor(
-        private dataService:DataService
+        private dataService:DataService,
+        private familyService: FamilyService
     ) {}
 
     ngOnInit() {
@@ -122,7 +128,15 @@ export class DrawFishFamilyComponent implements OnInit{
                 },
             })
 
-
+        this.familyService.getFamily()
+            .subscribe({
+                next: async (data) => {
+                    if (data){
+                        console.log(data);
+                        this.familyTypeList = data;
+                    }
+                }
+            })
     }
 
 
@@ -141,7 +155,7 @@ export class DrawFishFamilyComponent implements OnInit{
      * @param e
      */
     selectFamilyType(e:any){
-        this.selectedFamilyType = this.familyTypeList[e].value;
+        this.selectedFamilyType = this.familyTypeList[e].id;
         this.familyTypeList[e].selected = true;
         // 가족 관계 선택 시 버튼 막기
         this.isDisabled=true;
