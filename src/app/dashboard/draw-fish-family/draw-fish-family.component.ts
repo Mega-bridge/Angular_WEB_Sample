@@ -1,7 +1,9 @@
-import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
+import {Component, ElementRef, Inject, OnInit, TemplateRef, ViewChild} from "@angular/core";
 import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component"
 import {DataService} from "../../../shared/service/data.service";
 import {Align} from "@progress/kendo-angular-popup";
+import {DOCUMENT} from "@angular/common";
+import {fabric} from "fabric";
 import {FamilyService} from "../../../shared/service/family.service";
 import {MrFamilyCodeResponse} from "../../../shared/model/response/mr-family-code.response.model";
 import {MrObjectImageResponse} from "../../../shared/model/response/mr-object-image.response.model";
@@ -16,6 +18,7 @@ export class DrawFishFamilyComponent implements OnInit{
 
 
     public objectData:MrObjectImageResponse[] = [];
+    public data:any;
     // object 선택 팝업 확장 여부
     /** 고래 선택 */
     public showWhales: boolean = false;
@@ -101,6 +104,9 @@ export class DrawFishFamilyComponent implements OnInit{
     /** 가족 선택 전 물고기 이미지 선택 여부 **/
     public isFamilyAfterFish: boolean = false;
 
+    /** 캔버스 팝업 여부 */
+    public isPopupOpen: boolean = false;
+
     // 가족관계 리스트
     public familyTypeList : MrFamilyCodeResponse[] = [];
 
@@ -109,16 +115,27 @@ export class DrawFishFamilyComponent implements OnInit{
     public popupAlign: Align = { horizontal: "center", vertical: "bottom" };
 
     @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
-
+    @ViewChild('canvas', { static: true }) canvas_el!: ElementRef<HTMLCanvasElement>;
+    private fabricCanvas!: fabric.Canvas
     /**
      * 생성자
      */
     constructor(
         private dataService:DataService,
+        @Inject(DOCUMENT) private document: any,
+
         private familyService: FamilyService
     ) {}
+    elem: any;
 
     ngOnInit() {
+        const canvasEl = this.canvas_el.nativeElement;
+        this.fabricCanvas = new fabric.Canvas(canvasEl);
+        const rect = new fabric.Rect({ left: 10, top: 10, width: 50, height: 50, fill: 'red' });
+        this.fabricCanvas.add(rect);
+
+
+        this.elem = document.documentElement;
         this.dataService.getData()
             .subscribe({
                 next: async (data) => {
@@ -346,4 +363,53 @@ export class DrawFishFamilyComponent implements OnInit{
         this.canvas.rasterize();
     }
 
+    /**
+     *  그리기 모드 시 full screen
+     */
+    openFullscreen() {
+        this.isPopupOpen=true;
+
+        if (this.elem.requestFullscreen) {
+            this.elem.requestFullscreen();
+        }if (this.elem.webkitRequestFullscreen) {
+            /* Chrome, Safari and Opera */
+            this.elem.webkitRequestFullscreen();
+        }
+    }
+
+    imageLoad() {
+        const canvas = new fabric.Canvas('my-canvas');
+        const rect = new fabric.Rect({
+            left: 100,
+            top: 100,
+            width: 1000,
+            height: 1000,
+        });
+        canvas.add(rect);
+        const img = new Image();
+        const dataURL = canvas.toDataURL({ format: 'png' });
+
+        img.src = dataURL;
+        console.log(img.src)
+        img.onload = () => {
+            const imageElement = document.createElement('img');
+            imageElement.src = dataURL;
+            imageElement.onload = () => {
+                const container = document.getElementById('image-container')!;
+                container.appendChild(imageElement);
+            };
+        }}
+
+    /**
+     * 그리기 모드 해제
+     */
+    closeFullscreen() {
+        this.isPopupOpen=false;
+
+        this.document.exitFullscreen();
+        if (this.document.webkitExitFullscreen) {
+            this.document.webkitExitFullscreen();
+        }
+        this.imageLoad();
+    }
 }
