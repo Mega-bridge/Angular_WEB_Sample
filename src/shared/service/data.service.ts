@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {MrObjectImageResponse} from "../model/response/mr-object-image.response.model";
 
 /**
  * json-server data provider
@@ -22,9 +23,8 @@ export class DataService {
   /**
    * 포스트 정보 불러오기
    */
-  getData(): Observable<any> {
-    console.log(this.http.get(`${this.OBJECT_IMG_URL}`));
-    return this.http.get(`${this.OBJECT_IMG_URL}`);
+  getData(): Observable<MrObjectImageResponse[]> {
+    return this.http.get<MrObjectImageResponse[]>(`${this.OBJECT_IMG_URL}`);
   }
 
 }

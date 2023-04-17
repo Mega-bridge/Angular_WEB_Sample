@@ -4,6 +4,7 @@ import {DataService} from "../../../shared/service/data.service";
 import {Align} from "@progress/kendo-angular-popup";
 import {FamilyService} from "../../../shared/service/family.service";
 import {MrFamilyCodeResponse} from "../../../shared/model/response/mr-family-code.response.model";
+import {MrObjectImageResponse} from "../../../shared/model/response/mr-object-image.response.model";
 
 @Component({
     selector: 'app-dashboard-draw-fish-family',
@@ -14,50 +15,79 @@ import {MrFamilyCodeResponse} from "../../../shared/model/response/mr-family-cod
 export class DrawFishFamilyComponent implements OnInit{
 
 
-    public data:any;
+    public objectData:MrObjectImageResponse[] = [];
     // object 선택 팝업 확장 여부
     /** 고래 선택 */
     public showWhales: boolean = false;
     /** 일반 물고기 선택 */
     public showFishes: boolean = false;
+    /** 둥근 물고기 선택 */
+    public showRoundFishes: boolean = false;
     /** 상어 선택 */
     public showSharks: boolean = false;
     /** 장어 선택 */
     public showEels: boolean = false;
-    /** 둥근 물고기 선택 */
-    public showRoundFishes: boolean = false;
     /** 기타사항 선택 */
-    public showEct: boolean = false;
+    public showEtc: boolean = false;
     /** 물고기 외 선택 */
-    public showFishEct: boolean = false;
-    /** 물고기 외 선택 */
-    public showWaterPort: boolean = false;
+    public showFishEtc: boolean = false;
+    /** 어항 선택 */
+    public showFishBowl: boolean = false;
 
     // object 이미지 경로 리스트
-    /** 일반 물고기 표정 img list */
-    public fishImg:string[] = ['../assets/img/fish.svg','assets/img/fishSmile.svg'];
-    /** 물고기 비늘 img list */
-    public fishScalesImg:string[] = ['../assets/img/fish.svg','../assets/img/fishNonScales.png','../assets/img/fishSingleScales.png','assets/img/fishDenseScales.png'];
-    /** 고래 img list */
-    public whaleImg:string[] = ['../assets/img/whale.svg','../assets/img/whaleAngryWithWater.svg'];
-    /** 상어 img list */
-    public sharkImg:string[] = ['../assets/img/shark.svg'];
-    /** 장어 img list */
-    public eelImg:string[] = ['../assets/img/eel.svg'];
-    /** 둥근 물고기 img list */
-    public roundFishImg:string[] = ['../assets/img/roundFish.svg'];
-    /** 물고기 외 img list */
-    public ectImg:string[] = [];
     /** 어항 물 양 img list */
-    public waterPortImg: string[] = ['assets/img/originPort.png','assets/img/fishPortFullWater.png'];
+    public fishBowlImgList: string[] = [];
+
+    /** 일반 물고기 img list */
+    public generalImgList:string[] = [];
+    /**  일반 물고기 표정 img list */
+    public generalFaceImgList:string[] = [];
+    /**  일반 물고기 비늘 img list */
+    public generalBodyImgList:string[] = [];
+
+    /** 둥근 물고기 img list */
+    public roundImgList:string[] = [];
+    /**  둥근 물고기 표정 img list */
+    public roundFaceImgList:string[] = [];
+    /**  둥근 물고기 비늘 img list */
+    public roundBodyImgList:string[] = [];
+
+    /** 고래 img list */
+    public whaleImgList:string[] = [];
+    /**  고래 표정 img list */
+    public whaleFaceImgList:string[] = [];
+    /**  고래 비늘 img list */
+    public whaleBodyImgList:string[] = [];
+
+    /** 상어 img list */
+    public sharkImgList:string[] = []
+    /**  상어 표정 img list */
+    public sharkFaceImgList:string[] = [];
+    /**  상어 비늘 img list */
+    public sharkBodyImgList:string[] = [];
+
+
+    /** 장어 img list */
+    public eelImgList:string[] = [];
+    /**  장어 표정 img list */
+    public eelFaceImgList:string[] = [];
+    /**  장어 비늘 img list */
+    public eelBodyImgList:string[] = [];
+
+    /** 물고기 외 img list */
+    public etcImgList:string[] = [];
+
 
     // 선태된 object
     /** 어항 선택 */
-    public selectWaterPort: string = '';
+    public selectWaterPort: string =  '';
     /** 물고기 표정 선택 */
-    public selectFish:string = '';
+    public selectedFishFace:string = '';
     /** 물고기 비늘 선택 */
-    public selectFishScale:string = '';
+    public selectedFishBody:string = '';
+    /** 물고기 외 선택 */
+    public selectedEtc:string = '';
+
 
     /** 선택된 가족 관계 */
     public selectedFamilyType: number = 0;
@@ -72,35 +102,6 @@ export class DrawFishFamilyComponent implements OnInit{
     public isFamilyAfterFish: boolean = false;
 
     // 가족관계 리스트
-    // public familyTypeList = [
-    //     {
-    //         label: "나",
-    //         selected: false,
-    //         value: 0
-    //     },
-    //     {
-    //         label: "아빠",
-    //         selected: false,
-    //         value: 1
-    //     },
-    //     {
-    //         label: "엄마",
-    //         selected: false,
-    //         value: 2
-    //     },
-    //     {
-    //         label: "형제",
-    //         selected: false,
-    //         value: 3
-    //     },
-    //     {
-    //         label: "자매",
-    //         selected: false,
-    //         value: 4
-    //     },
-    //
-    // ];
-
     public familyTypeList : MrFamilyCodeResponse[] = [];
 
 
@@ -123,8 +124,37 @@ export class DrawFishFamilyComponent implements OnInit{
                 next: async (data) => {
                     if (data) {
                         console.log(data);
-                        // this.data = data[0].path;
-                        // this.fishImg[0] = this.data;
+                        this.objectData = data;
+
+                        // 일반 물고기 표정
+                        this.generalFaceImgList = data.filter(item => item.path.includes('/general/') && item.path.includes('_0.svg')).map(item => item.path);
+                        // 일반 물고기 비늘
+                        this.generalBodyImgList = data.filter(item => item.path.includes('/general/') && item.path.includes('F_GE_GE_')).map(item => item.path);
+
+                        // 둥근 물고기 표정
+                        this.roundFaceImgList = data.filter(item => item.path.includes('/round/') && item.path.includes('_0.svg')).map(item => item.path);
+                        // 둥근 물고기 비늘
+                        this.roundBodyImgList = data.filter(item => item.path.includes('/round/') && item.path.includes('F_RO_GE_')).map(item => item.path);
+
+                        // 고래 표정
+                        this.whaleFaceImgList = data.filter(item => item.path.includes('/whale/') && item.path.includes('_0.svg')).map(item => item.path);
+                        // 고래 비늘
+                        this.whaleBodyImgList = data.filter(item => item.path.includes('/whale/') && item.path.includes('F_WH_GE_')).map(item => item.path);
+
+                        // 상어 표정
+                        this.sharkFaceImgList = data.filter(item => item.path.includes('/shark/') && item.path.includes('_0.svg')).map(item => item.path);
+                        // 상어 비늘
+                        this.sharkBodyImgList = data.filter(item => item.path.includes('/shark/') && item.path.includes('F_SH_GE_')).map(item => item.path);
+
+                        // 장어 표정
+                        this.eelFaceImgList = data.filter(item => item.path.includes('/eel/') && item.path.includes('_0.svg')).map(item => item.path);
+                        // 장어 비늘
+                        this.eelBodyImgList = data.filter(item => item.path.includes('/eel/') && item.path.includes('F_EE_GE_')).map(item => item.path);
+
+                        // 물고기 외
+                        this.etcImgList = data.filter(item => item.path.includes('/etc/')).map(item => item.path);
+                        // 어항
+                        this.fishBowlImgList = data.filter(item => item.path.includes('/fishBowl/')).map(item => item.path);
 
                     }
                 },
@@ -141,13 +171,29 @@ export class DrawFishFamilyComponent implements OnInit{
             })
     }
 
+    /**
+     * Object PopUP 여부
+     * @param type
+     */
+    closeOpenPopUp(type ?:string):void {
+        this.showFishes = type === 'showFishes' ? !this.showFishes : false;
+        this.showWhales = type === 'showWhales' ? !this.showWhales : false;
+        this.showRoundFishes = type === 'showRoundFishes' ? !this.showRoundFishes : false;
+        this.showSharks = type === 'showSharks' ? !this.showSharks : false;
+        this.showEels = type === 'showEels' ? !this.showEels : false;
+        this.showEtc = type === 'showEtc' ? !this.showEtc : false;
+        this.showFishBowl = type === 'showFishBowl' ? !this.showFishBowl : false;
+
+    }
+
 
     /**
-     * 어항 물 양 선택
+     * 어항 물 선택
      * @param opt
      */
 
     selectWater(opt: string) {
+        this.showFishBowl = false;
         this.selectWaterPort = opt;
         this.canvas.setWater(opt);
     }
@@ -165,77 +211,117 @@ export class DrawFishFamilyComponent implements OnInit{
         this.isFamilyAfterFish=true;
     }
 
-
     /**
-     * 선택된 물고기 표정 + 비늘 합치기
-     * @param img
-     * @param type 물고기 종류
-     */
-    combineSelectOption(img: string, type: string):void{
-        // 최종 선택된 물고기
-        var finalFish: string = '';
-
-        // 웃는 물고기
-        if (this.selectFish.includes('Smile')){
-            // 빼곡한 비늘
-            if(img.includes('Dense')){
-                finalFish =  type+'SmileDenseScales';
-                this.getImgPolaroid('../assets/img/'+finalFish+'.svg');
-            }
-        }
-        // 물고기 선택 후 버튼 해제
-        this.familyTypeList[this.selectedFamilyType].selected=false;
-        // 물고기 선택 후 가족 관계 Disabled True
-        this.isDisabled = false;
-        // 물고기 선택 후 클릭 막기
-        this.isFamilyAfterFish = false;
-        // popup에서 선택한 물고기 초기화
-        this.selectFishScale='';
-        this.selectFish='';
-
-    }
-
-    /**
-     * 물고기 선택
+     * 물고기 표정 선택
      * @param event
-     * @param select
+     * @param faceImg
+     * @param type
      */
-    selectFishImg(event: any, select:string){
-        this.selectFish = '';
-        this.selectFishScale = '';
-        this.selectFish = select;
+    selectFishFace(event: any, faceImg:string, type: string){
+        this.selectedFishFace = '';
+        this.selectedFishBody = '';
+        this.selectedFishFace = faceImg;
+
+        var faceType: string = '';
+
+        if(faceImg.includes('_SM_')){
+            faceType = 'SM';
+        }
+        else if(faceImg.includes('_SA_')){
+            faceType = 'SA';
+        }
+        else if(faceImg.includes('_SU_')){
+            faceType = 'SU';
+        }
+        else if(faceImg.includes('_AN_')){
+            faceType = 'AN';
+        }
+        else if(faceImg.includes('_GE_')){
+            faceType = 'GE';
+        }
+
+        switch (type){
+            case 'GE':
+                this.generalBodyImgList = this.objectData.filter(item =>
+                    item.path.includes('/general/') && item.path.includes(`F_GE_${faceType}_`))
+                    .map(item => item.path);
+                break;
+            case 'RO':
+                this.generalBodyImgList = this.objectData.filter(item =>
+                    item.path.includes('/general/') && item.path.includes(`F_RO_${faceType}_`))
+                    .map(item => item.path);
+                break;
+            case 'WH':
+                this.generalBodyImgList = this.objectData.filter(item =>
+                    item.path.includes('/general/') && item.path.includes(`F_WH_${faceType}_`))
+                    .map(item => item.path);
+                break;
+            case 'SH':
+                this.generalBodyImgList = this.objectData.filter(item =>
+                    item.path.includes('/general/') && item.path.includes(`F_SH_${faceType}_`))
+                    .map(item => item.path);
+                break;
+            case 'EE':
+                this.generalBodyImgList = this.objectData.filter(item =>
+                    item.path.includes('/general/') && item.path.includes(`F_EE_${faceType}_`))
+                    .map(item => item.path);
+                break;
+            default:
+                break;
+        }
+
     }
 
     /**
      * 물고기 비늘 선택
      * @param event
-     * @param select
+     * @param bodyImg
      * @param type 물고기 종류
      */
-    selectFishScalesImg(event: any, select:string, type:string){
-        this.selectFishScale = select;
-        this.combineSelectOption(select,type);
+    selectFishBody(event: any, bodyImg:string){
+        this.selectedFishBody = bodyImg;
+
+        //  switch 걸러서 함수(각 폴더 별) 만들고
+        // 각 폴더 별 분류 함수 짜고
+        // this.combineSelectOption(bodyImg,type);
+        this.getImgPolaroid(bodyImg);
     }
+
+
+    /**
+     * 물고기 외 객체 선택
+     * @param event
+     * @param img
+     */
+    selectEtcObject(event:any, img: any):void {
+        this.selectedEtc = img;
+
+        // 물고기 외 object img url 전달
+        this.getImgPolaroid(img);
+    }
+
+
 
     /**
      * img canvas에 복제
-     * @param event
+     * @param img
      */
-    public getImgPolaroid(event:any) {
-        // combine이 완료되어 object의 경로로 값을 할당 받은 경우 (물고기에만 해당)
-        if(typeof event === 'string'){
-            this.canvas.getImgPolaroid(event,this.selectedFamilyType);
-        }
-        // combine 없이 object만 선택된 경우
-        else{
-            this.canvas.getImgPolaroid(event.srcElement.currentSrc,this.selectedFamilyType);
-        }
+    public getImgPolaroid(img:string) {
+
+        this.canvas.getImgPolaroid(img,this.selectedFamilyType);
+
         // 물고기 선택 후 버튼 해제
         this.familyTypeList[this.selectedFamilyType].selected=false;
         // 물고기 선택 후 가족 관계 Disabled True
         this.isDisabled=false;
 
-        this.showFishes = !this.showFishes;
+        // popup에서 선택한 물고기 초기화
+        this.selectedFishBody='';
+        this.selectedFishFace='';
+        this.selectedEtc = '';
+
+        // popUp 자동 닫힘
+        this.closeOpenPopUp();
 
     }
 

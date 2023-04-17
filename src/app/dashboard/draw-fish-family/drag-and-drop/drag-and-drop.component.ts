@@ -41,12 +41,12 @@ export class DragAndDropComponent implements AfterViewInit{
         TextDecoration: ''
     };
 
-    public waterUrl: string = '../assets/img/originPort.png';
+    public waterUrl: string = '';
 
     public url: string | ArrayBuffer = '';
     public size: any = {
-        width: 970,
-        height: 800
+        width: 1600,
+        height: 900
     };
 
     public json: any;
@@ -75,47 +75,28 @@ export class DragAndDropComponent implements AfterViewInit{
 
 
 
-        // this.canvas.on({
-        //     'object:moving': (e:any) => { },
-        //     'object:modified': (e:any) => { },
-        //     'object:selected': (e:any) => {
-        //         console.log(e);
-        //         const selectedObject: fabric.Object = e.target;
-        //         this.selected = selectedObject;
-        //         selectedObject.hasRotatingPoint = true;
-        //         selectedObject.transparentCorners = true;
-        //         selectedObject.cornerColor = 'rgba(255, 87, 34, 0.7)';
+
+        // this.canvas.setWidth(window.innerWidth * 0.61);
+        // this.canvas.setHeight(window.innerHeight * 0.7);
+
+        this.canvas.setWidth(this.size.width);
+        this.canvas.setHeight(this.size.height);
         //
-        //         this.resetPanels();
         //
-        //     },
-        //     'selection:cleared': (e:fabric.IEvent) => {
-        //         this.selected = null;
-        //         this.resetPanels();
-        //     },
+        // window.addEventListener('resize', () => {
+        //     this.canvas.setWidth(window.innerWidth * 0.7);
+        //     this.canvas.setHeight(window.innerHeight * 0.7);
+        //     this.canvas.renderAll();
+        //
+        //     // const canvasEl = document.getElementById('canvas');
+        //     // if(canvasEl && canvasEl instanceof HTMLCanvasElement){
+        //     //
+        //     //     // canvasEl.width = window.innerWidth;
+        //     //     // canvasEl.height = window.innerHeight;
+        //     //     this.canvas.renderAll();
+        //     // }
+        //
         // });
-
-        // this.canvas.setWidth(this.size.width);
-        // this.canvas.setHeight(this.size.height);
-
-        this.canvas.setWidth(window.innerWidth * 0.61);
-        this.canvas.setHeight(window.innerHeight * 0.7);
-
-
-        window.addEventListener('resize', () => {
-            this.canvas.setWidth(window.innerWidth * 0.6);
-            this.canvas.setHeight(window.innerHeight * 0.7);
-            this.canvas.renderAll();
-
-            // const canvasEl = document.getElementById('canvas');
-            // if(canvasEl && canvasEl instanceof HTMLCanvasElement){
-            //
-            //     // canvasEl.width = window.innerWidth;
-            //     // canvasEl.height = window.innerHeight;
-            //     this.canvas.renderAll();
-            // }
-
-        });
 
 
 

@@ -1,18 +1,18 @@
 <div class="container">
     <div class="col">
-        <div class="card">
-            <div class="card-header">Free Drawing Mode</div>
-            <div class="card-body">
-                <div class="input-group">
-                    <div class="input-group-append">
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch1" (click)="drawMode()">
-                            <label class="custom-control-label" for="customSwitch1">Enable / Disable</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!--        <div class="card">-->
+<!--            <div class="card-header">Free Drawing Mode</div>-->
+<!--            <div class="card-body">-->
+<!--                <div class="input-group">-->
+<!--                    <div class="input-group-append">-->
+<!--                        <div class="custom-control custom-switch">-->
+<!--                            <input type="checkbox" class="custom-control-input" id="customSwitch1" (click)="drawMode()">-->
+<!--                            <label class="custom-control-label" for="customSwitch1">Enable / Disable</label>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
 
 
     </div>
@@ -22,33 +22,151 @@
         <app-dashboard-drag-and-drop #canvas></app-dashboard-drag-and-drop>
         </div>
 
+        <!-- 어항 -->
+        <kendo-popup [anchor]="anchor"
+                     [anchorAlign]="anchorAlign"
+                     [popupAlign]="popupAlign"
+                     *ngIf="showFishBowl">
 
+            <div  class="select-image">
+                <div *ngFor="let img of fishBowlImgList" class="img-wrap">
+                    <img  (click)="selectWater(img)" [src]="img"  alt=""
+                          [style.box-shadow]="selectWaterPort === img ? '0 0 4px blue' : ''"/>
+                </div>
+            </div>
+        </kendo-popup>
+
+
+        <!-- 일반 물고기 -->
         <kendo-popup [anchor]="anchor"
                      [anchorAlign]="anchorAlign"
                      [popupAlign]="popupAlign"
                      *ngIf="showFishes">
 
             <div  class="select-image">
-
-                <div *ngFor="let img of fishImg" class="img-wrap">
-                    <img  (click)="selectFishImg($event,img)" [src]="img"  alt="smile"
-                          [style.box-shadow]="selectFish === img ? '0 0 4px blue' : ''"/>
+                <div *ngFor="let faceImg of generalFaceImgList" class="img-wrap">
+                    <img  (click)="selectFishFace($event,faceImg,'GE')" [src]="faceImg"  alt=""
+                          [style.box-shadow]="selectedFishFace === faceImg ? '0 0 4px blue' : ''"/>
                 </div>
                 <div style="border: #a7a7a7 solid 2px;"></div>
 
 
-                <div *ngFor="let scalesImg of fishScalesImg;let i = index"  class="img-wrap">
-                    <img  (click)="selectFishScalesImg($event,scalesImg,'fish')" [src]="scalesImg"  alt=""
-                          [style.box-shadow]="selectFishScale === scalesImg ? '0 0 4px blue' : ''"/>
+                <div *ngFor="let bodyImg of generalBodyImgList;let i = index"  class="img-wrap">
+                    <img  (click)="selectFishBody($event,bodyImg)" [src]="bodyImg"  alt=""
+                          [style.box-shadow]="selectedFishBody === bodyImg ? '0 0 4px blue' : ''"/>
                 </div>
             </div>
         </kendo-popup>
 
 
+        <!-- 둥근 물고기 -->
+        <kendo-popup [anchor]="anchor"
+                     [anchorAlign]="anchorAlign"
+                     [popupAlign]="popupAlign"
+                     *ngIf="showRoundFishes">
 
+            <div  class="select-image">
+                <div *ngFor="let img of roundFaceImgList" class="img-wrap">
+                    <img  (click)="selectFishFace($event,img,'RO')" [src]="img"  alt="smile"
+                          [style.box-shadow]="selectedFishFace === img ? '0 0 4px blue' : ''"/>
+                </div>
+                <div style="border: #a7a7a7 solid 2px;"></div>
+
+
+                <div *ngFor="let scalesImg of roundBodyImgList;let i = index"  class="img-wrap">
+                    <img  (click)="selectFishBody($event,scalesImg)" [src]="scalesImg"  alt=""
+                          [style.box-shadow]="selectedFishBody === scalesImg ? '0 0 4px blue' : ''"/>
+                </div>
+            </div>
+        </kendo-popup>
+
+
+        <!-- 고래 -->
+        <kendo-popup [anchor]="anchor"
+                     [anchorAlign]="anchorAlign"
+                     [popupAlign]="popupAlign"
+                     *ngIf="showWhales">
+
+            <div  class="select-image">
+                <div *ngFor="let img of whaleFaceImgList" class="img-wrap">
+                    <img  (click)="selectFishFace($event,img,'GE')" [src]="img"  alt="smile"
+                          [style.box-shadow]="selectedFishFace === img ? '0 0 4px blue' : ''"/>
+                </div>
+                <div style="border: #a7a7a7 solid 2px;"></div>
+
+
+                <div *ngFor="let scalesImg of whaleBodyImgList;let i = index"  class="img-wrap">
+                    <img  (click)="selectFishBody($event,scalesImg)" [src]="scalesImg"  alt=""
+                          [style.box-shadow]="selectedFishBody === scalesImg ? '0 0 4px blue' : ''"/>
+                </div>
+            </div>
+        </kendo-popup>
+
+        <!-- 상어 -->
+        <kendo-popup [anchor]="anchor"
+                     [anchorAlign]="anchorAlign"
+                     [popupAlign]="popupAlign"
+                     *ngIf="showSharks">
+
+            <div  class="select-image">
+                <div *ngFor="let img of sharkFaceImgList" class="img-wrap">
+                    <img  (click)="selectFishFace($event,img,'SH')" [src]="img"  alt="smile"
+                          [style.box-shadow]="selectedFishFace === img ? '0 0 4px blue' : ''"/>
+                </div>
+                <div style="border: #a7a7a7 solid 2px;"></div>
+
+
+                <div *ngFor="let scalesImg of sharkBodyImgList;let i = index"  class="img-wrap">
+                    <img  (click)="selectFishBody($event,scalesImg)" [src]="scalesImg"  alt=""
+                          [style.box-shadow]="selectedFishBody === scalesImg ? '0 0 4px blue' : ''"/>
+                </div>
+            </div>
+        </kendo-popup>
+
+        <!-- 장어 -->
+        <kendo-popup [anchor]="anchor"
+                     [anchorAlign]="anchorAlign"
+                     [popupAlign]="popupAlign"
+                     *ngIf="showEels">
+
+            <div  class="select-image">
+                <div *ngFor="let img of eelFaceImgList" class="img-wrap">
+                    <img  (click)="selectFishFace($event,img,'EE')" [src]="img"  alt="smile"
+                          [style.box-shadow]="selectedFishFace === img ? '0 0 4px blue' : ''"/>
+                </div>
+                <div style="border: #a7a7a7 solid 2px;"></div>
+
+
+                <div *ngFor="let scalesImg of eelBodyImgList;let i = index"  class="img-wrap">
+                    <img  (click)="selectFishBody($event,scalesImg)" [src]="scalesImg"  alt=""
+                          [style.box-shadow]="selectedFishBody === scalesImg ? '0 0 4px blue' : ''"/>
+                </div>
+            </div>
+        </kendo-popup>
+
+
+        <!-- 물고기 외 -->
+        <kendo-popup [anchor]="anchor"
+                     [anchorAlign]="anchorAlign"
+                     [popupAlign]="popupAlign"
+                     *ngIf="showEtc">
+
+            <div  class="select-image">
+                <div *ngFor="let img of etcImgList" class="img-wrap">
+                    <img  (click)="selectEtcObject($event, img)" [src]="img"  alt="smile"
+                          [style.box-shadow]="selectedEtc === img ? '0 0 4px blue' : ''"/>
+                </div>
+            </div>
+        </kendo-popup>
 
 
         <div class="row"  #anchor >
+
+            <div class="img-card">
+                <div class="img-card-header">
+                    <img class="img-card-style"  src="{{fishBowlImgList[0]}}" (click)="closeOpenPopUp('showFishBowl')">
+                </div>
+            </div>
 
             <div class="img-card">
                 <div class="img-card-header">가족 선택</div>
@@ -68,70 +186,39 @@
                 </div>
             </div>
 
-            <div class="img-card">
-                <div class="img-card-header"  (click)="showWaterPort = !showWaterPort">어항</div>
-                <div *ngIf="showWaterPort">
-                    <div class="card-body text-center">
-                        <div *ngFor="let img of waterPortImg"  class="img-wrap">
-                            <img  (click)="selectWater(img)" [src]="img" alt=""
-                                  [style.box-shadow]="selectWaterPort === img ? '0 0 4px blue' : ''" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
             <div class="img-card" >
                 <div class="img-card-header">
-                    <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/fish.svg" (click)="showFishes = !showFishes">
-                </div>
-
-
-            </div>
-
-            <div class="img-card">
-                <div class="img-card-header" (click)="showWhales = !showWhales">고래</div>
-                <div  *ngIf="showWhales"  class="img-card-body max-height">
-                    <div *ngFor="let img of whaleImg"  class="img-wrap">
-                        <img (click)="getImgPolaroid($event)" [src]="img"  alt=""/>
-                    </div>
+                    <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/fish.svg" (click)="closeOpenPopUp('showFishes')">
                 </div>
             </div>
 
             <div class="img-card">
-                <div class="img-card-header" (click)="showSharks = !showSharks">상어</div>
-                <div *ngIf="showSharks"  class="img-card-body max-height">
-                    <div *ngFor="let img of sharkImg"  class="img-wrap">
-                        <img (click)="getImgPolaroid($event)" [src]="img"  alt=""/>
-                    </div>
+                <div class="img-card-header">
+                    <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/roundFish.svg" (click)="closeOpenPopUp('showRoundFishes')">
                 </div>
             </div>
 
             <div class="img-card">
-                <div class="img-card-header" (click)="showEels = !showEels">장어</div>
-                <div *ngIf="showEels"  class="img-card-body max-height">
-                    <div *ngFor="let img of eelImg"  class="img-wrap">
-                        <img (click)="getImgPolaroid($event)" [src]="img"  alt=""/>
-                    </div>
+                <div class="img-card-header">
+                    <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/whale.svg" (click)="closeOpenPopUp('showWhales')">
                 </div>
             </div>
 
             <div class="img-card">
-                <div class="img-card-header" (click)="showRoundFishes = !showRoundFishes">둥근물고기</div>
-                <div *ngIf="showRoundFishes"  class="img-card-body max-height">
-                    <div *ngFor="let img of roundFishImg"  class="img-wrap">
-                        <img (click)="getImgPolaroid($event)" [src]="img"  alt=""/>
-                    </div>
+                <div class="img-card-header">
+                    <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/shark.svg" (click)="closeOpenPopUp('showSharks')">
                 </div>
             </div>
 
             <div class="img-card">
-                <div class="img-card-header" (click)="showFishEct = !showFishEct">물고기 외</div>
-                <div *ngIf="showFishEct"  class="img-card-body max-height">
-                    <!--                <div *ngFor="let img of ectImg"  class="img-wrap">-->
-                    <!--                    <img src="">-->
-                    <!--                </div>-->
+                <div class="img-card-header">
+                    <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/eel.svg" (click)="closeOpenPopUp('showEels')">
+                </div>
+            </div>
+
+            <div class="img-card">
+                <div class="img-card-header">
+                    <img class="img-card-style" src="{{etcImgList[0]}}" (click)="closeOpenPopUp('showEtc')">
                 </div>
             </div>
         </div>
@@ -152,8 +239,8 @@
             </div>
         </div>
         <div class="card">
-            <div class="card-header" (click)="showEct = !showEct">더보기</div>
-            <div *ngIf="showEct">
+            <div class="card-header" (click)="showEtc = !showEtc">더보기</div>
+            <div *ngIf="showEtc">
 
                 <div class="card-header sub">돌</div>
                 <div class="card-header sub">물풀</div>
