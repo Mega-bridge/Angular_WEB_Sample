@@ -175,6 +175,9 @@ export class DrawFishFamilyComponent implements OnInit{
         this.isDisabled = false;
         // 물고기 선택 후 클릭 막기
         this.isFamilyAfterFish = false;
+        // popup에서 선택한 물고기 초기화
+        this.selectFishScale='';
+        this.selectFish='';
 
     }
 
