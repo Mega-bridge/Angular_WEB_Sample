@@ -33,16 +33,7 @@ const routes: Routes = [
         path: 'DrawFishFamily',
         loadChildren: () => import('./dashboard/dash-board.module').then(i => i.DashBoardModule)
       },
-      // {
-      //   path: 'charts',
-      //   component: ChartsComponent,
-      //   loadChildren: () => import('./charts/charts.module').then(i => i.ChartModule),
-      // },
-      // {
-      //   path: 'table',
-      //   component: TableComponent,
-      //   loadChildren: () => import('./table/table.module').then(i => i.TableModule),
-      // },
+
     ]
   },
 

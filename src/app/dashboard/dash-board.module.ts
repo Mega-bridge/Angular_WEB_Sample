@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import {TableModule} from "../table/table.module";
-import {ChartModule} from "../charts/charts.module";
 import {SharedModule} from "../../shared/shared.module";
 import {DragAndDropComponent } from "./draw-fish-family/drag-and-drop/drag-and-drop.component"
 import {DrawFishFamilyComponent} from "./draw-fish-family/draw-fish-family.component";
@@ -25,8 +23,6 @@ import {PopupModule} from "@progress/kendo-angular-popup";
                 component: DrawFishFamilyComponent
             },
         ]),
-        TableModule,
-        ChartModule,
         SharedModule,
         NgIf,
         NgForOf,

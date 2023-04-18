@@ -1,8 +1,8 @@
 import {Component, OnInit} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
-import {FamilyService} from "../../shared/service/family.service";
 import {MrFamilyCodeResponse} from "../../shared/model/response/mr-family-code.response.model";
 import {Router} from "@angular/router";
+import {MindReaderControlService} from "../../shared/service/mind-reader-control.service";
 
 @Component({
     selector: 'app-input-info',
@@ -19,11 +19,11 @@ export class InputInfoComponent implements OnInit{
 
     /**
      *
-     * @param familyService
+     * @param mindReaderControlService
      * @param router
      */
     constructor(
-        private familyService: FamilyService,
+        private mindReaderControlService:MindReaderControlService,
         private router: Router
 
     ) {
@@ -44,7 +44,7 @@ export class InputInfoComponent implements OnInit{
 
 
     ngOnInit() {
-        this.familyService.getFamily()
+        this.mindReaderControlService.getFamily()
             .subscribe({
                 next: async (data) => {
                     if (data){

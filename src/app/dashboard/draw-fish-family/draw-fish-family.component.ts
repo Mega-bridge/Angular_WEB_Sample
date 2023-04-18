@@ -1,12 +1,10 @@
 import {Component, ElementRef, Inject, OnInit, TemplateRef, ViewChild} from "@angular/core";
 import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component"
-import {DataService} from "../../../shared/service/data.service";
 import {Align} from "@progress/kendo-angular-popup";
 import {DOCUMENT} from "@angular/common";
-import {fabric} from "fabric";
-import {FamilyService} from "../../../shared/service/family.service";
 import {MrFamilyCodeResponse} from "../../../shared/model/response/mr-family-code.response.model";
 import {MrObjectImageResponse} from "../../../shared/model/response/mr-object-image.response.model";
+import {MindReaderControlService} from "../../../shared/service/mind-reader-control.service";
 
 @Component({
     selector: 'app-dashboard-draw-fish-family',
@@ -125,13 +123,13 @@ export class DrawFishFamilyComponent implements OnInit{
     @ViewChild('canvas', { static: true }) canvas_el!: ElementRef<HTMLCanvasElement>;
 
     /**
-     * 생성자
+     *
+     * @param document
+     * @param mindReaderControlService
      */
     constructor(
-        private dataService:DataService,
         @Inject(DOCUMENT) private document: any,
-
-        private familyService: FamilyService
+        private mindReaderControlService:MindReaderControlService
     ) {}
 
     ngOnInit() {
@@ -143,7 +141,7 @@ export class DrawFishFamilyComponent implements OnInit{
         });
 
         // data load
-        this.dataService.getData()
+        this.mindReaderControlService.getObjectData()
             .subscribe({
                 next: async (data) => {
                     if (data) {
@@ -184,7 +182,7 @@ export class DrawFishFamilyComponent implements OnInit{
                 },
             })
 
-        this.familyService.getFamily()
+        this.mindReaderControlService.getFamily()
             .subscribe({
                 next: async (data) => {
                     if (data){
