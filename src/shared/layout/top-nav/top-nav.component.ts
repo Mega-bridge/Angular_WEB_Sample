@@ -85,5 +85,15 @@ export class TopNavComponent implements OnInit {
   }
 
 
+  /**
+   * main 화면으로 이동
+   */
+  mainPage() {
+
+    this.router.navigateByUrl(`/main`);
+
+  }
+
+
 
 }
