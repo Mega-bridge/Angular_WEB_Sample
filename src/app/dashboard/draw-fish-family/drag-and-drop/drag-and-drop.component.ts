@@ -57,19 +57,14 @@ export class DragAndDropComponent implements AfterViewInit{
     }
 
     ngAfterViewInit(): void {
-
         // setup front side canvas
         this.canvas = new fabric.Canvas(this.htmlCanvasElement.nativeElement, {
             hoverCursor: 'pointer',
             selection: true,
             selectionBorderColor: 'blue',
             isDrawingMode: false,
+            backgroundColor:'#ffffff'
         });
-
-
-
-
-
         // this.canvas.setWidth(window.innerWidth * 0.61);
         // this.canvas.setHeight(window.innerHeight * 0.7);
 
@@ -287,9 +282,9 @@ export class DragAndDropComponent implements AfterViewInit{
     rasterize() {
         const image = new Image();
         image.src = this.canvas.toDataURL({format: 'png'});
-        const w = window.open('');
-        w?.document.write(image.outerHTML);
-        this.downLoadImage();
+        // const w = window.open('');
+        // w?.document.write(image.outerHTML);
+        return image.src;
     }
 
     downLoadImage() {

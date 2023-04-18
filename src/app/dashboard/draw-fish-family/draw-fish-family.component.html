@@ -13,15 +13,31 @@
         <!--                </div>-->
         <!--            </div>-->
         <!--        </div>-->
-        <button (click)="openFullscreen()">그리기 모드</button>
-        <button (click)="resultVisible=!resultVisible">결과보기</button>
+        <div style="text-align: center">
+            <div>
+                <button (click)="openFullscreen()">그리기 모드</button>
+            </div>
+            <div>
+                <button (click)="canvasDownload()">그림 다운로드</button>
+            </div>
+            <div>
+                <button (click)="resultVisible=!resultVisible">결과보기</button>
+            </div>
+            <div>
+                <b>< 오브젝트 선택 순서 ></b>
+                <ng-container *ngFor="let item of selectedFamilyList">
+                    <br>{{item}}
+                </ng-container>
+            </div>
+        </div>
     </div>
     <div class="canvas-wrap ">
-        <div style="width:1000px;height:650px;border: 1px solid black;">
+        <div id="image-container" style="width:1600px;height:1000px;border: 1px solid black;">
+            <img [src]="this.canvasImage">
         </div>
-        <div class="popup-background" [hidden]="!isPopupOpen">
-            <div class="popup-background popup">
-                <button (click)="closeFullscreen()">그림 저장</button>
+        <div  class="popup-background"  [hidden]="!isPopupOpen">
+            <div   class="popup-background popup" >
+                <button (click)="rasterize()">그림 저장</button>
                 <div class="canvas-wrap ">
                     <div>
                         <app-dashboard-drag-and-drop #canvas></app-dashboard-drag-and-drop>

@@ -94,6 +94,9 @@ export class DrawFishFamilyComponent implements OnInit{
     /** 선택된 가족 관계 */
     public selectedFamilyType: number = 0;
 
+    /** 선택한 가족 관계 list */
+    public selectedFamilyList: string[] = [];
+
     /** 가족 선택 Disabled 여부 **/
     public isDisabled: boolean = false;
 
@@ -106,16 +109,21 @@ export class DrawFishFamilyComponent implements OnInit{
     /** 캔버스 팝업 여부 */
     public isPopupOpen: boolean = false;
 
+    /** full screen element 담을 변수 */
+    public elem: any;
+
+    /** canvas에 그리기 완료한 img */
+    public canvasImage: string = ''
+
     // 가족관계 리스트
     public familyTypeList : MrFamilyCodeResponse[] = [];
-
 
     public anchorAlign: Align = { horizontal: "center", vertical: "top" };
     public popupAlign: Align = { horizontal: "center", vertical: "bottom" };
 
     @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
     @ViewChild('canvas', { static: true }) canvas_el!: ElementRef<HTMLCanvasElement>;
-    private fabricCanvas!: fabric.Canvas
+
     /**
      * 생성자
      */
@@ -125,16 +133,16 @@ export class DrawFishFamilyComponent implements OnInit{
 
         private familyService: FamilyService
     ) {}
-    elem: any;
 
     ngOnInit() {
-        const canvasEl = this.canvas_el.nativeElement;
-        this.fabricCanvas = new fabric.Canvas(canvasEl);
-        const rect = new fabric.Rect({ left: 10, top: 10, width: 50, height: 50, fill: 'red' });
-        this.fabricCanvas.add(rect);
-
-
+        // full screen element
         this.elem = document.documentElement;
+        // full screen 일 때 esc 키 누르면 팝업 전 화면으로 돌아감
+        document.addEventListener('fullscreenchange', () => {
+            this.isPopupOpen = !!document.fullscreenElement;
+        });
+
+        // data load
         this.dataService.getData()
             .subscribe({
                 next: async (data) => {
@@ -221,6 +229,8 @@ export class DrawFishFamilyComponent implements OnInit{
     selectFamilyType(e:any){
         this.selectedFamilyType = this.familyTypeList[e].id;
         this.familyTypeList[e].selected = true;
+        // 선택한 가족관계 리스트에 추가
+        this.selectedFamilyList.push(this.familyTypeList[e].description)
         // 가족 관계 선택 시 버튼 막기
         this.isDisabled=true;
         // 가족 관계를 선택해야 물고기 선택 가능
@@ -301,6 +311,8 @@ export class DrawFishFamilyComponent implements OnInit{
         // 각 폴더 별 분류 함수 짜고
         // this.combineSelectOption(bodyImg,type);
         this.getImgPolaroid(bodyImg);
+        // 물고기 선택 후에 가족관계 disabled
+        this.isFamilyAfterFish = false;
     }
 
 
@@ -315,8 +327,6 @@ export class DrawFishFamilyComponent implements OnInit{
         // 물고기 외 object img url 전달
         this.getImgPolaroid(img);
     }
-
-
 
     /**
      * img canvas에 복제
@@ -356,9 +366,19 @@ export class DrawFishFamilyComponent implements OnInit{
     }
 
     /**
-     * canvas png로 다운로드
+     * canvas 저장하기
      */
     public rasterize() {
+        this.canvas.rasterize();
+        this.canvasImage=this.canvas.rasterize();
+        // full screen 닫기
+        this.closeFullscreen();
+    }
+
+    /**
+     * canvas 다운로드
+     */
+    public canvasDownload(){
         this.canvas.downLoadImage();
     }
 
@@ -376,29 +396,6 @@ export class DrawFishFamilyComponent implements OnInit{
         }
     }
 
-    imageLoad() {
-        const canvas = new fabric.Canvas('my-canvas');
-        const rect = new fabric.Rect({
-            left: 100,
-            top: 100,
-            width: 1000,
-            height: 1000,
-        });
-        canvas.add(rect);
-        const img = new Image();
-        const dataURL = canvas.toDataURL({ format: 'png' });
-
-        img.src = dataURL;
-        console.log(img.src)
-        img.onload = () => {
-            const imageElement = document.createElement('img');
-            imageElement.src = dataURL;
-            imageElement.onload = () => {
-                const container = document.getElementById('image-container')!;
-                container.appendChild(imageElement);
-            };
-        }}
-
     /**
      * 그리기 모드 해제
      */
@@ -409,7 +406,6 @@ export class DrawFishFamilyComponent implements OnInit{
         if (this.document.webkitExitFullscreen) {
             this.document.webkitExitFullscreen();
         }
-        this.imageLoad();
-    }
 
+    }
 }
