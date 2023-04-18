@@ -5,12 +5,6 @@ import { fabric } from 'fabric';
 @Component({
     selector: 'app-dashboard-drag-and-drop',
     templateUrl: 'drag-and-drop.component.html',
-    styles: [`
-        #canvas {
-           
-            
-        }
-    `]
 })
 
 @Injectable({
@@ -45,7 +39,7 @@ export class DragAndDropComponent implements AfterViewInit{
 
     public url: string | ArrayBuffer = '';
     public size: any = {
-        width: 1600,
+        width: 1400,
         height: 900
     };
 
@@ -169,8 +163,7 @@ export class DragAndDropComponent implements AfterViewInit{
             console.log('좌우 반전 여부:' + modifiedObject?.flipX);
             console.log('상하 반전 여부:' + modifiedObject?.flipY);
             console.log('-----------------------');
-        })
-
+        });
 
     }
 
@@ -179,11 +172,26 @@ export class DragAndDropComponent implements AfterViewInit{
         this.canvas.isDrawingMode = !this.canvas.isDrawingMode;
     }
 
+    /**
+     * 어항 설정
+     * @param opt
+     */
     setWater(opt: string){
         this.waterUrl = opt;
+        this.canvas.setBackgroundImage(this.waterUrl, this.canvas.renderAll.bind(this.canvas), {
+            top: 0,
+            left: 90,
+            scaleX:0.7,
+            scaleY: 0.7
+        });
 
     }
 
+    /**
+     * 선택된 object canvas에 추가
+     * @param event
+     * @param familyType
+     */
     getImgPolaroid(event: any, familyType?: any) {
         const el = event;
         fabric.loadSVGFromURL(el, (objects, options) => {
@@ -209,6 +217,10 @@ export class DragAndDropComponent implements AfterViewInit{
         });
     }
 
+
+    /**
+     * 선택된 object 삭제
+     */
     removeSelected() {
 
         const activeGroup = this.canvas.getActiveObjects();
@@ -222,6 +234,12 @@ export class DragAndDropComponent implements AfterViewInit{
         }
     }
 
+
+    /**
+     * object에 id 프로퍼티 추가
+     * @param obj
+     * @param id
+     */
     extend(obj:any, id:any) {
         obj.toObject = ((toObject) => {
             return function() {
@@ -232,11 +250,17 @@ export class DragAndDropComponent implements AfterViewInit{
         })(obj.toObject);
     }
 
+    /**
+     * object id 생성
+     */
     randomId() {
-        // return Math.floor(Math.random() * 999999) + 1;
         return Date();
     }
 
+    /**
+     * 선택된 object canvas위에 rendering
+     * @param obj
+     */
     selectItemAfterAdded(obj: any) {
         this.canvas.discardActiveObject().renderAll();
         this.canvas.setActiveObject(obj);
@@ -249,6 +273,9 @@ export class DragAndDropComponent implements AfterViewInit{
     }
 
 
+    /**
+     * 선택된 Object의 id값 불러오기
+     */
     getId() {
         this.props.id = this.canvas.getActiveObject()?.toObject().id;
     }

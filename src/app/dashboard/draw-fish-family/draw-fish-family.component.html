@@ -71,7 +71,7 @@
 
                         <div  class="select-image">
                             <div *ngFor="let img of roundFaceImgList" class="img-wrap">
-                                <img  (click)="selectFishFace($event,img,'RO')" [src]="img"  alt="smile"
+                                <img  (click)="selectFishFace($event,img,'RO')" [src]="img"  alt=""
                                       [style.box-shadow]="selectedFishFace === img ? '0 0 4px blue' : ''"/>
                             </div>
                             <div style="border: #a7a7a7 solid 2px;"></div>
@@ -93,7 +93,7 @@
 
                         <div  class="select-image">
                             <div *ngFor="let img of whaleFaceImgList" class="img-wrap">
-                                <img  (click)="selectFishFace($event,img,'GE')" [src]="img"  alt="smile"
+                                <img  (click)="selectFishFace($event,img,'WH')" [src]="img"  alt="smile"
                                       [style.box-shadow]="selectedFishFace === img ? '0 0 4px blue' : ''"/>
                             </div>
                             <div style="border: #a7a7a7 solid 2px;"></div>

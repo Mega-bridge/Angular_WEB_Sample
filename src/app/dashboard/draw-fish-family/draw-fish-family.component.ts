@@ -18,7 +18,6 @@ export class DrawFishFamilyComponent implements OnInit{
 
 
     public objectData:MrObjectImageResponse[] = [];
-    public data:any;
     // object 선택 팝업 확장 여부
     /** 고래 선택 */
     public showWhales: boolean = false;
@@ -264,23 +263,23 @@ export class DrawFishFamilyComponent implements OnInit{
                     .map(item => item.path);
                 break;
             case 'RO':
-                this.generalBodyImgList = this.objectData.filter(item =>
-                    item.path.includes('/general/') && item.path.includes(`F_RO_${faceType}_`))
+                this.roundBodyImgList = this.objectData.filter(item =>
+                    item.path.includes('/round/') && item.path.includes(`F_RO_${faceType}_`))
                     .map(item => item.path);
                 break;
             case 'WH':
-                this.generalBodyImgList = this.objectData.filter(item =>
-                    item.path.includes('/general/') && item.path.includes(`F_WH_${faceType}_`))
+                this.whaleBodyImgList = this.objectData.filter(item =>
+                    item.path.includes('/whale/') && item.path.includes(`F_WH_${faceType}_`))
                     .map(item => item.path);
                 break;
             case 'SH':
-                this.generalBodyImgList = this.objectData.filter(item =>
-                    item.path.includes('/general/') && item.path.includes(`F_SH_${faceType}_`))
+                this.sharkBodyImgList = this.objectData.filter(item =>
+                    item.path.includes('/shark/') && item.path.includes(`F_SH_${faceType}_`))
                     .map(item => item.path);
                 break;
             case 'EE':
-                this.generalBodyImgList = this.objectData.filter(item =>
-                    item.path.includes('/general/') && item.path.includes(`F_EE_${faceType}_`))
+                this.eelBodyImgList = this.objectData.filter(item =>
+                    item.path.includes('/eel/') && item.path.includes(`F_EE_${faceType}_`))
                     .map(item => item.path);
                 break;
             default:
@@ -360,7 +359,7 @@ export class DrawFishFamilyComponent implements OnInit{
      * canvas png로 다운로드
      */
     public rasterize() {
-        this.canvas.rasterize();
+        this.canvas.downLoadImage();
     }
 
     /**
@@ -412,4 +411,5 @@ export class DrawFishFamilyComponent implements OnInit{
         }
         this.imageLoad();
     }
+
 }
