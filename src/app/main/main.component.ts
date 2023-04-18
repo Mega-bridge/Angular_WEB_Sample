@@ -3,20 +3,19 @@ import { Router } from '@angular/router';
 import {NotificationService} from "@progress/kendo-angular-notification";
 import {FormControl, FormGroup} from "@angular/forms";
 import {LoginRequestModel} from "../../shared/model/request/login.request.model";
-import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../shared/service/alert.service";
 import {LoginService} from "../../shared/service/login.service";
 
 
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  selector: 'app-main',
+  templateUrl: './main.component.html',
+  styleUrls: ['./main.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 
-export class LoginComponent implements OnInit {
+export class MainComponent implements OnInit {
 
   // login form
   public registerForm: FormGroup = new FormGroup({
@@ -43,6 +42,32 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
 
   }
+  //
+  // /**
+  //  * 로그인
+  //  */
+  // onLogin() {
+  //
+  //   // 로그인 form
+  //   const request: LoginRequestModel = {
+  //     email: this.registerForm.controls['email'].value,
+  //     password: this.registerForm.controls['password'].value
+  //
+  //   }
+  //
+  //   this.loginService.login(request)
+  //       .subscribe({
+  //           next: async (data) => {
+  //             if (data) {
+  //               this.router.navigateByUrl(`/dashboard`);
+  //             }
+  //           },
+  //
+  //         // http error message 출력
+  //         error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
+  //   })
+  //
+  // }
 
   /**
    * 로그인
@@ -56,17 +81,19 @@ export class LoginComponent implements OnInit {
 
     }
 
-    this.loginService.login(request)
-        .subscribe({
-            next: async (data) => {
-              if (data) {
-                this.router.navigateByUrl(`/dashboard`);
-              }
-            },
+    this.router.navigateByUrl(`/tutorial`);
 
-          // http error message 출력
-          error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
-    })
+    // this.loginService.login(request)
+    //     .subscribe({
+    //       next: async (data) => {
+    //         if (data) {
+    //           this.router.navigateByUrl(`/dashboard`);
+    //         }
+    //       },
+    //
+    //       // http error message 출력
+    //       error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
+    //     })
 
   }
 

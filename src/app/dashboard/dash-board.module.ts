@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { DashBoardComponent } from './dash-board.component';
 import { RouterModule } from '@angular/router';
 import {TableModule} from "../table/table.module";
 import {ChartModule} from "../charts/charts.module";
@@ -17,7 +16,7 @@ import {PopupModule} from "@progress/kendo-angular-popup";
         RouterModule.forChild([
             {
                 path: '',
-                component: DashBoardComponent,
+                component: DrawFishFamilyComponent,
                 pathMatch: 'full',
             },
 
@@ -38,7 +37,6 @@ import {PopupModule} from "@progress/kendo-angular-popup";
         PopupModule,
     ],
   declarations: [
-      DashBoardComponent,
     DragAndDropComponent,
     DrawFishFamilyComponent
   ],

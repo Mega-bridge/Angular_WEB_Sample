@@ -8,7 +8,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 
 import {RowFilterModule} from "@progress/kendo-angular-grid";
-import {LoginComponent} from "./login.component";
+import {MainComponent} from "./main.component";
 import {LabelModule} from "@progress/kendo-angular-label";
 
 @NgModule({
@@ -22,6 +22,6 @@ import {LabelModule} from "@progress/kendo-angular-label";
     RowFilterModule,
     LabelModule
   ],
-  declarations: [LoginComponent]
+  declarations: [MainComponent]
 })
-export class LoginModule {}
+export class MainModule {}

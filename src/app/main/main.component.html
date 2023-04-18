@@ -1,0 +1,52 @@
+<!--<div class="header-logo">-->
+<!--&lt;!&ndash;  <img class="logo-img" src="../../../../assets/images/MB_logo1.png" >&ndash;&gt;-->
+<!--  <div>-->
+<!--    <span style="font-size: 25px; font-weight: 500;">MegaBridge</span> <br>-->
+<!--    <span style="font-size: 15px;">Connect your business</span>-->
+<!--  </div>-->
+<!--</div>-->
+
+<div class="login-page-wrap">
+  <div class="content px20">
+    <form class="login-form" [formGroup]="registerForm">
+      <div class="form-title">
+<!--        <img src="../../../../assets/images/MB_logo1.png" style="width: 45px; height: 45px;margin-right: 3px; vertical-align:middle; padding-top: 2px;">-->
+        <h1 class="app-name">MindReader</h1>
+      </div>
+      <div style="margin: 5px 3px;text-align: center;font-size: 25px;">
+          반가워요! 심리상담 서비스 <b>MIND READER</b> 입니다.<br>
+          물고기 가족화 그림을 통해 당신의 심리를 진단해드립니다.<br>
+
+          어항 속에서 다양한 개체들을 통해 자유롭게 표현해보세요!
+<!--        <kendo-formfield>-->
+<!--          <kendo-label class="form-label" [for]="email" text="Email"></kendo-label>-->
+<!--          <input class="form-input" formControlName="email" kendoTextBox #email/>-->
+<!--          <kendo-formhint>Your active email</kendo-formhint>-->
+<!--          &lt;!&ndash;            <kendo-formerror>Error: Not valid email format</kendo-formerror>&ndash;&gt;-->
+<!--        </kendo-formfield>-->
+      </div>
+
+<!--      <div style="margin: 5px 3px;">-->
+<!--        <kendo-formfield>-->
+<!--          <kendo-label class="form-label" [for]="password" text="password"></kendo-label>-->
+<!--          <input type="password" class="form-input" formControlName="password" kendoTextBox #password/>-->
+<!--          <kendo-formhint class="form-label">Your PassWord</kendo-formhint>-->
+<!--        </kendo-formfield>-->
+<!--      </div>-->
+
+<!--      <div fxLayout="row" fxLayoutAlign="space-between" fxLayout.xs="column" class="mt20 mb20">-->
+<!--        <div>-->
+<!--          <input type="checkbox" size="medium" kendoCheckBox checked #rememberMe/>-->
+<!--          <kendo-label class="form-label" [for]="rememberMe" text="Remember Me"></kendo-label>-->
+<!--        </div>-->
+<!--        <a href="/" style="color: #285aff;font-size: 13px; ">Forgot Password</a>-->
+<!--      </div>-->
+
+        <div style="padding: 10px 0;margin-top:40px;display: flex;justify-content: center;">
+          <button type="submit" mat-raised-button style="width: 500px; background-color: #fe5e23; color: #ffffff;" (click)="onLogin()">START</button>
+<!--          <button type="button" mat-raised-button style="width: 500px;" >Sign Up</button>-->
+        </div>
+
+    </form>
+  </div>
+</div>

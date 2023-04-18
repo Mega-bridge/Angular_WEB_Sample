@@ -14,12 +14,22 @@ import 'hammerjs';
 import { NotificationModule } from '@progress/kendo-angular-notification';
 import {DashBoardModule} from "./dashboard/dash-board.module";
 import { PopupModule } from '@progress/kendo-angular-popup';
+import {TutorialComponent} from "./tutorial/tutorial.component";
+import {InputInfoComponent} from "./input-info/input-info.component";
+import {MatButtonModule} from "@angular/material/button";
+import {ReactiveFormsModule} from "@angular/forms";
+import {LabelModule} from "@progress/kendo-angular-label";
+import {FormFieldModule, InputsModule} from "@progress/kendo-angular-inputs";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
 
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TutorialComponent,
+    InputInfoComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +44,14 @@ import { PopupModule } from '@progress/kendo-angular-popup';
     SharedModule,
     NotificationModule,
     DashBoardModule,
-    PopupModule
+    PopupModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    LabelModule,
+    FormFieldModule,
+    InputsModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [DataService],
   bootstrap: [AppComponent]
