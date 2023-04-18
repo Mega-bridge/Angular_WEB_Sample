@@ -72,16 +72,17 @@ export class MainComponent implements OnInit {
   /**
    * 로그인
    */
-  onLogin() {
-
-    // 로그인 form
-    const request: LoginRequestModel = {
-      email: this.registerForm.controls['email'].value,
-      password: this.registerForm.controls['password'].value
-
-    }
+  onStart() {
 
     this.router.navigateByUrl(`/tutorial`);
+
+    // // 로그인 form
+    // const request: LoginRequestModel = {
+    //   email: this.registerForm.controls['email'].value,
+    //   password: this.registerForm.controls['password'].value
+    //
+    // }
+
 
     // this.loginService.login(request)
     //     .subscribe({
