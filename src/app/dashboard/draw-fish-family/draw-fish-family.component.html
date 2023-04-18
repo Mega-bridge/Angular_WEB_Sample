@@ -1,18 +1,5 @@
 <div class="container">
     <div class="col">
-        <!--        <div class="card">-->
-        <!--            <div class="card-header">Free Drawing Mode</div>-->
-        <!--            <div class="card-body">-->
-        <!--                <div class="input-group">-->
-        <!--                    <div class="input-group-append">-->
-        <!--                        <div class="custom-control custom-switch">-->
-        <!--                            <input type="checkbox" class="custom-control-input" id="customSwitch1" (click)="drawMode()">-->
-        <!--                            <label class="custom-control-label" for="customSwitch1">Enable / Disable</label>-->
-        <!--                        </div>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--        </div>-->
         <div style="text-align: center">
             <div>
                 <button class="button-style" (click)="openFullscreen()">그리기 모드</button>
@@ -31,17 +18,14 @@
             </div>
         </div>
     </div>
-    <div class="canvas-wrap ">
-        <div id="image-container" style="width:1400px;height:900px;border: 1px solid black;">
+    <div class="canvas-wrap">
+        <div class="image-container" >
             <img [src]="this.canvasImage">
         </div>
         <div  class="popup-background"  [hidden]="!isPopupOpen">
             <div   class="popup-background popup" >
-                <button class="button-style" (click)="rasterize()">그림 저장</button>
-                <div class="canvas-wrap ">
-                    <div>
-                        <app-dashboard-drag-and-drop #canvas></app-dashboard-drag-and-drop>
-                    </div>
+                <div class="popup-canvas-wrap ">
+
                     <!-- 어항 -->
                     <kendo-popup [anchor]="anchor"
                                  [anchorAlign]="anchorAlign"
@@ -190,7 +174,7 @@
 
                         <div class="img-card">
                             <div class="img-card-header">가족 선택</div>
-                            <div class="img-card-body max-height">
+                            <div class="img-card-body">
                                 <kendo-chiplist
                                         selection="single"
                                         (selectedChange)="selectFamilyType($event)"
@@ -241,6 +225,16 @@
                                 <img class="img-card-style" src="{{etcImgList[0]}}" (click)="closeOpenPopUp('showEtc')">
                             </div>
                         </div>
+                    </div>
+
+                    <div>
+                        <app-dashboard-drag-and-drop #canvas></app-dashboard-drag-and-drop>
+                        <div class="btn-wrap">
+                            <button class="button-style del" (click)="removeSelected();"> DELETE
+                            </button>
+                            <button class="button-style" (click)="rasterize()">SAVE</button>
+                        </div>
+
                     </div>
                 </div>
              </div>

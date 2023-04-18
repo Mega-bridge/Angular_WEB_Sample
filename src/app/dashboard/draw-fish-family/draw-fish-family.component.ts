@@ -116,8 +116,8 @@ export class DrawFishFamilyComponent implements OnInit{
     // 가족관계 리스트
     public familyTypeList : MrFamilyCodeResponse[] = [];
 
-    public anchorAlign: Align = { horizontal: "center", vertical: "top" };
-    public popupAlign: Align = { horizontal: "center", vertical: "bottom" };
+    public anchorAlign: Align = { horizontal: "right", vertical: "top" };
+    public popupAlign: Align = { horizontal: "left", vertical: "top" };
 
     @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
     @ViewChild('canvas', { static: true }) canvas_el!: ElementRef<HTMLCanvasElement>;
