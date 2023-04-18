@@ -21,7 +21,7 @@
                 <button class="button-style"(click)="canvasDownload()">그림 다운로드</button>
             </div>
             <div>
-                <button class="button-style"(click)="resultVisible=!resultVisible">결과보기</button>
+                <button class="button-style" (click)="resultVisible=!resultVisible">결과보기</button>
             </div>
             <div>
                 <b>< 오브젝트 선택 순서 ></b>
@@ -37,7 +37,7 @@
         </div>
         <div  class="popup-background"  [hidden]="!isPopupOpen">
             <div   class="popup-background popup" >
-                <button (click)="rasterize()">그림 저장</button>
+                <button class="button-style" (click)="rasterize()">그림 저장</button>
                 <div class="canvas-wrap ">
                     <div>
                         <app-dashboard-drag-and-drop #canvas></app-dashboard-drag-and-drop>
