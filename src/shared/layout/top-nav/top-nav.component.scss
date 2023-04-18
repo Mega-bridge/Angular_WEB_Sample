@@ -5,11 +5,17 @@ $main-background-color-light-md: #fafafa;
 $main-background-color-dark-md: #4f4f4f;
 
 :host{
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
+  //position: fixed;
+  //top: 0;
+  //left: 0;
+  //right: 0;
+  //z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: #FFFFFF;
 }
 .top-nav-wrap{
   display: flex;
@@ -17,8 +23,8 @@ $main-background-color-dark-md: #4f4f4f;
   align-items: center;
   padding: 5px;
   background-color: #ffffff;
-  border-bottom: #a7a7a7 solid 1px;
-  box-shadow:  4px 0 4px -4px #a7a7a7;
+  //border-bottom: #a7a7a7 solid 1px;
+  //box-shadow:  4px 0 4px -4px #a7a7a7;
 }
 //.fix-nav{
 //  display: flex;
