@@ -1,10 +1,12 @@
-import {Component, ElementRef, HostListener, Inject, OnInit, TemplateRef, ViewChild} from "@angular/core";
+import {Component, ElementRef, Inject, OnInit, TemplateRef, ViewChild} from "@angular/core";
 import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component"
 import {Align} from "@progress/kendo-angular-popup";
 import {DOCUMENT} from "@angular/common";
 import {MrFamilyCodeResponse} from "../../../shared/model/response/mr-family-code.response.model";
 import {MrObjectImageResponse} from "../../../shared/model/response/mr-object-image.response.model";
 import {MindReaderControlService} from "../../../shared/service/mind-reader-control.service";
+import {single} from "rxjs";
+import {DrawerPosition} from "@progress/kendo-angular-layout";
 
 @Component({
     selector: 'app-dashboard-draw-fish-family',
@@ -14,7 +16,28 @@ import {MindReaderControlService} from "../../../shared/service/mind-reader-cont
 
 export class DrawFishFamilyComponent implements OnInit{
 
+    /** 결과지 슬라이더 열기 */
+    public expanded = true;
+    /** 결과지 슬라이더 위치 */
+    public position: DrawerPosition = "end";
 
+    /** 결과지 슬라이더 mocks */
+    public items = [
+        {text:'결과지', icon: "k-i-menu"},
+        { text: "1회차", icon: "k-i-inbox" },
+        { text: "2회차", icon: "k-i-inbox" },
+    ];
+
+    /** 회차 items */
+    public seqItems = [
+        { id: 0, text: "1회차", date: new Date().getFullYear().toString() + '.' + new Date().getMonth().toString() + '.' + new Date().getDate().toString()},
+        { id: 1, text: "2회차", date: new Date().getFullYear().toString() + '.' + new Date().getMonth().toString() + '.' + new Date().getDate().toString()},
+    ];
+
+    /** 회차 선택 */
+    public selectedSeq: string = '';
+
+    /** object url */
     public objectData:MrObjectImageResponse[] = [];
     // object 선택 팝업 확장 여부
     /** 고래 선택 */
@@ -405,21 +428,37 @@ export class DrawFishFamilyComponent implements OnInit{
         if (this.document.webkitExitFullscreen) {
             this.document.webkitExitFullscreen();
         }
+
     }
 
-    //key down event
-    onKeyDown(event:any){
-        const popup = document.getElementById('DOM_Id');
-        if(!popup){
-            console.error('pop no')
-            return;
-        }
-        popup.addEventListener('keydown', (event) => {
-            console.log(event.code)
-            if (event.code === 'Escape') {
-                event.preventDefault()
-            }
-        });
+    /**
+     * 결과지 사이드 열기
+     * @param e
+     */
+    onSelect(e: any){
+        e.item.text === '결과지' ? this.expanded = !this.expanded : this.expanded;
     }
 
+    /**
+     * 회차 선택
+     * @param item
+     */
+    selectSeq(item: any){
+        this.selectedSeq = item.text;
+    }
+
+
+    /**
+     * 회차 추가하기
+     */
+    addSeq(){
+        console.log(this.seqItems.length);
+        this.seqItems.push({
+            id: this.seqItems.length,
+            text: `${this.seqItems.length + 1}회차`,
+            date: new Date().getFullYear().toString() + '.' + new Date().getMonth().toString() + '.' + new Date().getDate().toString()});
+    }
+
+
+    protected readonly single = single;
 }

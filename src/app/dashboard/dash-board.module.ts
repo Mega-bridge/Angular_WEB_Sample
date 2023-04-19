@@ -7,6 +7,7 @@ import {NgForOf, NgIf, NgStyle} from "@angular/common";
 import {ButtonModule, ChipModule} from "@progress/kendo-angular-buttons";
 import {InputsModule} from "@progress/kendo-angular-inputs";
 import {PopupModule} from "@progress/kendo-angular-popup";
+import {LayoutModule} from "@progress/kendo-angular-layout";
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import {PopupModule} from "@progress/kendo-angular-popup";
         InputsModule,
         ChipModule,
         PopupModule,
+        LayoutModule,
     ],
   declarations: [
     DragAndDropComponent,
