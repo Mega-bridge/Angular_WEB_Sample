@@ -23,6 +23,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {SignUpComponent} from "./login/sign-up/sign-up.component";
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import {LoginComponent} from "./login/login.component";
 
 
 
@@ -31,7 +32,8 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     AppComponent,
     TutorialComponent,
     InputInfoComponent,
-    SignUpComponent
+    SignUpComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
