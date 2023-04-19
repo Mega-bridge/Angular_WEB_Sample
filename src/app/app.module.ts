@@ -21,6 +21,8 @@ import {LabelModule} from "@progress/kendo-angular-label";
 import {FormFieldModule, InputsModule} from "@progress/kendo-angular-inputs";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
+import {SignUpComponent} from "./login/sign-up/sign-up.component";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 
 
@@ -28,7 +30,8 @@ import {MatInputModule} from "@angular/material/input";
   declarations: [
     AppComponent,
     TutorialComponent,
-    InputInfoComponent
+    InputInfoComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +53,8 @@ import {MatInputModule} from "@angular/material/input";
     FormFieldModule,
     InputsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]

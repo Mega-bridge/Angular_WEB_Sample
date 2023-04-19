@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="sign-up-wrap" [formGroup]="signUpForm">
+        <div class="title">
+            <span style="font-size:30px;">회원가입</span>
+        </div>
+        <div style="margin-left:20%">
+            <div class="content-box">
+                <kendo-formfield>
+                    <kendo-label class="label" text="이름"></kendo-label>
+                    <input class="input-style" formControlName="name" kendoTextBox/>
+                </kendo-formfield>
+            </div>
+            <div class="content-box">
+                <kendo-formfield>
+                    <kendo-label class="label" text="아이디"></kendo-label>
+                    <input class="input-style" formControlName="email" kendoTextBox/>
+
+                </kendo-formfield>
+            </div>
+            <div class="content-box">
+                <kendo-formfield>
+                    <kendo-label class="label" text="비밀번호"></kendo-label>
+                    <input class="input-style" formControlName="password" kendoTextBox/>
+                </kendo-formfield>
+            </div>
+        </div>
+        <div style="text-align: center">
+        <div>
+            <mat-checkbox>개인정보 수집 및 이용에 동의합니다.</mat-checkbox>
+        </div>
+            <button class="button add_info" (click)="inputInfo()" >추가정보 작성(선택사항)</button>
+            <button class="button sign-up-complete" (click)="login()">가입 완료</button>
+        </div>
+    </div>
+</div>

@@ -4,6 +4,7 @@ import {LayoutComponent} from "../shared/layout/layout.component";
 import {TutorialComponent} from "./tutorial/tutorial.component";
 import {InputInfoComponent} from "./input-info/input-info.component";
 import {MainComponent} from "./main/main.component";
+import {SignUpComponent} from "./login/sign-up/sign-up.component";
 
 const routes: Routes = [
 
@@ -20,6 +21,10 @@ const routes: Routes = [
         path: 'main',
         component: MainComponent,
         loadChildren: () => import('./main/main.module').then(i => i.MainModule)
+      },
+      {
+        path: 'sign-up',
+        component: SignUpComponent
       },
       {
         path: 'tutorial',
