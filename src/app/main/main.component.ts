@@ -75,6 +75,11 @@ export class MainComponent implements OnInit {
   onStart() {
 
     this.router.navigateByUrl(`/tutorial`);
+  }
+  login() {
+
+    this.router.navigateByUrl(`/login`);
+    }
 
     // // 로그인 form
     // const request: LoginRequestModel = {
@@ -95,7 +100,4 @@ export class MainComponent implements OnInit {
     //       // http error message 출력
     //       error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
     //     })
-
-  }
-
 }

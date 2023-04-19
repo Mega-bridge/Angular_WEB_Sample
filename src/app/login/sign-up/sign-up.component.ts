@@ -15,10 +15,15 @@ export class SignUpComponent {
     constructor(
         private router: Router
     ) {}
+
+    /**
+     * 회원가입 폼
+     */
     public signUpForm: FormGroup = new FormGroup({
         email: new FormControl(""),
         name: new FormControl(""),
         password: new FormControl(""),
+        confirmPassword: new FormControl("")
     });
 
     /**
