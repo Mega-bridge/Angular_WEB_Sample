@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="sign-up-wrap" [formGroup]="loginForm">
+        <div class="title">
+            <span style="font-size:30px;">Login</span>
+        </div>
+        <div style="margin-left:20%">
+            <div class="content-box">
+                <kendo-formfield>
+                    <kendo-label class="label" text="아이디"></kendo-label>
+                    <input Placeholder="Email" class="input-style" formControlName="email" kendoTextBox/>
+
+                </kendo-formfield>
+            </div>
+            <div class="content-box">
+                <kendo-formfield>
+                    <kendo-label class="label" text="비밀번호"></kendo-label>
+                    <input type="password" Placeholder="Password" class="input-style" formControlName="password" kendoTextBox/>
+                </kendo-formfield>
+            </div>
+        </div>
+        <div style="text-align: center">
+            <button class="button login" (click)="tutorial()">로그인</button>
+        </div>
+        <div style="text-align: right; margin: 10px;">회원이 아니신가요?
+            <b style="text-decoration: underline;" (click)="signup()">회원가입</b>
+        </div>
+
+    </div>
+</div>

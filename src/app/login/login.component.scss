@@ -1,0 +1,43 @@
+.container{
+  justify-content: center;
+  display: flex;
+  margin: 0 auto;
+
+  .sign-up-wrap{
+    border-radius:10px;
+    border: 1px solid black;
+    width:35%;
+    position: absolute;
+    top:30%;
+
+    .title{
+      margin: 30px;
+      text-align: center;
+    }
+    .content-box{
+      margin:30px;
+
+      .label{
+        margin-left:1%;
+        font-size:20px;
+      }
+
+      .input-style{
+        border: 2px ridge black;
+        width: 70%;
+      }
+    }
+
+    .button{
+      margin:20px;
+      color: #ffffff;
+      &.login{
+        width:150px;
+        height: 28px;
+        background-color: #fe5e23;
+        border: #fe5e23;
+      }
+    }
+  }
+
+}
