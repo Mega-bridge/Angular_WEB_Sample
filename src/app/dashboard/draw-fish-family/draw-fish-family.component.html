@@ -22,8 +22,8 @@
         <div class="image-container" >
             <img [src]="this.canvasImage">
         </div>
-        <div  class="popup-background"  [hidden]="!isPopupOpen">
-            <div   class="popup-background popup" >
+        <div  id="DOM_Id"  class="popup-background"  [hidden]="!isPopupOpen" (keydown)="onKeyDown($event)">
+            <div tabindex="0" class="popup-background popup" >
                 <div class="popup-canvas-wrap ">
 
                     <!-- 어항 -->

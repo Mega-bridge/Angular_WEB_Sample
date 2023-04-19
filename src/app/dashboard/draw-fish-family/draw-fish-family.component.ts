@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, OnInit, TemplateRef, ViewChild} from "@angular/core";
+import {Component, ElementRef, HostListener, Inject, OnInit, TemplateRef, ViewChild} from "@angular/core";
 import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component"
 import {Align} from "@progress/kendo-angular-popup";
 import {DOCUMENT} from "@angular/common";
@@ -121,6 +121,7 @@ export class DrawFishFamilyComponent implements OnInit{
 
     @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
     @ViewChild('canvas', { static: true }) canvas_el!: ElementRef<HTMLCanvasElement>;
+    // @HostListener("window:keydown",['$event']);
 
     /**
      *
@@ -404,6 +405,21 @@ export class DrawFishFamilyComponent implements OnInit{
         if (this.document.webkitExitFullscreen) {
             this.document.webkitExitFullscreen();
         }
-
     }
+
+    //key down event
+    onKeyDown(event:any){
+        const popup = document.getElementById('DOM_Id');
+        if(!popup){
+            console.error('pop no')
+            return;
+        }
+        popup.addEventListener('keydown', (event) => {
+            console.log(event.code)
+            if (event.code === 'Escape') {
+                event.preventDefault()
+            }
+        });
+    }
+
 }
