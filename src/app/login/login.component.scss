@@ -19,11 +19,11 @@
 
       .label{
         margin-left:1%;
-        font-size:20px;
+        font-size:18px;
+        margin-bottom: 1%;
       }
 
       .input-style{
-        border: 2px ridge black;
         width: 70%;
       }
     }
@@ -40,4 +40,8 @@
     }
   }
 
+}
+
+::ng-deep .k-notification-content {
+  font-size: 18px;
 }

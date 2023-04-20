@@ -142,7 +142,6 @@ export class DrawFishFamilyComponent implements OnInit{
 
     @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
     @ViewChild('canvas', { static: true }) canvas_el!: ElementRef<HTMLCanvasElement>;
-    // @HostListener("window:keydown",['$event']);
 
     /**
      *
