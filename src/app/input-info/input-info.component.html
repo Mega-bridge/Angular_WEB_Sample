@@ -42,32 +42,57 @@
                         </kendo-formfield>
                     </div>
 
-                </div>
-                <div>
                     <div class="input-info">
                         <kendo-formfield>
                             <kendo-label class="form-label" [for]="job" text="직업/학년"></kendo-label>
                             <input class="form-input" formControlName="job" kendoTextBox #job/>
                         </kendo-formfield>
                     </div>
+
                     <div class="input-info">
                         <kendo-formfield>
                             <kendo-label class="form-label" [for]="familyNum" text="가족 수"></kendo-label>
                             <input class="form-input" formControlName="familyNum" kendoTextBox #familyNum/>
                         </kendo-formfield>
                     </div>
+
+                </div>
+                <div>
+
                     <div class="input-info">
-                            <kendo-label class="form-label"  text="가족 구성원"></kendo-label>
-                            <div *ngFor="let item of familyTypeList" style="font-size: 19px; margin: 5px 0;">
-                                <input  type="checkbox" (change)="checkedFamilyType($event, item.id)"/>{{item.description}}
-                            </div>
+                            <kendo-label class="form-label"  text="가족 구성원">
+                                <kendo-multiselect
+
+                                        [autoClose]="false"
+                                        [data]="familyTypeList"
+                                        textField="description"
+                                        valueField="description"
+                                ></kendo-multiselect>
+                            </kendo-label>
+<!--                            <div style="display: flex; flex-wrap: wrap; width: 100%;">-->
+<!--                                <div *ngFor="let item of familyTypeList" style="font-size: 19px; margin: 5px 0; width: 50%;">-->
+<!--                                    <input  type="checkbox" (change)="checkedFamilyType($event, item.id)"/>{{item.description}}-->
+<!--                                </div>-->
+<!--                            </div>-->
 
                     </div>
                     <div class="input-info">
-                        <kendo-formfield>
-                            <kendo-label class="form-label" [for]="familyRelationCode" text="가족과의 관계"></kendo-label>
-                            <input class="form-input" formControlName="familyRelationCode" kendoTextBox #familyRelationCode/>
-                        </kendo-formfield>
+                        <kendo-label class="form-label" text="가족과의 관계">
+                            <kendo-numerictextbox
+                                    [style.width.px]="80"
+                                    format="0"
+                                    [min]="0"
+                                    [max]="100"
+                            >
+                            </kendo-numerictextbox>
+                        </kendo-label>
+                        <div style="display: flex; flex-wrap: wrap; width: 100%;">
+                            <div *ngFor="let item of familyRelation" style="font-size: 19px; margin: 5px 5px;">
+                                <input  type="radio" />{{item.text}}
+                            </div>
+                        </div>
+<!--                        <input class="form-input" formControlName="familyRelationCode" kendoTextBox #familyRelationCode/>-->
+
                     </div>
                 </div>
 

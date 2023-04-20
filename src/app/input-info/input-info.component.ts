@@ -16,6 +16,13 @@ export class InputInfoComponent implements OnInit{
     public familyTypeList : MrFamilyCodeResponse[] = [];
     public selectedFamilyType: number[] = [];
 
+    public familyRelation= [
+        {id: 0, text:'화목'},
+        {id: 1, text:'서먹함'},
+        {id: 2, text:'좋지않음'},
+        {id: 3, text:'무관심'},
+    ];
+
 
     /**
      *
