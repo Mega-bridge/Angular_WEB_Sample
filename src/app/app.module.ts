@@ -24,6 +24,7 @@ import {MatInputModule} from "@angular/material/input";
 import {SignUpComponent} from "./login/sign-up/sign-up.component";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {LoginComponent} from "./login/login.component";
+import {MultiSelectModule} from "@progress/kendo-angular-dropdowns";
 
 
 
@@ -35,29 +36,30 @@ import {LoginComponent} from "./login/login.component";
     SignUpComponent,
     LoginComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    MatDialogModule,
-    LayoutModule,
-    GridModule,
-    ChartsModule,
-    AppRoutingModule,
-    SharedModule,
-    NotificationModule,
-    DashBoardModule,
-    PopupModule,
-    MatButtonModule,
-    ReactiveFormsModule,
-    LabelModule,
-    FormFieldModule,
-    InputsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCheckboxModule
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        MatDialogModule,
+        LayoutModule,
+        GridModule,
+        ChartsModule,
+        AppRoutingModule,
+        SharedModule,
+        NotificationModule,
+        DashBoardModule,
+        PopupModule,
+        MatButtonModule,
+        ReactiveFormsModule,
+        LabelModule,
+        FormFieldModule,
+        InputsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatCheckboxModule,
+        MultiSelectModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

@@ -175,7 +175,7 @@ export class DragAndDropComponent implements AfterViewInit{
         this.waterUrl = opt;
         this.canvas.setBackgroundImage(this.waterUrl, this.canvas.renderAll.bind(this.canvas), {
             top: 150,
-            left: -35,
+            left: -30,
             scaleX:0.55,
             scaleY: 0.55
         });
@@ -261,12 +261,6 @@ export class DragAndDropComponent implements AfterViewInit{
         this.canvas.setActiveObject(obj);
     }
 
-    resetPanels() {
-        this.textEditor = false;
-        this.imageEditor = false;
-        this.figureEditor = false;
-    }
-
 
     /**
      * 선택된 Object의 id값 불러오기
@@ -282,18 +276,9 @@ export class DragAndDropComponent implements AfterViewInit{
     rasterize() {
         const image = new Image();
         image.src = this.canvas.toDataURL({format: 'png'});
-        // const w = window.open('');
-        // w?.document.write(image.outerHTML);
-        return image.src;
-    }
 
-    downLoadImage() {
-        const c = this.canvas.toDataURL({format: 'png'});
-        const downloadLink = document.createElement('a');
-        document.body.appendChild(downloadLink);
-        downloadLink.href = c;
-        downloadLink.download = Date.now() + '.png';
-        downloadLink.click();
+        this.canvas.clear();
+        return image.src;
     }
 
 
