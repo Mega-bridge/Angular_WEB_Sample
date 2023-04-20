@@ -28,12 +28,17 @@ export class DrawFishFamilyComponent implements OnInit{
 
     /** 회차 items */
     public seqItems = [
-        { id: 0, text: "1회차", date: new Date().getFullYear().toString() + '.' + new Date().getMonth().toString() + '.' + new Date().getDate().toString()},
-        { id: 1, text: "2회차", date: new Date().getFullYear().toString() + '.' + new Date().getMonth().toString() + '.' + new Date().getDate().toString()},
+        {
+            id: 1,
+            text: "1회차",
+            date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
+            imgUrl: ''
+        },
+        // { id: 1, text: "2회차", date: new Date().getFullYear().toString() + '.' + new Date().getMonth().toString() + '.' + new Date().getDate().toString()},
     ];
 
     /** 회차 선택 */
-    public selectedSeq: string = '';
+    public selectedSeq: number = 1;
 
     /** object url */
     public objectData:MrObjectImageResponse[] = [];
@@ -101,7 +106,7 @@ export class DrawFishFamilyComponent implements OnInit{
 
     // 선태된 object
     /** 어항 선택 */
-    public selectWaterPort: string =  '';
+    public selectFishBowl: string =  '';
     /** 물고기 표정 선택 */
     public selectedFishFace:string = '';
     /** 물고기 비늘 선택 */
@@ -115,6 +120,7 @@ export class DrawFishFamilyComponent implements OnInit{
 
     /** 선택한 가족 관계 list */
     public selectedFamilyList: string[] = [];
+    public selectedObjectList: string[] = [];
 
     /** 가족 선택 Disabled 여부 **/
     public isDisabled: boolean = false;
@@ -132,7 +138,7 @@ export class DrawFishFamilyComponent implements OnInit{
     public elem: any;
 
     /** canvas에 그리기 완료한 img */
-    public canvasImage: string = ''
+    public canvasImage: string = '';
 
     // 가족관계 리스트
     public familyTypeList : MrFamilyCodeResponse[] = [];
@@ -166,7 +172,6 @@ export class DrawFishFamilyComponent implements OnInit{
             .subscribe({
                 next: async (data) => {
                     if (data) {
-                        console.log(data);
                         this.objectData = data;
 
                         // 일반 물고기 표정
@@ -203,11 +208,11 @@ export class DrawFishFamilyComponent implements OnInit{
                 },
             })
 
+        // 가족 리스트 가져오기
         this.mindReaderControlService.getFamily()
             .subscribe({
                 next: async (data) => {
                     if (data){
-                        console.log(data);
                         this.familyTypeList = data;
                     }
                 }
@@ -231,13 +236,13 @@ export class DrawFishFamilyComponent implements OnInit{
 
 
     /**
-     * 어항 물 선택
+     * 어항 선택
      * @param opt
      */
 
     selectWater(opt: string) {
         this.showFishBowl = false;
-        this.selectWaterPort = opt;
+        this.selectFishBowl = opt;
         this.canvas.setWater(opt);
     }
 
@@ -249,7 +254,7 @@ export class DrawFishFamilyComponent implements OnInit{
         this.selectedFamilyType = this.familyTypeList[e].id;
         this.familyTypeList[e].selected = true;
         // 선택한 가족관계 리스트에 추가
-        this.selectedFamilyList.push(this.familyTypeList[e].description)
+        this.selectedObjectList.push(this.familyTypeList[e].description)
         // 가족 관계 선택 시 버튼 막기
         this.isDisabled=true;
         // 가족 관계를 선택해야 물고기 선택 가능
@@ -341,7 +346,10 @@ export class DrawFishFamilyComponent implements OnInit{
      * @param img
      */
     selectEtcObject(event:any, img: any):void {
+        console.log(event);
+        console.log(img);
         this.selectedEtc = img;
+        this.selectedObjectList.push(img);
 
         // 물고기 외 object img url 전달
         this.getImgPolaroid(img);
@@ -388,8 +396,9 @@ export class DrawFishFamilyComponent implements OnInit{
      * canvas 저장하기
      */
     public rasterize() {
-        this.canvas.rasterize();
-        this.canvasImage=this.canvas.rasterize();
+        this.seqItems[this.selectedSeq - 1].imgUrl = this.canvas.rasterize();
+        this.canvasImage = this.seqItems[this.selectedSeq - 1].imgUrl;
+
         // full screen 닫기
         this.closeFullscreen();
     }
@@ -398,7 +407,12 @@ export class DrawFishFamilyComponent implements OnInit{
      * canvas 다운로드
      */
     public canvasDownload(){
-        this.canvas.downLoadImage();
+        const downloadLink = document.createElement('a');
+        document.body.appendChild(downloadLink);
+        downloadLink.href = this.canvasImage;
+        downloadLink.download = this.seqItems[this.selectedSeq - 1].date + '.png';
+        downloadLink.click();
+
     }
 
     /**
@@ -442,7 +456,8 @@ export class DrawFishFamilyComponent implements OnInit{
      * @param item
      */
     selectSeq(item: any){
-        this.selectedSeq = item.text;
+        this.selectedSeq = item.id;
+        this.canvasImage = this.seqItems[this.selectedSeq - 1].imgUrl;
     }
 
 
@@ -452,9 +467,11 @@ export class DrawFishFamilyComponent implements OnInit{
     addSeq(){
         console.log(this.seqItems.length);
         this.seqItems.push({
-            id: this.seqItems.length,
+            id: this.seqItems.length + 1,
             text: `${this.seqItems.length + 1}회차`,
-            date: new Date().getFullYear().toString() + '.' + new Date().getMonth().toString() + '.' + new Date().getDate().toString()});
+            date: new Date().getFullYear().toString() + '.' + new Date().getMonth().toString() + '.' + new Date().getDate().toString(),
+            imgUrl: ''
+        });
     }
 
 
