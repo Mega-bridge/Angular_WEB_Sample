@@ -7,7 +7,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {HttpClientModule} from "@angular/common/http";
 import {MatDialogModule} from "@angular/material/dialog";
 import { LayoutModule } from '@progress/kendo-angular-layout';
-import { GridModule } from '@progress/kendo-angular-grid';
+import {FilterMenuModule, GridModule} from '@progress/kendo-angular-grid';
 import { ChartsModule } from '@progress/kendo-angular-charts';
 import 'hammerjs';
 import { NotificationModule } from '@progress/kendo-angular-notification';
@@ -58,7 +58,8 @@ import {MultiSelectModule} from "@progress/kendo-angular-dropdowns";
         MatFormFieldModule,
         MatInputModule,
         MatCheckboxModule,
-        MultiSelectModule
+        MultiSelectModule,
+        FilterMenuModule
     ],
   providers: [],
   bootstrap: [AppComponent]

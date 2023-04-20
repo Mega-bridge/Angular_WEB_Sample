@@ -3,6 +3,9 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {MrFamilyCodeResponse} from "../../shared/model/response/mr-family-code.response.model";
 import {Router} from "@angular/router";
 import {MindReaderControlService} from "../../shared/service/mind-reader-control.service";
+import {MrFamilyRelationCodeResponse} from "../../shared/model/response/mr-family-relation-code.response.model";
+import {MrGenderCodeResponse} from "../../shared/model/response/mr-gender-code.response.model";
+import {MrJobCodeResponse} from "../../shared/model/response/mr-job-code.response.model";
 
 @Component({
     selector: 'app-input-info',
@@ -12,20 +15,23 @@ import {MindReaderControlService} from "../../shared/service/mind-reader-control
 
 export class InputInfoComponent implements OnInit{
 
-    // 가족관계 리스트
+    // 가족 리스트
     public familyTypeList : MrFamilyCodeResponse[] = [];
+
     public selectedFamilyType: number[] = [];
-
-    public familyRelation= [
-        {id: 0, text:'화목'},
-        {id: 1, text:'서먹함'},
-        {id: 2, text:'좋지않음'},
-        {id: 3, text:'무관심'},
-    ];
-
+    // 선택한 가족 리스트
+    public selectedFamily: any[]=[];
+    // default number
+    public defaultNumeric: number = 1;
+    // 가족 관계 리스트
+    public familyRelation: MrFamilyRelationCodeResponse[] = []
+    // 성별 리스트
+    public genderList: MrGenderCodeResponse[] = [];
+    // 직업 리스트
+    public jobList: MrJobCodeResponse[] = [];
 
     /**
-     *
+     * 생성자
      * @param mindReaderControlService
      * @param router
      */
@@ -35,8 +41,6 @@ export class InputInfoComponent implements OnInit{
 
     ) {
     }
-
-
 
     // input form
     public infoForm: FormGroup = new FormGroup({
@@ -51,6 +55,7 @@ export class InputInfoComponent implements OnInit{
 
 
     ngOnInit() {
+        // 가족 리스트 조회
         this.mindReaderControlService.getFamily()
             .subscribe({
                 next: async (data) => {
@@ -60,7 +65,35 @@ export class InputInfoComponent implements OnInit{
                     }
                 }
             });
+        // 가족 관계 리스트 조회
+        this.mindReaderControlService.getFamilyRelation()
+            .subscribe({
+                next: async (data) => {
+                    if (data){
+                        this.familyRelation = data;
+                    }
+                }
+            });
 
+        // 성별 리스트 조회
+        this.mindReaderControlService.getGender()
+            .subscribe({
+                next: async (data) => {
+                    if (data){
+                        this.genderList = data;
+                    }
+                }
+            });
+
+        // 직업 리스트 조회
+        this.mindReaderControlService.getJob()
+            .subscribe({
+                next: async (data) => {
+                    if (data){
+                        this.jobList = data;
+                    }
+                }
+            });
     }
 
 
@@ -79,11 +112,11 @@ export class InputInfoComponent implements OnInit{
     }
 
 
+
     /**
      * 캔버스 화면으로 이동
      */
     startDrawing() {
-
         this.router.navigateByUrl(`/DrawFishFamily`);
 
     }
