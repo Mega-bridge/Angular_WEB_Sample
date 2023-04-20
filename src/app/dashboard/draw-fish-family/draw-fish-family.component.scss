@@ -40,14 +40,14 @@
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center;
+  //justify-content: center;
   align-items: center;
-
 
   .canvas-wrap{
     display: flex;
     flex-direction: column;
     width:50%;
+    margin-left: 23%;
 
     .image-container{
       border: 1px solid black;
@@ -104,6 +104,7 @@
 
 
         .img-card{
+          cursor: pointer;
           max-width: 140px;
           min-height: 120px;
           border: #f0f0f0 solid 1px;
@@ -161,7 +162,9 @@
     justify-content: flex-end;
     margin-top: 10px;
     width: 1100px;
+
     .button-style{
+      cursor: pointer;
       margin: 10px;
       height: 50px;
       width : 100px;
@@ -181,29 +184,42 @@
 
 
 .button-style{
-    margin: 10px;
-    height: 50px;
-    width : 100px;
-    border-radius: .5em;
-    background: rgb(255 243 225);
-    color: black;
+  cursor: pointer;
+  margin: 10px;
+  height: 50px;
+  width : 100px;
+  border-radius: .5em;
+  border: none;
+  background-color: #ff8c7d;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 15px;
+
+  &.btn2 {
+    background-color: #6ca5ff;
+  }
 }
 
 
-kendo-drawer-content {
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  display: flex;
-  flex-direction: row;
 
-}
 
 kendo-drawer-container {
   position: fixed;
   width: 100%;
-  height: 100%;
+  height: 96.84%;
   padding: 0;
+
+  kendo-drawer-content {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+
+  }
+
+
+
 }
 
 

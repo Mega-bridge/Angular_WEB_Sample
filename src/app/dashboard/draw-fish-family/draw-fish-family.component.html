@@ -2,15 +2,49 @@
 <kendo-drawer-container>
     <kendo-drawer
         #drawer
-        [items]="items"
-        mode="push"
+
+        mode="overlay"
         [mini]="true"
-        [expanded]="expanded"
+        [(expanded)]="expanded"
         [autoCollapse]="false"
         [position]="position"
-        (select)="onSelect($event)"
-        [width]="400"
+        [width]="600"
+        [miniWidth]="70"
+
+        [style]="{'transform': 'translate(0px, 61px)', 'border-left': '#cccccc solid 1px'}"
+        class="drawer-style"
     >
+
+<!--        <ng-template kendoDrawerHeaderTemplate>-->
+<!--&lt;!&ndash;            <span *ngIf="!expanded" (click)="drawer.toggle()" style="font-size: 20px;align-items: center"><<</span>&ndash;&gt;-->
+<!--            <span  *ngIf="expanded"  (click)="drawer.toggle()"> <b> >> </b> </span>-->
+<!--            <span *ngIf="expanded" style="font-size: 20px;">결과지</span>-->
+<!--        </ng-template>-->
+<!--        <ng-template kendoDrawerItemTemplate let-item >-->
+
+<!--            <span  *ngIf="!expanded" class="k-icon item-icon flag k-i-arrow-seek-left" (click)="drawer.toggle()"></span>-->
+<!--&lt;!&ndash;            <span  *ngIf="expanded" class="k-icon item-icon flag k-i-arrow-seek-right" (click)="drawer.toggle()"></span>&ndash;&gt;-->
+<!--&lt;!&ndash;            <span *ngIf="expanded" (click)="drawer.toggle()">결과지</span>&ndash;&gt;-->
+
+<!--        </ng-template>-->
+        <ng-template kendoDrawerFooterTemplate >
+            <div *ngIf="!expanded"  (click)="drawer.toggle()" style="display: flex; justify-content: center;padding: 10px; cursor: pointer;">
+                <span   style="font-size: 25px;"> <b> << </b> </span>
+            </div>
+
+            <div kendoTooltip *ngIf="expanded" style="padding: 10px; border-bottom: #cccccc solid 1px;">
+                <span (click)="drawer.toggle()" style="font-size: 25px;cursor: pointer;" title="닫기"> <b> >> </b> </span>
+                <span style="font-size: 25px;font-weight: bold;">결과지</span>
+            </div>
+            <div>
+                <div *ngIf="expanded" style="padding: 10px;font-size: 20px;">
+                    수고하셨습니다! <br>
+                    어항 속 모습을 통해 해석된 당신의 심리는 아래와 같습니다.
+                </div>
+            </div>
+
+
+        </ng-template>
     </kendo-drawer>
     <kendo-drawer-content>
 
@@ -51,12 +85,14 @@
                 <div class="image-container"  [ngStyle] = "{'background-image': 'url('+canvasImage+')'}">
                     <!--                    <img [src]="this.canvasImage">-->
                 </div>
-                <div style="display: flex;flex-direction: row; justify-content: center;">
+                <div style="display: flex;flex-direction: row; justify-content: space-between;">
                     <div>
                         <button class="button-style" (click)="openFullscreen()">그리기 모드</button>
                     </div>
+
                     <div>
-                        <button class="button-style"(click)="canvasDownload()">그림 다운로드</button>
+                        <button class="button-style btn2"(click)="canvasDownload()">그림 다운로드</button>
+                        <button class="button-style btn2" (click)="drawer.toggle()">결과 보기</button>
                     </div>
                 </div>
                 <div  class="popup-background"  [hidden]="!isPopupOpen">

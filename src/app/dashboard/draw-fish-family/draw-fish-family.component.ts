@@ -17,15 +17,13 @@ import {DrawerPosition} from "@progress/kendo-angular-layout";
 export class DrawFishFamilyComponent implements OnInit{
 
     /** 결과지 슬라이더 열기 */
-    public expanded = true;
+    public expanded = false;
     /** 결과지 슬라이더 위치 */
     public position: DrawerPosition = "end";
 
     /** 결과지 슬라이더 mocks */
     public items = [
-        {text:'결과지', icon: "k-i-menu"},
-        { text: "1회차", icon: "k-i-inbox" },
-        { text: "2회차", icon: "k-i-inbox" },
+        {text:'결과지', icon: "k-i-arrow-seek-right", content:'수고하셨습니다! 어항 속 모습을 통해 해석된 당신의 심리는 아래와 같습니다.'}
     ];
 
     /** 회차 items */
@@ -432,10 +430,11 @@ export class DrawFishFamilyComponent implements OnInit{
     }
 
     /**
-     * 결과지 사이드 열기
+     * 결과지 사이드 닫기
      * @param e
      */
     onSelect(e: any){
+        console.log(e);
         e.item.text === '결과지' ? this.expanded = !this.expanded : this.expanded;
     }
 
