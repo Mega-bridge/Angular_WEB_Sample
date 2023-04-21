@@ -1,10 +1,10 @@
 import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup} from "@angular/forms";
-import {UserRequest} from "../../../shared/model/request/user.request.model";
 import {AlertService} from "../../../shared/service/alert.service";
 import {UserService} from "../../../shared/service/user.service";
 import {HttpErrorResponse} from "@angular/common/http";
+import {UserModel} from "../../../shared/model/user.model";
 
 @Component({
     selector: 'app-sign-up',
@@ -55,7 +55,7 @@ export class SignUpComponent{
             this.alertService.openAlert('개인정보 수집 및 이용에 동의하여 주십시오.');
         }
         else{
-            const request: UserRequest = {
+            const request: UserModel = {
                 id: this.signUpForm.controls['id'].value,
                 createDate: this.signUpForm.controls['createDate'].value,
                 email: this.signUpForm.controls['email'].value,

@@ -1,4 +1,4 @@
-import {UserResponseModel} from "./user.response.model";
+import {UserModel} from "../user.model";
 
 /**
  * 로그인 결과 객체
@@ -6,5 +6,5 @@ import {UserResponseModel} from "./user.response.model";
 export class LoginResultResponse {
     public jwt: string = '';
     public Date: Date|null = null;
-    public User: UserResponseModel = new UserResponseModel();
+    public User: UserModel = new UserModel();
 }
