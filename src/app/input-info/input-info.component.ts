@@ -21,8 +21,6 @@ export class InputInfoComponent implements OnInit{
     public selectedFamilyType: number[] = [];
     // 선택한 가족 리스트
     public selectedFamily: any[]=[];
-    // default number
-    public defaultNumeric: number = 1;
     // 가족 관계 리스트
     public familyRelation: MrFamilyRelationCodeResponse[] = []
     // 성별 리스트
