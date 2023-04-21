@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {UserResponseModel} from "../model/response/user.response.model";
-import {UserRequest} from "../model/request/user.request.model";
+import {UserModel} from "../model/user.model";
 
 
 @Injectable({
@@ -22,7 +21,7 @@ export class UserService {
     /**
      * 로그인 처리
      */
-    signUp(request: UserRequest):Observable<UserResponseModel> {
-        return this.http.post<UserResponseModel>(`${this.SEVER_URL}/`,request);
+    signUp(request: UserModel):Observable<UserModel> {
+        return this.http.post<UserModel>(`${this.SEVER_URL}/`,request);
     }
 }
