@@ -1,7 +1,7 @@
 /**
- * 회차별 오브젝트 생성
+ * 회차별 오브젝트
  */
-export class MrObjectRequestModel {
+export class MrObjectModel {
     public id: number = 0;
 
     // mr_data_set.seq
@@ -24,5 +24,4 @@ export class MrObjectRequestModel {
 
     // 저장된 순서
     public objectSeq: number = 0;
-
 }
