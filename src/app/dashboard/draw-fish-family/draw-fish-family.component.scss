@@ -17,8 +17,10 @@
   }
 
   .card-seq-wrap{
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border-bottom: #D2D2D2 solid 1px;
+    height: 46%;
+    overflow-y: scroll;
     .card-seq{
       cursor: pointer;
       padding: 15px 30px;
@@ -199,6 +201,10 @@
 
   &.btn2 {
     background-color: #3c8bf3;
+  }
+
+  &.sm{
+    width: 70px;
   }
 }
 

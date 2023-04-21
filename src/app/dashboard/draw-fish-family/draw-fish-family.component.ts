@@ -469,7 +469,7 @@ export class DrawFishFamilyComponent implements OnInit{
         this.seqItems.push({
             id: this.seqItems.length + 1,
             text: `${this.seqItems.length + 1}회차`,
-            date: new Date().getFullYear().toString() + '.' + new Date().getMonth().toString() + '.' + new Date().getDate().toString(),
+            date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
             imgUrl: ''
         });
     }
