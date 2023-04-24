@@ -20,7 +20,8 @@ export class SignUpComponent implements OnInit{
     /** userData */
     public userData: any;
 
-    public idCheck: boolean = false;
+    /** id 체크 여부 */
+    public idCheck: boolean = true;
 
     /**
      * 생성자
@@ -124,7 +125,7 @@ export class SignUpComponent implements OnInit{
             }
             else{
                 this.alertService.openAlert('사용 가능한 Email입니다.')
-                this.idCheck = true;
+                this.idCheck = false;
                 break;
             }
         }
