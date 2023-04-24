@@ -250,7 +250,6 @@ export class DrawFishFamilyComponent implements OnInit{
                 next: async (data) => {
                     if(data){
                         this.userId = data.id;
-                        console.log(data);
                     }
                 }
             })
