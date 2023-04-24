@@ -29,4 +29,16 @@ export class UserService {
     getAllUser():Observable<MrFamilyCodeResponse[]> {
         return this.http.get<MrFamilyCodeResponse[]>(`${this.SEVER_URL}/userList`);
     }
+
+
+    /**
+     * 사용자 조회
+     * @param email
+     */
+    getUserData(email: string): Observable<UserModel> {
+        const param={
+            email: email
+        }
+        return this.http.get<UserModel>(`${this.SEVER_URL}/email`,{params: param});
+    }
 }

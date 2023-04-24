@@ -10,6 +10,8 @@ import {DrawerPosition} from "@progress/kendo-angular-layout";
 import {ConfirmDialogComponent} from "../../../shared/component/dialogs/confirm-dialog/confirm-dialog.component";
 import {DialogService} from "@progress/kendo-angular-dialog";
 import {Router} from "@angular/router";
+import {LoginService} from "../../../shared/service/login.service";
+import {UserService} from "../../../shared/service/user.service";
 
 @Component({
     selector: 'app-dashboard-draw-fish-family',
@@ -18,6 +20,11 @@ import {Router} from "@angular/router";
 })
 
 export class DrawFishFamilyComponent implements OnInit{
+
+    /** user email */
+    public userEmail: string = '';
+    /** user Id */
+    public userId: number = 0;
 
     /** 결과지 슬라이더 열기 */
     public expanded = false;
@@ -162,12 +169,17 @@ export class DrawFishFamilyComponent implements OnInit{
      * @param mindReaderControlService
      * @param dialogService
      * @param router
+     * @param loginProvider
+     * @param userService
      */
     constructor(
         @Inject(DOCUMENT) private document: any,
         private mindReaderControlService:MindReaderControlService,
         private dialogService: DialogService,
         private router: Router,
+        private loginProvider: LoginService,
+        private userService:UserService
+
 
     ) {}
 
@@ -228,7 +240,22 @@ export class DrawFishFamilyComponent implements OnInit{
                         this.familyTypeList = data;
                     }
                 }
+            });
+
+
+        // 사용자 정보 조회
+        this.userEmail = this.loginProvider.getUserId();
+        this.userService.getUserData(this.userEmail)
+            .subscribe({
+                next: async (data) => {
+                    if(data){
+                        this.userId = data.id;
+                        console.log(data);
+                    }
+                }
             })
+
+
     }
 
     /**
@@ -425,7 +452,7 @@ export class DrawFishFamilyComponent implements OnInit{
             if (result.text === 'yes') {
                 this.seqItems[this.selectedSeq].imgUrl = this.canvas.rasterize(this.selectedSeq);
                 this.canvasImage = this.seqItems[this.selectedSeq].imgUrl;
-                console.log(this.canvasImage);
+
 
                 // full screen 닫기
                 this.closeFullscreen();

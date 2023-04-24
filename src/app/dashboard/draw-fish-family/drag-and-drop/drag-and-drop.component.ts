@@ -1,4 +1,13 @@
-import {AfterViewInit, asNativeElements, Component, ElementRef, Injectable, OnInit, ViewChild} from "@angular/core";
+import {
+    AfterViewInit,
+    asNativeElements,
+    Component,
+    ElementRef,
+    Injectable,
+    Input,
+    OnInit,
+    ViewChild
+} from "@angular/core";
 import { fabric } from 'fabric';
 import {MrObjectModel} from "../../../../shared/model/mr-object.model";
 import {MindReaderControlService} from "../../../../shared/service/mind-reader-control.service";
@@ -20,6 +29,8 @@ export class DragAndDropComponent implements AfterViewInit{
 
     @ViewChild('htmlCanvas', {read: ElementRef})
     public htmlCanvasElement!: ElementRef;
+
+    @Input() userId = 0;
 
     public canvas: fabric.Canvas;
 
@@ -358,7 +369,7 @@ export class DragAndDropComponent implements AfterViewInit{
                     dataSetSeq: dataSetSeq,
                     name: Number(item.name),
                     objectCodeId: item.toObject().objectCodeId,
-                    userId: 11,
+                    userId: this.userId,
                     width: item.getScaledWidth(),
                     height: item.getScaledHeight(),
                     x: item.getCenterPoint().x,
@@ -410,7 +421,7 @@ export class DragAndDropComponent implements AfterViewInit{
             id : 9999,
             seq: dataSetSeq,
             testDate: new Date(),
-            userId: 11,
+            userId: this.userId,
             patientInfoId: 11,
             fishbowlCode: this.fishbowlCode,
             waterHeight: this.waterHeight,
