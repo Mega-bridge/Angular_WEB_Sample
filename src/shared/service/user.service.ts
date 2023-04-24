@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {UserModel} from "../model/user.model";
 import {MrFamilyCodeResponse} from "../model/response/mr-family-code.response.model";
+import {LoginService} from "./login.service";
 
 
 @Injectable({
@@ -16,18 +17,22 @@ export class UserService {
      * 생성자
      * @param http
      */
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient,
+                private loginProvider: LoginService) { }
 
 
     /**
-     * 로그인 처리
+     * 사용자 생성
      */
     signUp(request: UserModel):Observable<UserModel> {
         return this.http.post<UserModel>(`${this.SEVER_URL}/`,request);
     }
 
-    getAllUser():Observable<MrFamilyCodeResponse[]> {
-        return this.http.get<MrFamilyCodeResponse[]>(`${this.SEVER_URL}/userList`);
+    /**
+     * 모든 사용자 조회
+     */
+    getAllUser():Observable<UserModel[]> {
+        return this.http.get<UserModel[]>(`${this.SEVER_URL}/userList`);
     }
 
 
