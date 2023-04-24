@@ -29,7 +29,7 @@ export class DrawFishFamilyComponent implements OnInit{
     /** 회차 items */
     public seqItems = [
         {
-            id: 1,
+            id: 0,
             text: "1회차",
             date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
             imgUrl: ''
@@ -38,7 +38,7 @@ export class DrawFishFamilyComponent implements OnInit{
     ];
 
     /** 회차 선택 */
-    public selectedSeq: number = 1;
+    public selectedSeq: number = 0;
 
     /** object url */
     public objectData:MrObjectImageResponse[] = [];
@@ -106,7 +106,7 @@ export class DrawFishFamilyComponent implements OnInit{
 
     // 선태된 object
     /** 어항 선택 */
-    public selectFishBowl: string =  '';
+    public selectedFishBowl: string =  '';
     /** 물고기 표정 선택 */
     public selectedFishFace:string = '';
     /** 물고기 비늘 선택 */
@@ -242,8 +242,10 @@ export class DrawFishFamilyComponent implements OnInit{
 
     selectWater(opt: string) {
         this.showFishBowl = false;
-        this.selectFishBowl = opt;
-        this.canvas.setWater(opt);
+        this.selectedFishBowl = opt;
+
+        const fishbowlCode = this.objectData.filter(item => item.path == opt ).map(item => item.objectCodeId);
+        this.canvas.setWater(opt,fishbowlCode[0]);
     }
 
     /**
@@ -346,8 +348,6 @@ export class DrawFishFamilyComponent implements OnInit{
      * @param img
      */
     selectEtcObject(event:any, img: any):void {
-        console.log(event);
-        console.log(img);
         this.selectedEtc = img;
         this.selectedObjectList.push(img);
 
@@ -361,7 +361,9 @@ export class DrawFishFamilyComponent implements OnInit{
      */
     public getImgPolaroid(img:string) {
 
-        this.canvas.getImgPolaroid(img,this.selectedFamilyType);
+        const objectCodeId = this.objectData.filter(item => item.path == img ).map(item => item.objectCodeId);
+
+        this.canvas.getImgPolaroid(img,objectCodeId[0],this.selectedFamilyType);
 
         // 물고기 선택 후 버튼 해제
         this.familyTypeList[this.selectedFamilyType].selected=false;
@@ -372,6 +374,7 @@ export class DrawFishFamilyComponent implements OnInit{
         this.selectedFishBody='';
         this.selectedFishFace='';
         this.selectedEtc = '';
+        this.selectedFishBowl = '';
 
         // popUp 자동 닫힘
         this.closeOpenPopUp();
@@ -396,8 +399,8 @@ export class DrawFishFamilyComponent implements OnInit{
      * canvas 저장하기
      */
     public rasterize() {
-        this.seqItems[this.selectedSeq - 1].imgUrl = this.canvas.rasterize();
-        this.canvasImage = this.seqItems[this.selectedSeq - 1].imgUrl;
+        this.seqItems[this.selectedSeq].imgUrl = this.canvas.rasterize(this.selectedSeq);
+        this.canvasImage = this.seqItems[this.selectedSeq].imgUrl;
 
         // full screen 닫기
         this.closeFullscreen();
@@ -410,7 +413,7 @@ export class DrawFishFamilyComponent implements OnInit{
         const downloadLink = document.createElement('a');
         document.body.appendChild(downloadLink);
         downloadLink.href = this.canvasImage;
-        downloadLink.download = this.seqItems[this.selectedSeq - 1].date + '.png';
+        downloadLink.download = this.seqItems[this.selectedSeq].date + '.png';
         downloadLink.click();
 
     }
@@ -457,7 +460,7 @@ export class DrawFishFamilyComponent implements OnInit{
      */
     selectSeq(item: any){
         this.selectedSeq = item.id;
-        this.canvasImage = this.seqItems[this.selectedSeq - 1].imgUrl;
+        this.canvasImage = this.seqItems[this.selectedSeq].imgUrl;
     }
 
 
@@ -467,7 +470,7 @@ export class DrawFishFamilyComponent implements OnInit{
     addSeq(){
         console.log(this.seqItems.length);
         this.seqItems.push({
-            id: this.seqItems.length + 1,
+            id: this.seqItems.length,
             text: `${this.seqItems.length + 1}회차`,
             date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
             imgUrl: ''

@@ -139,7 +139,7 @@
                 <div  class="pop-up-select-image">
                     <div *ngFor="let img of fishBowlImgList" class="img-wrap">
                         <img  (click)="selectWater(img)" [src]="img"  alt=""
-                              [style.box-shadow]="selectFishBowl === img ? '0 0 4px blue' : ''"/>
+                              [style.box-shadow]="selectedFishBowl === img ? '0 0 4px blue' : ''"/>
                     </div>
                 </div>
             </kendo-popup>

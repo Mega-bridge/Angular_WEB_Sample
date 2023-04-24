@@ -1,5 +1,10 @@
-import {AfterViewInit, Component, ElementRef, Injectable, OnInit, ViewChild} from "@angular/core";
+import {AfterViewInit, asNativeElements, Component, ElementRef, Injectable, OnInit, ViewChild} from "@angular/core";
 import { fabric } from 'fabric';
+import {MrObjectModel} from "../../../../shared/model/mr-object.model";
+import {MindReaderControlService} from "../../../../shared/service/mind-reader-control.service";
+import {HttpErrorResponse} from "@angular/common/http";
+import {AlertService} from "../../../../shared/service/alert.service";
+import {MrDataSetRequestModel} from "../../../../shared/model/request/mr-data-set.request.model";
 
 
 @Component({
@@ -17,6 +22,15 @@ export class DragAndDropComponent implements AfterViewInit{
     public htmlCanvasElement!: ElementRef;
 
     public canvas: fabric.Canvas;
+
+    /** 어항 코드 */
+    public fishbowlCode: number = 0;
+
+    /** object request data 생성 */
+    public mrObjectModelList: MrObjectModel[] = [];
+
+    /** object data set 생성 */
+    public mrDataSetModel: MrDataSetRequestModel = new MrDataSetRequestModel();
 
 
     public props = {
@@ -44,15 +58,21 @@ export class DragAndDropComponent implements AfterViewInit{
     };
 
     public json: any;
-    public textEditor = false;
-    private imageEditor = false;
-    public figureEditor = false;
     public selected: any;
     public moved: any;
 
+    public objectSeq: number = 0;
 
 
-    constructor() {
+    /**
+     *
+     * @param mindReaderControlService
+     * @param alertService
+     */
+    constructor(
+        public mindReaderControlService: MindReaderControlService,
+        private alertService: AlertService,
+    ) {
         this.canvas = new fabric.Canvas('canvas');
     }
 
@@ -173,9 +193,11 @@ export class DragAndDropComponent implements AfterViewInit{
     /**
      * 어항 설정
      * @param opt
+     * @param fishbowlCode
      */
-    setWater(opt: string){
+    setWater(opt: string, fishbowlCode: number){
         this.waterUrl = opt;
+        this.fishbowlCode = fishbowlCode;
         this.canvas.setBackgroundImage(this.waterUrl, this.canvas.renderAll.bind(this.canvas), {
             top: 150,
             left: -30,
@@ -189,8 +211,9 @@ export class DragAndDropComponent implements AfterViewInit{
      * 선택된 object canvas에 추가
      * @param event
      * @param familyType
+     * @param objectCodeId
      */
-    getImgPolaroid(event: any, familyType?: any) {
+    getImgPolaroid(event: any, objectCodeId: any,familyType?: any) {
         const el = event;
         fabric.loadSVGFromURL(el, (objects, options) => {
             const image = fabric.util.groupSVGElements(objects, options);
@@ -206,7 +229,7 @@ export class DragAndDropComponent implements AfterViewInit{
                 strokeWidth:10,
                 name:familyType
             });
-            this.extend(image, this.randomId());
+            this.extend(image, this.randomId(), new Date(),objectCodeId);
             //console.log(image.toObject().id);
             image.scale(0.15);
             this.canvas.add(image);
@@ -237,12 +260,16 @@ export class DragAndDropComponent implements AfterViewInit{
      * object에 id 프로퍼티 추가
      * @param obj
      * @param id
+     * @param createDate
+     * @param objectCodeId
      */
-    extend(obj:any, id:any) {
+    extend(obj:any, id:any, createDate: Date,objectCodeId:any) {
         obj.toObject = ((toObject) => {
             return function() {
                 return fabric.util.object.extend(toObject.call(obj), {
-                    id
+                    id,
+                    objectCodeId,
+                    createDate
                 });
             };
         })(obj.toObject);
@@ -252,7 +279,9 @@ export class DragAndDropComponent implements AfterViewInit{
      * object id 생성
      */
     randomId() {
-        return Date();
+        this.objectSeq += 1;
+        return this.objectSeq;
+        // return new Date();
     }
 
     /**
@@ -270,15 +299,88 @@ export class DragAndDropComponent implements AfterViewInit{
      */
     getId() {
         this.props.id = this.canvas.getActiveObject()?.toObject().id;
+
     }
     // getOpacity() {
     //     this.props.opacity = this.getActiveStyle('opacity', null) * 100;
     // }
 
 
-    rasterize() {
+    rasterize(dataSetSeq: any) {
         const image = new Image();
         image.src = this.canvas.toDataURL({format: 'png'});
+
+        this.mrObjectModelList = this.canvas.getObjects().map((item:fabric.Object, index) => {
+                const mrList: MrObjectModel = {
+                    id: item.toObject().id,
+                    angle: item.angle,
+                    dataSetSeq: dataSetSeq,
+                    name: Number(item.name),
+                    objectCodeId: item.toObject().objectCodeId,
+                    userId: 11,
+                    width: item.getScaledWidth(),
+                    height: item.getScaledHeight(),
+                    x: item.getCenterPoint().x,
+                    y: item.getCenterPoint().y,
+                    objectSeq: item.toObject().id,
+                    createDate: item.toObject().createDate
+
+                };
+                return mrList;
+            }
+
+        );
+        console.log(this.mrObjectModelList);
+
+        this.mrDataSetModel = this.canvas.getObjects().map((item) => {
+            const mrDataSet: MrDataSetRequestModel = {
+                id : 0,
+                seq: dataSetSeq,
+                testDate: new Date(),
+                userId: 11,
+                patientInfoId: 11,
+                fishbowlCode: this.fishbowlCode,
+                waterHeight: this.fishbowlCode,
+                controlCount: 0,
+                fishCount: this.canvas.getObjects().length,
+                etcCount:this.canvas.getObjects().length,
+                objectId: 0
+
+            };
+            return mrDataSet;
+        })[0]
+
+        console.log(this.mrDataSetModel);
+
+
+        // 회차별 오브젝트 생성
+        this.mindReaderControlService.postObject(this.mrObjectModelList)
+            .subscribe({
+                next: async (data) => {
+                    if(data){
+                        console.log(data);
+                    }
+                    else{
+                        console.log('실패....^^');
+                    }
+                },
+                error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
+                });
+
+        // 회차별 DataSet 생성
+        this.mindReaderControlService.postDataSet(this.mrDataSetModel)
+            .subscribe({
+                next: async(data) => {
+                    if(data){
+                        console.log(data);
+                    }
+                    else{
+                        console.log('실패....^^');
+                    }
+                },
+                error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
+            });
+
 
         this.canvas.clear();
         return image.src;

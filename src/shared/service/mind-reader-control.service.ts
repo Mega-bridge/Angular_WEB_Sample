@@ -6,6 +6,8 @@ import {MrObjectImageResponse} from "../model/response/mr-object-image.response.
 import {MrGenderCodeResponse} from "../model/response/mr-gender-code.response.model";
 import {MrJobCodeResponse} from "../model/response/mr-job-code.response.model";
 import {MrFamilyRelationCodeResponse} from "../model/response/mr-family-relation-code.response.model";
+import {MrObjectModel} from "../model/mr-object.model";
+import {MrDataSetRequestModel} from "../model/request/mr-data-set.request.model";
 
 @Injectable({
     providedIn: 'root'
@@ -54,6 +56,20 @@ export class MindReaderControlService {
      */
     getJob(): Observable<MrJobCodeResponse[]> {
         return this.http.get<MrJobCodeResponse[]>(`${this.MR_CONTROL_URL}/job`);
+    }
+
+    /**
+     * 회차별 오브젝트 생성
+     */
+    postObject(request: MrObjectModel[]) : Observable<MrObjectModel[]> {
+        return this.http.post<MrObjectModel[]>(`${this.MR_CONTROL_URL}/seq/object`, request);
+    }
+
+    /**
+     * 회차별 DataSet 생성
+     */
+    postDataSet(request: MrDataSetRequestModel) : Observable<MrDataSetRequestModel> {
+        return this.http.post<MrDataSetRequestModel>(`${this.MR_CONTROL_URL}/dataSet`, request);
     }
 }
 

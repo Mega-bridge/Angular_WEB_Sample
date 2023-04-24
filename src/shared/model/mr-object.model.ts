@@ -18,10 +18,13 @@ export class MrObjectModel {
 
     public x: number = 0;
     public y: number = 0;
-    public angle: number = 0;
+    public angle: number | undefined = 0;
     public width: number = 0;
     public height: number = 0;
 
     // 저장된 순서
     public objectSeq: number = 0;
+
+    // 오브젝트 생성시 timestamp
+    public createDate: Date | null =  null;
 }
