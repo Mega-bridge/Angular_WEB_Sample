@@ -5,12 +5,14 @@ import { MatDialogRef } from '@angular/material/dialog';
 import {DialogCloseResult, DialogRef, DialogService} from "@progress/kendo-angular-dialog";
 
 @Component({
-  selector: 'app-logout-confirm',
-  templateUrl: './logout-confirm.component.html',
-  styleUrls:['logout-confirm.component.scss']
+  selector: 'app-confirm-dialog',
+  templateUrl: './confirm-dialog.component.html',
+  styleUrls:['confirm-dialog.component.scss']
 })
-export class LogoutConfirmComponent {
+export class ConfirmDialogComponent {
   public mode: string = 'dark-1';
+
+  public text: string = '';
   constructor(
     private dialogRef: DialogRef,
   ) {}
@@ -26,7 +28,7 @@ export class LogoutConfirmComponent {
    * 로그아웃한다
    */
   public submit(): void {
-    this.dialogRef.close({text: 'logout'});
+    this.dialogRef.close({text: 'yes'});
   }
 
 
