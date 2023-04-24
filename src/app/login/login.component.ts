@@ -49,9 +49,7 @@ export class LoginComponent {
         this.loginProvider.login(request)
             .subscribe({
                 next: async (response) => {
-                    console.log(response)
                     if (response) {
-
                         this.tutorial();
                     }
                 },

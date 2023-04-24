@@ -12,6 +12,9 @@ export class LoginService {
 
     public SEVER_URL = 'http://localhost:8080/auth';
 
+    /** 로그인한 email */
+    public userId: string= '';
+
     /**
      * 생성자
      * @param http
@@ -23,6 +26,15 @@ export class LoginService {
      * 로그인 처리
      */
     login(request: LoginRequestModel):Observable<LoginResultResponse> {
+        this.userId=request.email;
         return this.http.post<LoginResultResponse>(`${this.SEVER_URL}/login`,request);
     }
+
+    /**
+     * login한 id 가져오기
+     */
+    getUserId(){
+        return this.userId;
+    }
+
 }
