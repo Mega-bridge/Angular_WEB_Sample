@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" (keydown.enter)="login()">
     <div class="login-wrap" [formGroup]="loginForm">
         <div class="title">
             <span style="font-size:30px;">Login</span>
@@ -19,7 +19,7 @@
             </div>
         </div>
         <div style="text-align: center">
-            <button class="button login" (click)="login()">로그인</button>
+            <button class="button login"  (click)="login()">로그인</button>
         </div>
         <div style="text-align: right; margin: 10px;">회원이 아니신가요?
             <b style="text-decoration: underline;" (click)="signup()">회원가입</b>
