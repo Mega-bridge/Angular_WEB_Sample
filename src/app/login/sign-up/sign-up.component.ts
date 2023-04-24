@@ -12,10 +12,15 @@ import {UserModel} from "../../../shared/model/user.model";
     styleUrls: ['sign-up.component.scss']
 })
 
-export class SignUpComponent{
+export class SignUpComponent implements OnInit{
 
     /** 개인정보 수집 및 이용 여부 */
     public isInfoAgree: boolean = false;
+
+    /** userData */
+    public userData: any;
+
+    public idCheck: boolean = false;
 
     /**
      * 생성자
@@ -43,6 +48,25 @@ export class SignUpComponent{
         updateDate: new FormControl(new Date()),
         role: new FormControl('')
     });
+
+    ngOnInit() {
+        this.dataLoad();
+    }
+
+    /**
+     * 회원 data load
+     */
+    dataLoad(){
+        // 가족 리스트 조회
+        this.userProvider.getAllUser()
+            .subscribe({
+                next: async (data) => {
+                    if (data){
+                        this.userData = data;
+                    }
+                }
+            });
+    }
 
     /**
      * 회원가입
@@ -83,6 +107,27 @@ export class SignUpComponent{
      */
     checkEvent(){
         this.isInfoAgree=!this.isInfoAgree;
+    }
+
+    /**
+     * ID 중복확인 event
+     */
+    duplicationCheck() {
+        for (let i = 0; i < this.userData.length; i++) {
+            if (this.signUpForm.controls['email'].value === this.userData[i].email) {
+                this.alertService.openAlert('중복된 Email입니다. 다른 Email를 입력해주세요.');
+                break;
+            }
+            else if(this.signUpForm.controls['email'].value.length<=0) {
+                this.alertService.openAlert('Email을 입력해주십시오.');
+                break;
+            }
+            else{
+                this.alertService.openAlert('사용 가능한 Email입니다.')
+                this.idCheck = true;
+                break;
+            }
+        }
     }
 
     /**

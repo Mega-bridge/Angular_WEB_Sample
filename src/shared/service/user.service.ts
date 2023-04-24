@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {UserModel} from "../model/user.model";
+import {MrFamilyCodeResponse} from "../model/response/mr-family-code.response.model";
 
 
 @Injectable({
@@ -23,5 +24,9 @@ export class UserService {
      */
     signUp(request: UserModel):Observable<UserModel> {
         return this.http.post<UserModel>(`${this.SEVER_URL}/`,request);
+    }
+
+    getAllUser():Observable<MrFamilyCodeResponse[]> {
+        return this.http.get<MrFamilyCodeResponse[]>(`${this.SEVER_URL}/userList`);
     }
 }
