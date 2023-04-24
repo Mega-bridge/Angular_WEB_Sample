@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {LoginRequestModel} from "../model/request/login.request.model";
 import {LoginResultResponse} from "../model/response/login-result.response.model";
+import {MrFamilyCodeResponse} from "../model/response/mr-family-code.response.model";
 
 
 @Injectable({
@@ -31,7 +32,7 @@ export class LoginService {
     }
 
     /**
-     * login한 id 가져오기
+     * login한 email 가져오기
      */
     getUserId(){
         return this.userId;
