@@ -26,6 +26,18 @@ export class DragAndDropComponent implements AfterViewInit{
     /** 어항 코드 */
     public fishbowlCode: number = 0;
 
+    /** 어항 물 높이 */
+    public waterHeight: number = 0;
+
+    /** event count */
+    public controlCount: number = 0;
+
+    /** fish count */
+    public fishCount: number = 0;
+
+    /** etc count */
+    public etcCount: number = 0;
+
     /** object request data 생성 */
     public mrObjectModelList: MrObjectModel[] = [];
 
@@ -159,6 +171,8 @@ export class DragAndDropComponent implements AfterViewInit{
             // console.log('화면 X Point: ' + e.e.clientX);
             // console.log('화면 Y Point: ' + e.e.clientY);
             console.log('-----------------------');
+
+            this.controlCount += 1;
         });
 
         // 각도값
@@ -167,6 +181,8 @@ export class DragAndDropComponent implements AfterViewInit{
             console.log('////////Object Rotating///////////////');
             console.log('angle: ' + movedObject.angle);
             console.log('-----------------------');
+
+            this.controlCount += 1;
         })
 
 
@@ -181,6 +197,8 @@ export class DragAndDropComponent implements AfterViewInit{
             console.log('Object Height:' + modifiedObject?.getScaledHeight());
             // console.log('상하 반전 여부:' + modifiedObject?.cacheHeight);
             console.log('-----------------------');
+
+            this.controlCount += 1;
         });
 
     }
@@ -306,10 +324,33 @@ export class DragAndDropComponent implements AfterViewInit{
     // }
 
 
+    /**
+     * canvas 저장
+     * @param dataSetSeq
+     */
     rasterize(dataSetSeq: any) {
+
+        // 회차별 오브젝트 생성
+        this.createObjectSet(dataSetSeq);
+
+        // 회차별 dataSet 생성
+        this.createDataSet(dataSetSeq);
+
+
+        // cavas img로 저장
         const image = new Image();
         image.src = this.canvas.toDataURL({format: 'png'});
 
+        this.canvas.clear();
+        return image.src;
+    }
+
+    /**
+     * 회차 별 object 생성
+     * @param dataSetSeq
+     */
+    createObjectSet(dataSetSeq: number):void {
+        // 회차별 오브젝트 생성 request model
         this.mrObjectModelList = this.canvas.getObjects().map((item:fabric.Object, index) => {
                 const mrList: MrObjectModel = {
                     id: item.toObject().id,
@@ -330,27 +371,9 @@ export class DragAndDropComponent implements AfterViewInit{
             }
 
         );
+
         console.log(this.mrObjectModelList);
 
-        this.mrDataSetModel = this.canvas.getObjects().map((item) => {
-            const mrDataSet: MrDataSetRequestModel = {
-                id : 0,
-                seq: dataSetSeq,
-                testDate: new Date(),
-                userId: 11,
-                patientInfoId: 11,
-                fishbowlCode: this.fishbowlCode,
-                waterHeight: this.fishbowlCode,
-                controlCount: 0,
-                fishCount: this.canvas.getObjects().length,
-                etcCount:this.canvas.getObjects().length,
-                objectId: 0
-
-            };
-            return mrDataSet;
-        })[0]
-
-        console.log(this.mrDataSetModel);
 
 
         // 회차별 오브젝트 생성
@@ -365,7 +388,41 @@ export class DragAndDropComponent implements AfterViewInit{
                     }
                 },
                 error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
-                });
+            });
+    }
+
+
+    /**
+     * 회차 별 dataSet 생성
+     * @param dataSetSeq
+     */
+    createDataSet(dataSetSeq: number):void{
+        // canvas 내 objectCodeId List
+        const objectCodeList = this.canvas.getObjects().map(item => item.toObject().objectCodeId);
+
+        // Object code 구하기
+        this.getObjectCode(0, objectCodeList);
+        this.getObjectCode(1, objectCodeList);
+        this.getObjectCode(2, objectCodeList);
+
+        // 회차별 데이터셋 생성 request model
+        this.mrDataSetModel = {
+            id : 0,
+            seq: dataSetSeq,
+            testDate: new Date(),
+            userId: 11,
+            patientInfoId: 11,
+            fishbowlCode: this.fishbowlCode,
+            waterHeight: this.waterHeight,
+            controlCount: this.controlCount,
+            fishCount: this.fishCount,
+            etcCount:this.etcCount,
+            resultSheetId: 0
+        };
+
+        console.log(this.mrDataSetModel);
+
+
 
         // 회차별 DataSet 생성
         this.mindReaderControlService.postDataSet(this.mrDataSetModel)
@@ -380,10 +437,44 @@ export class DragAndDropComponent implements AfterViewInit{
                 },
                 error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
             });
+    }
 
 
-        this.canvas.clear();
-        return image.src;
+    /**
+     * water height code & 물고기 객체 수 & etc 객체 수 구하기
+     * @param type
+     * @param objectCodeList
+     */
+    getObjectCode(type:number, objectCodeList:number[]):void {
+        this.mindReaderControlService.getObjectCode(type)
+            .subscribe({
+                next:  (data) => {
+                    if(data){
+                        // 물고기
+                        if(type == 0) {
+                            const fishList = data.map(item => item.id);
+                            objectCodeList.map(item => fishList.includes(item)? this.fishCount++ : this.fishCount);
+                            console.log('fish: ' + this.fishCount);
+                            return;
+                        }
+                        // 어항
+                        else if(type == 1) {
+                            this.waterHeight = data.filter(item => item.id == this.fishbowlCode)[0].waterHeight;
+                            return;
+                        }
+                        // etc
+                        else{
+                            const etcList = data.map(item => item.id);
+                            objectCodeList.map(item => etcList.includes(item)? this.etcCount++ : this.etcCount);
+                            console.log('etc: ' + this.etcCount);
+                            return;
+                        }
+
+
+
+                    }
+                }
+            })
     }
 
 

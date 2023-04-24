@@ -8,6 +8,7 @@ import {MrJobCodeResponse} from "../model/response/mr-job-code.response.model";
 import {MrFamilyRelationCodeResponse} from "../model/response/mr-family-relation-code.response.model";
 import {MrObjectModel} from "../model/mr-object.model";
 import {MrDataSetRequestModel} from "../model/request/mr-data-set.request.model";
+import {MrObjectCodeResponseModel} from "../model/response/mr-object-code.response.model";
 
 @Injectable({
     providedIn: 'root'
@@ -70,6 +71,13 @@ export class MindReaderControlService {
      */
     postDataSet(request: MrDataSetRequestModel) : Observable<MrDataSetRequestModel> {
         return this.http.post<MrDataSetRequestModel>(`${this.MR_CONTROL_URL}/dataSet`, request);
+    }
+
+    /**
+     * 타입별 오브젝트 코드 조회
+     */
+    getObjectCode(type: number) :Observable<MrObjectCodeResponseModel[]> {
+        return this.http.get<MrObjectCodeResponseModel[]>(`${this.MR_CONTROL_URL}/${type}/objectCode`);
     }
 }
 

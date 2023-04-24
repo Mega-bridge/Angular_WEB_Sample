@@ -4,6 +4,8 @@
 export class MrDataSetRequestModel {
     public id: number = 0;
     public seq: number = 0;
+
+    // 회차 추가시 timestamp
     public testDate : Date | null = null;
 
     // user.id
@@ -18,11 +20,15 @@ export class MrDataSetRequestModel {
     // mr_object_code.water_height
     public waterHeight: number = 0;
 
+    // event 횟수
     public controlCount: number = 0;
+    // 물고기 갯수
     public fishCount: number = 0;
+    // 기타 갯수
     public etcCount: number = 0;
 
-    // mr_object.id
-    public objectId: number = 0;
+    // mr_result_sheet.id
+    public resultSheetId: number = 0;
+
 
 }
