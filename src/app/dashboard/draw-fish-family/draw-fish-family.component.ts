@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, OnInit, TemplateRef, ViewChild} from "@angular/core";
+import {Component, ElementRef, Inject, OnInit, TemplateRef, ViewChild, ViewContainerRef} from "@angular/core";
 import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component"
 import {Align} from "@progress/kendo-angular-popup";
 import {DOCUMENT} from "@angular/common";
@@ -7,6 +7,9 @@ import {MrObjectImageResponse} from "../../../shared/model/response/mr-object-im
 import {MindReaderControlService} from "../../../shared/service/mind-reader-control.service";
 import {single} from "rxjs";
 import {DrawerPosition} from "@progress/kendo-angular-layout";
+import {ConfirmDialogComponent} from "../../../shared/component/dialogs/confirm-dialog/confirm-dialog.component";
+import {DialogService} from "@progress/kendo-angular-dialog";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-dashboard-draw-fish-family',
@@ -149,14 +152,23 @@ export class DrawFishFamilyComponent implements OnInit{
     @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
     @ViewChild('canvas', { static: true }) canvas_el!: ElementRef<HTMLCanvasElement>;
 
+    /** 다이얼로그 생성 컨테이너 지정 */
+    @ViewChild('dialog', {read: ViewContainerRef})
+    public dialogRef!: ViewContainerRef;
+
     /**
      *
      * @param document
      * @param mindReaderControlService
+     * @param dialogService
+     * @param router
      */
     constructor(
         @Inject(DOCUMENT) private document: any,
-        private mindReaderControlService:MindReaderControlService
+        private mindReaderControlService:MindReaderControlService,
+        private dialogService: DialogService,
+        private router: Router,
+
     ) {}
 
     ngOnInit() {
@@ -399,11 +411,29 @@ export class DrawFishFamilyComponent implements OnInit{
      * canvas 저장하기
      */
     public rasterize() {
-        this.seqItems[this.selectedSeq].imgUrl = this.canvas.rasterize(this.selectedSeq);
-        this.canvasImage = this.seqItems[this.selectedSeq].imgUrl;
+        const dialog = this.dialogService.open({
+            title: "Please confirm",
+            content: ConfirmDialogComponent,
+            appendTo: this.dialogRef,
+            width: 450,
+            height: 200,
+            minWidth: 250,
+        });
+        dialog.content.instance.text = '저장 시 수정이 불가합니다.<br>그리기를 끝내시겠습니까?';
 
-        // full screen 닫기
-        this.closeFullscreen();
+        dialog.result.subscribe((result: any) => {
+            if (result.text === 'yes') {
+                this.seqItems[this.selectedSeq].imgUrl = this.canvas.rasterize(this.selectedSeq);
+                this.canvasImage = this.seqItems[this.selectedSeq].imgUrl;
+                console.log(this.canvasImage);
+
+                // full screen 닫기
+                this.closeFullscreen();
+            }
+        });
+
+
+
     }
 
     /**

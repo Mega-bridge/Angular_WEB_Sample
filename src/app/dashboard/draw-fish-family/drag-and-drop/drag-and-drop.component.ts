@@ -353,7 +353,7 @@ export class DragAndDropComponent implements AfterViewInit{
         // 회차별 오브젝트 생성 request model
         this.mrObjectModelList = this.canvas.getObjects().map((item:fabric.Object, index) => {
                 const mrList: MrObjectModel = {
-                    id: item.toObject().id,
+                    id: 9999,
                     angle: item.angle,
                     dataSetSeq: dataSetSeq,
                     name: Number(item.name),
@@ -407,7 +407,7 @@ export class DragAndDropComponent implements AfterViewInit{
 
         // 회차별 데이터셋 생성 request model
         this.mrDataSetModel = {
-            id : 0,
+            id : 9999,
             seq: dataSetSeq,
             testDate: new Date(),
             userId: 11,
