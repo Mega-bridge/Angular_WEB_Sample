@@ -16,6 +16,8 @@ import {AlertService} from "../../../../shared/service/alert.service";
 import {MrDataSetRequestModel} from "../../../../shared/model/request/mr-data-set.request.model";
 
 
+
+
 @Component({
     selector: 'app-dashboard-drag-and-drop',
     templateUrl: 'drag-and-drop.component.html',
@@ -30,7 +32,7 @@ export class DragAndDropComponent implements AfterViewInit{
     @ViewChild('htmlCanvas', {read: ElementRef})
     public htmlCanvasElement!: ElementRef;
 
-    @Input() userId = 0;
+    @Input() userEmail:string = '';
 
     public canvas: fabric.Canvas;
 
@@ -369,7 +371,7 @@ export class DragAndDropComponent implements AfterViewInit{
                     dataSetSeq: dataSetSeq,
                     name: Number(item.name),
                     objectCodeId: item.toObject().objectCodeId,
-                    userId: this.userId,
+                    userEmail: this.userEmail,
                     width: item.getScaledWidth(),
                     height: item.getScaledHeight(),
                     x: item.getCenterPoint().x,
@@ -407,25 +409,25 @@ export class DragAndDropComponent implements AfterViewInit{
      * 회차 별 dataSet 생성
      * @param dataSetSeq
      */
-    createDataSet(dataSetSeq: number):void{
+    async createDataSet(dataSetSeq: number) {
         // canvas 내 objectCodeId List
         const objectCodeList = this.canvas.getObjects().map(item => item.toObject().objectCodeId);
 
         // Object code 구하기
-        this.getObjectCode(0, objectCodeList);
-        this.getObjectCode(1, objectCodeList);
-        this.getObjectCode(2, objectCodeList);
+        await this.getObjectCode(0, objectCodeList);
+        await this.getObjectCode(1, objectCodeList);
+        await this.getObjectCode(2, objectCodeList);
 
         // 회차별 데이터셋 생성 request model
         this.mrDataSetModel = {
             id : 9999,
             seq: dataSetSeq,
             testDate: new Date(),
-            userId: this.userId,
-            patientInfoId: 11,
+            userEmail: this.userEmail,
+            patientInfoId: null,
             fishbowlCode: this.fishbowlCode,
             waterHeight: this.waterHeight,
-            controlCount: this.controlCount,
+            actionCount: this.controlCount,
             fishCount: this.fishCount,
             etcCount:this.etcCount,
             resultSheetId: 0
@@ -456,36 +458,40 @@ export class DragAndDropComponent implements AfterViewInit{
      * @param type
      * @param objectCodeList
      */
-    getObjectCode(type:number, objectCodeList:number[]):void {
-        this.mindReaderControlService.getObjectCode(type)
-            .subscribe({
-                next:  (data) => {
-                    if(data){
-                        // 물고기
-                        if(type == 0) {
-                            const fishList = data.map(item => item.id);
-                            objectCodeList.map(item => fishList.includes(item)? this.fishCount++ : this.fishCount);
-                            console.log('fish: ' + this.fishCount);
-                            return;
+    getObjectCode(type:number, objectCodeList:number[]) {
+        return new Promise((resolve,reject) => {
+            this.mindReaderControlService.getObjectCode(type)
+                .subscribe({
+                    next: (data) => {
+                        if(data){
+                            // 물고기
+                            if(type == 0) {
+                                const fishList = data.map(item => item.id);
+                                objectCodeList.map(item => fishList.includes(item)? this.fishCount++ : this.fishCount);
+                                console.log('fish: ' + this.fishCount);
+                                return;
+                            }
+                            // 어항
+                            else if(type == 1) {
+                                this.waterHeight = data.filter(item => item.id == this.fishbowlCode)[0].waterHeight;
+                                return;
+                            }
+                            // etc
+                            else{
+                                const etcList = data.map(item => item.id);
+                                objectCodeList.map(item => etcList.includes(item)? this.etcCount++ : this.etcCount);
+                                console.log('etc: ' + this.etcCount);
+                                return;
+                            }
                         }
-                        // 어항
-                        else if(type == 1) {
-                            this.waterHeight = data.filter(item => item.id == this.fishbowlCode)[0].waterHeight;
-                            return;
-                        }
-                        // etc
-                        else{
-                            const etcList = data.map(item => item.id);
-                            objectCodeList.map(item => etcList.includes(item)? this.etcCount++ : this.etcCount);
-                            console.log('etc: ' + this.etcCount);
-                            return;
-                        }
-
-
-
+                    },
+                    complete: () => {
+                        resolve("done");
                     }
-                }
-            })
+
+                });
+
+        });
     }
 
 

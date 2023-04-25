@@ -8,7 +8,7 @@ export class MrObjectModel {
     public dataSetSeq: number = 0;
 
     // user.id
-    public userId: number = 0;
+    public userEmail: string = '';
 
     // mr_object_code.id
     public objectCodeId: number = 0;
