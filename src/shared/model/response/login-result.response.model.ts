@@ -6,5 +6,5 @@ import {UserModel} from "../user.model";
 export class LoginResultResponse {
     public jwt: string = '';
     public jwtExpTime: Date|null = null;
-    public User: UserModel = new UserModel();
+    public user: UserModel = new UserModel();
 }

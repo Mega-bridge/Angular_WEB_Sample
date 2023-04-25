@@ -22,7 +22,7 @@ import {UserService} from "../../../shared/service/user.service";
 export class DrawFishFamilyComponent implements OnInit{
 
     /** user email */
-    public userEmail: string = '';
+    public userEmail: string |null = '';
     /** user Id */
     public userId: number = 0;
 
@@ -244,16 +244,17 @@ export class DrawFishFamilyComponent implements OnInit{
 
 
         // 사용자 정보 조회
-        this.userEmail = this.loginProvider.getUserId();
-        this.userService.getUserData(this.userEmail)
-            .subscribe({
-                next: async (data) => {
-                    if(data){
-                        this.userId = data.id;
-                        console.log(this.userId);
-                    }
-                }
-            })
+        this.userEmail =  sessionStorage.getItem('userEmail') != null ? sessionStorage.getItem('userEmail') : '';
+        console.log(this.userEmail);
+        // this.userService.getUserData(this.userEmail)
+        //     .subscribe({
+        //         next: async (data) => {
+        //             if(data){
+        //                 this.userId = data.id;
+        //                 console.log(this.userId);
+        //             }
+        //         }
+        //     })
 
 
     }

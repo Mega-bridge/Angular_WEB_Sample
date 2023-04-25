@@ -32,7 +32,7 @@ export class DragAndDropComponent implements AfterViewInit{
     @ViewChild('htmlCanvas', {read: ElementRef})
     public htmlCanvasElement!: ElementRef;
 
-    @Input() userEmail:string = '';
+    @Input() userEmail:string | null = '';
 
     public canvas: fabric.Canvas;
 
@@ -371,7 +371,7 @@ export class DragAndDropComponent implements AfterViewInit{
                     dataSetSeq: dataSetSeq,
                     name: Number(item.name),
                     objectCodeId: item.toObject().objectCodeId,
-                    userEmail: this.userEmail,
+                    userEmail: this.userEmail? this.userEmail : '' ,
                     width: item.getScaledWidth(),
                     height: item.getScaledHeight(),
                     x: item.getCenterPoint().x,
@@ -423,7 +423,7 @@ export class DragAndDropComponent implements AfterViewInit{
             id : 9999,
             seq: dataSetSeq,
             testDate: new Date(),
-            userEmail: this.userEmail,
+            userEmail: this.userEmail? this.userEmail : '',
             patientInfoId: null,
             fishbowlCode: this.fishbowlCode,
             waterHeight: this.waterHeight,

@@ -33,8 +33,10 @@ export class LoginService {
         return this.http.post<LoginResultResponse>(`${this.SEVER_URL}/login`,request)
             .pipe(
                 map((result) => {
+                    console.log(result);
                     // 사용자 token 정보 저장
                     sessionStorage.setItem('userJWT',result.jwt);
+                    sessionStorage.setItem('userEmail',result.user.email);
                     return result
                 })
             );
