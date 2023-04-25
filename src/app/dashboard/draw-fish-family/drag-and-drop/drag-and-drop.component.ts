@@ -355,6 +355,7 @@ export class DragAndDropComponent implements AfterViewInit{
         image.src = this.canvas.toDataURL({format: 'png'});
 
         this.canvas.clear();
+        console.log(image.src);
         return image.src;
     }
 

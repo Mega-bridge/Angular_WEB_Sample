@@ -245,18 +245,6 @@ export class DrawFishFamilyComponent implements OnInit{
 
         // 사용자 정보 조회
         this.userEmail =  sessionStorage.getItem('userEmail') != null ? sessionStorage.getItem('userEmail') : '';
-        console.log(this.userEmail);
-        // this.userService.getUserData(this.userEmail)
-        //     .subscribe({
-        //         next: async (data) => {
-        //             if(data){
-        //                 this.userId = data.id;
-        //                 console.log(this.userId);
-        //             }
-        //         }
-        //     })
-
-
     }
 
     /**
