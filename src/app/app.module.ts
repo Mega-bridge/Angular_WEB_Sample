@@ -4,7 +4,7 @@ import { AppComponent } from './app.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {SharedModule} from "../shared/shared.module";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {MatDialogModule} from "@angular/material/dialog";
 import { LayoutModule } from '@progress/kendo-angular-layout';
 import {FilterMenuModule, GridModule} from '@progress/kendo-angular-grid';
@@ -25,6 +25,7 @@ import {SignUpComponent} from "./login/sign-up/sign-up.component";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {LoginComponent} from "./login/login.component";
 import {MultiSelectModule} from "@progress/kendo-angular-dropdowns";
+import {TokenService} from "../shared/service/token.service";
 
 
 
@@ -61,7 +62,7 @@ import {MultiSelectModule} from "@progress/kendo-angular-dropdowns";
         MultiSelectModule,
         FilterMenuModule
     ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass:TokenService, multi:true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

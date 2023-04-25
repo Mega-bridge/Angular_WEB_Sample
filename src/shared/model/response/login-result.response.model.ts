@@ -5,6 +5,6 @@ import {UserModel} from "../user.model";
  */
 export class LoginResultResponse {
     public jwt: string = '';
-    public Date: Date|null = null;
+    public jwtExpTime: Date|null = null;
     public User: UserModel = new UserModel();
 }

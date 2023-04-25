@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {map, Observable} from 'rxjs';
 import {LoginRequestModel} from "../model/request/login.request.model";
 import {LoginResultResponse} from "../model/response/login-result.response.model";
-import {MrFamilyCodeResponse} from "../model/response/mr-family-code.response.model";
+
 
 
 @Injectable({
@@ -20,7 +20,9 @@ export class LoginService {
      * 생성자
      * @param http
      */
-    constructor(private http: HttpClient) { }
+    constructor(
+        private http: HttpClient
+        ) { }
 
 
     /**
@@ -28,7 +30,14 @@ export class LoginService {
      */
     login(request: LoginRequestModel):Observable<LoginResultResponse> {
         this.userId=request.email;
-        return this.http.post<LoginResultResponse>(`${this.SEVER_URL}/login`,request);
+        return this.http.post<LoginResultResponse>(`${this.SEVER_URL}/login`,request)
+            .pipe(
+                map((result) => {
+                    // 사용자 token 정보 저장
+                    sessionStorage.setItem('userJWT',result.jwt);
+                    return result
+                })
+            );
     }
 
     /**
@@ -37,5 +46,6 @@ export class LoginService {
     getUserId(){
         return this.userId;
     }
+
 
 }
