@@ -38,7 +38,7 @@ export class DrawFishFamilyComponent implements OnInit{
     ];
 
     /** 회차 items */
-    public seqItems : {id: number, text: string, date: string, imgUrl: string}[] = [];
+    public seqItems : {id: number, text: string, date: string, imgUrl: string, hour: number,minute: number,second: number}[] = [];
 
     /** 회차 선택 */
     public selectedSeq: number = 0;
@@ -154,10 +154,9 @@ export class DrawFishFamilyComponent implements OnInit{
     /** 캔버스 저장 시간 */
     public endDate = new Date();
     /** 시간, 분, 초 */
-    public hour:number=0;
-    public minute:number=0;
-    public second:number=0;
-
+    public hour: number=0;
+    public minute: number=0;
+    public second: number=0;
 
     @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
     @ViewChild('canvas', { static: true }) canvas_el!: ElementRef<HTMLCanvasElement>;
@@ -271,7 +270,7 @@ export class DrawFishFamilyComponent implements OnInit{
 
                             if(!item.deleted){
                                 const testDate = new Date(item.testDate).getFullYear().toString() + '.' + (new Date(item.testDate).getMonth() + 1).toString() + '.' + new Date(item.testDate).getDate().toString()
-                                this.seqItems.push({id: item.seq, text: (item.seq + 1).toString() + '회차', date: testDate, imgUrl: item.resultImage })
+                                this.seqItems.push({id: item.seq, text: (item.seq + 1).toString() + '회차', date: testDate, imgUrl: item.resultImage,hour:this.hour,minute:this.minute,second:this.second})
                             }
 
                         });
@@ -495,9 +494,9 @@ export class DrawFishFamilyComponent implements OnInit{
             if (result.text === 'yes') {
                 // 캔버스 그리는데 걸리는 시간 출력
                 this.endDate=new Date();
-                this.hour=Math.abs(this.endDate.getHours()-this.startDate.getHours())
-                this.minute=Math.abs(this.endDate.getMinutes()-this.startDate.getMinutes())
-                this.second=Math.abs(this.endDate.getSeconds()-this.startDate.getSeconds())
+                this.hour=(Math.abs(this.endDate.getHours()-this.startDate.getHours()))
+                this.minute=(Math.abs(this.endDate.getMinutes()-this.startDate.getMinutes()))
+                this.second=(Math.abs(this.endDate.getSeconds()-this.startDate.getSeconds()))
 
                 this.seqItems[this.selectedSeq].imgUrl = this.canvas.rasterize(this.selectedSeq);
                 this.canvasImage = this.seqItems[this.selectedSeq].imgUrl;
@@ -569,6 +568,9 @@ export class DrawFishFamilyComponent implements OnInit{
     selectSeq(item: any){
         this.selectedSeq = item.id;
         this.canvasImage = this.seqItems[this.selectedSeq].imgUrl;
+        this.second = item.second;
+        this.minute = item.minute;
+        this.hour = item.hour;
         this.getSeqObjectCode();
     }
 
@@ -585,7 +587,10 @@ export class DrawFishFamilyComponent implements OnInit{
             id: this.seqItems.length,
             text: `${this.seqItems.length + 1}회차`,
             date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
-            imgUrl: ''
+            imgUrl: '',
+            hour:this.hour,
+            minute:this.minute,
+            second:this.second
         });
         this.selectSeq(this.seqItems[this.seqItems.length - 1]);
     }

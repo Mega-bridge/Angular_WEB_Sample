@@ -64,7 +64,8 @@
             </div>
 
             <div class="card-seq-wrap">
-                <div class="card-seq" *ngFor="let item of seqItems" (click)="selectSeq(item)" [style.background-color] ="selectedSeq === item.id ? '#cccccc' : ''">
+                <div class="card-seq" *ngFor="let item of seqItems;let i=index;" (click)="selectSeq(item)" [style.background-color] ="selectedSeq === item.id ? '#cccccc' : ''">
+<!--                    {{item.hour[i]}}시간 {{item.minute[i]}}분 {{item.second[i]}}초-->
                     <div>
                     <span class="title">{{item.text}}</span>
                     <span class="sub">{{item.date}}</span>
@@ -96,7 +97,7 @@
         </div>
         <div class="container">
             <div class="canvas-wrap">
-               {{this.hour}}시간 {{this.minute}}분 {{this.second}}초
+                {{hour}}시간 {{minute}}분 {{second}}초
                 <div class="image-container"  [ngStyle] = "{'background-image': 'url('+canvasImage+')'}">
                     <!--                    <img [src]="this.canvasImage">-->
                 </div>
