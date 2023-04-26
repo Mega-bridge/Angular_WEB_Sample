@@ -255,21 +255,22 @@ export class DrawFishFamilyComponent implements OnInit{
         this.mindReaderControlService.getDataSet()
             .subscribe({
                 next: async (data) => {
-                    console.log(data);
-                    data.map(item => {
+                    if(data){
+                        console.log(data);
+                        data.map(item => {
 
-                        if(!item.deleted){
-                            const testDate = new Date(item.testDate).getFullYear().toString() + '.' + (new Date(item.testDate).getMonth() + 1).toString() + '.' + new Date(item.testDate).getDate().toString()
-                            this.seqItems.push({id: item.seq, text: (item.seq + 1).toString() + '회차', date: testDate, imgUrl: item.resultImage })
-                        }
+                            if(!item.deleted){
+                                const testDate = new Date(item.testDate).getFullYear().toString() + '.' + (new Date(item.testDate).getMonth() + 1).toString() + '.' + new Date(item.testDate).getDate().toString()
+                                this.seqItems.push({id: item.seq, text: (item.seq + 1).toString() + '회차', date: testDate, imgUrl: item.resultImage })
+                            }
 
-                    });
-                    this.selectedSeq = this.seqItems.length - 1;
-                    this.canvasImage = this.seqItems[this.seqItems.length - 1].imgUrl;
+                        });
+                        this.selectedSeq = this.seqItems.length - 1;
+                        this.canvasImage = this.seqItems[this.seqItems.length - 1].imgUrl;
 
-                    // 회차별 오브젝트 순서 조회
-                    this.getSeqObjectCode();
-
+                        // 회차별 오브젝트 순서 조회
+                        this.getSeqObjectCode();
+                    }
                 }
             });
     }
