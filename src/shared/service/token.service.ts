@@ -17,7 +17,7 @@ export class TokenService implements HttpInterceptor{
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
         // 로그인 화면 시 token 미전송
-        if(req.url.includes('/main')){
+        if(req.url.includes('/main') || req.url.includes('/login')){
             return next.handle(req);
         }
 

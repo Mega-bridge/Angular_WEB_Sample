@@ -4,9 +4,9 @@
 
 export class UserModel {
     public id: number = 0;
+    public email: string = '';
     public username: string = '';
     public password: string = '';
-    public email: string = '';
     public role: string = '';
     public createDate: Date | null = null;
     public updateDate: Date | null = null;
