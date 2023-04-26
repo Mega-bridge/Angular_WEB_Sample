@@ -24,10 +24,6 @@ export class DrawFishFamilyComponent implements OnInit{
 
     /** user email */
     public userEmail: string |null = '';
-    /** user Id */
-    public userId: number = 0;
-
-    public dataSetId: any;
 
     /** 결과지 슬라이더 열기 */
     public expanded = false;
@@ -44,6 +40,11 @@ export class DrawFishFamilyComponent implements OnInit{
 
     /** 회차 선택 */
     public selectedSeq: number = 0;
+
+    /** dataSet list index */
+    public selectedSeqIndex: number = 0;
+
+    public dataSetCount: number = 0;
 
     /** object url */
     public objectData:MrObjectImageResponse[] = [];
@@ -268,19 +269,28 @@ export class DrawFishFamilyComponent implements OnInit{
                 next: async (data) => {
                     if(data.length != 0){
                         console.log(data);
+                        var seq: number = 0;
                         data.map(item => {
 
                             if(!item.deleted){
-                                const testDate = new Date(item.testDate).getFullYear().toString() + '.' + (new Date(item.testDate).getMonth() + 1).toString() + '.' + new Date(item.testDate).getDate().toString()
-                                this.seqItems.push({id: item.id,seq:item.seq, text: (item.seq + 1).toString() + '회차', date: testDate, imgUrl: item.resultImage,hour:this.hour,minute:this.minute,second:this.second })
+                                const testDate = new Date(item.testDate).getFullYear().toString() + '.' + (new Date(item.testDate).getMonth() + 1).toString() + '.' + new Date(item.testDate).getDate().toString();
+                                seq += 1;
+                                this.seqItems.push({id: item.id, seq: item.seq, text: seq.toString() + '회차', date: testDate, imgUrl: item.resultImage ,hour:this.hour,minute:this.minute,second:this.second });
                             }
 
                         });
-                        this.selectedSeq = data.length - 1;
-                        this.canvasImage = this.seqItems[data.length - 1].imgUrl;
 
-                        // 회차별 오브젝트 순서 조회
-                        this.getSeqObjectCode();
+                        // 저장되어있는 전체 DataSet 수 (Delete 포함), seq를 부여하기 위해 할당
+                        this.dataSetCount = data.length;
+                        // 추가될 DataSet의 seq를 위해 전체 DataSet의 마지막 seq 저장
+                        this.selectedSeq = data.length-1;
+
+                        // 처음 로드 시 마지막 회차 선택
+                        // Delete되지 않은 DataSet list의 마지막 index 할당
+                        this.selectedSeqIndex = this.seqItems.length -1;
+                        this.selectSeq(this.seqItems[this.selectedSeqIndex], this.selectedSeqIndex);
+
+
                     }
                 }
             });
@@ -407,7 +417,6 @@ export class DrawFishFamilyComponent implements OnInit{
      * 물고기 비늘 선택
      * @param event
      * @param bodyImg
-     * @param type 물고기 종류
      */
     selectFishBody(event: any, bodyImg:string){
         this.selectedFishBody = bodyImg;
@@ -500,12 +509,15 @@ export class DrawFishFamilyComponent implements OnInit{
                 this.minute=(Math.abs(this.endDate.getMinutes()-this.startDate.getMinutes()))
                 this.second=(Math.abs(this.endDate.getSeconds()-this.startDate.getSeconds()))
 
-                this.seqItems[this.selectedSeq].imgUrl = this.canvas.rasterize(this.selectedSeq);
-                this.canvasImage = this.seqItems[this.selectedSeq].imgUrl;
+
+                console.log(this.selectedSeqIndex);
+                this.seqItems[this.selectedSeqIndex].imgUrl = this.canvas.rasterize(this.selectedSeq);
+                this.canvasImage = this.seqItems[this.selectedSeqIndex].imgUrl;
 
                 // full screen 닫기
                 this.closeFullscreen();
                 this.getSeqObjectCode();
+
             }
         });
 
@@ -518,7 +530,7 @@ export class DrawFishFamilyComponent implements OnInit{
         const downloadLink = document.createElement('a');
         document.body.appendChild(downloadLink);
         downloadLink.href = this.canvasImage;
-        downloadLink.download = this.seqItems[this.selectedSeq].date + '.png';
+        downloadLink.download = this.seqItems[this.selectedSeqIndex].date + '.png';
         downloadLink.click();
 
     }
@@ -565,10 +577,14 @@ export class DrawFishFamilyComponent implements OnInit{
     /**
      * 회차 선택
      * @param item
+     * @param index
      */
-    selectSeq(item: any){
+    selectSeq(item: any, index: number){
+
         this.selectedSeq = item.seq;
-        this.canvasImage = this.seqItems[this.selectedSeq].imgUrl;
+        this.selectedSeqIndex = index;
+        this.canvasImage = this.seqItems[index].imgUrl;
+
         this.second = item.second;
         this.minute = item.minute;
         this.hour = item.hour;
@@ -585,7 +601,7 @@ export class DrawFishFamilyComponent implements OnInit{
             return;
         }
         this.seqItems.push({
-            seq: this.seqItems.length,
+            seq: this.dataSetCount,
             text: `${this.seqItems.length + 1}회차`,
             date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
             imgUrl: '',
@@ -593,25 +609,26 @@ export class DrawFishFamilyComponent implements OnInit{
             minute:this.minute,
             second:this.second
         });
-        this.selectSeq(this.seqItems[this.seqItems.length - 1]);
+        this.dataSetCount += 1;
+        this.selectSeq(this.seqItems[this.seqItems.length -1], this.seqItems.length -1);
     }
 
     /**
      * 회차 삭제하기
      */
-    deleteSeq(item:any){
+    deleteSeq(item:any, index: number){
         console.log('회차 정보');
         console.log(item);
 
         const dialog = this.dialogService.open({
-            title: `${item.seq + 1}회차를 삭제하시겠습니까?`,
+            title: `${index + 1}회차를 삭제하시겠습니까?`,
             content: ConfirmDialogComponent,
             appendTo: this.dialogRef,
             width: 450,
             height: 200,
             minWidth: 250,
         });
-        dialog.content.instance.text = `삭제 시 복구가 불가합니다. <br> ${item.seq + 1}회차를 정말로 삭제하시겠습니까?`;
+        dialog.content.instance.text = `삭제 시 복구가 불가합니다. <br> ${index + 1}회차를 정말로 삭제하시겠습니까?`;
 
         dialog.result.subscribe((result: any) => {
             if (result.text === 'yes') {

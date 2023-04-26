@@ -64,8 +64,7 @@
             </div>
 
             <div class="card-seq-wrap">
-                <div class="card-seq" *ngFor="let item of seqItems;let i=index;" (click)="selectSeq(item)" [style.background-color] ="selectedSeq === item.id ? '#cccccc' : ''">
-<!--                    {{item.hour[i]}}시간 {{item.minute[i]}}분 {{item.second[i]}}초-->
+                <div class="card-seq" *ngFor="let item of seqItems; let i = index" (click)="selectSeq(item, i)" [style.background-color] ="selectedSeq === item.seq ? '#cccccc' : ''">
                     <div>
                     <span class="title">{{item.text}}</span>
                     <span class="sub">{{item.date}}</span>
@@ -77,7 +76,7 @@
                     border-radius: 50%;
                     text-align: center;
                     cursor: pointer;"
-                    (click)="deleteSeq(item)">
+                    (click)="deleteSeq(item, i)">
                         <span>-</span>
                     </div>
 
