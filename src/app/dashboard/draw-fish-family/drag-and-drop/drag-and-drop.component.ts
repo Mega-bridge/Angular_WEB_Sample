@@ -259,12 +259,14 @@ export class DragAndDropComponent implements AfterViewInit{
                 hasRotatingPoint: true,
                 selectable: true,
                 strokeWidth:10,
-                name:familyType ? familyType : null
+                name:familyType ? familyType : null,
+
             });
-            this.extend(image, this.randomId(), new Date(),objectCodeId);
+            this.extend(image, this.randomId(), new Date().getTime(),objectCodeId);
             //console.log(image.toObject().id);
             image.scale(0.15);
             this.canvas.add(image);
+
 
             this.selectItemAfterAdded(image);
         });
@@ -311,7 +313,7 @@ export class DragAndDropComponent implements AfterViewInit{
      * @param createDate
      * @param objectCodeId
      */
-    extend(obj:any, id:any, createDate: Date,objectCodeId:any) {
+    extend(obj:any, id:any, createDate: number,objectCodeId:any) {
         obj.toObject = ((toObject) => {
             return function() {
                 return fabric.util.object.extend(toObject.call(obj), {
@@ -364,9 +366,6 @@ export class DragAndDropComponent implements AfterViewInit{
         const image = new Image();
         image.src = this.canvas.toDataURL({format: 'png'});
 
-        // 회차별 오브젝트 생성
-        this.createObjectSet(dataSetSeq);
-
         // 회차별 dataSet 생성
         this.createDataSet(dataSetSeq, image.src);
 
@@ -415,6 +414,10 @@ export class DragAndDropComponent implements AfterViewInit{
                 next: async (data) => {
                     if(data){
                         console.log(data);
+
+                        // 데이터셋 저장 성공 시 오브젝트 정보 저장
+                        // 회차별 오브젝트 생성
+                        this.createObjectSet(dataSetSeq);
                     }
                     else{
                         console.log('실패....^^');
@@ -442,7 +445,7 @@ export class DragAndDropComponent implements AfterViewInit{
         // 회차별 데이터셋 생성 request model
         this.mrDataSetModel = {
             seq: dataSetSeq,
-            testDate: new Date(),
+            testDate: new Date().getTime(),
             userEmail: this.userEmail? this.userEmail : '',
             patientInfoId: null,
             fishbowlCode: this.fishbowlCode,

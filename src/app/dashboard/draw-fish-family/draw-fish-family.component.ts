@@ -180,6 +180,7 @@ export class DrawFishFamilyComponent implements OnInit{
     ) {}
 
     ngOnInit() {
+        console.log(new Date().getTime());
         // full screen element
         this.elem = document.documentElement;
         // full screen 일 때 esc 키 누르면 팝업 전 화면으로 돌아감
@@ -255,9 +256,11 @@ export class DrawFishFamilyComponent implements OnInit{
         this.mindReaderControlService.getDataSet()
             .subscribe({
                 next: async (data) => {
+                    console.log(data);
                     data.map(item => {
+
                         if(!item.deleted){
-                            const testDate = item.testDate[0].toString() + '.' + item.testDate[1].toString() + '.' + item.testDate[2].toString() + '.';
+                            const testDate = new Date(item.testDate).getFullYear().toString() + '.' + (new Date(item.testDate).getMonth() + 1).toString() + '.' + new Date(item.testDate).getDate().toString()
                             this.seqItems.push({id: item.seq, text: (item.seq + 1).toString() + '회차', date: testDate, imgUrl: item.resultImage })
                         }
 
