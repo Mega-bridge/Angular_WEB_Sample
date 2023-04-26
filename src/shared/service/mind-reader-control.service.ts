@@ -117,8 +117,8 @@ export class MindReaderControlService {
      * 회차별 사용자 오브젝트 순서 목록 조회
      * @param seq
      */
-    getObjectCodeSeq(seq: number): Observable<MrObjectModel>{
-        return this.http.get<MrObjectModel>(`${this.MR_CONTROL_URL}/user/objectCode/${seq}`)
+    getObjectCodeSeq(seq: number): Observable<MrObjectCodeResponseModel[]>{
+        return this.http.get<MrObjectCodeResponseModel[]>(`${this.MR_CONTROL_URL}/user/objectCode/${seq}`)
     }
 }
 

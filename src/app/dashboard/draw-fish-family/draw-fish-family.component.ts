@@ -12,6 +12,7 @@ import {DialogService} from "@progress/kendo-angular-dialog";
 import {Router} from "@angular/router";
 import {LoginService} from "../../../shared/service/login.service";
 import {UserService} from "../../../shared/service/user.service";
+import {AlertService} from "../../../shared/service/alert.service";
 
 @Component({
     selector: 'app-dashboard-draw-fish-family',
@@ -38,13 +39,6 @@ export class DrawFishFamilyComponent implements OnInit{
 
     /** 회차 items */
     public seqItems : {id: number, text: string, date: string, imgUrl: string}[] = [];
-        // [
-        // {
-        //     id: 0,
-        //     text: "1회차",
-        //     date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
-        //     imgUrl: ''
-        // }];
 
     /** 회차 선택 */
     public selectedSeq: number = 0;
@@ -170,6 +164,7 @@ export class DrawFishFamilyComponent implements OnInit{
      * @param router
      * @param loginProvider
      * @param userService
+     * @param alertService
      */
     constructor(
         @Inject(DOCUMENT) private document: any,
@@ -177,7 +172,9 @@ export class DrawFishFamilyComponent implements OnInit{
         private dialogService: DialogService,
         private router: Router,
         private loginProvider: LoginService,
-        private userService:UserService
+        private userService:UserService,
+        private alertService: AlertService
+
 
 
     ) {}
@@ -246,13 +243,15 @@ export class DrawFishFamilyComponent implements OnInit{
         this.userEmail =  sessionStorage.getItem('userEmail') != null ? sessionStorage.getItem('userEmail') : '';
 
         // 사용자 데이터셋 조회
-        this.getSeqDataSet();
+        this.getDataSet();
+
+
 
     }
 
 
     // DataSet 불러오기
-    getSeqDataSet():void{
+    getDataSet():void{
         this.mindReaderControlService.getDataSet()
             .subscribe({
                 next: async (data) => {
@@ -263,6 +262,19 @@ export class DrawFishFamilyComponent implements OnInit{
                     this.selectedSeq = this.seqItems.length - 1;
                     this.canvasImage = this.seqItems[this.seqItems.length - 1].imgUrl;
 
+                    // 회차별 오브젝트 순서 조회
+                    this.getSeqObjectCode();
+
+                }
+            });
+    }
+
+    getSeqObjectCode():void {
+        this.mindReaderControlService.getObjectCodeSeq(this.selectedSeq)
+            .subscribe({
+                next: async (data) => {
+                    console.log(data);
+                    this.selectedObjectList = data.map(item => item.description);
                 }
             })
     }
@@ -304,7 +316,7 @@ export class DrawFishFamilyComponent implements OnInit{
         this.selectedFamilyType = this.familyTypeList[e].id;
         this.familyTypeList[e].selected = true;
         // 선택한 가족관계 리스트에 추가
-        this.selectedObjectList.push(this.familyTypeList[e].description)
+        // this.selectedObjectList.push(this.familyTypeList[e].description)
         // 가족 관계 선택 시 버튼 막기
         this.isDisabled=true;
         // 가족 관계를 선택해야 물고기 선택 가능
@@ -397,7 +409,7 @@ export class DrawFishFamilyComponent implements OnInit{
      */
     selectEtcObject(event:any, img: any):void {
         this.selectedEtc = img;
-        this.selectedObjectList.push(img);
+        // this.selectedObjectList.push(img);
 
         // 물고기 외 object img url 전달
         this.getImgPolaroid(img);
@@ -466,13 +478,6 @@ export class DrawFishFamilyComponent implements OnInit{
                 this.seqItems[this.selectedSeq].imgUrl = this.canvas.rasterize(this.selectedSeq);
                 this.canvasImage = this.seqItems[this.selectedSeq].imgUrl;
 
-                // this.mindReaderControlService.getSeqDataSet(2)
-                //     .subscribe({
-                //         next: async (data) => {
-                //             console.log(data);
-                //         }
-                //     })
-
 
                 // full screen 닫기
                 this.closeFullscreen();
@@ -538,6 +543,7 @@ export class DrawFishFamilyComponent implements OnInit{
     selectSeq(item: any){
         this.selectedSeq = item.id;
         this.canvasImage = this.seqItems[this.selectedSeq].imgUrl;
+        this.getSeqObjectCode();
     }
 
 
@@ -545,7 +551,10 @@ export class DrawFishFamilyComponent implements OnInit{
      * 회차 추가하기
      */
     addSeq(){
-        console.log(this.seqItems.length);
+        if(this.seqItems.length == 24) {
+            this.alertService.openAlert('상담은 25회차까지 진행됩니다.');
+            return;
+        }
         this.seqItems.push({
             id: this.seqItems.length,
             text: `${this.seqItems.length + 1}회차`,
