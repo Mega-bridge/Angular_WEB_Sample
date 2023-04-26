@@ -149,6 +149,16 @@ export class DrawFishFamilyComponent implements OnInit{
     public anchorAlign: Align = { horizontal: "right", vertical: "top" };
     public popupAlign: Align = { horizontal: "left", vertical: "top" };
 
+    /** 팝업 열리는 시간 */
+    public startDate = new Date();
+    /** 캔버스 저장 시간 */
+    public endDate = new Date();
+    /** 시간, 분, 초 */
+    public hour:number=0;
+    public minute:number=0;
+    public second:number=0;
+
+
     @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
     @ViewChild('canvas', { static: true }) canvas_el!: ElementRef<HTMLCanvasElement>;
 
@@ -483,9 +493,14 @@ export class DrawFishFamilyComponent implements OnInit{
 
         dialog.result.subscribe((result: any) => {
             if (result.text === 'yes') {
+                // 캔버스 그리는데 걸리는 시간 출력
+                this.endDate=new Date();
+                this.hour=Math.abs(this.endDate.getHours()-this.startDate.getHours())
+                this.minute=Math.abs(this.endDate.getMinutes()-this.startDate.getMinutes())
+                this.second=Math.abs(this.endDate.getSeconds()-this.startDate.getSeconds())
+
                 this.seqItems[this.selectedSeq].imgUrl = this.canvas.rasterize(this.selectedSeq);
                 this.canvasImage = this.seqItems[this.selectedSeq].imgUrl;
-
 
                 // full screen 닫기
                 this.closeFullscreen();
@@ -512,6 +527,9 @@ export class DrawFishFamilyComponent implements OnInit{
      *  그리기 모드 시 full screen
      */
     openFullscreen() {
+        // 팝업 띄울 시 시간 체크
+        this.startDate=new Date();
+        // 팝업 open 여부
         this.isPopupOpen=true;
 
         if (this.elem.requestFullscreen) {
