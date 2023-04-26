@@ -1,90 +1,75 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import { Router } from '@angular/router';
-import {DataService} from "../../shared/service/data.service";
+import {Component} from "@angular/core";
+import {Router} from "@angular/router";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {LoginService} from "../../shared/service/login.service";
+import {LoginRequestModel} from "../../shared/model/request/login.request.model";
 import {NotificationService} from "@progress/kendo-angular-notification";
-import {UserResponseModel} from "../../shared/model/response/user.response.model";
-import {FormControl, FormGroup} from "@angular/forms";
+import {HttpErrorResponse} from "@angular/common/http";
+import {AlertService} from "../../shared/service/alert.service";
 
-type HorizontalPosition = "left" | "center" | "right";
-type VerticalPosition = "top" | "bottom";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-login',
+    templateUrl: 'login.component.html',
+    styleUrls: ['login.component.scss']
 })
-export class LoginComponent implements OnInit {
-  public loginData: UserResponseModel[] = [];
 
-  public horizontal: HorizontalPosition = "center";
-  public vertical: VerticalPosition = "top";
+export class LoginComponent {
 
-  selectedStyle = 'login-page-wrap';
+    /**
+     * 생성자
+     * @param router
+     * @param loginProvider
+     * @param notificationService
+     */
+    constructor(
+        private router: Router,
+        private loginProvider: LoginService,
+        private notificationService: NotificationService,
+        private alertService: AlertService
+    ) {}
 
-  public registerForm: FormGroup = new FormGroup({
-    email: new FormControl(""),
-    password: new FormControl(),
-  });
-
-  /**
-   * @param router
-   * @param dataService
-   * @param notificationService
-   */
-  constructor(
-    private router: Router,
-    private dataService: DataService,
-    private notificationService: NotificationService
-  ) {}
-
-  /**
-   * 초기화
-   */
-  ngOnInit() {
-    this.dataService.getUserData().subscribe(data => {
-      this.loginData = data;
-    })
-  }
-
-  /**
-   * 로그인 시 대시보드로 이동 이벤트
-   */
-  onLogin() {
-    for(let i=0;i<this.loginData.length;i++){
-      if(this.loginData[i].email === this.registerForm.controls['email'].value ){
-
-        if(this.loginData[i].password === this.registerForm.controls['password'].value){
-          this.router.navigateByUrl(`/dashboard`);
-          return
-        }
-        else{
-          this.openAlert('비밀번호를 확인해주세요.');
-          break;
-        }
-      }
-      else{
-        if(this.loginData.length-1==i){
-          this.openAlert('존재하지 않는 Email입니다.');
-          break;
-        }
-      }
-    }
-  }
-
-
-
-  openAlert(message: string) {
-    this.notificationService.show({
-      content: message,
-      cssClass: 'button-notification',
-      animation: { type: "fade", duration: 500 },
-      type: { style: "info", icon: true },
-      position: { horizontal: this.horizontal, vertical: this.vertical },
-      width: 500,
-      height: 50,
-      hideAfter: 2000,
+    /**
+     * 로그인 폼
+     */
+    public loginForm: FormGroup = new FormGroup({
+        email: new FormControl('',[Validators.required]),
+        password: new FormControl('',[Validators.required]),
     });
-  }
+
+    /**
+     * login
+     */
+    login(){
+        const request: LoginRequestModel = {
+            email: this.loginForm.controls['email'].value,
+            password: this.loginForm.controls['password'].value
+        }
+        // login
+        this.loginProvider.login(request)
+            .subscribe({
+                next: async (response) => {
+                    if (response) {
+                        this.tutorial();
+                    }
+                },
+                // http error message 출력
+                error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
+            })
+    }
+
+    /**
+     * 튜토리얼 화면으로 이동
+     */
+    tutorial() {
+        this.router.navigateByUrl(`/tutorial`);
+    }
+
+    /**
+     * 회원가입 화면으로 이동
+     */
+    signup() {
+        this.router.navigateByUrl(`/sign-up`);
+    }
 
 }

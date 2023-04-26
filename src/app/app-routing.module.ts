@@ -1,36 +1,49 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {DashBoardComponent} from "./dashboard/dash-board.component";
-import {TableComponent} from "./table/table.component";
-import {LoginComponent} from "./login/login.component";
 import {LayoutComponent} from "../shared/layout/layout.component";
-import {ChartsComponent} from "./charts/charts.component";
+import {TutorialComponent} from "./tutorial/tutorial.component";
+import {InputInfoComponent} from "./input-info/input-info.component";
+import {MainComponent} from "./main/main.component";
+import {SignUpComponent} from "./login/sign-up/sign-up.component";
+import {LoginComponent} from "./login/login.component";
 
 const routes: Routes = [
+
   {
-    path: 'login',
-    component: LoginComponent,
-    loadChildren: () => import('./login/login.module').then(i => i.LoginModule)
+    path: '',
+    redirectTo: 'main',
+    pathMatch: 'full'
   },
   {
     path:'',
     component:LayoutComponent,
     children: [
       {
-        path: 'dashboard',
-        component: DashBoardComponent,
+        path: 'main',
+        component: MainComponent,
+        loadChildren: () => import('./main/main.module').then(i => i.MainModule)
+      },
+      {
+        path: 'login',
+        component: LoginComponent
+      },
+      {
+        path: 'sign-up',
+        component: SignUpComponent
+      },
+      {
+        path: 'tutorial',
+        component: TutorialComponent
+      },
+      {
+        path: 'input-info',
+        component: InputInfoComponent
+      },
+      {
+        path: 'DrawFishFamily',
         loadChildren: () => import('./dashboard/dash-board.module').then(i => i.DashBoardModule)
       },
-      {
-        path: 'charts',
-        component: ChartsComponent,
-        loadChildren: () => import('./charts/charts.module').then(i => i.ChartModule),
-      },
-      {
-        path: 'table',
-        component: TableComponent,
-        loadChildren: () => import('./table/table.module').then(i => i.TableModule),
-      },
+
     ]
   },
 

@@ -6,9 +6,12 @@
 <!--    <a mat-list-item routerLink="/table">-->
 <!--      <mat-icon [ngStyle]="{'color':'black'}"></mat-icon>tables</a>-->
 <!--</mat-nav-list>-->
-<div class="panelbar-wrapper">
+<div class="side-bar-wrapper">
   <kendo-panelbar>
-    <kendo-panelbar-item title="Dashboard" [routerLink]="['/dashboard']"></kendo-panelbar-item>
+    <kendo-panelbar-item title="Dashboard">
+      <kendo-panelbar-item title="Dashboard" [routerLink]="['/dashboard']"></kendo-panelbar-item>
+      <kendo-panelbar-item title="DrawFishFamily" [routerLink]="['/dashboard/DrawFishFamily']"></kendo-panelbar-item>
+    </kendo-panelbar-item>
     <kendo-panelbar-item title="Table" [routerLink]="['/table']"></kendo-panelbar-item>
     <kendo-panelbar-item title="Chart" [routerLink]="['/charts']"></kendo-panelbar-item>
   </kendo-panelbar>

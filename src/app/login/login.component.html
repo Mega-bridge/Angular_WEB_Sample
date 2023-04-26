@@ -1,77 +1,29 @@
-<div class="header-logo">
-<!--  <img class="logo-img" src="../../../../assets/images/MB_logo1.png" >-->
-  <div>
-    <span style="font-size: 25px; font-weight: 500;">MegaBridge</span> <br>
-    <span style="font-size: 15px;">Connect your business</span>
-  </div>
-</div>
-
-<!--<div [ngClass]="selectedStyle">-->
-<!--  <div class="content px20">-->
-<!--    <form class="login-form" #myForm="ngForm" (ngSubmit)="onLogin()">-->
-<!--      <div class="text-center" style="display: flex;">-->
-<!--        <h2 class="app-name">Admin Login</h2>-->
-<!--      </div>-->
-<!--      <div fxLayout="row">-->
-<!--        <div fxFlexFill>-->
-<!--          <mat-form-field class="w-100">-->
-<!--            <input matInput placeholder="Email" [(ngModel)]="email" [ngModelOptions]="{standalone:true}">-->
-<!--          </mat-form-field>-->
-<!--          <mat-form-field class="w-100">-->
-<!--            <input matInput type="password" placeholder="Password" [(ngModel)]="passWord" [ngModelOptions]="{standalone:true}">-->
-<!--          </mat-form-field>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div fxLayout="row">-->
-<!--        <div fxFlexFill>-->
-<!--          <button type="submit" mat-raised-button color="primary" class="w-100">Login</button>-->
-<!--          <button type="button" mat-button color="primary" class="w-100" (click)="onLogin()">Sign Up</button>-->
-<!--        </div>-->
-<!--      </div>-->
-
-<!--    </form>-->
-<!--  </div>-->
-
-<!--</div>-->
-
-<div class="login-page-wrap">
-  <div class="content px20">
-    <form class="login-form" [formGroup]="registerForm">
-      <div class="form-title">
-<!--        <img src="../../../../assets/images/MB_logo1.png" style="width: 45px; height: 45px;margin-right: 3px; vertical-align:middle; padding-top: 2px;">-->
-        <h3 class="app-name">MindReader Admin</h3>
-      </div>
-      <div style="margin: 5px 3px;">
-        <kendo-formfield>
-          <kendo-label class="form-label" [for]="email" text="Email"></kendo-label>
-          <input class="form-input" formControlName="email" kendoTextBox #email/>
-          <kendo-formhint>Your active email</kendo-formhint>
-          <!--            <kendo-formerror>Error: Not valid email format</kendo-formerror>-->
-        </kendo-formfield>
-      </div>
-
-      <div style="margin: 5px 3px;">
-        <kendo-formfield>
-          <kendo-label class="form-label" [for]="password" text="password"></kendo-label>
-          <input type="password" class="form-input" formControlName="password" kendoTextBox #password/>
-          <kendo-formhint class="form-label">Your PassWord</kendo-formhint>
-        </kendo-formfield>
-      </div>
-
-      <div fxLayout="row" fxLayoutAlign="space-between" fxLayout.xs="column" class="mt20 mb20">
-        <div>
-          <input type="checkbox" size="medium" kendoCheckBox checked #rememberMe/>
-          <kendo-label class="form-label" [for]="rememberMe" text="Remember Me"></kendo-label>
+<div class="container" (keydown.enter)="login()">
+    <div class="login-wrap" [formGroup]="loginForm">
+        <div class="title">
+            <span style="font-size:30px;">Login</span>
         </div>
-        <a href="/" style="color: #285aff;font-size: 13px; ">Forgot Password</a>
-      </div>
-      <div fxLayout="row">
-        <div fxFlexFill style="padding: 10px 0;">
-          <button type="submit" mat-raised-button style="width: 500px; background-color: #fe5e23; color: #ffffff;" (click)="onLogin()">Login</button>
-          <button type="button" mat-raised-button style="width: 500px;" >Sign Up</button>
-        </div>
-      </div>
+        <div style="margin-left:20%">
+            <div class="content-box">
+                <kendo-formfield>
+                    <kendo-label class="label" text="아이디"></kendo-label>
+                    <input Placeholder="Email" class="input-style" formControlName="email" kendoTextBox/>
 
-    </form>
-  </div>
+                </kendo-formfield>
+            </div>
+            <div class="content-box">
+                <kendo-formfield>
+                    <kendo-label class="label" text="비밀번호"></kendo-label>
+                    <input type="password" Placeholder="Password" class="input-style" formControlName="password" kendoTextBox/>
+                </kendo-formfield>
+            </div>
+        </div>
+        <div style="text-align: center">
+            <button class="button login"  (click)="login()">로그인</button>
+        </div>
+        <div style="text-align: right; margin: 10px;">회원이 아니신가요?
+            <b style="text-decoration: underline;" (click)="signup()">회원가입</b>
+        </div>
+
+    </div>
 </div>

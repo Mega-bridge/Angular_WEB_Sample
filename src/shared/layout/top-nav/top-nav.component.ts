@@ -1,5 +1,5 @@
 import {Component, OnInit, Output, EventEmitter, ViewContainerRef, ViewChild} from '@angular/core';
-import {LogoutConfirmComponent} from "../../component/dialogs/logout-confirm/logout-confirm.component";
+import {ConfirmDialogComponent} from "../../component/dialogs/confirm-dialog/confirm-dialog.component";
 import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogService} from "@progress/kendo-angular-dialog";
@@ -44,7 +44,7 @@ export class TopNavComponent implements OnInit {
   public openDialog(): void {
     const dialog = this.dialogService.open({
       title: "Please confirm",
-      content: LogoutConfirmComponent,
+      content: ConfirmDialogComponent,
       appendTo: this.dialogRef,
       width: 450,
       height: 185,
@@ -62,7 +62,7 @@ export class TopNavComponent implements OnInit {
   }
 
   public openDialog2(): void {
-    const dialogRef = this.dialog.open(LogoutConfirmComponent, {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       viewContainerRef: this.dialogRef,
       position:{
         top: '50%',
@@ -82,6 +82,16 @@ export class TopNavComponent implements OnInit {
    */
   loginPage() {
     this.router.navigate(['/login']);
+  }
+
+
+  /**
+   * main 화면으로 이동
+   */
+  mainPage() {
+
+    this.router.navigateByUrl(`/main`);
+
   }
 
 

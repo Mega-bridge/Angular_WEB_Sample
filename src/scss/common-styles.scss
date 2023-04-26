@@ -29,6 +29,44 @@
   }
 
   .k-window-content {
-    padding: 10px 16px;
+    padding: 5px 16px;
+  }
+}
+
+
+// alert 스티일
+.alert-style{
+  padding: 10px 10px;
+  color: #ffffff;
+  font-size: 20px;
+}
+
+
+// 결과지 drawer style
+.k-overlay{
+  z-index: 1000;
+}
+
+.drawer-style{
+  height: 94.6%;
+  kendo-drawer .k-drawer{
+    .k-drawer-mini{
+      border-left: #cccccc solid 1px;
+    }
+  }
+
+
+  .k-drawer-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+
+    .k-drawer-items{
+      .k-drawer-item{
+        padding-block: 10px;
+        padding-inline: 27px;
+      }
+    }
   }
 }
