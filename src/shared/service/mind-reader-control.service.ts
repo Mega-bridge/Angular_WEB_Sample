@@ -46,6 +46,15 @@ export class MindReaderControlService {
         return this.http.post<MrDataSetRequestModel>(`${this.MR_CONTROL_URL}/dataSet`, request);
     }
 
+
+    /**
+     * DataSet 삭제
+     * @param id
+     */
+    deleteDataSet(id: number): Observable<MrDataSetResponseModel>{
+        return this.http.patch<MrDataSetResponseModel>(`${this.MR_CONTROL_URL}/dataSet/${id}`,id);
+    }
+
     /**
      * 회차별 사용자 데이터 세트 조회
      * @param seq

@@ -1,5 +1,5 @@
 export class MrDataSetResponseModel{
-    // public id: number = 0;
+    public id: number = 0;
     public seq: number = 0;
 
     // 회차 추가시 timestamp
