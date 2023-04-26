@@ -180,7 +180,6 @@ export class DrawFishFamilyComponent implements OnInit{
     ) {}
 
     ngOnInit() {
-        console.log(new Date().getTime());
         // full screen element
         this.elem = document.documentElement;
         // full screen 일 때 esc 키 누르면 팝업 전 화면으로 돌아감

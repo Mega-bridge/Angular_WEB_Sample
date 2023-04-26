@@ -369,9 +369,6 @@ export class DragAndDropComponent implements AfterViewInit{
         // 회차별 dataSet 생성
         this.createDataSet(dataSetSeq, image.src);
 
-
-
-
         this.canvas.clear();
         return image.src;
     }
@@ -414,10 +411,6 @@ export class DragAndDropComponent implements AfterViewInit{
                 next: async (data) => {
                     if(data){
                         console.log(data);
-
-                        // 데이터셋 저장 성공 시 오브젝트 정보 저장
-                        // 회차별 오브젝트 생성
-                        this.createObjectSet(dataSetSeq);
                     }
                     else{
                         console.log('실패....^^');
@@ -468,6 +461,9 @@ export class DragAndDropComponent implements AfterViewInit{
                 next: async(data) => {
                     if(data){
                         console.log(data);
+                        // 데이터셋 저장 성공 시 오브젝트 정보 저장
+                        // 회차별 오브젝트 생성
+                        this.createObjectSet(dataSetSeq);
                     }
                     else{
                         console.log('실패....^^');
