@@ -258,7 +258,7 @@ export class DragAndDropComponent implements AfterViewInit{
                 hasRotatingPoint: true,
                 selectable: true,
                 strokeWidth:10,
-                name:familyType
+                name:familyType ? familyType : null
             });
             this.extend(image, this.randomId(), new Date(),objectCodeId);
             //console.log(image.toObject().id);
@@ -343,19 +343,20 @@ export class DragAndDropComponent implements AfterViewInit{
      */
     rasterize(dataSetSeq: any) {
 
-        // 회차별 오브젝트 생성
-        this.createObjectSet(dataSetSeq);
-
-        // 회차별 dataSet 생성
-        this.createDataSet(dataSetSeq);
-
-
         // cavas img로 저장
         const image = new Image();
         image.src = this.canvas.toDataURL({format: 'png'});
 
+        // 회차별 오브젝트 생성
+        this.createObjectSet(dataSetSeq);
+
+        // 회차별 dataSet 생성
+        this.createDataSet(dataSetSeq, image.src);
+
+
+
+
         this.canvas.clear();
-        console.log(image.src);
         return image.src;
     }
 
@@ -367,10 +368,9 @@ export class DragAndDropComponent implements AfterViewInit{
         // 회차별 오브젝트 생성 request model
         this.mrObjectModelList = this.canvas.getObjects().map((item:fabric.Object, index) => {
                 const mrList: MrObjectModel = {
-                    id: 9999,
                     angle: item.angle,
                     dataSetSeq: dataSetSeq,
-                    name: Number(item.name),
+                    name: item.name != null ? Number(item.name) : null,
                     objectCodeId: item.toObject().objectCodeId,
                     userEmail: this.userEmail? this.userEmail : '' ,
                     width: item.getScaledWidth(),
@@ -378,8 +378,7 @@ export class DragAndDropComponent implements AfterViewInit{
                     x: item.getCenterPoint().x,
                     y: item.getCenterPoint().y,
                     objectSeq: item.toObject().id,
-                    createDate: item.toObject().createDate
-
+                    createDate: item.toObject().createDate,
                 };
                 return mrList;
             }
@@ -409,8 +408,9 @@ export class DragAndDropComponent implements AfterViewInit{
     /**
      * 회차 별 dataSet 생성
      * @param dataSetSeq
+     * @param src
      */
-    async createDataSet(dataSetSeq: number) {
+    async createDataSet(dataSetSeq: number, src?:any) {
         // canvas 내 objectCodeId List
         const objectCodeList = this.canvas.getObjects().map(item => item.toObject().objectCodeId);
 
@@ -421,7 +421,6 @@ export class DragAndDropComponent implements AfterViewInit{
 
         // 회차별 데이터셋 생성 request model
         this.mrDataSetModel = {
-            id : 9999,
             seq: dataSetSeq,
             testDate: new Date(),
             userEmail: this.userEmail? this.userEmail : '',
@@ -431,7 +430,9 @@ export class DragAndDropComponent implements AfterViewInit{
             actionCount: this.controlCount,
             fishCount: this.fishCount,
             etcCount:this.etcCount,
-            resultSheetId: 0
+            resultSheetId: 0,
+            resultImage: src,
+            deleted: false
         };
 
         console.log(this.mrDataSetModel);

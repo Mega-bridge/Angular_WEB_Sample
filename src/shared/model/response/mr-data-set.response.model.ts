@@ -1,12 +1,9 @@
-/**
- * 오브젝트별 데이터 세트 생성
- */
-export class MrDataSetRequestModel {
+export class MrDataSetResponseModel{
     // public id: number = 0;
     public seq: number = 0;
 
     // 회차 추가시 timestamp
-    public testDate : Date | null = null;
+    public testDate :number[] = [];
 
     // user.id
     public userEmail:string = '';
@@ -34,6 +31,4 @@ export class MrDataSetRequestModel {
     public resultSheetId: number = 0;
 
     public deleted?: boolean = false;
-
-
 }

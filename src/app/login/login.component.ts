@@ -21,6 +21,7 @@ export class LoginComponent {
      * @param router
      * @param loginProvider
      * @param notificationService
+     * @param alertService
      */
     constructor(
         private router: Router,

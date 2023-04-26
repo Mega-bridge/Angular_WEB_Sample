@@ -2,7 +2,7 @@
  * 회차별 오브젝트
  */
 export class MrObjectModel {
-    public id: number = 0;
+    // public id: number = 0;
 
     // mr_data_set.seq
     public dataSetSeq: number = 0;
@@ -14,7 +14,7 @@ export class MrObjectModel {
     public objectCodeId: number = 0;
 
     // mr_family_code.id
-    public name: number = 0;
+    public name: number | null = null;
 
     public x: number = 0;
     public y: number = 0;

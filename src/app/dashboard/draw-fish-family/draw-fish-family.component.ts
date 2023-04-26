@@ -37,15 +37,14 @@ export class DrawFishFamilyComponent implements OnInit{
     ];
 
     /** 회차 items */
-    public seqItems = [
-        {
-            id: 0,
-            text: "1회차",
-            date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
-            imgUrl: ''
-        },
-        // { id: 1, text: "2회차", date: new Date().getFullYear().toString() + '.' + new Date().getMonth().toString() + '.' + new Date().getDate().toString()},
-    ];
+    public seqItems : {id: number, text: string, date: string, imgUrl: string}[] = [];
+        // [
+        // {
+        //     id: 0,
+        //     text: "1회차",
+        //     date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
+        //     imgUrl: ''
+        // }];
 
     /** 회차 선택 */
     public selectedSeq: number = 0;
@@ -126,7 +125,7 @@ export class DrawFishFamilyComponent implements OnInit{
 
 
     /** 선택된 가족 관계 */
-    public selectedFamilyType: number = 0;
+    public selectedFamilyType: number | null = null;
 
     /** 선택한 가족 관계 list */
     public selectedFamilyList: string[] = [];
@@ -245,6 +244,27 @@ export class DrawFishFamilyComponent implements OnInit{
 
         // 사용자 정보 조회
         this.userEmail =  sessionStorage.getItem('userEmail') != null ? sessionStorage.getItem('userEmail') : '';
+
+        // 사용자 데이터셋 조회
+        this.getSeqDataSet();
+
+    }
+
+
+    // DataSet 불러오기
+    getSeqDataSet():void{
+        this.mindReaderControlService.getDataSet()
+            .subscribe({
+                next: async (data) => {
+                    data.map(item => {
+                        const testDate = item.testDate[0].toString() + '.' + item.testDate[1].toString() + '.' + item.testDate[2].toString() + '.';
+                        this.seqItems.push({id: item.seq, text: (item.seq + 1).toString() + '회차', date: testDate, imgUrl: item.resultImage })
+                    });
+                    this.selectedSeq = this.seqItems.length - 1;
+                    this.canvasImage = this.seqItems[this.seqItems.length - 1].imgUrl;
+
+                }
+            })
     }
 
     /**
@@ -394,11 +414,15 @@ export class DrawFishFamilyComponent implements OnInit{
         this.canvas.getImgPolaroid(img,objectCodeId[0],this.selectedFamilyType);
 
         // 물고기 선택 후 버튼 해제
-        this.familyTypeList[this.selectedFamilyType].selected=false;
+        if(this.selectedFamilyType){
+            this.familyTypeList[this.selectedFamilyType].selected=false;
+        }
+
         // 물고기 선택 후 가족 관계 Disabled True
         this.isDisabled=false;
 
         // popup에서 선택한 물고기 초기화
+        this.selectedFamilyType = null;
         this.selectedFishBody='';
         this.selectedFishFace='';
         this.selectedEtc = '';
@@ -441,6 +465,13 @@ export class DrawFishFamilyComponent implements OnInit{
             if (result.text === 'yes') {
                 this.seqItems[this.selectedSeq].imgUrl = this.canvas.rasterize(this.selectedSeq);
                 this.canvasImage = this.seqItems[this.selectedSeq].imgUrl;
+
+                // this.mindReaderControlService.getSeqDataSet(2)
+                //     .subscribe({
+                //         next: async (data) => {
+                //             console.log(data);
+                //         }
+                //     })
 
 
                 // full screen 닫기
