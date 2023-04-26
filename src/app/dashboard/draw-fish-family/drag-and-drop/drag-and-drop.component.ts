@@ -54,6 +54,9 @@ export class DragAndDropComponent implements AfterViewInit{
     /** object request data 생성 */
     public mrObjectModelList: MrObjectModel[] = [];
 
+    /** object 삭제 데이터 포함 */
+    public allMrObjectModelList: MrObjectModel[] = [];
+
     /** object data set 생성 */
     public mrDataSetModel: MrDataSetRequestModel = new MrDataSetRequestModel();
 
@@ -272,10 +275,26 @@ export class DragAndDropComponent implements AfterViewInit{
      * 선택된 object 삭제
      */
     removeSelected() {
-
+        let data:any;
         const activeGroup = this.canvas.getActiveObjects();
         if (activeGroup) {
-            console.log(activeGroup[0].toObject().id);
+            data = activeGroup.map((item:fabric.Object, index) => {
+                const mrList: MrObjectModel = {
+                    angle: item.angle,
+                    dataSetSeq: 1,
+                    name: item.name != null ? Number(item.name) : null,
+                    objectCodeId: item.toObject().objectCodeId,
+                    userEmail: this.userEmail ? this.userEmail : '',
+                    width: item.getScaledWidth(),
+                    height: item.getScaledHeight(),
+                    x: item.getCenterPoint().x,
+                    y: item.getCenterPoint().y,
+                    objectSeq: item.toObject().id,
+                    createDate: item.toObject().createDate,
+                };
+                return mrList;
+            })
+            this.allMrObjectModelList.push(data[0]);
             this.canvas.discardActiveObject();
             const self = this;
             activeGroup.forEach((object:fabric.Object) => {
@@ -382,11 +401,14 @@ export class DragAndDropComponent implements AfterViewInit{
             }
 
         );
-
-        console.log(this.mrObjectModelList);
-
-
-
+        // 삭제 데이터 + 캔버스 최종 데이터
+        for (let i=0;i<this.mrObjectModelList.length;i++){
+            this.allMrObjectModelList.push(this.mrObjectModelList[i]);
+        }
+        // objectSeq 순으로 정렬
+        this.allMrObjectModelList.sort((a, b) => a.objectSeq - b.objectSeq);
+        console.log('삭제 오브젝트 포함 데이터 : ')
+        console.log(this.allMrObjectModelList)
         // 회차별 오브젝트 생성
         this.mindReaderControlService.postObject(this.mrObjectModelList)
             .subscribe({
