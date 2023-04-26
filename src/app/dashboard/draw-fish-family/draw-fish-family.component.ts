@@ -255,7 +255,7 @@ export class DrawFishFamilyComponent implements OnInit{
         this.mindReaderControlService.getDataSet()
             .subscribe({
                 next: async (data) => {
-                    if(data){
+                    if(data.length != 0){
                         console.log(data);
                         data.map(item => {
 
