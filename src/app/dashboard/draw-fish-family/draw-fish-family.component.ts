@@ -27,6 +27,8 @@ export class DrawFishFamilyComponent implements OnInit{
     /** user Id */
     public userId: number = 0;
 
+    public dataSetId: any;
+
     /** 결과지 슬라이더 열기 */
     public expanded = false;
     /** 결과지 슬라이더 위치 */
@@ -38,7 +40,7 @@ export class DrawFishFamilyComponent implements OnInit{
     ];
 
     /** 회차 items */
-    public seqItems : {id: number, text: string, date: string, imgUrl: string}[] = [];
+    public seqItems : {id?: number, seq: number,text: string, date: string, imgUrl: string}[] = [];
 
     /** 회차 선택 */
     public selectedSeq: number = 0;
@@ -271,12 +273,12 @@ export class DrawFishFamilyComponent implements OnInit{
 
                             if(!item.deleted){
                                 const testDate = new Date(item.testDate).getFullYear().toString() + '.' + (new Date(item.testDate).getMonth() + 1).toString() + '.' + new Date(item.testDate).getDate().toString()
-                                this.seqItems.push({id: item.seq, text: (item.seq + 1).toString() + '회차', date: testDate, imgUrl: item.resultImage })
+                                this.seqItems.push({id: item.id,seq:item.seq, text: (item.seq + 1).toString() + '회차', date: testDate, imgUrl: item.resultImage })
                             }
 
                         });
-                        this.selectedSeq = this.seqItems.length - 1;
-                        this.canvasImage = this.seqItems[this.seqItems.length - 1].imgUrl;
+                        this.selectedSeq = data.length - 1;
+                        this.canvasImage = this.seqItems[data.length - 1].imgUrl;
 
                         // 회차별 오브젝트 순서 조회
                         this.getSeqObjectCode();
@@ -294,7 +296,7 @@ export class DrawFishFamilyComponent implements OnInit{
                 next: async (data) => {
                     this.selectedObjectList = data.map(item => item.description);
                 }
-            })
+            });
     }
 
     /**
@@ -504,10 +506,9 @@ export class DrawFishFamilyComponent implements OnInit{
 
                 // full screen 닫기
                 this.closeFullscreen();
+                this.getSeqObjectCode();
             }
         });
-
-
 
     }
 
@@ -567,7 +568,7 @@ export class DrawFishFamilyComponent implements OnInit{
      * @param item
      */
     selectSeq(item: any){
-        this.selectedSeq = item.id;
+        this.selectedSeq = item.seq;
         this.canvasImage = this.seqItems[this.selectedSeq].imgUrl;
         this.getSeqObjectCode();
     }
@@ -582,7 +583,7 @@ export class DrawFishFamilyComponent implements OnInit{
             return;
         }
         this.seqItems.push({
-            id: this.seqItems.length,
+            seq: this.seqItems.length,
             text: `${this.seqItems.length + 1}회차`,
             date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
             imgUrl: ''
@@ -598,18 +599,26 @@ export class DrawFishFamilyComponent implements OnInit{
         console.log(item);
 
         const dialog = this.dialogService.open({
-            title: `${item.id + 1}회차를 삭제하시겠습니까?`,
+            title: `${item.seq + 1}회차를 삭제하시겠습니까?`,
             content: ConfirmDialogComponent,
             appendTo: this.dialogRef,
             width: 450,
             height: 200,
             minWidth: 250,
         });
-        dialog.content.instance.text = `삭제 시 복구가 불가합니다. <br> ${item.id + 1}회차를 정말로 삭제하시겠습니까?`;
+        dialog.content.instance.text = `삭제 시 복구가 불가합니다. <br> ${item.seq + 1}회차를 정말로 삭제하시겠습니까?`;
 
         dialog.result.subscribe((result: any) => {
             if (result.text === 'yes') {
-                console.log('삭제 진행');
+                this.mindReaderControlService.deleteDataSet(item.id)
+                    .subscribe({
+                        next:async (data) => {
+                            if(data){
+                                this.alertService.openAlert('삭제되었습니다.');
+                                window.location.reload();
+                            }
+                        }
+                    })
             }
         });
     }
