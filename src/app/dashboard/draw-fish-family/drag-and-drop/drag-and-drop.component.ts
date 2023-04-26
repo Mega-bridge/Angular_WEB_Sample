@@ -369,56 +369,14 @@ export class DragAndDropComponent implements AfterViewInit{
         // 회차별 dataSet 생성
         this.createDataSet(dataSetSeq, image.src);
 
+        // 회차별 오브젝트 생성
+        this.createObjectSet(dataSetSeq);
+
         this.canvas.clear();
         return image.src;
     }
 
-    /**
-     * 회차 별 object 생성
-     * @param dataSetSeq
-     */
-    createObjectSet(dataSetSeq: number):void {
-        // 회차별 오브젝트 생성 request model
-        this.mrObjectModelList = this.canvas.getObjects().map((item:fabric.Object, index) => {
-                const mrList: MrObjectModel = {
-                    angle: item.angle,
-                    dataSetSeq: dataSetSeq,
-                    name: item.name != null ? Number(item.name) : null,
-                    objectCodeId: item.toObject().objectCodeId,
-                    userEmail: this.userEmail? this.userEmail : '' ,
-                    width: item.getScaledWidth(),
-                    height: item.getScaledHeight(),
-                    x: item.getCenterPoint().x,
-                    y: item.getCenterPoint().y,
-                    objectSeq: item.toObject().id,
-                    createDate: item.toObject().createDate,
-                };
-                return mrList;
-            }
 
-        );
-        // 삭제 데이터 + 캔버스 최종 데이터
-        for (let i=0;i<this.mrObjectModelList.length;i++){
-            this.allMrObjectModelList.push(this.mrObjectModelList[i]);
-        }
-        // objectSeq 순으로 정렬
-        this.allMrObjectModelList.sort((a, b) => a.objectSeq - b.objectSeq);
-        console.log('삭제 오브젝트 포함 데이터 : ')
-        console.log(this.allMrObjectModelList)
-        // 회차별 오브젝트 생성
-        this.mindReaderControlService.postObject(this.mrObjectModelList)
-            .subscribe({
-                next: async (data) => {
-                    if(data){
-                        console.log(data);
-                    }
-                    else{
-                        console.log('실패....^^');
-                    }
-                },
-                error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
-            });
-    }
 
 
     /**
@@ -461,9 +419,6 @@ export class DragAndDropComponent implements AfterViewInit{
                 next: async(data) => {
                     if(data){
                         console.log(data);
-                        // 데이터셋 저장 성공 시 오브젝트 정보 저장
-                        // 회차별 오브젝트 생성
-                        this.createObjectSet(dataSetSeq);
                     }
                     else{
                         console.log('실패....^^');
@@ -513,6 +468,58 @@ export class DragAndDropComponent implements AfterViewInit{
                 });
 
         });
+    }
+
+
+    /**
+     * 회차 별 object 생성
+     * @param dataSetSeq
+     */
+    createObjectSet(dataSetSeq: number):void {
+        // 회차별 오브젝트 생성 request model
+        this.mrObjectModelList = this.canvas.getObjects().map((item:fabric.Object, index) => {
+                const mrList: MrObjectModel = {
+                    angle: item.angle,
+                    dataSetSeq: dataSetSeq,
+                    name: item.name != null ? Number(item.name) : null,
+                    objectCodeId: item.toObject().objectCodeId,
+                    userEmail: this.userEmail? this.userEmail : '' ,
+                    width: item.getScaledWidth(),
+                    height: item.getScaledHeight(),
+                    x: item.getCenterPoint().x,
+                    y: item.getCenterPoint().y,
+                    objectSeq: item.toObject().id,
+                    createDate: item.toObject().createDate,
+                };
+                return mrList;
+            }
+
+        );
+
+        console.log(this.mrObjectModelList);
+        // 삭제 데이터 + 캔버스 최종 데이터
+        for (let i=0;i<this.mrObjectModelList.length;i++){
+            this.allMrObjectModelList.push(this.mrObjectModelList[i]);
+        }
+        // objectSeq 순으로 정렬
+        this.allMrObjectModelList.sort((a, b) => a.objectSeq - b.objectSeq);
+        console.log('삭제 오브젝트 포함 데이터 : ')
+        console.log(this.allMrObjectModelList)
+
+        console.log(this.mrObjectModelList);
+        // 회차별 오브젝트 생성
+        this.mindReaderControlService.postObject(this.mrObjectModelList)
+            .subscribe({
+                next: async (data) => {
+                    if(data){
+                        console.log(data);
+                    }
+                    else{
+                        console.log('실패....^^');
+                    }
+                },
+                error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
+            });
     }
 
 
