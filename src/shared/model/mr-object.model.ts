@@ -26,5 +26,6 @@ export class MrObjectModel {
     public objectSeq: number = 0;
 
     // 오브젝트 생성시 timestamp
-    public createDate: Date | null =  null;
+    // public createDate: Date | null =  null;
+    public createDate: number = 0;
 }

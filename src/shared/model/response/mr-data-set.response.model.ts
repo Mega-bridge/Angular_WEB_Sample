@@ -3,7 +3,7 @@ export class MrDataSetResponseModel{
     public seq: number = 0;
 
     // 회차 추가시 timestamp
-    public testDate :number[] = [];
+    public testDate :number = 0;
 
     // user.id
     public userEmail:string = '';
