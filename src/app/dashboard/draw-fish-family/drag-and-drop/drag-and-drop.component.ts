@@ -185,7 +185,6 @@ export class DragAndDropComponent implements AfterViewInit{
             // console.log('화면 Y Point: ' + e.e.clientY);
             console.log('-----------------------');
 
-            this.controlCount += 1;
         });
 
         // 각도값
@@ -194,8 +193,6 @@ export class DragAndDropComponent implements AfterViewInit{
             console.log('////////Object Rotating///////////////');
             console.log('angle: ' + movedObject.angle);
             console.log('-----------------------');
-
-            this.controlCount += 1;
         })
 
 
@@ -212,6 +209,7 @@ export class DragAndDropComponent implements AfterViewInit{
             console.log('-----------------------');
 
             this.controlCount += 1;
+            console.log('control Count: ' + this.controlCount);
         });
 
     }
