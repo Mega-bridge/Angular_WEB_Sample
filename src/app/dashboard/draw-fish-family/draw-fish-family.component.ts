@@ -256,8 +256,11 @@ export class DrawFishFamilyComponent implements OnInit{
             .subscribe({
                 next: async (data) => {
                     data.map(item => {
-                        const testDate = item.testDate[0].toString() + '.' + item.testDate[1].toString() + '.' + item.testDate[2].toString() + '.';
-                        this.seqItems.push({id: item.seq, text: (item.seq + 1).toString() + '회차', date: testDate, imgUrl: item.resultImage })
+                        if(!item.deleted){
+                            const testDate = item.testDate[0].toString() + '.' + item.testDate[1].toString() + '.' + item.testDate[2].toString() + '.';
+                            this.seqItems.push({id: item.seq, text: (item.seq + 1).toString() + '회차', date: testDate, imgUrl: item.resultImage })
+                        }
+
                     });
                     this.selectedSeq = this.seqItems.length - 1;
                     this.canvasImage = this.seqItems[this.seqItems.length - 1].imgUrl;
@@ -269,11 +272,13 @@ export class DrawFishFamilyComponent implements OnInit{
             });
     }
 
+    /**
+     * 회차별 오브젝트 순서 조회
+     */
     getSeqObjectCode():void {
         this.mindReaderControlService.getObjectCodeSeq(this.selectedSeq)
             .subscribe({
                 next: async (data) => {
-                    console.log(data);
                     this.selectedObjectList = data.map(item => item.description);
                 }
             })
@@ -464,7 +469,7 @@ export class DrawFishFamilyComponent implements OnInit{
      */
     public rasterize() {
         const dialog = this.dialogService.open({
-            title: "Please confirm",
+            title: "저장하시겠습니까?",
             content: ConfirmDialogComponent,
             appendTo: this.dialogRef,
             width: 450,
@@ -551,7 +556,7 @@ export class DrawFishFamilyComponent implements OnInit{
      * 회차 추가하기
      */
     addSeq(){
-        if(this.seqItems.length == 24) {
+        if(this.seqItems.length == 25) {
             this.alertService.openAlert('상담은 25회차까지 진행됩니다.');
             return;
         }
@@ -560,6 +565,30 @@ export class DrawFishFamilyComponent implements OnInit{
             text: `${this.seqItems.length + 1}회차`,
             date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
             imgUrl: ''
+        });
+    }
+
+    /**
+     * 회차 삭제하기
+     */
+    deleteSeq(item:any){
+        console.log('회차 정보');
+        console.log(item);
+
+        const dialog = this.dialogService.open({
+            title: `${item.id + 1}회차를 삭제하시겠습니까?`,
+            content: ConfirmDialogComponent,
+            appendTo: this.dialogRef,
+            width: 450,
+            height: 200,
+            minWidth: 250,
+        });
+        dialog.content.instance.text = `삭제 시 복구가 불가합니다. <br> ${item.id + 1}회차를 정말로 삭제하시겠습니까?`;
+
+        dialog.result.subscribe((result: any) => {
+            if (result.text === 'yes') {
+                console.log('삭제 진행');
+            }
         });
     }
 

@@ -65,8 +65,21 @@
 
             <div class="card-seq-wrap">
                 <div class="card-seq" *ngFor="let item of seqItems" (click)="selectSeq(item)" [style.background-color] ="selectedSeq === item.id ? '#cccccc' : ''">
-                    <span class="title"  >{{item.text}}</span>
+                    <div>
+                    <span class="title">{{item.text}}</span>
                     <span class="sub">{{item.date}}</span>
+                    </div>
+                    <div style="width: 18px;
+                    height: 18px;
+                    color: #ff0000;
+                    border: #ff0000 solid 1px;
+                    border-radius: 50%;
+                    text-align: center;
+                    cursor: pointer;"
+                    (click)="deleteSeq(item)">
+                        <span>-</span>
+                    </div>
+
                 </div>
 
             </div>
@@ -97,32 +110,6 @@
                     </div>
                 </div>
             </div>
-
-            <!--            <div class="col" *ngIf="resultVisible">-->
-            <!--                <div class="card">-->
-            <!--                    <div class="card-header">Options</div>-->
-            <!--                    <div class="card-body text-center">-->
-            <!--                        <div class="btn-group">-->
-            <!--                            <button data-toggle="tooltip" data-placement="bottom" title="Delete element" type="button"-->
-            <!--                                    (click)="removeSelected();"> delete-->
-            <!--                            </button>-->
-            <!--                            <button data-toggle="tooltip" data-placement="bottom" title="Export to image" type="button" (click)="rasterize();">-->
-            <!--                                Export to image-->
-            <!--                            </button>-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--                <div class="card">-->
-            <!--                    <div class="card-header" (click)="showEtc = !showEtc">더보기</div>-->
-            <!--                    <div *ngIf="showEtc">-->
-
-            <!--                        <div class="card-header sub">돌</div>-->
-            <!--                        <div class="card-header sub">물풀</div>-->
-            <!--                        <div class="card-header sub">물방울</div>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--            </div>-->
-
         </div>
     </kendo-drawer-content>
 </kendo-drawer-container>
