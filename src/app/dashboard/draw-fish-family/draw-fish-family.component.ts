@@ -566,6 +566,7 @@ export class DrawFishFamilyComponent implements OnInit{
             date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
             imgUrl: ''
         });
+        this.selectSeq(this.seqItems[this.seqItems.length - 1]);
     }
 
     /**
