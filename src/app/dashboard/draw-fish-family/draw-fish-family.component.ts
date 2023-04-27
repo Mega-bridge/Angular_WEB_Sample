@@ -47,6 +47,30 @@ export class DrawFishFamilyComponent implements OnInit{
     /** 전체 dataSet count */
     public dataSetCount: number = 0;
 
+    /** canvas에 그리기 완료한 img */
+    public canvasImage: string = '';
+
+    // 가족관계 리스트
+    public familyTypeList : MrFamilyCodeResponse[] = [];
+
+    public anchorAlign: Align = { horizontal: "right", vertical: "top" };
+    public popupAlign: Align = { horizontal: "left", vertical: "top" };
+
+    /** 팝업 열리는 시간 */
+    public startDate = new Date();
+    /** 캔버스 저장 시간 */
+    public endDate = new Date();
+    /** 시간, 분, 초 */
+    public hour: number=0;
+    public minute: number=0;
+    public second: number=0;
+
+
+    ///// 어항 그리기 /////
+
+    /** full screen element 담을 변수 */
+    public elem: any;
+
     /** object url */
     public objectData:MrObjectImageResponse[] = [];
     // object 선택 팝업 확장 여부
@@ -135,31 +159,11 @@ export class DrawFishFamilyComponent implements OnInit{
     /** 캔버스 팝업 여부 */
     public isPopupOpen: boolean = false;
 
-    /** full screen element 담을 변수 */
-    public elem: any;
-
-    /** canvas에 그리기 완료한 img */
-    public canvasImage: string = '';
-
-    // 가족관계 리스트
-    public familyTypeList : MrFamilyCodeResponse[] = [];
-
-    public anchorAlign: Align = { horizontal: "right", vertical: "top" };
-    public popupAlign: Align = { horizontal: "left", vertical: "top" };
-
-    /** 팝업 열리는 시간 */
-    public startDate = new Date();
-    /** 캔버스 저장 시간 */
-    public endDate = new Date();
-    /** 시간, 분, 초 */
-    public hour: number=0;
-    public minute: number=0;
-    public second: number=0;
-
+    /** canvas */
     @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
     @ViewChild('canvas', { static: true }) canvas_el!: ElementRef<HTMLCanvasElement>;
 
-    /** 다이얼로그 생성 컨테이너 지정 */
+    /** 다이얼로그 생성 */
     @ViewChild('dialog', {read: ViewContainerRef})
     public dialogRef!: ViewContainerRef;
 
