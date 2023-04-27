@@ -357,15 +357,16 @@ export class DragAndDropComponent implements AfterViewInit{
     /**
      * canvas 저장
      * @param dataSetSeq
+     * @param startDate
      */
-    rasterize(dataSetSeq: any) {
+    rasterize(dataSetSeq: any, startDate: Date) {
 
         // cavas img로 저장
         const image = new Image();
         image.src = this.canvas.toDataURL({format: 'png'});
 
         // 회차별 dataSet 생성
-        this.createDataSet(dataSetSeq, image.src);
+        this.createDataSet(dataSetSeq,startDate, image.src);
 
         // 회차별 오브젝트 생성
         this.createObjectSet(dataSetSeq);
@@ -380,9 +381,10 @@ export class DragAndDropComponent implements AfterViewInit{
     /**
      * 회차 별 dataSet 생성
      * @param dataSetSeq
+     * @param startDate
      * @param src
      */
-    async createDataSet(dataSetSeq: number, src?:any) {
+    async createDataSet(dataSetSeq: number, startDate:Date, src?:any) {
         // canvas 내 objectCodeId List
         const objectCodeList = this.canvas.getObjects().map(item => item.toObject().objectCodeId);
 
@@ -394,7 +396,7 @@ export class DragAndDropComponent implements AfterViewInit{
         // 회차별 데이터셋 생성 request model
         this.mrDataSetModel = {
             seq: dataSetSeq,
-            testDate: new Date().getTime(),
+            testDate: startDate.getTime(),
             userEmail: this.userEmail? this.userEmail : '',
             patientInfoId: null,
             fishbowlCode: this.fishbowlCode,

@@ -441,7 +441,7 @@ export class DrawFishFamilyComponent implements OnInit{
         // 선택된 가족관계 id 할당
         this.selectedFamilyType = this.familyTypeList[e].id;
         // 가족 관계 선택 시 버튼 막기
-        this.isDisabled=true;
+        // this.isDisabled=true;
         // 가족 관계를 선택해야 물고기 선택 가능
         this.isFamilyAfterFish=true;
     }
@@ -545,7 +545,7 @@ export class DrawFishFamilyComponent implements OnInit{
         this.canvas.getImgPolaroid(img,objectCodeId[0],this.selectedFamilyType);
 
         // 물고기 선택 후 버튼 해제
-        if(this.selectedFamilyType){
+        if(this.selectedFamilyType != null){
             this.familyTypeList[this.selectedFamilyType].selected=false;
         }
 
@@ -597,7 +597,7 @@ export class DrawFishFamilyComponent implements OnInit{
                 this.second=(Math.abs(this.endDate.getSeconds()-this.startDate.getSeconds()))
 
 
-                this.seqItems[this.selectedSeqIndex].imgUrl = this.canvas.rasterize(this.selectedSeq);
+                this.seqItems[this.selectedSeqIndex].imgUrl = this.canvas.rasterize(this.selectedSeq, this.startDate);
                 this.canvasImage = this.seqItems[this.selectedSeqIndex].imgUrl;
 
                 // full screen 닫기
