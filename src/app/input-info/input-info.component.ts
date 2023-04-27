@@ -118,4 +118,11 @@ export class InputInfoComponent implements OnInit{
         this.router.navigateByUrl(`/DrawFishFamily`);
 
     }
+    /**
+     * 캔버스 화면으로 이동
+     */
+    startLogin() {
+        this.router.navigateByUrl(`/login`);
+
+    }
 }
