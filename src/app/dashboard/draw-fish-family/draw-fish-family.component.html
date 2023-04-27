@@ -84,13 +84,14 @@
 
             </div>
 
-            <div>
-                <div style="padding: 15px 30px;">
-                    <b>< 오브젝트 선택 순서 ></b>
-                    <ng-container *ngFor="let item of selectedObjectList">
-                        <br>
-                        <span style="font-size: 12px;">{{item}}</span>
-                    </ng-container>
+            <div class="card-title sub">
+                <span>오브젝트 선택 순서</span>
+            </div>
+            <div class="card-seq-wrap" style="height: 44%; border: none;">
+                <div style="overflow-y: scroll; padding: 10px 20px;">
+                    <div *ngFor="let item of selectedObjectList; let i = index" style="padding: 5px 0;">
+                        <span style="font-size: 12px;">{{i}}. {{item}}</span><br>
+                    </div>
                 </div>
             </div>
         </div>

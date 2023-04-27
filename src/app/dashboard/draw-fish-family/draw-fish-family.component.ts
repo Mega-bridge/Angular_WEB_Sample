@@ -602,9 +602,8 @@ export class DrawFishFamilyComponent implements OnInit{
 
                 // full screen 닫기
                 this.closeFullscreen();
-                this.getSeqObjectCode();
-
             }
+
         });
 
     }
