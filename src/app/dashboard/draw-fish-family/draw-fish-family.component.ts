@@ -285,10 +285,14 @@ export class DrawFishFamilyComponent implements OnInit{
                         // 추가될 DataSet의 seq를 위해 전체 DataSet의 마지막 seq 저장
                         this.selectedSeq = data.length-1;
 
-                        // 처음 로드 시 마지막 회차 선택
-                        // Delete되지 않은 DataSet list의 마지막 index 할당
-                        this.selectedSeqIndex = this.seqItems.length -1;
-                        this.selectSeq(this.seqItems[this.selectedSeqIndex], this.selectedSeqIndex);
+                        if(this.seqItems.length != 0){
+                            // 처음 로드 시 마지막 회차 선택
+                            // Delete되지 않은 DataSet list의 마지막 index 할당
+                            this.selectedSeqIndex = this.seqItems.length -1;
+                            this.selectSeq(this.seqItems[this.selectedSeqIndex], this.selectedSeqIndex);
+                        }
+
+
 
 
                     }
