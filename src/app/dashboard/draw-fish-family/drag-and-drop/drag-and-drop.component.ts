@@ -182,20 +182,18 @@ export class DragAndDropComponent implements AfterViewInit{
             //console.log(e);
             const movedObject: any = e.target;
             var centerPoint = movedObject.getCenterPoint();
-            console.log('////////Object Moving///////////////');
-            console.log('centerPoint (X, Y): ' + centerPoint);
-            // console.log('화면 X Point: ' + e.e.clientX);
-            // console.log('화면 Y Point: ' + e.e.clientY);
-            console.log('-----------------------');
+            // console.log('////////Object Moving///////////////');
+            // console.log('centerPoint (X, Y): ' + centerPoint);
+            // console.log('-----------------------');
 
         });
 
         // 각도값
         this.canvas.on('object:rotating', e => {
             const movedObject: any = e.target;
-            console.log('////////Object Rotating///////////////');
-            console.log('angle: ' + movedObject.angle);
-            console.log('-----------------------');
+            // console.log('////////Object Rotating///////////////');
+            // console.log('angle: ' + movedObject.angle);
+            // console.log('-----------------------');
         })
 
 
@@ -203,13 +201,13 @@ export class DragAndDropComponent implements AfterViewInit{
         this.canvas.on('object:modified', e => {
             //console.log(e);
             const modifiedObject = e.target;
-            console.log('////////Object Modified///////////////');
-            console.log('좌우 반전 여부:' + modifiedObject?.flipX);
-            console.log('상하 반전 여부:' + modifiedObject?.flipY);
-            console.log('Object Width:' + modifiedObject?.getScaledWidth());
-            console.log('Object Height:' + modifiedObject?.getScaledHeight());
-            // console.log('상하 반전 여부:' + modifiedObject?.cacheHeight);
-            console.log('-----------------------');
+            // console.log('////////Object Modified///////////////');
+            // console.log('좌우 반전 여부:' + modifiedObject?.flipX);
+            // console.log('상하 반전 여부:' + modifiedObject?.flipY);
+            // console.log('Object Width:' + modifiedObject?.getScaledWidth());
+            // console.log('Object Height:' + modifiedObject?.getScaledHeight());
+            // // console.log('상하 반전 여부:' + modifiedObject?.cacheHeight);
+            // console.log('-----------------------');
 
             this.controlCount += 1;
             console.log('control Count: ' + this.controlCount);
