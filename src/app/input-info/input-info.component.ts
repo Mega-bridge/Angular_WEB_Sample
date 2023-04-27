@@ -119,7 +119,7 @@ export class InputInfoComponent implements OnInit{
 
     }
     /**
-     * 캔버스 화면으로 이동
+     * 로그인 화면으로 이동
      */
     startLogin() {
         this.router.navigateByUrl(`/login`);

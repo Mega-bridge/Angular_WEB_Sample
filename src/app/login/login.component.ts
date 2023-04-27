@@ -34,8 +34,8 @@ export class LoginComponent {
      * 로그인 폼
      */
     public loginForm: FormGroup = new FormGroup({
-        email: new FormControl('',[Validators.required]),
-        password: new FormControl('',[Validators.required]),
+        email: new FormControl('',[Validators.required]), // 이메일
+        password: new FormControl('',[Validators.required]), // 비밀번호
     });
 
     /**
@@ -51,6 +51,7 @@ export class LoginComponent {
             .subscribe({
                 next: async (response) => {
                     if (response) {
+                        // 로그인 성공 시 튜토리얼로 이동
                         this.tutorial();
                     }
                 },

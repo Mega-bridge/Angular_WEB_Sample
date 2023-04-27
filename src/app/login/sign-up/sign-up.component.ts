@@ -40,17 +40,18 @@ export class SignUpComponent implements OnInit{
      * 회원가입 폼
      */
     public signUpForm: FormGroup = new FormGroup({
-        id: new FormControl(''),
-        email: new FormControl(''),
-        name: new FormControl(''),
-        password: new FormControl(''),
-        confirmPassword: new FormControl(''),
-        createDate: new FormControl(new Date()),
-        updateDate: new FormControl(new Date()),
-        role: new FormControl('')
+        id: new FormControl(''), // id
+        email: new FormControl(''), // email
+        name: new FormControl(''), // 사용자 이름
+        password: new FormControl(''), // 비밀번호
+        confirmPassword: new FormControl(''), // 확인 비밀번호
+        createDate: new FormControl(new Date()), // 생성된 날짜
+        updateDate: new FormControl(new Date()), // 수정된 날짜
+        role: new FormControl('') // 권한
     });
 
     ngOnInit() {
+        // 데이터 로드
         this.dataLoad();
     }
 
@@ -73,9 +74,11 @@ export class SignUpComponent implements OnInit{
      * 회원가입
      */
     signup(){
+        // 입력한 비밀번호와 확인 비밀번호 일치한지 확인
         if (this.signUpForm.controls['password'].value!=this.signUpForm.controls['confirmPassword'].value){
             this.alertService.openAlert('비밀번호가 일치한 지 다시 확인해주세요.');
         }
+        // 개인정보 수집 체크 여부
         else if(this.isInfoAgree==false){
             this.alertService.openAlert('개인정보 수집 및 이용에 동의하여 주십시오.');
         }
@@ -89,12 +92,14 @@ export class SignUpComponent implements OnInit{
                 username: this.signUpForm.controls['name'].value,
                 role: this.signUpForm.controls['role'].value
             }
+            // 회원가입
             this.userProvider.signUp(request)
                 .subscribe({
                     next: async (response)=>{
                         if(response){
                             this.alertService.openAlert('회원가입이 완료되었습니다.');
-                            this.login();
+                            // 회원 가입후 추가 정보 기입
+                            this.inputInfo();
                         }
                     },
                     // http error message 출력
