@@ -102,9 +102,9 @@
                 </div>
                 <div style="display: flex;flex-direction: row; justify-content: space-between;">
                     <div>
-                        <ng-container *ngIf="seqItems[selectedSeq].imgUrl==''">
-                            <button class="button-style" (click)="openFullscreen()">그리기 모드</button>
-                        </ng-container>
+
+                        <button class="button-style" *ngIf="seqItems[selectedSeqIndex].imgUrl==''" (click)="openFullscreen()">그리기 모드</button>
+
                     </div>
 
                     <div>
