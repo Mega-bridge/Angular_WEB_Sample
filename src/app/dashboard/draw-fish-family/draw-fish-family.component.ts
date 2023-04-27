@@ -44,6 +44,7 @@ export class DrawFishFamilyComponent implements OnInit{
     /** dataSet list index */
     public selectedSeqIndex: number = 0;
 
+    /** 전체 dataSet count */
     public dataSetCount: number = 0;
 
     /** object url */
@@ -61,8 +62,6 @@ export class DrawFishFamilyComponent implements OnInit{
     public showEels: boolean = false;
     /** 기타사항 선택 */
     public showEtc: boolean = false;
-    /** 물고기 외 선택 */
-    public showFishEtc: boolean = false;
     /** 어항 선택 */
     public showFishBowl: boolean = false;
 
@@ -125,14 +124,10 @@ export class DrawFishFamilyComponent implements OnInit{
     public selectedFamilyType: number | null = null;
 
     /** 선택한 가족 관계 list */
-    public selectedFamilyList: string[] = [];
     public selectedObjectList: string[] = [];
 
     /** 가족 선택 Disabled 여부 **/
     public isDisabled: boolean = false;
-
-    /** 결과 화면 보여주기 여부 **/
-    public resultVisible: boolean =false;
 
     /** 가족 선택 전 물고기 이미지 선택 여부 **/
     public isFamilyAfterFish: boolean = false;
@@ -285,15 +280,13 @@ export class DrawFishFamilyComponent implements OnInit{
                         // 추가될 DataSet의 seq를 위해 전체 DataSet의 마지막 seq 저장
                         this.selectedSeq = data.length-1;
 
+                        // 기존 DataSet이 있지만 모두 삭제되어 사용자에게 보여줄 DataSet이 없을 경우 미실행
                         if(this.seqItems.length != 0){
                             // 처음 로드 시 마지막 회차 선택
                             // Delete되지 않은 DataSet list의 마지막 index 할당
                             this.selectedSeqIndex = this.seqItems.length -1;
                             this.selectSeq(this.seqItems[this.selectedSeqIndex], this.selectedSeqIndex);
                         }
-
-
-
 
                     }
                 }
@@ -311,6 +304,100 @@ export class DrawFishFamilyComponent implements OnInit{
                 }
             });
     }
+
+
+
+    /**
+     * 회차 선택
+     * @param item
+     * @param index
+     */
+    selectSeq(item: any, index: number){
+
+        // DataSet의 회차
+        this.selectedSeq = item.seq;
+        // 화면에 보여지는 DataSet list의 index
+        this.selectedSeqIndex = index;
+        // 해당 DataSet의 어항 그림 화면에 적용
+        this.canvasImage = this.seqItems[index].imgUrl;
+
+        this.second = item.second;
+        this.minute = item.minute;
+        this.hour = item.hour;
+
+        // 해당 DataSet의 Object Seq 조회
+        this.getSeqObjectCode();
+    }
+
+
+    /**
+     * 회차 추가하기
+     */
+    addSeq(){
+
+        // 최대회차 25회로 제한
+        if(this.seqItems.length == 25) {
+            this.alertService.openAlert('상담은 25회차까지 진행됩니다.');
+            return;
+        }
+
+        // 회차 추가
+        this.seqItems.push({
+            seq: this.dataSetCount,
+            text: `${this.seqItems.length + 1}회차`,
+            date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
+            imgUrl: '',
+            hour:this.hour,
+            minute:this.minute,
+            second:this.second
+        });
+
+        // dataSet의 실질적인 seq 부여를 위해 dataSet Count
+        this.dataSetCount += 1;
+
+        // 회차 추가 시 추가된 회차로 자동 선택
+        this.selectSeq(this.seqItems[this.seqItems.length -1], this.seqItems.length -1);
+    }
+
+    /**
+     * 회차 삭제하기
+     */
+    deleteSeq(item:any, index: number){
+
+        // 회차 삭제 확인 다이얼로그
+        const dialog = this.dialogService.open({
+            title: `${index + 1}회차를 삭제하시겠습니까?`,
+            content: ConfirmDialogComponent,
+            appendTo: this.dialogRef,
+            width: 450,
+            height: 200,
+            minWidth: 250,
+        });
+        dialog.content.instance.text = `삭제 시 복구가 불가합니다. <br> ${index + 1}회차를 정말로 삭제하시겠습니까?`;
+
+        dialog.result.subscribe((result: any) => {
+            // 회차 삭제 진행
+            if (result.text === 'yes') {
+                this.mindReaderControlService.deleteDataSet(item.id)
+                    .subscribe({
+                        next:async (data) => {
+                            if(data){
+                                this.alertService.openAlert('삭제되었습니다.');
+                            }
+                        }
+                    });
+
+                // 페이지 새로고침
+                window.location.reload();
+            }
+        });
+    }
+
+
+
+
+
+    ///// 어항 그리기 /////
 
     /**
      * Object PopUP 여부
@@ -330,15 +417,15 @@ export class DrawFishFamilyComponent implements OnInit{
 
     /**
      * 어항 선택
-     * @param opt
+     * @param fishBowl 선택된 어항 url
      */
 
-    selectWater(opt: string) {
+    selectWater(fishBowl: string) {
         this.showFishBowl = false;
-        this.selectedFishBowl = opt;
+        this.selectedFishBowl = fishBowl;
 
-        const fishbowlCode = this.objectData.filter(item => item.path == opt ).map(item => item.objectCodeId);
-        this.canvas.setWater(opt,fishbowlCode[0]);
+        const fishbowlCode = this.objectData.filter(item => item.path == fishBowl ).map(item => item.objectCodeId);
+        this.canvas.setWater(fishBowl,fishbowlCode[0]);
     }
 
     /**
@@ -346,10 +433,9 @@ export class DrawFishFamilyComponent implements OnInit{
      * @param e
      */
     selectFamilyType(e:any){
-        this.selectedFamilyType = this.familyTypeList[e].id;
         this.familyTypeList[e].selected = true;
-        // 선택한 가족관계 리스트에 추가
-        // this.selectedObjectList.push(this.familyTypeList[e].description)
+        // 선택된 가족관계 id 할당
+        this.selectedFamilyType = this.familyTypeList[e].id;
         // 가족 관계 선택 시 버튼 막기
         this.isDisabled=true;
         // 가족 관계를 선택해야 물고기 선택 가능
@@ -359,16 +445,15 @@ export class DrawFishFamilyComponent implements OnInit{
     /**
      * 물고기 표정 선택
      * @param event
-     * @param faceImg
-     * @param type
+     * @param faceImg 선택된 물고기 표정 이미지
+     * @param type 물고기 종류
      */
     selectFishFace(event: any, faceImg:string, type: string){
-        this.selectedFishFace = '';
-        this.selectedFishBody = '';
         this.selectedFishFace = faceImg;
 
         var faceType: string = '';
 
+        // 선택된 물고기의 표정 분류
         if(faceImg.includes('_SM_')){
             faceType = 'SM';
         }
@@ -385,6 +470,7 @@ export class DrawFishFamilyComponent implements OnInit{
             faceType = 'GE';
         }
 
+        // 물고기 표정 선택 시 비늘 list에 선택된 표정 적용
         switch (type){
             case 'GE':
                 this.generalBodyImgList = this.objectData.filter(item =>
@@ -423,11 +509,8 @@ export class DrawFishFamilyComponent implements OnInit{
      * @param bodyImg
      */
     selectFishBody(event: any, bodyImg:string){
+        // 최종 선택된 물고기 전달
         this.selectedFishBody = bodyImg;
-
-        //  switch 걸러서 함수(각 폴더 별) 만들고
-        // 각 폴더 별 분류 함수 짜고
-        // this.combineSelectOption(bodyImg,type);
         this.getImgPolaroid(bodyImg);
         // 물고기 선택 후에 가족관계 disabled
         this.isFamilyAfterFish = false;
@@ -477,12 +560,6 @@ export class DrawFishFamilyComponent implements OnInit{
 
     }
 
-    /**
-     * 그리기 모드
-     */
-    public drawMode() {
-        this.canvas.drawingMode();
-    }
 
     /**
      * 선택된 object delete
@@ -505,6 +582,8 @@ export class DrawFishFamilyComponent implements OnInit{
         });
         dialog.content.instance.text = '저장 시 수정이 불가합니다.<br>그리기를 끝내시겠습니까?';
 
+
+        // 저장 실행
         dialog.result.subscribe((result: any) => {
             if (result.text === 'yes') {
                 // 캔버스 그리는데 걸리는 시간 출력
@@ -514,7 +593,6 @@ export class DrawFishFamilyComponent implements OnInit{
                 this.second=(Math.abs(this.endDate.getSeconds()-this.startDate.getSeconds()))
 
 
-                console.log(this.selectedSeqIndex);
                 this.seqItems[this.selectedSeqIndex].imgUrl = this.canvas.rasterize(this.selectedSeq);
                 this.canvasImage = this.seqItems[this.selectedSeqIndex].imgUrl;
 
@@ -569,85 +647,6 @@ export class DrawFishFamilyComponent implements OnInit{
 
     }
 
-    /**
-     * 결과지 사이드 닫기
-     * @param e
-     */
-    onSelect(e: any){
-        console.log(e);
-        e.item.text === '결과지' ? this.expanded = !this.expanded : this.expanded;
-    }
-
-    /**
-     * 회차 선택
-     * @param item
-     * @param index
-     */
-    selectSeq(item: any, index: number){
-
-        this.selectedSeq = item.seq;
-        this.selectedSeqIndex = index;
-        this.canvasImage = this.seqItems[index].imgUrl;
-
-        this.second = item.second;
-        this.minute = item.minute;
-        this.hour = item.hour;
-        this.getSeqObjectCode();
-    }
-
-
-    /**
-     * 회차 추가하기
-     */
-    addSeq(){
-        if(this.seqItems.length == 25) {
-            this.alertService.openAlert('상담은 25회차까지 진행됩니다.');
-            return;
-        }
-        this.seqItems.push({
-            seq: this.dataSetCount,
-            text: `${this.seqItems.length + 1}회차`,
-            date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
-            imgUrl: '',
-            hour:this.hour,
-            minute:this.minute,
-            second:this.second
-        });
-        this.dataSetCount += 1;
-        this.selectSeq(this.seqItems[this.seqItems.length -1], this.seqItems.length -1);
-    }
-
-    /**
-     * 회차 삭제하기
-     */
-    deleteSeq(item:any, index: number){
-        console.log('회차 정보');
-        console.log(item);
-
-        const dialog = this.dialogService.open({
-            title: `${index + 1}회차를 삭제하시겠습니까?`,
-            content: ConfirmDialogComponent,
-            appendTo: this.dialogRef,
-            width: 450,
-            height: 200,
-            minWidth: 250,
-        });
-        dialog.content.instance.text = `삭제 시 복구가 불가합니다. <br> ${index + 1}회차를 정말로 삭제하시겠습니까?`;
-
-        dialog.result.subscribe((result: any) => {
-            if (result.text === 'yes') {
-                this.mindReaderControlService.deleteDataSet(item.id)
-                    .subscribe({
-                        next:async (data) => {
-                            if(data){
-                                this.alertService.openAlert('삭제되었습니다.');
-                                window.location.reload();
-                            }
-                        }
-                    })
-            }
-        });
-    }
 
 
     protected readonly single = single;
