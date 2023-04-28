@@ -14,31 +14,32 @@
                     <div class="input-info">
                         <kendo-formfield>
                             <kendo-label class="form-label" [for]="name" text="이름"></kendo-label>
-                            <input class="form-input" formControlName="name" kendoTextBox #name/>
+                            <input class="form-input" formControlName="userName" kendoTextBox #name/>
                         </kendo-formfield>
                     </div>
                     <div class="input-info">
-<!--                        <mat-form-field appearance="outline">-->
-<!--                            <mat-label >E-mail</mat-label>-->
-<!--                            <input matInput class="form-input" formControlName="email">-->
-<!--                        </mat-form-field>-->
+                        <!--                        <mat-form-field appearance="outline">-->
+                        <!--                            <mat-label >E-mail</mat-label>-->
+                        <!--                            <input matInput class="form-input" formControlName="email">-->
+                        <!--                        </mat-form-field>-->
                         <kendo-formfield>
                             <kendo-label class="form-label" [for]="email" text="Email"></kendo-label>
-                            <input class="form-input" formControlName="email" kendoTextBox #email/>
-<!--                            <kendo-formhint>Your active email</kendo-formhint>-->
+                            <input class="form-input" formControlName="userEmail" kendoTextBox #email/>
+                            <!--                            <kendo-formhint>Your active email</kendo-formhint>-->
                             <!--            <kendo-formerror>Error: Not valid email format</kendo-formerror>-->
                         </kendo-formfield>
                     </div>
                     <div class="input-info">
-                            <kendo-label class="form-label" [for]="sex" text="성별"></kendo-label>
-<!--                            <input class="form-input" formControlName="sex" kendoTextBox #sex/>-->
-                            <kendo-dropdownlist
+                        <kendo-label class="form-label" [for]="sex" text="성별"></kendo-label>
+                        <!--                            <input class="form-input" formControlName="sex" kendoTextBox #sex/>-->
+                        <kendo-dropdownlist
                                 [data]="genderList"
+                                formControlName="genderCode"
                                 textField="description"
-                                valueField="description"
+                                valueField="id"
                                 #sex
-                            class="form-input">
-                            </kendo-dropdownlist>
+                                class="form-input">
+                        </kendo-dropdownlist>
                     </div>
                     <div class="input-info">
                         <kendo-formfield>
@@ -50,13 +51,14 @@
                     <div class="input-info">
                         <kendo-label class="form-label" [for]="job" text="직업/학년"></kendo-label>
                         <kendo-dropdownlist
-                            [data]="jobList"
-                            textField="description"
-                            valueField="description"
-                            #job
-                            class="form-input">
+                                [data]="jobList"
+                                formControlName="jobCode"
+                                textField="description"
+                                valueField="id"
+                                #job
+                                class="form-input">
                         </kendo-dropdownlist>
-<!--                        <input class="form-input" formControlName="job" kendoTextBox #job/>-->
+                        <!--                        <input class="form-input" formControlName="job" kendoTextBox #job/>-->
                     </div>
 
                     <div class="input-info">
@@ -69,25 +71,24 @@
                 </div>
             </form>
             <div>
+                <div class="input-info">
+                    <kendo-label class="form-label"  text="가족 구성원">
+                        <kendo-multiselect
+                                class="form-input"
+                                [autoClose]="false"
+                                [data]="familyTypeList"
+                                textField="description"
+                                valueField="description"
+                                [(ngModel)]="selectedFamily"
+                        ></kendo-multiselect>
+                    </kendo-label>
+                    <!--                            <div style="display: flex; flex-wrap: wrap; width: 100%;">-->
+                    <!--                                <div *ngFor="let item of familyTypeList" style="font-size: 19px; margin: 5px 0; width: 50%;">-->
+                    <!--                                    <input  type="checkbox" (change)="checkedFamilyType($event, item.id)"/>{{item.description}}-->
+                    <!--                                </div>-->
+                    <!--                            </div>-->
                     <div class="input-info">
-                            <kendo-label class="form-label"  text="가족 구성원">
-                                <kendo-multiselect
-                                        class="form-input"
-                                        [autoClose]="false"
-                                        [data]="familyTypeList"
-                                        textField="description"
-                                        valueField="description"
-                                        [(ngModel)]="selectedFamily"
-                                ></kendo-multiselect>
-                            </kendo-label>
-<!--                            <div style="display: flex; flex-wrap: wrap; width: 100%;">-->
-<!--                                <div *ngFor="let item of familyTypeList" style="font-size: 19px; margin: 5px 0; width: 50%;">-->
-<!--                                    <input  type="checkbox" (change)="checkedFamilyType($event, item.id)"/>{{item.description}}-->
-<!--                                </div>-->
-<!--                            </div>-->
-                        <div class="input-info">
-                            <kendo-label class="form-label" text="가족과의 관계">
-
+                        <kendo-label class="form-label" text="가족과의 관계">
                                 <div style="font-size:17px;margin-right: 2px" *ngFor="let family of selectedFamily; let i = index">
                                     - {{family.description}}
                                     <ng-container *ngIf="family.description!='나'">
@@ -102,8 +103,9 @@
                                         <ng-container *ngFor="let j of [].constructor(family.numericValue); let k = index">
                                             <div style="display: flex; flex-wrap: wrap; width: 100%;">
                                                 <div style="font-size: 15px;margin-top:7px">{{family.description}} {{k+1}}</div>
-                                                <div *ngFor="let item of familyRelation" style="font-size: 15px; margin: 5px 5px;">
-                                                    <input type="radio" name="{{'radio' + i + k}}" />{{item.description}}
+                                                <div *ngFor="let item of familyRelation;let m = index" style="font-size: 15px; margin: 5px 5px;">
+                                                    <input type="radio"  name="{{family.description + k}}" value="{{family.id+'_'+item.id}}" [(ngModel)]="selectedValues[k * familyRelation.length+i]"/>
+                                                    {{item.description}}
                                                 </div>
                                             </div>
                                         </ng-container>
@@ -116,7 +118,7 @@
                 </div>
         </div>
         <div style="padding: 10px 0;margin:40px 0;display: flex;justify-content: center;">
-            <button type="submit" mat-raised-button style="width: 500px; background-color: #fe5e23; color: #ffffff;" (click)="startLogin()">START</button>
+            <button type="submit" mat-raised-button style="width: 500px; background-color: #fe5e23; color: #ffffff;" (click)="patientInfo()">START</button>
         </div>
     </div>
 
