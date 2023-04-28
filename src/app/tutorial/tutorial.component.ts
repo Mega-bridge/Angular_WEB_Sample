@@ -31,4 +31,8 @@ export class TutorialComponent{
 
     }
 
+    modifyInfo(){
+        this.router.navigateByUrl('/modify-input-info')
+    }
+
 }

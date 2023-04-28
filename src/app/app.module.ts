@@ -28,6 +28,7 @@ import {MultiSelectModule} from "@progress/kendo-angular-dropdowns";
 import {TokenService} from "../shared/service/token.service";
 import {AuthGuard} from "../shared/service/auth.guard";
 import {LoginService} from "../shared/service/login.service";
+import {ModifyInputInfoComponent} from "./input-info/modify/modify-input-info.component";
 
 
 
@@ -36,6 +37,7 @@ import {LoginService} from "../shared/service/login.service";
     AppComponent,
     TutorialComponent,
     InputInfoComponent,
+      ModifyInputInfoComponent,
     SignUpComponent,
     LoginComponent
   ],
