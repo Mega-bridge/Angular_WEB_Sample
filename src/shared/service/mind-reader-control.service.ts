@@ -10,6 +10,8 @@ import {MrObjectModel} from "../model/mr-object.model";
 import {MrDataSetRequestModel} from "../model/request/mr-data-set.request.model";
 import {MrObjectCodeResponseModel} from "../model/response/mr-object-code.response.model";
 import {MrDataSetResponseModel} from "../model/response/mr-data-set.response.model";
+import {PatientInfoRequest} from "../model/request/patient-info.request.model";
+import {MrPatientInfoResponse} from "../model/response/mr-patient-info.response.model";
 
 @Injectable({
     providedIn: 'root'
@@ -120,14 +122,27 @@ export class MindReaderControlService {
     }
 
 
-
-
     /**
      * 회차별 사용자 오브젝트 순서 목록 조회
      * @param seq
      */
     getObjectCodeSeq(seq: number): Observable<MrObjectCodeResponseModel[]>{
         return this.http.get<MrObjectCodeResponseModel[]>(`${this.MR_CONTROL_URL}/user/objectCode/${seq}`)
+    }
+
+    /**
+     * 내담자 추가 정보 조회
+     */
+    getPatientInfo(): Observable<MrPatientInfoResponse[]>{
+        return this.http.get<MrPatientInfoResponse[]>(`${this.MR_CONTROL_URL}/patientInfo`)
+    }
+
+    /**
+     * 내담자 추가 정보 생성
+     * @param request
+     */
+    postPatientInfo(request: PatientInfoRequest) : Observable<PatientInfoRequest> {
+        return this.http.post<PatientInfoRequest>(`${this.MR_CONTROL_URL}/patientInfo`, request);
     }
 }
 
