@@ -6,6 +6,7 @@ import {InputInfoComponent} from "./input-info/input-info.component";
 import {MainComponent} from "./main/main.component";
 import {SignUpComponent} from "./login/sign-up/sign-up.component";
 import {LoginComponent} from "./login/login.component";
+import {AuthGuard} from "../shared/service/auth.guard";
 
 const routes: Routes = [
 
@@ -14,6 +15,7 @@ const routes: Routes = [
     redirectTo: 'main',
     pathMatch: 'full'
   },
+
   {
     path:'',
     component:LayoutComponent,
@@ -25,22 +27,24 @@ const routes: Routes = [
       },
       {
         path: 'login',
-        component: LoginComponent
+        component: LoginComponent,
       },
       {
         path: 'sign-up',
         component: SignUpComponent
       },
       {
-        path: 'tutorial',
-        component: TutorialComponent
-      },
-      {
         path: 'input-info',
         component: InputInfoComponent
       },
       {
+        path: 'tutorial',
+        canActivate: [AuthGuard],
+        component: TutorialComponent
+      },
+      {
         path: 'DrawFishFamily',
+        canActivate:[AuthGuard],
         loadChildren: () => import('./dashboard/dash-board.module').then(i => i.DashBoardModule)
       },
 
@@ -51,7 +55,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {useHash: true, onSameUrlNavigation: 'reload', scrollPositionRestoration: 'enabled'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

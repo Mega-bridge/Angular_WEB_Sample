@@ -1,6 +1,6 @@
 import {Component, ElementRef, Inject, OnInit, TemplateRef, ViewChild, ViewContainerRef} from "@angular/core";
 import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component"
-import {Align} from "@progress/kendo-angular-popup";
+import {Align, PopupAnimation} from "@progress/kendo-angular-popup";
 import {DOCUMENT} from "@angular/common";
 import {MrFamilyCodeResponse} from "../../../shared/model/response/mr-family-code.response.model";
 import {MrObjectImageResponse} from "../../../shared/model/response/mr-object-image.response.model";
@@ -53,8 +53,18 @@ export class DrawFishFamilyComponent implements OnInit{
     // 가족관계 리스트
     public familyTypeList : MrFamilyCodeResponse[] = [];
 
+    // popUp 위치
     public anchorAlign: Align = { horizontal: "right", vertical: "top" };
     public popupAlign: Align = { horizontal: "left", vertical: "top" };
+
+    public etcAnchorAlign: Align = { horizontal: "right", vertical: "bottom" };
+    public etcPopupAlign: Align = { horizontal: "left", vertical: "bottom" };
+
+    public animate : PopupAnimation = {
+        type: 'fade',
+        direction: 'right',
+        duration: 300
+    }
 
     /** 팝업 열리는 시간 */
     public startDate = new Date();
@@ -249,14 +259,11 @@ export class DrawFishFamilyComponent implements OnInit{
                 }
             });
 
-
         // 사용자 정보 조회
-        this.userEmail =  sessionStorage.getItem('userEmail') != null ? sessionStorage.getItem('userEmail') : '';
+        this.userEmail =  localStorage.getItem('userEmail') != null ? sessionStorage.getItem('userEmail') : '';
 
         // 사용자 데이터셋 조회
         this.getDataSet();
-
-
 
     }
 
@@ -294,7 +301,8 @@ export class DrawFishFamilyComponent implements OnInit{
 
                     }
                 }
-            });
+
+            })
     }
 
     /**

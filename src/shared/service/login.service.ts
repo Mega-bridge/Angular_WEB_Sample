@@ -35,8 +35,8 @@ export class LoginService {
                 map((result) => {
                     console.log(result);
                     // 사용자 token 정보 저장
-                    sessionStorage.setItem('userJWT',result.jwt);
-                    sessionStorage.setItem('userEmail',result.user.email);
+                    localStorage.setItem('userJWT',result.jwt);
+                    localStorage.setItem('userEmail',result.user.email);
                     return result
                 })
             );
@@ -47,6 +47,14 @@ export class LoginService {
      */
     getUserId(){
         return this.userId;
+    }
+
+    /**
+     * logout 시 저장되어 있는 세션 정보 삭제
+     */
+    logOut() {
+        localStorage.removeItem('userJWT');
+        localStorage.removeItem('userEmail');
     }
 
 
