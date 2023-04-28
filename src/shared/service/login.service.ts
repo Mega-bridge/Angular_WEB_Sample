@@ -49,5 +49,13 @@ export class LoginService {
         return this.userId;
     }
 
+    /**
+     * logout 시 저장되어 있는 세션 정보 삭제
+     */
+    logOut() {
+        sessionStorage.removeItem('userJWT');
+        sessionStorage.removeItem('userEmail');
+    }
+
 
 }
