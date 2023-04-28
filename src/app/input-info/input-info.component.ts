@@ -107,15 +107,15 @@ export class InputInfoComponent implements OnInit{
      */
     patientInfo(){
         this.familyInfo()
-        let familyRelation1=this.selectedFamilyRelation.join(',');
-        let familyInfo1=this.selectedFamilyList.join(',');
+        let resultFamilyRelation=this.selectedFamilyRelation.join(',');
+        let resultFamilyInfo=this.selectedFamilyList.join(',');
 
         const request: PatientInfoRequest = {
             id: 0,
             age: Number(this.infoForm.controls['age'].value),
-            familyInfo: familyInfo1,
+            familyInfo: resultFamilyInfo,
             familyNum: Number(this.infoForm.controls['familyNum'].value),
-            familyRelation: familyRelation1,
+            familyRelation: resultFamilyRelation,
             genderId: this.infoForm.controls['genderCode'].value.id,
             jobId: this.infoForm.controls['jobCode'].value.id,
             userEmail: this.infoForm.controls['userEmail'].value,
