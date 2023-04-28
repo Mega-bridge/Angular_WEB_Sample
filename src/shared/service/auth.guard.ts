@@ -11,7 +11,7 @@ export class AuthGuard implements CanActivate {
 
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
-        if(sessionStorage.getItem('userJWT') != null){
+        if(localStorage.getItem('userJWT') != null){
             // alert("로그인 성공 : " + info);
             return true;
         }

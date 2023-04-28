@@ -260,7 +260,7 @@ export class DrawFishFamilyComponent implements OnInit{
             });
 
         // 사용자 정보 조회
-        this.userEmail =  sessionStorage.getItem('userEmail') != null ? sessionStorage.getItem('userEmail') : '';
+        this.userEmail =  localStorage.getItem('userEmail') != null ? sessionStorage.getItem('userEmail') : '';
 
         // 사용자 데이터셋 조회
         this.getDataSet();

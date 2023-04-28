@@ -24,7 +24,7 @@ export class TokenService implements HttpInterceptor{
         // 모든 구독자에 token 적용
         let token=req.clone({
             setHeaders:{
-                Authorization: "Bearer "+sessionStorage.getItem('userJWT')
+                Authorization: "Bearer "+localStorage.getItem('userJWT')
             }
         });
         return next.handle(token);
