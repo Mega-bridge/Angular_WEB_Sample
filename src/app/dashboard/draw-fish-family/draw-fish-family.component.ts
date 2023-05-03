@@ -345,8 +345,8 @@ export class DrawFishFamilyComponent implements OnInit{
     addSeq(){
 
         // 최대회차 25회로 제한
-        if(this.seqItems.length == 25) {
-            this.alertService.openAlert('상담은 25회차까지 진행됩니다.');
+        if(this.seqItems.length == 24) {
+            this.alertService.openAlert('상담은 24회차까지 진행됩니다.');
             return;
         }
 
