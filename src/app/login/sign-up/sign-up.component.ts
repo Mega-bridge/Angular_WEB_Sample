@@ -119,16 +119,18 @@ export class SignUpComponent implements OnInit{
      * ID 중복확인 event
      */
     duplicationCheck() {
-        for (let i = 0; i < this.userData.length; i++) {
+        let checkNum = 0;
+        for (let i = 0; i < this.userData.length; i++){
             if (this.signUpForm.controls['email'].value === this.userData[i].email) {
                 this.alertService.openAlert('중복된 Email입니다. 다른 Email를 입력해주세요.');
+                checkNum +=1;
                 break;
             }
-            else if(this.signUpForm.controls['email'].value.length<=0) {
+            else if(this.signUpForm.controls['email'].value.length <= 0) {
                 this.alertService.openAlert('Email을 입력해주십시오.');
                 break;
             }
-            else{
+             else if (checkNum==0){
                 this.alertService.openAlert('사용 가능한 Email입니다.')
                 this.idCheck = false;
                 break;
