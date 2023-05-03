@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
 import {Router} from "@angular/router";
-import {LoginService} from "../../shared/service/login.service";
+import {AuthService} from "../../shared/service/auth.service";
 
 @Component({
     selector: 'app-tutorial',
@@ -13,7 +13,7 @@ export class TutorialComponent{
      */
     constructor(
         private router: Router,
-        private loginProvider: LoginService,
+        private loginProvider: AuthService,
     ) {}
 
 

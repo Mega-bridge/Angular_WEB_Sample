@@ -10,7 +10,7 @@ import {DrawerPosition} from "@progress/kendo-angular-layout";
 import {ConfirmDialogComponent} from "../../../shared/component/dialogs/confirm-dialog/confirm-dialog.component";
 import {DialogService} from "@progress/kendo-angular-dialog";
 import {Router} from "@angular/router";
-import {LoginService} from "../../../shared/service/login.service";
+import {AuthService} from "../../../shared/service/auth.service";
 import {UserService} from "../../../shared/service/user.service";
 import {AlertService} from "../../../shared/service/alert.service";
 
@@ -192,7 +192,7 @@ export class DrawFishFamilyComponent implements OnInit{
         private mindReaderControlService:MindReaderControlService,
         private dialogService: DialogService,
         private router: Router,
-        private loginProvider: LoginService,
+        private loginProvider: AuthService,
         private userService:UserService,
         private alertService: AlertService
     ) {}

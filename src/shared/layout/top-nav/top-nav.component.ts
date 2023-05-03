@@ -3,7 +3,7 @@ import {ConfirmDialogComponent} from "../../component/dialogs/confirm-dialog/con
 import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogService} from "@progress/kendo-angular-dialog";
-import {LoginService} from "../../service/login.service";
+import {AuthService} from "../../service/auth.service";
 
 @Component({
   selector: 'app-top-nav',
@@ -26,7 +26,7 @@ export class TopNavComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     private dialogService: DialogService,
-    private loginService:LoginService,
+    private loginService:AuthService,
   ) {}
 
   @Output() sideNavToggled = new EventEmitter<void>();

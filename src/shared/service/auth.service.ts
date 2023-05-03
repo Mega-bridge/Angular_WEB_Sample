@@ -11,7 +11,7 @@ import {LoginResultResponse} from "../model/response/login-result.response.model
 @Injectable({
     providedIn: 'root'
 })
-export class LoginService {
+export class AuthService {
 
     public SEVER_URL = 'http://localhost:8080/auth';
 

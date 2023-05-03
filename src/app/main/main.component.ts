@@ -4,7 +4,7 @@ import {NotificationService} from "@progress/kendo-angular-notification";
 import {FormControl, FormGroup} from "@angular/forms";
 import {LoginRequestModel} from "../../shared/model/request/login.request.model";
 import {AlertService} from "../../shared/service/alert.service";
-import {LoginService} from "../../shared/service/login.service";
+import {AuthService} from "../../shared/service/auth.service";
 
 
 
@@ -31,7 +31,7 @@ export class MainComponent implements OnInit {
    */
   constructor(
     private router: Router,
-    private loginService: LoginService,
+    private loginService: AuthService,
     private notificationService: NotificationService,
     private alertService: AlertService
   ) {}

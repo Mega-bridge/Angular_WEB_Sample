@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {UserModel} from "../model/user.model";
 import {MrFamilyCodeResponse} from "../model/response/mr-family-code.response.model";
-import {LoginService} from "./login.service";
+import {AuthService} from "./auth.service";
 
 
 @Injectable({
@@ -18,7 +18,7 @@ export class UserService {
      * @param http
      */
     constructor(private http: HttpClient,
-                private loginProvider: LoginService) { }
+                private loginProvider: AuthService) { }
 
 
     /**
