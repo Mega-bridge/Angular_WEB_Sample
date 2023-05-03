@@ -21,7 +21,7 @@
 <!--    <span style="font-size: 15px;">Connect your business</span>-->
   </div>
 </div>
-  <div *ngIf="loginToken != null">
+  <div *ngIf="checkToken()">
   <button mat-raised-button color="#f44237" (click)="openDialog()">
     <span>logout</span>
   </button>

@@ -12,8 +12,6 @@ import {AuthService} from "../../service/auth.service";
 })
 export class TopNavComponent implements OnInit {
 
-  /** login token 정보 */
-  public loginToken:string|null = null;
 
   /**
    * 생성자
@@ -39,7 +37,14 @@ export class TopNavComponent implements OnInit {
    * 초기화
    */
   ngOnInit() {
-    this.loginToken = this.loginService.getToken();
+
+  }
+
+  /**
+   * login token 정보 확인
+   */
+  checkToken(){
+    return  this.loginService.getToken();
   }
 
   toggleSidebar() {
