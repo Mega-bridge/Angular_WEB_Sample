@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {LoginService} from "./login.service";
 
 @Injectable({
     providedIn: 'root'
@@ -11,7 +12,9 @@ import {Observable} from "rxjs";
  */
 export class TokenService implements HttpInterceptor{
 
-    constructor() {
+    constructor(
+        private loginService: LoginService
+    ) {
     }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -24,7 +27,7 @@ export class TokenService implements HttpInterceptor{
         // 모든 구독자에 token 적용
         let token=req.clone({
             setHeaders:{
-                Authorization: "Bearer "+localStorage.getItem('userJWT')
+                Authorization: "Bearer "+this.loginService.getToken()
             }
         });
         return next.handle(token);

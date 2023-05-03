@@ -69,7 +69,7 @@ import {ModifyInputInfoComponent} from "./input-info/modify/modify-input-info.co
   providers: [
       {provide: HTTP_INTERCEPTORS, useClass:TokenService, multi:true},
       AuthGuard,
-      LoginService
+      LoginService,
   ],
   bootstrap: [AppComponent]
 })

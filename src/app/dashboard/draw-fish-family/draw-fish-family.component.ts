@@ -195,9 +195,6 @@ export class DrawFishFamilyComponent implements OnInit{
         private loginProvider: LoginService,
         private userService:UserService,
         private alertService: AlertService
-
-
-
     ) {}
 
     ngOnInit() {
@@ -260,7 +257,7 @@ export class DrawFishFamilyComponent implements OnInit{
             });
 
         // 사용자 정보 조회
-        this.userEmail =  localStorage.getItem('userEmail') != null ? sessionStorage.getItem('userEmail') : '';
+        this.userEmail =  this.loginProvider.getUserEmail() != null ? this.loginProvider.getUserEmail() : '';
 
         // 사용자 데이터셋 조회
         this.getDataSet();

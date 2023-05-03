@@ -21,11 +21,10 @@
 <!--    <span style="font-size: 15px;">Connect your business</span>-->
   </div>
 </div>
-  <div>
-<!--  <button mat-raised-button color="#f44237" (click)="openDialog()">-->
-<!--&lt;!&ndash;    <span>logout</span>&ndash;&gt;-->
-<!--    <span>시작하기</span>-->
-<!--  </button>-->
+  <div *ngIf="loginToken != null">
+  <button mat-raised-button color="#f44237" (click)="openDialog()">
+    <span>logout</span>
+  </button>
   </div>
 
 

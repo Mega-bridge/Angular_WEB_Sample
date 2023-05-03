@@ -21,7 +21,7 @@ export class TutorialComponent{
      * 정보기입 화면으로 이동
      */
     inputInfo() {
-        if (this.loginProvider.getUserId()==''){
+        if (this.loginProvider.getUserEmail()==''){
             this.router.navigateByUrl(`/input-info`);
         }
         else{
