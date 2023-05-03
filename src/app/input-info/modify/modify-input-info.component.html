@@ -13,7 +13,7 @@
                     <div class="input-info">
                         <kendo-formfield>
                             <kendo-label class="form-label" [for]="name" text="이름"></kendo-label>
-                            <input class="form-input" formControlName="userName" kendoTextBox #name/>
+                            <input class="form-input" readonly formControlName="userName" kendoTextBox #name/>
                         </kendo-formfield>
                     </div>
                     <div class="input-info">
@@ -23,7 +23,7 @@
                         <!--                        </mat-form-field>-->
                         <kendo-formfield>
                             <kendo-label class="form-label" [for]="email" text="Email"></kendo-label>
-                            <input class="form-input" formControlName="userEmail" kendoTextBox #email/>
+                            <input class="form-input" readonly formControlName="userEmail" kendoTextBox #email/>
                             <!--                            <kendo-formhint>Your active email</kendo-formhint>-->
                             <!--            <kendo-formerror>Error: Not valid email format</kendo-formerror>-->
                         </kendo-formfield>
@@ -117,7 +117,7 @@
             </div>
         </div>
         <div style="padding: 10px 0;margin:40px 0;display: flex;justify-content: center;">
-            <button type="submit" mat-raised-button style="width: 500px; background-color: #fe5e23; color: #ffffff;" (click)="patientInfo()">START</button>
+            <button type="submit" mat-raised-button style="width: 500px; background-color: #fe5e23; color: #ffffff;" (click)="modifyPatientInfo()">수정</button>
         </div>
     </div>
 

@@ -9,6 +9,7 @@ import {MrJobCodeResponse} from "../../../shared/model/response/mr-job-code.resp
 import {PatientInfoRequest} from "../../../shared/model/request/patient-info.request.model";
 import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../../shared/service/alert.service";
+import {AuthService} from "../../../shared/service/auth.service";
 
 @Component({
     selector: 'app-modify-input-info',
@@ -41,26 +42,40 @@ export class ModifyInputInfoComponent implements OnInit{
      * 생성자
      * @param mindReaderControlService
      * @param router
+     * @param alertService
+     * @param loginService
      */
     constructor(
         private mindReaderControlService:MindReaderControlService,
         private router: Router,
         private alertService: AlertService,
+        private authService: AuthService
 
     ) {
     }
 
     // input form
     public infoForm: FormGroup = new FormGroup({
-        userEmail: new FormControl(''),
-        userName: new FormControl(''),
-        age: new FormControl(),
-        familyNum: new FormControl(),
-        jobCode: new FormControl(),
-        genderCode: new FormControl(),
+        userEmail: new FormControl(''), // 사용자 이메일
+        userName: new FormControl(''), // 사용자 성명
+        age: new FormControl(), // 나이
+        familyNum: new FormControl(), // 가족 수
+        jobCode: new FormControl(), // 직업 코드
+        genderCode: new FormControl(), // 성별 코드
     });
 
+    /**
+     * 초기화
+     */
     ngOnInit() {
+        // 데이터 로드
+        this.loadData();
+    }
+
+    /**
+     * 데이터 로드
+     */
+    loadData(){
         // 가족 리스트 조회
         this.mindReaderControlService.getFamily()
             .subscribe({
@@ -100,12 +115,23 @@ export class ModifyInputInfoComponent implements OnInit{
                     }
                 }
             });
+
+        // 내담자 추가 정보 조회
+        console.log(this.authService.getUserEmail())
+     /*   this.mindReaderControlService.getPatientInfo(this.loginService.getUserEmail())
+            .subscribe({
+                next: async (data) => {
+                    if (data){
+                        console.log(data);
+                    }
+                }
+            });*/
     }
 
     /**
-     * 추가 정보 기입하기
+     * 추가 정보 수정하기
      */
-    patientInfo(){
+    modifyPatientInfo(){
         this.familyInfo()
         let resultFamilyRelation=this.selectedFamilyRelation.join(',');
         let resultFamilyInfo=this.selectedFamilyList.join(',');
@@ -122,7 +148,7 @@ export class ModifyInputInfoComponent implements OnInit{
             userName: this.infoForm.controls['userName'].value,
         }
         console.log(request)
-        // 내담자 추가 정보 생성
+        // 내담자 추가 정보 수정하기
         this.mindReaderControlService.postPatientInfo(request)
             .subscribe({
                 next: async (data) => {
