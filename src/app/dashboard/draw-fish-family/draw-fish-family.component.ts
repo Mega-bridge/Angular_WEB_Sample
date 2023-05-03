@@ -442,13 +442,20 @@ export class DrawFishFamilyComponent implements OnInit{
      * @param e
      */
     selectFamilyType(e:any){
-        this.familyTypeList[e].selected = true;
-        // 선택된 가족관계 id 할당
-        this.selectedFamilyType = this.familyTypeList[e].id;
-        // 가족 관계 선택 시 버튼 막기
-        // this.isDisabled=true;
-        // 가족 관계를 선택해야 물고기 선택 가능
-        this.isFamilyAfterFish=true;
+        if (e.length != 0){
+            this.familyTypeList[e].selected = true;
+            // 선택된 가족관계 id 할당
+            this.selectedFamilyType = this.familyTypeList[e].id;
+
+            // 가족 관계를 선택해야 물고기 선택 가능
+            this.isFamilyAfterFish=true;
+        }
+        else {
+            this.selectedFamilyType = null;
+            this.isFamilyAfterFish=false;
+        }
+
+
     }
 
     /**
