@@ -57,8 +57,8 @@ export class DrawFishFamilyComponent implements OnInit{
     public anchorAlign: Align = { horizontal: "right", vertical: "top" };
     public popupAlign: Align = { horizontal: "left", vertical: "top" };
 
-    public etcAnchorAlign: Align = { horizontal: "right", vertical: "bottom" };
-    public etcPopupAlign: Align = { horizontal: "left", vertical: "bottom" };
+    public bottomAnchorAlign: Align = { horizontal: "right", vertical: "bottom" };
+    public bottomPopupAlign: Align = { horizontal: "left", vertical: "bottom" };
 
     public animate : PopupAnimation = {
         type: 'fade',

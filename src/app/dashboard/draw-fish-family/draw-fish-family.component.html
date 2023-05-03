@@ -239,8 +239,8 @@
 
             <!-- 장어 -->
             <kendo-popup [anchor]="anchor6"
-                         [anchorAlign]="anchorAlign"
-                         [popupAlign]="popupAlign"
+                         [anchorAlign]="bottomAnchorAlign"
+                         [popupAlign]="bottomPopupAlign"
                          [animate]="animate"
                          *ngIf="showEels">
 
@@ -264,8 +264,8 @@
 
             <!-- 물고기 외 -->
             <kendo-popup [anchor]="anchor7"
-                         [anchorAlign]="etcAnchorAlign"
-                         [popupAlign]="etcPopupAlign"
+                         [anchorAlign]="anchorAlign"
+                         [popupAlign]="popupAlign"
                          [animate]="animate"
                          *ngIf="showEtc">
 
@@ -283,6 +283,12 @@
                 <div class="img-card"  #anchor1>
                     <div class="img-card-header">
                         <img class="img-card-style"  src="{{fishBowlImgList[0]}}" (click)="closeOpenPopUp('showFishBowl')">
+                    </div>
+                </div>
+
+                <div class="img-card" #anchor7>
+                    <div class="img-card-header">
+                        <img class="img-card-style" src="{{etcImgList[0]}}" (click)="closeOpenPopUp('showEtc')">
                     </div>
                 </div>
 
@@ -334,11 +340,7 @@
                     </div>
                 </div>
 
-                <div class="img-card" #anchor7>
-                    <div class="img-card-header">
-                        <img class="img-card-style" src="{{etcImgList[0]}}" (click)="closeOpenPopUp('showEtc')">
-                    </div>
-                </div>
+
             </div>
 
             <div>
