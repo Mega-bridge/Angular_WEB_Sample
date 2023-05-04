@@ -22,8 +22,11 @@
   </div>
 </div>
   <div *ngIf="checkToken()">
+    <button mat-raised-button color="#f44237" (click)="modifyInfo()">
+      <span>정보 수정</span>
+    </button>
   <button mat-raised-button color="#f44237" (click)="openDialog()">
-    <span>logout</span>
+    <span>logout</span >
   </button>
   </div>
 
