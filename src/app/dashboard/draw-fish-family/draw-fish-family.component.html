@@ -286,12 +286,6 @@
                     </div>
                 </div>
 
-                <div class="img-card" #anchor7>
-                    <div class="img-card-header">
-                        <img class="img-card-style" src="{{etcImgList[0]}}" (click)="closeOpenPopUp('showEtc')">
-                    </div>
-                </div>
-
                 <div class="img-card-family">
                     <div class="img-card-header">가족 선택</div>
                     <div class="img-card-body">
@@ -311,36 +305,45 @@
                 </div>
 
                 <div class="img-card" #anchor2>
-                    <div class="img-card-header" *ngIf="isFamilyAfterFish" >
+                    <div class="img-card-header"  >
+                        <span class="img-card-text" *ngIf="!isFamilyAfterFish">가족을 선택해주세요</span>
                         <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/fish.svg" (click)="closeOpenPopUp('showFishes')">
                     </div>
                 </div>
 
                 <div class="img-card" #anchor3>
-                    <div class="img-card-header" *ngIf="isFamilyAfterFish">
+                    <div class="img-card-header">
+                        <span class="img-card-text" *ngIf="!isFamilyAfterFish">가족을 선택해주세요</span>
                         <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/roundFish.svg" (click)="closeOpenPopUp('showRoundFishes')">
                     </div>
                 </div>
 
                 <div class="img-card" #anchor4>
-                    <div class="img-card-header" *ngIf="isFamilyAfterFish">
+                    <div class="img-card-header">
+                        <span class="img-card-text" *ngIf="!isFamilyAfterFish">가족을 선택해주세요</span>
                         <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/whale.svg" (click)="closeOpenPopUp('showWhales')">
                     </div>
                 </div>
 
                 <div class="img-card" #anchor5>
-                    <div class="img-card-header" *ngIf="isFamilyAfterFish">
+                    <div class="img-card-header">
+                        <span class="img-card-text" *ngIf="!isFamilyAfterFish">가족을 선택해주세요</span>
                         <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/shark.svg" (click)="closeOpenPopUp('showSharks')">
                     </div>
                 </div>
 
                 <div class="img-card" #anchor6>
-                    <div class="img-card-header" *ngIf="isFamilyAfterFish">
+                    <div class="img-card-header">
+                        <span class="img-card-text" *ngIf="!isFamilyAfterFish">가족을 선택해주세요</span>
                         <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/eel.svg" (click)="closeOpenPopUp('showEels')">
                     </div>
                 </div>
 
-
+                <div class="img-card" #anchor7>
+                    <div class="img-card-header">
+                        <img class="img-card-style" src="{{etcImgList[0]}}" (click)="closeOpenPopUp('showEtc')">
+                    </div>
+                </div>
             </div>
 
             <div>

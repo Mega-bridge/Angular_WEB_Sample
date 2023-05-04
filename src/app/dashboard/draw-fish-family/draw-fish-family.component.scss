@@ -122,10 +122,20 @@
             border-radius: 5px;
             background-color: #f3f4f5;
             text-align: center;
+            position: relative;
 
             .img-card-style{
+
               width: 150px;
               height: 130px;
+            }
+            .img-card-text{
+              width: 130px;
+              position: absolute;
+              background-color: #ffffff;
+              top: 50%;
+              left: 50%;
+              transform: translate( -50%, -50% );
             }
           }
         }
@@ -143,6 +153,7 @@
           .img-card-body{
             padding: 5px 10px;
           }
+
         }
 
 
