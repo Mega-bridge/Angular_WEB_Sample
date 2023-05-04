@@ -57,7 +57,6 @@ export class LoginComponent {
                 },
                 // http error message 출력
                 error: (err: HttpErrorResponse) => {
-                    console.log(err);
                     if(err.status == 401){
                         this.alertService.openAlert('존재하지 않는 아이디입니다.')
                     }
