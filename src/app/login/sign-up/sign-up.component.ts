@@ -59,7 +59,7 @@ export class SignUpComponent implements OnInit{
      * 회원 data load
      */
     dataLoad(){
-        // 가족 리스트 조회
+        // 모든 사용자 리스트 조회
         this.userProvider.getAllUser()
             .subscribe({
                 next: async (data) => {
@@ -120,6 +120,7 @@ export class SignUpComponent implements OnInit{
      */
     duplicationCheck() {
         let checkNum = 0;
+        console.log(this.userData)
         for (let i = 0; i < this.userData.length; i++){
             if (this.signUpForm.controls['email'].value === this.userData[i].email) {
                 this.alertService.openAlert('중복된 Email입니다. 다른 Email를 입력해주세요.');
