@@ -27,8 +27,6 @@ export class MrDataSetRequestModel {
 
     // 결과 이미지
     public resultImage ?: any ;
-    // mr_result_sheet.id
-    public resultSheetId: number = 0;
     public deleted?: boolean = false;
 
 

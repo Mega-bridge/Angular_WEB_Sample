@@ -406,7 +406,6 @@ export class DragAndDropComponent implements AfterViewInit{
             actionCount: this.controlCount,
             fishCount: this.fishCount,
             etcCount:this.etcCount,
-            resultSheetId: 0,
             resultImage: src,
             deleted: false,
             totalTime: endDate.getTime() - startDate.getTime()
