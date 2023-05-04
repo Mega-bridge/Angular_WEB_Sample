@@ -94,10 +94,10 @@ export class TopNavComponent implements OnInit {
   }
 
   /**
-   * 로그아웃 버튼 클릭시 로그인 페이지 이동 이벤트
+   * 로그아웃 버튼 클릭시 main 페이지 이동 이벤트
    */
   loginPage() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/main']);
   }
 
 
