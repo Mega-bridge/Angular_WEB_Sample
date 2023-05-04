@@ -10,6 +10,7 @@ import {PatientInfoRequest} from "../../../shared/model/request/patient-info.req
 import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../../shared/service/alert.service";
 import {AuthService} from "../../../shared/service/auth.service";
+import {MrPatientInfoResponse} from "../../../shared/model/response/mr-patient-info.response.model";
 
 @Component({
     selector: 'app-modify-input-info',
@@ -37,6 +38,12 @@ export class ModifyInputInfoComponent implements OnInit{
     public selectedFamilyRelation: string[] = [];
     // 라디오 버튼 선택 저장
     public selectedValues: string[] = [];
+    // 내담자 정보 조회
+    public patientData: any;
+    // 선택된 gender
+    public selectedGender = ''
+    // 선택된 job
+    public selectedJob = ''
 
     /**
      * 생성자
@@ -117,15 +124,20 @@ export class ModifyInputInfoComponent implements OnInit{
             });
 
         // 내담자 추가 정보 조회
-        console.log(this.authService.getUserEmail())
-     /*   this.mindReaderControlService.getPatientInfo(this.loginService.getUserEmail())
+        this.mindReaderControlService.getPatientInfo(String(this.authService.getUserEmail()))
             .subscribe({
                 next: async (data) => {
                     if (data){
-                        console.log(data);
+                        console.log(data)
+                        this.patientData=data
+
+                        this.selectedGender=this.patientData.genderId;
+                        this.infoForm.controls['jobCode'].value.id=this.patientData.jobId;
+                        this.infoForm.patchValue({...data});
                     }
                 }
-            });*/
+            });
+
     }
 
     /**
@@ -135,14 +147,16 @@ export class ModifyInputInfoComponent implements OnInit{
         this.familyInfo()
         let resultFamilyRelation=this.selectedFamilyRelation.join(',');
         let resultFamilyInfo=this.selectedFamilyList.join(',');
-
+        console.log(this.patientData)
+        console.log(this.patientData.id)
+        console.log(this.selectedGender)
         const request: PatientInfoRequest = {
-            id: 0,
+            id: this.patientData.id,
             age: Number(this.infoForm.controls['age'].value),
             familyInfo: resultFamilyInfo,
             familyNum: Number(this.infoForm.controls['familyNum'].value),
             familyRelation: resultFamilyRelation,
-            genderId: this.infoForm.controls['genderCode'].value.id,
+            genderId: Number(this.selectedGender),
             jobId: this.infoForm.controls['jobCode'].value.id,
             userEmail: this.infoForm.controls['userEmail'].value,
             userName: this.infoForm.controls['userName'].value,
@@ -154,7 +168,7 @@ export class ModifyInputInfoComponent implements OnInit{
                 next: async (data) => {
                     if(data) {
                         console.log(data);
-                        this.startLogin();
+                        this.startTutorial();
                     }
                 },
                 error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
@@ -204,10 +218,10 @@ export class ModifyInputInfoComponent implements OnInit{
 
 
     /**
-     * 캔버스 화면으로 이동
+     * 튜토리얼 화면으로 이동
      */
-    startDrawing() {
-        this.router.navigateByUrl(`/DrawFishFamily`);
+    startTutorial() {
+        this.router.navigateByUrl(`/tutorial`);
 
     }
     /**
