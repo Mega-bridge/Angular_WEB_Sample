@@ -9,6 +9,9 @@ import {MrFamilyRelationCodeResponse} from "../model/response/mr-family-relation
 import {MrObjectModel} from "../model/mr-object.model";
 import {MrDataSetRequestModel} from "../model/request/mr-data-set.request.model";
 import {MrObjectCodeResponseModel} from "../model/response/mr-object-code.response.model";
+import {MrDataSetResponseModel} from "../model/response/mr-data-set.response.model";
+import {PatientInfoRequest} from "../model/request/patient-info.request.model";
+import {MrPatientInfoResponse} from "../model/response/mr-patient-info.response.model";
 
 @Injectable({
     providedIn: 'root'
@@ -25,25 +28,60 @@ export class MindReaderControlService {
 
 
     /**
-     * 가족 정보 list 불러오기
+     * 타입별 오브젝트 코드 조회
+     */
+    getObjectCode(type: number) :Observable<MrObjectCodeResponseModel[]> {
+        return this.http.get<MrObjectCodeResponseModel[]>(`${this.MR_CONTROL_URL}/${type}/objectCode`);
+    }
+
+    /**
+     * 사용자 데이터 세트 조회
+     */
+    getDataSet():Observable<MrDataSetResponseModel[]>{
+        return this.http.get<MrDataSetResponseModel[]>(`${this.MR_CONTROL_URL}/dataSet`);
+    }
+
+    /**
+     * 회차별 DataSet 생성
+     */
+    postDataSet(request: MrDataSetRequestModel) : Observable<MrDataSetRequestModel> {
+        return this.http.post<MrDataSetRequestModel>(`${this.MR_CONTROL_URL}/dataSet`, request);
+    }
+
+
+    /**
+     * DataSet 삭제
+     * @param id
+     */
+    deleteDataSet(id: number): Observable<MrDataSetResponseModel>{
+        return this.http.patch<MrDataSetResponseModel>(`${this.MR_CONTROL_URL}/dataSet/${id}`,id);
+    }
+
+    /**
+     * 회차별 사용자 데이터 세트 조회
+     * @param seq
+     */
+    getSeqDataSet(seq: number): Observable<MrDataSetResponseModel> {
+        return this.http.get<MrDataSetResponseModel>(`${this.MR_CONTROL_URL}/dataSet/${seq}`);
+    }
+
+
+
+    /**
+     * 가족 리스트 조회
      */
     getFamily():Observable<MrFamilyCodeResponse[]> {
         return this.http.get<MrFamilyCodeResponse[]>(`${this.MR_CONTROL_URL}/family`);
     }
 
     /**
-     * 가족 관계 list 불러오기
+     * 가족 관계 리스트 조회
      */
     getFamilyRelation(): Observable<MrFamilyRelationCodeResponse[]> {
         return this.http.get<MrFamilyRelationCodeResponse[]>(`${this.MR_CONTROL_URL}/familyRelation`);
     }
 
-    /**
-     * object 정보 불러오기
-     */
-    getObjectData(): Observable<MrObjectImageResponse[]> {
-        return this.http.get<MrObjectImageResponse[]>(`${this.MR_CONTROL_URL}/objectImage`);
-    }
+
 
     /**
      * 성별 list 불러오기
@@ -60,24 +98,54 @@ export class MindReaderControlService {
     }
 
     /**
+     * 회차별 사용자 오브젝트 조회
+     * @param seq
+     */
+    getSeqObject(seq: number): Observable<MrObjectModel> {
+        return this.http.get<MrObjectModel>(`${this.MR_CONTROL_URL}/object/${seq}`);
+    }
+
+
+
+    /**
+     * 오브젝트 이미지 리스트 조회
+     */
+    getObjectData(): Observable<MrObjectImageResponse[]> {
+        return this.http.get<MrObjectImageResponse[]>(`${this.MR_CONTROL_URL}/objectImage`);
+    }
+
+    /**
      * 회차별 오브젝트 생성
      */
     postObject(request: MrObjectModel[]) : Observable<MrObjectModel[]> {
         return this.http.post<MrObjectModel[]>(`${this.MR_CONTROL_URL}/seq/object`, request);
     }
 
+
     /**
-     * 회차별 DataSet 생성
+     * 회차별 사용자 오브젝트 순서 목록 조회
+     * @param seq
      */
-    postDataSet(request: MrDataSetRequestModel) : Observable<MrDataSetRequestModel> {
-        return this.http.post<MrDataSetRequestModel>(`${this.MR_CONTROL_URL}/dataSet`, request);
+    getObjectCodeSeq(seq: number): Observable<MrObjectCodeResponseModel[]>{
+        return this.http.get<MrObjectCodeResponseModel[]>(`${this.MR_CONTROL_URL}/user/objectCode/${seq}`)
     }
 
     /**
-     * 타입별 오브젝트 코드 조회
+     * 내담자 추가 정보 조회
      */
-    getObjectCode(type: number) :Observable<MrObjectCodeResponseModel[]> {
-        return this.http.get<MrObjectCodeResponseModel[]>(`${this.MR_CONTROL_URL}/${type}/objectCode`);
+    getPatientInfo(email: string): Observable<MrPatientInfoResponse[]>{
+        const param={
+            email: email
+        }
+        return this.http.get<MrPatientInfoResponse[]>(`${this.MR_CONTROL_URL}/patientInfo`,{params: param})
+    }
+
+    /**
+     * 내담자 추가 정보 생성
+     * @param request
+     */
+    postPatientInfo(request: PatientInfoRequest) : Observable<PatientInfoRequest> {
+        return this.http.post<PatientInfoRequest>(`${this.MR_CONTROL_URL}/patientInfo`, request);
     }
 }
 

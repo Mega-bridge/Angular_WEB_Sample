@@ -3,6 +3,7 @@ import {ConfirmDialogComponent} from "../../component/dialogs/confirm-dialog/con
 import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogService} from "@progress/kendo-angular-dialog";
+import {AuthService} from "../../service/auth.service";
 
 @Component({
   selector: 'app-top-nav',
@@ -11,16 +12,19 @@ import {DialogService} from "@progress/kendo-angular-dialog";
 })
 export class TopNavComponent implements OnInit {
 
+
   /**
    * 생성자
    * @param dialog
    * @param router
    * @param dialogService
+   * @param loginService
    */
   constructor(
     public dialog: MatDialog,
     private router: Router,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private loginService:AuthService,
   ) {}
 
   @Output() sideNavToggled = new EventEmitter<void>();
@@ -32,7 +36,16 @@ export class TopNavComponent implements OnInit {
   /**
    * 초기화
    */
-  ngOnInit() {}
+  ngOnInit() {
+
+  }
+
+  /**
+   * login token 정보 확인
+   */
+  checkToken(){
+    return  this.loginService.getToken();
+  }
 
   toggleSidebar() {
     this.sideNavToggled.emit();
@@ -43,18 +56,21 @@ export class TopNavComponent implements OnInit {
    */
   public openDialog(): void {
     const dialog = this.dialogService.open({
-      title: "Please confirm",
+      title: "로그아웃하시겠습니까?",
       content: ConfirmDialogComponent,
       appendTo: this.dialogRef,
       width: 450,
-      height: 185,
+      height: 160,
       minWidth: 250,
       cssClass: 'custom-css-class',
     });
+    dialog.content.instance.text = `정말로 로그아웃하시겠습니까?`;
 
     dialog.result.subscribe((result: any) => {
-      if (result.text === 'logout') {
-        this.router.navigateByUrl(`/login`);
+      if (result.text === 'yes') {
+        this.loginService.removeToken();
+        // 페이지 새로고침
+        window.location.reload();
       } else {
         console.log("close");
       }
@@ -78,10 +94,10 @@ export class TopNavComponent implements OnInit {
   }
 
   /**
-   * 로그아웃 버튼 클릭시 로그인 페이지 이동 이벤트
+   * 로그아웃 버튼 클릭시 main 페이지 이동 이벤트
    */
   loginPage() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/main']);
   }
 
 
@@ -90,8 +106,15 @@ export class TopNavComponent implements OnInit {
    */
   mainPage() {
 
-    this.router.navigateByUrl(`/main`);
+    this.router.navigateByUrl(`/DrawFishFamily`);
 
+  }
+
+  /**
+   * 사용자 추가정보 기입 수정 페이지로 이동
+   */
+  modifyInfo(){
+    this.router.navigateByUrl('/modify-input-info')
   }
 
 

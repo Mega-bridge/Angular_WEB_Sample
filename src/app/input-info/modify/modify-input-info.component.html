@@ -1,12 +1,11 @@
 <div class="input-info-wrap">
     <div class="info-form-wrap">
-        <div class="info-form-title">추가 정보 기입</div>
+        <div class="info-form-title">추가 정보 수정</div>
         <div class="info-form-content">
             당신의 추가적인 정보를 기입해주세요! <br>
             좀 더 정확한 심리 진단에 도움이 됩니다.
             <br><br>
             <li>추가정보 기입은 선택사항입니다.</li>
-            <li>향후 지속적인 심리 검사를 원하시면 <b>E-mail</b>을 꼭 기입해주세요.</li>
         </div>
         <div  class="info-form">
             <form [formGroup]="infoForm">
@@ -14,7 +13,7 @@
                     <div class="input-info">
                         <kendo-formfield>
                             <kendo-label class="form-label" [for]="name" text="이름"></kendo-label>
-                            <input class="form-input" formControlName="userName" kendoTextBox #name/>
+                            <input class="form-input" readonly formControlName="userName" kendoTextBox #name/>
                         </kendo-formfield>
                     </div>
                     <div class="input-info">
@@ -24,7 +23,7 @@
                         <!--                        </mat-form-field>-->
                         <kendo-formfield>
                             <kendo-label class="form-label" [for]="email" text="Email"></kendo-label>
-                            <input class="form-input" formControlName="userEmail" kendoTextBox #email/>
+                            <input class="form-input" readonly formControlName="userEmail" kendoTextBox #email/>
                             <!--                            <kendo-formhint>Your active email</kendo-formhint>-->
                             <!--            <kendo-formerror>Error: Not valid email format</kendo-formerror>-->
                         </kendo-formfield>
@@ -34,9 +33,11 @@
                         <!--                            <input class="form-input" formControlName="sex" kendoTextBox #sex/>-->
                         <kendo-dropdownlist
                                 [data]="genderList"
-                                formControlName="genderCode"
+                                formControlName="genderId"
                                 textField="description"
                                 valueField="id"
+                                [value]="selectedGender"
+                                [valuePrimitive]="true"
                                 #sex
                                 class="form-input">
                         </kendo-dropdownlist>
@@ -52,9 +53,11 @@
                         <kendo-label class="form-label" [for]="job" text="직업/학년"></kendo-label>
                         <kendo-dropdownlist
                                 [data]="jobList"
-                                formControlName="jobCode"
+                                formControlName="jobId"
                                 textField="description"
                                 valueField="id"
+                                [value]="selectedJob"
+                                [valuePrimitive]="true"
                                 #job
                                 class="form-input">
                         </kendo-dropdownlist>
@@ -89,36 +92,37 @@
                     <!--                            </div>-->
                     <div class="input-info">
                         <kendo-label class="form-label" text="가족과의 관계">
-                                <div style="font-size:17px;margin-right: 2px" *ngFor="let family of selectedFamily; let i = index">
-                                    - {{family.description}}
-                                    <ng-container *ngIf="family.description!='나'">
-                                        <kendo-numerictextbox
-                                                [style.width.px]="80"
-                                                format="0"
-                                                [min]="0"
-                                                [max]="100"
-                                                [(ngModel)]="family.numericValue"
-                                        >
-                                        </kendo-numerictextbox>
-                                        <ng-container *ngFor="let j of [].constructor(family.numericValue); let k = index">
-                                            <div style="display: flex; flex-wrap: wrap; width: 100%;">
-                                                <div style="font-size: 15px;margin-top:7px">{{family.description}} {{k+1}}</div>
-                                                <div *ngFor="let item of familyRelation;let m = index" style="font-size: 15px; margin: 5px 5px;">
-                                                    <input type="radio"  name="{{family.description + k}}" value="{{family.id+'_'+item.id}}" [(ngModel)]="selectedValues[k * familyRelation.length+i]"/>
-                                                    {{item.description}}
-                                                </div>
+                            <div style="font-size:17px;margin-right: 2px" *ngFor="let family of selectedFamily; let i = index">
+                                - {{family.description}}
+                                <ng-container *ngIf="family.description!='나'">
+                                    {{family.numericValue}}
+                                    <kendo-numerictextbox
+                                            [style.width.px]="80"
+                                            format="0"
+                                            [min]="0"
+                                            [max]="100"
+                                            [(ngModel)]="family.length"
+                                    >
+                                    </kendo-numerictextbox>
+                                    <ng-container *ngFor="let j of [].constructor(family.numericValue); let k = index">
+                                        <div style="display: flex; flex-wrap: wrap; width: 100%;">
+                                            <div style="font-size: 15px;margin-top:7px">{{family.description}} {{k+1}}</div>
+                                            <div *ngFor="let item of familyRelation;let m = index" style="font-size: 15px; margin: 5px 5px;">
+                                                <input type="radio"  name="{{family.description + k}}" value="{{family.id+'_'+item.id}}" [(ngModel)]="selectedValues[k * familyRelation.length+i]"/>
+                                                {{item.description}}
                                             </div>
-                                        </ng-container>
+                                        </div>
                                     </ng-container>
-                                </div>
-                            </kendo-label>
-                        </div>
+                                </ng-container>
+                            </div>
+                        </kendo-label>
                     </div>
-<!--                        <input class="form-input" formControlName="familyRelationCode" kendoTextBox #familyRelationCode/>-->
                 </div>
+                <!--                        <input class="form-input" formControlName="familyRelationCode" kendoTextBox #familyRelationCode/>-->
+            </div>
         </div>
         <div style="padding: 10px 0;margin:40px 0;display: flex;justify-content: center;">
-            <button type="submit" mat-raised-button style="width: 500px; background-color: #fe5e23; color: #ffffff;" (click)="patientInfo()">START</button>
+            <button type="submit" mat-raised-button style="width: 500px; background-color: #fe5e23; color: #ffffff;" (click)="modifyPatientInfo()">수정</button>
         </div>
     </div>
 

@@ -28,7 +28,7 @@
 
 <!--        </ng-template>-->
         <ng-template kendoDrawerFooterTemplate >
-            <div *ngIf="!expanded"  (click)="drawer.toggle()" style="display: flex; justify-content: center;padding: 10px; cursor: pointer;">
+            <div *ngIf="!expanded" style="display: flex; justify-content: center;padding: 10px; cursor: pointer;">
                 <span   style="font-size: 25px;"> <b> << </b> </span>
             </div>
 
@@ -55,8 +55,8 @@
                 padding: 5px;
                 border: #cccccc solid 1px;
                 border-radius: 50%;
-                width: 18px;
-                height: 18px;
+                width: 15px;
+                height: 15px;
                 text-align: center;
                 line-height: 20px;
                 cursor: pointer;"
@@ -64,64 +64,57 @@
             </div>
 
             <div class="card-seq-wrap">
-                <div class="card-seq" *ngFor="let item of seqItems" (click)="selectSeq(item)" [style.background-color] ="selectedSeq === item.id ? '#cccccc' : ''">
-                    <span class="title"  >{{item.text}}</span>
+                <div class="card-seq"  *ngFor="let item of seqItems; let i = index" (click)="selectSeq(item, i)" [style.background-color] ="selectedSeq === item.seq ? '#cccccc' : ''">
+                    <div>
+                    <span class="title">{{item.text}}</span>
                     <span class="sub">{{item.date}}</span>
+                    </div>
+                    <div style="width: 18px;
+                    height: 18px;
+                    color: #ff0000;
+                    border: #ff0000 solid 1px;
+                    border-radius: 50%;
+                    text-align: center;
+                    cursor: pointer;"
+                    (click)="deleteSeq(item, i)">
+                        <span>-</span>
+                    </div>
+
                 </div>
 
             </div>
 
-            <div>
-                <div style="padding: 15px 30px;">
-                    <b>< 오브젝트 선택 순서 ></b>
-                    <ng-container *ngFor="let item of selectedObjectList">
-                        <br>{{item}}
-                    </ng-container>
+            <div class="card-title sub">
+                <span>오브젝트 선택 순서</span>
+            </div>
+            <div class="card-seq-wrap" style="height: 40%; border: none;">
+                <div style="overflow-y: scroll; padding: 10px 20px;">
+                    <div *ngFor="let item of selectedObjectList; let i = index" style="padding: 5px 0;">
+                        <span style="font-size: 12px;">{{i}}. {{item}}</span><br>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="container">
             <div class="canvas-wrap">
+                {{hour}}시간 {{minute}}분 {{second}}초
                 <div class="image-container"  [ngStyle] = "{'background-image': 'url('+canvasImage+')'}">
                     <!--                    <img [src]="this.canvasImage">-->
                 </div>
                 <div style="display: flex;flex-direction: row; justify-content: space-between;">
                     <div>
-                        <button class="button-style" (click)="openFullscreen()">그리기 모드</button>
+
+                        <button class="button-style" *ngIf="canvasImage==''" (click)="openFullscreen()">그리기 모드</button>
+
                     </div>
 
                     <div>
-                        <button class="button-style btn2"(click)="canvasDownload()">그림 다운로드</button>
-                        <button class="button-style btn2 sm" (click)="drawer.toggle()">결과 보기</button>
+                        <button class="button-style btn2" (click)="canvasDownload()" >그림 다운로드</button>
+                        <button class="button-style btn3" (click)="drawer.toggle()">검토 중</button>
+                        <button *ngIf="false" class="button-style btn4" (click)="drawer.toggle()">결과 보기</button>
                     </div>
                 </div>
             </div>
-
-            <!--            <div class="col" *ngIf="resultVisible">-->
-            <!--                <div class="card">-->
-            <!--                    <div class="card-header">Options</div>-->
-            <!--                    <div class="card-body text-center">-->
-            <!--                        <div class="btn-group">-->
-            <!--                            <button data-toggle="tooltip" data-placement="bottom" title="Delete element" type="button"-->
-            <!--                                    (click)="removeSelected();"> delete-->
-            <!--                            </button>-->
-            <!--                            <button data-toggle="tooltip" data-placement="bottom" title="Export to image" type="button" (click)="rasterize();">-->
-            <!--                                Export to image-->
-            <!--                            </button>-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--                <div class="card">-->
-            <!--                    <div class="card-header" (click)="showEtc = !showEtc">더보기</div>-->
-            <!--                    <div *ngIf="showEtc">-->
-
-            <!--                        <div class="card-header sub">돌</div>-->
-            <!--                        <div class="card-header sub">물풀</div>-->
-            <!--                        <div class="card-header sub">물방울</div>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--            </div>-->
-
         </div>
     </kendo-drawer-content>
 </kendo-drawer-container>
@@ -131,9 +124,10 @@
         <div class="popup-canvas-wrap ">
 
             <!-- 어항 -->
-            <kendo-popup [anchor]="anchor"
+            <kendo-popup [anchor]="anchor1"
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
+                         [animate]="animate"
                          *ngIf="showFishBowl">
 
                 <div  class="pop-up-select-image">
@@ -146,117 +140,134 @@
 
 
             <!-- 일반 물고기 -->
-            <kendo-popup [anchor]="anchor"
+            <kendo-popup [anchor]="anchor2"
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
+                         [animate]="animate"
                          *ngIf="showFishes">
 
                 <div  class="pop-up-select-image">
-                    <div *ngFor="let faceImg of generalFaceImgList" class="img-wrap">
-                        <img  (click)="selectFishFace($event,faceImg,'GE')" [src]="faceImg"  alt=""
-                              [style.box-shadow]="selectedFishFace === faceImg ? '0 0 4px blue' : ''"/>
+                    <div style="border-bottom: #cccccc dashed 1px; display: flex; ">
+                        <div *ngFor="let faceImg of generalFaceImgList" class="img-wrap face">
+                            <img  (click)="selectFishFace($event,faceImg,'GE')" [src]="faceImg"  alt=""
+                                  [style.box-shadow]="selectedFishFace === faceImg ? '0 0 4px blue' : ''"/>
+                        </div>
                     </div>
-                    <div style="border: #a7a7a7 solid 2px;"></div>
 
-
-                    <div *ngFor="let bodyImg of generalBodyImgList;let i = index"  class="img-wrap">
-                        <img  (click)="selectFishBody($event,bodyImg)" [src]="bodyImg"  alt=""
-                              [style.box-shadow]="selectedFishBody === bodyImg ? '0 0 4px blue' : ''"/>
+                    <div style="display: flex; ">
+                        <div *ngFor="let bodyImg of generalBodyImgList;let i = index"  class="img-wrap">
+                            <img  (click)="selectFishBody($event,bodyImg)" [src]="bodyImg"  alt=""
+                                  [style.box-shadow]="selectedFishBody === bodyImg ? '0 0 4px blue' : ''"/>
+                        </div>
                     </div>
                 </div>
             </kendo-popup>
 
 
             <!-- 둥근 물고기 -->
-            <kendo-popup [anchor]="anchor"
+            <kendo-popup [anchor]="anchor3"
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
+                         [animate]="animate"
                          *ngIf="showRoundFishes">
 
                 <div  class="pop-up-select-image">
-                    <div *ngFor="let img of roundFaceImgList" class="img-wrap">
-                        <img  (click)="selectFishFace($event,img,'RO')" [src]="img"  alt=""
-                              [style.box-shadow]="selectedFishFace === img ? '0 0 4px blue' : ''"/>
+                    <div style="border-bottom: #cccccc dashed 1px; display: flex; ">
+                        <div *ngFor="let img of roundFaceImgList" class="img-wrap">
+                            <img  (click)="selectFishFace($event,img,'RO')" [src]="img"  alt=""
+                                  [style.box-shadow]="selectedFishFace === img ? '0 0 4px blue' : ''"/>
+                        </div>
                     </div>
-                    <div style="border: #a7a7a7 solid 2px;"></div>
 
-
-                    <div *ngFor="let scalesImg of roundBodyImgList;let i = index"  class="img-wrap">
-                        <img  (click)="selectFishBody($event,scalesImg)" [src]="scalesImg"  alt=""
-                              [style.box-shadow]="selectedFishBody === scalesImg ? '0 0 4px blue' : ''"/>
+                    <div style="display: flex; ">
+                        <div *ngFor="let scalesImg of roundBodyImgList;let i = index"  class="img-wrap">
+                            <img  (click)="selectFishBody($event,scalesImg)" [src]="scalesImg"  alt=""
+                                  [style.box-shadow]="selectedFishBody === scalesImg ? '0 0 4px blue' : ''"/>
+                        </div>
                     </div>
                 </div>
             </kendo-popup>
 
 
             <!-- 고래 -->
-            <kendo-popup [anchor]="anchor"
+            <kendo-popup [anchor]="anchor4"
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
+                         [animate]="animate"
                          *ngIf="showWhales">
 
                 <div  class="pop-up-select-image">
-                    <div *ngFor="let img of whaleFaceImgList" class="img-wrap">
-                        <img  (click)="selectFishFace($event,img,'WH')" [src]="img"  alt="smile"
-                              [style.box-shadow]="selectedFishFace === img ? '0 0 4px blue' : ''"/>
+                    <div style="border-bottom: #cccccc dashed 1px; display: flex; ">
+                        <div *ngFor="let img of whaleFaceImgList" class="img-wrap">
+                            <img  (click)="selectFishFace($event,img,'WH')" [src]="img"  alt="smile"
+                                  [style.box-shadow]="selectedFishFace === img ? '0 0 4px blue' : ''"/>
+                        </div>
                     </div>
-                    <div style="border: #a7a7a7 solid 2px;"></div>
 
-
-                    <div *ngFor="let scalesImg of whaleBodyImgList;let i = index"  class="img-wrap">
-                        <img  (click)="selectFishBody($event,scalesImg)" [src]="scalesImg"  alt=""
-                              [style.box-shadow]="selectedFishBody === scalesImg ? '0 0 4px blue' : ''"/>
+                    <div style="display: flex; ">
+                        <div *ngFor="let scalesImg of whaleBodyImgList;let i = index"  class="img-wrap">
+                            <img  (click)="selectFishBody($event,scalesImg)" [src]="scalesImg"  alt=""
+                                  [style.box-shadow]="selectedFishBody === scalesImg ? '0 0 4px blue' : ''"/>
+                        </div>
                     </div>
                 </div>
             </kendo-popup>
 
             <!-- 상어 -->
-            <kendo-popup [anchor]="anchor"
+            <kendo-popup [anchor]="anchor5"
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
+                         [animate]="animate"
                          *ngIf="showSharks">
 
                 <div  class="pop-up-select-image">
-                    <div *ngFor="let img of sharkFaceImgList" class="img-wrap">
-                        <img  (click)="selectFishFace($event,img,'SH')" [src]="img"  alt="smile"
-                              [style.box-shadow]="selectedFishFace === img ? '0 0 4px blue' : ''"/>
+                    <div style="border-bottom: #cccccc dashed 1px; display: flex; ">
+                        <div *ngFor="let img of sharkFaceImgList" class="img-wrap">
+                            <img  (click)="selectFishFace($event,img,'SH')" [src]="img"  alt="smile"
+                                  [style.box-shadow]="selectedFishFace === img ? '0 0 4px blue' : ''"/>
+                        </div>
                     </div>
-                    <div style="border: #a7a7a7 solid 2px;"></div>
 
 
-                    <div *ngFor="let scalesImg of sharkBodyImgList;let i = index"  class="img-wrap">
-                        <img  (click)="selectFishBody($event,scalesImg)" [src]="scalesImg"  alt=""
-                              [style.box-shadow]="selectedFishBody === scalesImg ? '0 0 4px blue' : ''"/>
+                    <div style="display: flex;">
+                        <div *ngFor="let scalesImg of sharkBodyImgList;let i = index"  class="img-wrap">
+                            <img  (click)="selectFishBody($event,scalesImg)" [src]="scalesImg"  alt=""
+                                  [style.box-shadow]="selectedFishBody === scalesImg ? '0 0 4px blue' : ''"/>
+                        </div>
                     </div>
                 </div>
             </kendo-popup>
 
             <!-- 장어 -->
-            <kendo-popup [anchor]="anchor"
-                         [anchorAlign]="anchorAlign"
-                         [popupAlign]="popupAlign"
+            <kendo-popup [anchor]="anchor6"
+                         [anchorAlign]="bottomAnchorAlign"
+                         [popupAlign]="bottomPopupAlign"
+                         [animate]="animate"
                          *ngIf="showEels">
 
                 <div  class="pop-up-select-image">
-                    <div *ngFor="let img of eelFaceImgList" class="img-wrap">
-                        <img  (click)="selectFishFace($event,img,'EE')" [src]="img"  alt="smile"
-                              [style.box-shadow]="selectedFishFace === img ? '0 0 4px blue' : ''"/>
+                    <div style="border-bottom: #cccccc dashed 1px; display: flex; ">
+                        <div *ngFor="let img of eelFaceImgList" class="img-wrap" >
+                            <img  (click)="selectFishFace($event,img,'EE')" [src]="img"  alt="smile"
+                                  [style.box-shadow]="selectedFishFace === img ? '0 0 4px blue' : ''"/>
+                        </div>
                     </div>
-                    <div style="border: #a7a7a7 solid 2px;"></div>
 
-
-                    <div *ngFor="let scalesImg of eelBodyImgList;let i = index"  class="img-wrap">
-                        <img  (click)="selectFishBody($event,scalesImg)" [src]="scalesImg"  alt=""
-                              [style.box-shadow]="selectedFishBody === scalesImg ? '0 0 4px blue' : ''"/>
+                    <div style="display: flex; ">
+                        <div *ngFor="let scalesImg of eelBodyImgList;let i = index"  class="img-wrap">
+                            <img  (click)="selectFishBody($event,scalesImg)" [src]="scalesImg"  alt=""
+                                  [style.box-shadow]="selectedFishBody === scalesImg ? '0 0 4px blue' : ''"/>
+                        </div>
                     </div>
                 </div>
             </kendo-popup>
 
 
             <!-- 물고기 외 -->
-            <kendo-popup [anchor]="anchor"
-                         [anchorAlign]="anchorAlign"
-                         [popupAlign]="popupAlign"
+            <kendo-popup [anchor]="anchor7"
+                         [anchorAlign]="bottomAnchorAlign"
+                         [popupAlign]="bottomPopupAlign"
+                         [animate]="animate"
                          *ngIf="showEtc">
 
                 <div  class="pop-up-select-image">
@@ -268,15 +279,15 @@
             </kendo-popup>
 
 
-            <div class="img-card-wrap"  #anchor >
+            <div class="img-card-wrap"   >
 
-                <div class="img-card">
+                <div class="img-card"  #anchor1>
                     <div class="img-card-header">
                         <img class="img-card-style"  src="{{fishBowlImgList[0]}}" (click)="closeOpenPopUp('showFishBowl')">
                     </div>
                 </div>
 
-                <div class="img-card">
+                <div class="img-card-family">
                     <div class="img-card-header">가족 선택</div>
                     <div class="img-card-body">
                         <kendo-chiplist
@@ -294,37 +305,42 @@
                     </div>
                 </div>
 
-                <div class="img-card" >
-                    <div class="img-card-header">
+                <div class="img-card" #anchor2>
+                    <div class="img-card-header"  >
+                        <span class="img-card-text" *ngIf="!isFamilyAfterFish">가족을 선택해주세요</span>
                         <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/fish.svg" (click)="closeOpenPopUp('showFishes')">
                     </div>
                 </div>
 
-                <div class="img-card">
+                <div class="img-card" #anchor3>
                     <div class="img-card-header">
+                        <span class="img-card-text" *ngIf="!isFamilyAfterFish">가족을 선택해주세요</span>
                         <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/roundFish.svg" (click)="closeOpenPopUp('showRoundFishes')">
                     </div>
                 </div>
 
-                <div class="img-card">
+                <div class="img-card" #anchor4>
                     <div class="img-card-header">
+                        <span class="img-card-text" *ngIf="!isFamilyAfterFish">가족을 선택해주세요</span>
                         <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/whale.svg" (click)="closeOpenPopUp('showWhales')">
                     </div>
                 </div>
 
-                <div class="img-card">
+                <div class="img-card" #anchor5>
                     <div class="img-card-header">
+                        <span class="img-card-text" *ngIf="!isFamilyAfterFish">가족을 선택해주세요</span>
                         <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/shark.svg" (click)="closeOpenPopUp('showSharks')">
                     </div>
                 </div>
 
-                <div class="img-card">
+                <div class="img-card" #anchor6>
                     <div class="img-card-header">
+                        <span class="img-card-text" *ngIf="!isFamilyAfterFish">가족을 선택해주세요</span>
                         <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/eel.svg" (click)="closeOpenPopUp('showEels')">
                     </div>
                 </div>
 
-                <div class="img-card">
+                <div class="img-card" #anchor7>
                     <div class="img-card-header">
                         <img class="img-card-style" src="{{etcImgList[0]}}" (click)="closeOpenPopUp('showEtc')">
                     </div>

@@ -54,6 +54,9 @@ export class DragAndDropComponent implements AfterViewInit{
     /** object request data 생성 */
     public mrObjectModelList: MrObjectModel[] = [];
 
+    /** object 삭제 데이터 포함 */
+    public allMrObjectModelList: MrObjectModel[] = [];
+
     /** object data set 생성 */
     public mrDataSetModel: MrDataSetRequestModel = new MrDataSetRequestModel();
 
@@ -179,23 +182,18 @@ export class DragAndDropComponent implements AfterViewInit{
             //console.log(e);
             const movedObject: any = e.target;
             var centerPoint = movedObject.getCenterPoint();
-            console.log('////////Object Moving///////////////');
-            console.log('centerPoint (X, Y): ' + centerPoint);
-            // console.log('화면 X Point: ' + e.e.clientX);
-            // console.log('화면 Y Point: ' + e.e.clientY);
-            console.log('-----------------------');
+            // console.log('////////Object Moving///////////////');
+            // console.log('centerPoint (X, Y): ' + centerPoint);
+            // console.log('-----------------------');
 
-            this.controlCount += 1;
         });
 
         // 각도값
         this.canvas.on('object:rotating', e => {
             const movedObject: any = e.target;
-            console.log('////////Object Rotating///////////////');
-            console.log('angle: ' + movedObject.angle);
-            console.log('-----------------------');
-
-            this.controlCount += 1;
+            // console.log('////////Object Rotating///////////////');
+            // console.log('angle: ' + movedObject.angle);
+            // console.log('-----------------------');
         })
 
 
@@ -203,15 +201,16 @@ export class DragAndDropComponent implements AfterViewInit{
         this.canvas.on('object:modified', e => {
             //console.log(e);
             const modifiedObject = e.target;
-            console.log('////////Object Modified///////////////');
-            console.log('좌우 반전 여부:' + modifiedObject?.flipX);
-            console.log('상하 반전 여부:' + modifiedObject?.flipY);
-            console.log('Object Width:' + modifiedObject?.getScaledWidth());
-            console.log('Object Height:' + modifiedObject?.getScaledHeight());
-            // console.log('상하 반전 여부:' + modifiedObject?.cacheHeight);
-            console.log('-----------------------');
+            // console.log('////////Object Modified///////////////');
+            // console.log('좌우 반전 여부:' + modifiedObject?.flipX);
+            // console.log('상하 반전 여부:' + modifiedObject?.flipY);
+            // console.log('Object Width:' + modifiedObject?.getScaledWidth());
+            // console.log('Object Height:' + modifiedObject?.getScaledHeight());
+            // // console.log('상하 반전 여부:' + modifiedObject?.cacheHeight);
+            // console.log('-----------------------');
 
             this.controlCount += 1;
+            console.log('control Count: ' + this.controlCount);
         });
 
     }
@@ -258,12 +257,14 @@ export class DragAndDropComponent implements AfterViewInit{
                 hasRotatingPoint: true,
                 selectable: true,
                 strokeWidth:10,
-                name:familyType
+                name:familyType ? familyType : null,
+
             });
-            this.extend(image, this.randomId(), new Date(),objectCodeId);
+            this.extend(image, this.randomId(), new Date().getTime(),objectCodeId);
             //console.log(image.toObject().id);
             image.scale(0.15);
             this.canvas.add(image);
+
 
             this.selectItemAfterAdded(image);
         });
@@ -274,10 +275,26 @@ export class DragAndDropComponent implements AfterViewInit{
      * 선택된 object 삭제
      */
     removeSelected() {
-
+        let data:any;
         const activeGroup = this.canvas.getActiveObjects();
         if (activeGroup) {
-            console.log(activeGroup[0].toObject().id);
+            data = activeGroup.map((item:fabric.Object, index) => {
+                const mrList: MrObjectModel = {
+                    angle: item.angle,
+                    dataSetSeq: 1,
+                    name: item.name != null ? Number(item.name) : null,
+                    objectCodeId: item.toObject().objectCodeId,
+                    userEmail: this.userEmail ? this.userEmail : '',
+                    width: item.getScaledWidth(),
+                    height: item.getScaledHeight(),
+                    x: item.getCenterPoint().x,
+                    y: item.getCenterPoint().y,
+                    objectSeq: item.toObject().id,
+                    createDate: item.toObject().createDate,
+                };
+                return mrList;
+            })
+            this.allMrObjectModelList.push(data[0]);
             this.canvas.discardActiveObject();
             const self = this;
             activeGroup.forEach((object:fabric.Object) => {
@@ -294,7 +311,7 @@ export class DragAndDropComponent implements AfterViewInit{
      * @param createDate
      * @param objectCodeId
      */
-    extend(obj:any, id:any, createDate: Date,objectCodeId:any) {
+    extend(obj:any, id:any, createDate: number,objectCodeId:any) {
         obj.toObject = ((toObject) => {
             return function() {
                 return fabric.util.object.extend(toObject.call(obj), {
@@ -340,77 +357,34 @@ export class DragAndDropComponent implements AfterViewInit{
     /**
      * canvas 저장
      * @param dataSetSeq
+     * @param startDate
      */
-    rasterize(dataSetSeq: any) {
-
-        // 회차별 오브젝트 생성
-        this.createObjectSet(dataSetSeq);
-
-        // 회차별 dataSet 생성
-        this.createDataSet(dataSetSeq);
-
+    rasterize(dataSetSeq: any, startDate: Date) {
 
         // cavas img로 저장
         const image = new Image();
         image.src = this.canvas.toDataURL({format: 'png'});
 
+        // 회차별 dataSet 생성
+        this.createDataSet(dataSetSeq,startDate, image.src);
+
+        // 회차별 오브젝트 생성
+        this.createObjectSet(dataSetSeq);
+
         this.canvas.clear();
-        console.log(image.src);
         return image.src;
     }
 
-    /**
-     * 회차 별 object 생성
-     * @param dataSetSeq
-     */
-    createObjectSet(dataSetSeq: number):void {
-        // 회차별 오브젝트 생성 request model
-        this.mrObjectModelList = this.canvas.getObjects().map((item:fabric.Object, index) => {
-                const mrList: MrObjectModel = {
-                    id: 9999,
-                    angle: item.angle,
-                    dataSetSeq: dataSetSeq,
-                    name: Number(item.name),
-                    objectCodeId: item.toObject().objectCodeId,
-                    userEmail: this.userEmail? this.userEmail : '' ,
-                    width: item.getScaledWidth(),
-                    height: item.getScaledHeight(),
-                    x: item.getCenterPoint().x,
-                    y: item.getCenterPoint().y,
-                    objectSeq: item.toObject().id,
-                    createDate: item.toObject().createDate
 
-                };
-                return mrList;
-            }
-
-        );
-
-        console.log(this.mrObjectModelList);
-
-
-
-        // 회차별 오브젝트 생성
-        this.mindReaderControlService.postObject(this.mrObjectModelList)
-            .subscribe({
-                next: async (data) => {
-                    if(data){
-                        console.log(data);
-                    }
-                    else{
-                        console.log('실패....^^');
-                    }
-                },
-                error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
-            });
-    }
 
 
     /**
      * 회차 별 dataSet 생성
      * @param dataSetSeq
+     * @param startDate
+     * @param src
      */
-    async createDataSet(dataSetSeq: number) {
+    async createDataSet(dataSetSeq: number, startDate:Date, src?:any) {
         // canvas 내 objectCodeId List
         const objectCodeList = this.canvas.getObjects().map(item => item.toObject().objectCodeId);
 
@@ -419,11 +393,12 @@ export class DragAndDropComponent implements AfterViewInit{
         await this.getObjectCode(1, objectCodeList);
         await this.getObjectCode(2, objectCodeList);
 
+        const endDate = new Date();
+
         // 회차별 데이터셋 생성 request model
         this.mrDataSetModel = {
-            id : 9999,
             seq: dataSetSeq,
-            testDate: new Date(),
+            testDate: startDate.getTime(),
             userEmail: this.userEmail? this.userEmail : '',
             patientInfoId: null,
             fishbowlCode: this.fishbowlCode,
@@ -431,7 +406,9 @@ export class DragAndDropComponent implements AfterViewInit{
             actionCount: this.controlCount,
             fishCount: this.fishCount,
             etcCount:this.etcCount,
-            resultSheetId: 0
+            resultImage: src,
+            deleted: false,
+            totalTime: endDate.getTime() - startDate.getTime()
         };
 
         console.log(this.mrDataSetModel);
@@ -493,6 +470,58 @@ export class DragAndDropComponent implements AfterViewInit{
                 });
 
         });
+    }
+
+
+    /**
+     * 회차 별 object 생성
+     * @param dataSetSeq
+     */
+    createObjectSet(dataSetSeq: number):void {
+        // 회차별 오브젝트 생성 request model
+        this.mrObjectModelList = this.canvas.getObjects().map((item:fabric.Object, index) => {
+                const mrList: MrObjectModel = {
+                    angle: item.angle,
+                    dataSetSeq: dataSetSeq,
+                    name: item.name != null ? Number(item.name) : null,
+                    objectCodeId: item.toObject().objectCodeId,
+                    userEmail: this.userEmail? this.userEmail : '' ,
+                    width: item.getScaledWidth(),
+                    height: item.getScaledHeight(),
+                    x: item.getCenterPoint().x,
+                    y: item.getCenterPoint().y,
+                    objectSeq: item.toObject().id,
+                    createDate: item.toObject().createDate,
+                };
+                return mrList;
+            }
+
+        );
+
+        console.log(this.mrObjectModelList);
+        // 삭제 데이터 + 캔버스 최종 데이터
+        for (let i=0;i<this.mrObjectModelList.length;i++){
+            this.allMrObjectModelList.push(this.mrObjectModelList[i]);
+        }
+        // objectSeq 순으로 정렬
+        this.allMrObjectModelList.sort((a, b) => a.objectSeq - b.objectSeq);
+        console.log('삭제 오브젝트 포함 데이터 : ')
+        console.log(this.allMrObjectModelList)
+
+        console.log(this.mrObjectModelList);
+        // 회차별 오브젝트 생성
+        this.mindReaderControlService.postObject(this.mrObjectModelList)
+            .subscribe({
+                next: async (data) => {
+                    if(data){
+                        console.log(data);
+                    }
+                    else{
+                        console.log('실패....^^');
+                    }
+                },
+                error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
+            });
     }
 
 

@@ -15,22 +15,27 @@ import { RouterModule } from '@angular/router';
 import {ButtonsModule} from "@progress/kendo-angular-buttons";
 import {MatDialogModule} from "@angular/material/dialog";
 import {ConfirmDialogComponent} from "./component/dialogs/confirm-dialog/confirm-dialog.component";
+import {DropDownListModule} from "@progress/kendo-angular-dropdowns";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild([]), // RouterModule.forChild()를 사용합니다.
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatListModule,
-    PanelBarModule,
-    ButtonsModule,
-    MatDialogModule,
-  ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild([]), // RouterModule.forChild()를 사용합니다.
+        MatToolbarModule,
+        MatButtonModule,
+        MatSidenavModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatListModule,
+        PanelBarModule,
+        ButtonsModule,
+        MatDialogModule,
+        DropDownListModule,
+        ReactiveFormsModule,
+        FormsModule,
+    ],
   declarations: [
     // layout
     SideNavComponent,

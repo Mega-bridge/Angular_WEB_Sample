@@ -26,6 +26,9 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {LoginComponent} from "./login/login.component";
 import {MultiSelectModule} from "@progress/kendo-angular-dropdowns";
 import {TokenService} from "../shared/service/token.service";
+import {AuthGuard} from "../shared/service/auth.guard";
+import {AuthService} from "../shared/service/auth.service";
+import {ModifyInputInfoComponent} from "./input-info/modify/modify-input-info.component";
 
 
 
@@ -34,6 +37,7 @@ import {TokenService} from "../shared/service/token.service";
     AppComponent,
     TutorialComponent,
     InputInfoComponent,
+      ModifyInputInfoComponent,
     SignUpComponent,
     LoginComponent
   ],
@@ -62,7 +66,11 @@ import {TokenService} from "../shared/service/token.service";
         MultiSelectModule,
         FilterMenuModule
     ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass:TokenService, multi:true}],
+  providers: [
+      {provide: HTTP_INTERCEPTORS, useClass:TokenService, multi:true},
+      AuthGuard,
+      AuthService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

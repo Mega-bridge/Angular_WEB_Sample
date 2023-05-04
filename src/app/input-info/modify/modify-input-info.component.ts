@@ -1,24 +1,24 @@
 import {Component, OnInit} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
-import {MrFamilyCodeResponse} from "../../shared/model/response/mr-family-code.response.model";
+import {MrFamilyCodeResponse} from "../../../shared/model/response/mr-family-code.response.model";
 import {Router} from "@angular/router";
-import {MindReaderControlService} from "../../shared/service/mind-reader-control.service";
-import {MrFamilyRelationCodeResponse} from "../../shared/model/response/mr-family-relation-code.response.model";
-import {MrGenderCodeResponse} from "../../shared/model/response/mr-gender-code.response.model";
-import {MrJobCodeResponse} from "../../shared/model/response/mr-job-code.response.model";
-import {PatientInfoRequest} from "../../shared/model/request/patient-info.request.model";
+import {MindReaderControlService} from "../../../shared/service/mind-reader-control.service";
+import {MrFamilyRelationCodeResponse} from "../../../shared/model/response/mr-family-relation-code.response.model";
+import {MrGenderCodeResponse} from "../../../shared/model/response/mr-gender-code.response.model";
+import {MrJobCodeResponse} from "../../../shared/model/response/mr-job-code.response.model";
+import {PatientInfoRequest} from "../../../shared/model/request/patient-info.request.model";
 import {HttpErrorResponse} from "@angular/common/http";
-import {AlertService} from "../../shared/service/alert.service";
-import {AuthService} from "../../shared/service/auth.service";
-import {UserService} from "../../shared/service/user.service";
+import {AlertService} from "../../../shared/service/alert.service";
+import {AuthService} from "../../../shared/service/auth.service";
+import {MrPatientInfoResponse} from "../../../shared/model/response/mr-patient-info.response.model";
 
 @Component({
-    selector: 'app-input-info',
-    templateUrl: 'input-info.component.html',
-    styleUrls: ['input-info.component.scss']
+    selector: 'app-modify-input-info',
+    templateUrl: 'modify-input-info.component.html',
+    styleUrls: ['modify-input-info.component.scss']
 })
 
-export class InputInfoComponent implements OnInit{
+export class ModifyInputInfoComponent implements OnInit{
 
     // 가족 리스트
     public familyTypeList : MrFamilyCodeResponse[] = [];
@@ -38,55 +38,64 @@ export class InputInfoComponent implements OnInit{
     public selectedFamilyRelation: string[] = [];
     // 라디오 버튼 선택 저장
     public selectedValues: string[] = [];
-    // 로그인 사용자 이메일
-    public userEmail: string = '';
-    // 로그인 사용자 이름
-    public userName: string = '';
+    // 내담자 정보 조회
+    public patientData: any;
+    // 선택된 gender
+    public selectedGender = ''
+    // 선택된 job
+    public selectedJob = ''
+    // 선택된 가족관계 리스트
+    public selectedFamilyList1: any[] = [];
 
     /**
      * 생성자
      * @param mindReaderControlService
      * @param router
-     * @param authService
+     * @param alertService
+     * @param loginService
      */
     constructor(
         private mindReaderControlService:MindReaderControlService,
         private router: Router,
         private alertService: AlertService,
-        private authService: AuthService,
-        private userService: UserService
+        private authService: AuthService
 
     ) {
     }
 
     // input form
     public infoForm: FormGroup = new FormGroup({
-        userEmail: new FormControl(''),
-        userName: new FormControl(''),
-        age: new FormControl(),
-        familyNum: new FormControl(),
-        jobCode: new FormControl(),
-        genderCode: new FormControl(),
+        userEmail: new FormControl(''), // 사용자 이메일
+        userName: new FormControl(''), // 사용자 성명
+        age: new FormControl(), // 나이
+        familyNum: new FormControl(), // 가족 수
+        jobId: new FormControl(), // 직업 코드
+        genderId: new FormControl(), // 성별 코드
     });
 
+    /**
+     * 초기화
+     */
     ngOnInit() {
-        // 사용자 조회
-        this.userService.getUserData(String(this.authService.getUserEmail()))
-            .subscribe({
-                next: async (data) => {
-                    if (data){
-                        this.userEmail=data.email;
-                        this.userName=data.username;
-                    }
-                }
-            });
+        // 데이터 로드
 
+        this.loadData();
+        setTimeout(()=>{
+            this.test();
+        },1000);
+
+
+    }
+
+    /**
+     * 데이터 로드
+     */
+    loadData(){
         // 가족 리스트 조회
         this.mindReaderControlService.getFamily()
             .subscribe({
                 next: async (data) => {
                     if (data){
-                        console.log(data);
                         this.familyTypeList  = data
                     }
                 }
@@ -106,7 +115,7 @@ export class InputInfoComponent implements OnInit{
             .subscribe({
                 next: async (data) => {
                     if (data){
-                        this.genderList=data
+                        this.genderList = data
                     }
                 }
             });
@@ -120,41 +129,56 @@ export class InputInfoComponent implements OnInit{
                     }
                 }
             });
+
+        // 내담자 추가 정보 조회
+        this.mindReaderControlService.getPatientInfo(String(this.authService.getUserEmail()))
+            .subscribe({
+                next: async (data) => {
+                    if (data){
+                        this.patientData=data
+                        this.selectedGender=this.patientData.genderId;
+                        this.selectedJob=this.patientData.jobId;
+                        this.infoForm.patchValue({...data});
+                    }
+                }
+            });
+
+
     }
 
     /**
-     * 추가 정보 기입하기
+     * 추가 정보 수정하기
      */
-    patientInfo(){
+    modifyPatientInfo(){
         this.familyInfo()
+
         let resultFamilyRelation=this.selectedFamilyRelation.join(',');
         let resultFamilyInfo=this.selectedFamilyList.join(',');
-
+        this.selectedFamilyList1=this.familyTypeList.filter(option =>this.patientData.familyInfo.split(',').map(Number).includes(option.id))
+            .map(option => option.description);
         const request: PatientInfoRequest = {
-            id: 0,
+            id: this.patientData.id,
             age: Number(this.infoForm.controls['age'].value),
             familyInfo: resultFamilyInfo,
             familyNum: Number(this.infoForm.controls['familyNum'].value),
             familyRelation: resultFamilyRelation,
-            genderId: this.infoForm.controls['genderCode'].value.id,
-            jobId: this.infoForm.controls['jobCode'].value.id,
+            genderId:this.infoForm.controls['genderId'].value,
+            jobId: this.infoForm.controls['jobId'].value,
             userEmail: this.infoForm.controls['userEmail'].value,
             userName: this.infoForm.controls['userName'].value,
         }
-        console.log(request)
-        // 내담자 추가 정보 생성
+
+        // 내담자 추가 정보 수정하기
         this.mindReaderControlService.postPatientInfo(request)
             .subscribe({
                 next: async (data) => {
                     if(data) {
-                        console.log(data);
-                        this.startDrawing();
+                        this.startTutorial();
                     }
                 },
                 error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
             });
     }
-
 
     /**
      * 선택된 가족 구성원 값 받아오기
@@ -168,6 +192,18 @@ export class InputInfoComponent implements OnInit{
         } else {
             this.selectedFamilyType.push(selected);
         }
+    }
+    test(){
+        this.selectedFamily=this.familyTypeList.filter(option =>this.patientData.familyInfo.split(',').map(Number).includes(option.id))
+        console.log(this.selectedFamily)
+        console.log(this.selectedFamily.map(option=>option.description))
+        console.log(this.patientData.familyInfo)
+        this.selectedValues=this.familyRelation.filter(option =>this.patientData.familyRelation.split(',').map(Number).includes(option.id))
+            .map(option => option.description)
+        //this.familyInfo();
+
+
+
     }
 
     updateSelectedValue(event:any){
@@ -192,16 +228,19 @@ export class InputInfoComponent implements OnInit{
             this.selectedFamilyList.push(splitted[0]);
             this.selectedFamilyList.join(',');
             this.selectedFamilyRelation.push(splitted[1]);
+            this.selectedValues=this.selectedFamilyRelation
         });
+        console.log(this.selectedFamilyList)
+        console.log(this.selectedFamilyRelation)
     }
 
 
 
     /**
-     * 캔버스 화면으로 이동
+     * 튜토리얼 화면으로 이동
      */
-    startDrawing() {
-        this.router.navigateByUrl(`/DrawFishFamily`);
+    startTutorial() {
+        this.router.navigateByUrl(`/tutorial`);
 
     }
     /**

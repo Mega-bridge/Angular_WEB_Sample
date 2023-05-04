@@ -18,7 +18,14 @@
 <!--</div>-->
 
 <div style="margin-bottom: 14px; padding-bottom: 5px;border-bottom: #b7b7b7 1px solid;"  >
-  <p style="font-size: 16px; padding: 3px" [innerHtml]="text">{{text}}</p>
+  <p style="font-size: 16px; padding: 3px; margin: 0.5em;" [innerHtml]="text">{{text}}</p>
+  <div *ngIf="useCanvasStatusInfo">
+    <kendo-dropdownlist
+            [data]="canvasStatusInfoList"
+            [(ngModel)]="selectedValue"
+    >
+    </kendo-dropdownlist>
+  </div>
 </div>
 
 <div style="display: flex; justify-content: space-evenly;">

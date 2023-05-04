@@ -40,60 +40,60 @@ export class SignUpComponent implements OnInit{
      * 회원가입 폼
      */
     public signUpForm: FormGroup = new FormGroup({
-        id: new FormControl(''),
-        email: new FormControl(''),
-        name: new FormControl(''),
-        password: new FormControl(''),
-        confirmPassword: new FormControl(''),
-        createDate: new FormControl(new Date()),
-        updateDate: new FormControl(new Date()),
-        role: new FormControl('')
+        email: new FormControl(''), // email
+        name: new FormControl(''), // 사용자 이름
+        password: new FormControl(''), // 비밀번호
+        confirmPassword: new FormControl(''), // 확인 비밀번호
     });
 
     ngOnInit() {
+        // 데이터 로드
         this.dataLoad();
-    }
+        }
 
     /**
      * 회원 data load
      */
     dataLoad(){
-        // 가족 리스트 조회
+        // 모든 사용자 리스트 조회
         this.userProvider.getAllUser()
             .subscribe({
                 next: async (data) => {
                     if (data){
+                        console.log(data)
                         this.userData = data;
                     }
                 }
             });
     }
 
+
     /**
      * 회원가입
      */
     signup(){
+        // 입력한 비밀번호와 확인 비밀번호 일치한지 확인
         if (this.signUpForm.controls['password'].value!=this.signUpForm.controls['confirmPassword'].value){
             this.alertService.openAlert('비밀번호가 일치한 지 다시 확인해주세요.');
         }
+        // 개인정보 수집 체크 여부
         else if(this.isInfoAgree==false){
             this.alertService.openAlert('개인정보 수집 및 이용에 동의하여 주십시오.');
         }
         else{
             const request: UserModel = {
-                id: this.signUpForm.controls['id'].value,
-                createDate: this.signUpForm.controls['createDate'].value,
                 email: this.signUpForm.controls['email'].value,
                 password: this.signUpForm.controls['password'].value,
-                updateDate: this.signUpForm.controls['updateDate'].value,
                 username: this.signUpForm.controls['name'].value,
-                role: this.signUpForm.controls['role'].value
             }
+            console.log(request)
+            // 회원가입
             this.userProvider.signUp(request)
                 .subscribe({
                     next: async (response)=>{
                         if(response){
                             this.alertService.openAlert('회원가입이 완료되었습니다.');
+                            // 회원 가입후 로그인
                             this.login();
                         }
                     },
@@ -114,16 +114,20 @@ export class SignUpComponent implements OnInit{
      * ID 중복확인 event
      */
     duplicationCheck() {
-        for (let i = 0; i < this.userData.length; i++) {
+
+        let checkNum = 0;
+        console.log(this.userData)
+        for (let i = 0; i < this.userData.length; i++){
             if (this.signUpForm.controls['email'].value === this.userData[i].email) {
                 this.alertService.openAlert('중복된 Email입니다. 다른 Email를 입력해주세요.');
+                checkNum +=1;
                 break;
             }
-            else if(this.signUpForm.controls['email'].value.length<=0) {
+            else if(this.signUpForm.controls['email'].value.length <= 0) {
                 this.alertService.openAlert('Email을 입력해주십시오.');
                 break;
             }
-            else{
+             else if (checkNum==0){
                 this.alertService.openAlert('사용 가능한 Email입니다.')
                 this.idCheck = false;
                 break;
