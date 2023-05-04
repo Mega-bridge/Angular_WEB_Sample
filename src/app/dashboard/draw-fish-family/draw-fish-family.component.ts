@@ -388,7 +388,7 @@ export class DrawFishFamilyComponent implements OnInit{
             content: ConfirmDialogComponent,
             appendTo: this.dialogRef,
             width: 450,
-            height: 200,
+            height: 180,
             minWidth: 250,
         });
         dialog.content.instance.text = `삭제 시 복구가 불가합니다. <br> ${index + 1}회차를 정말로 삭제하시겠습니까?`;
@@ -602,7 +602,7 @@ export class DrawFishFamilyComponent implements OnInit{
             content: ConfirmDialogComponent,
             appendTo: this.dialogRef,
             width: 450,
-            height: 200,
+            height: 180,
             minWidth: 250,
         });
         dialog.content.instance.text = '저장 시 수정이 불가합니다.<br>그리기를 끝내시겠습니까?';
@@ -622,6 +622,37 @@ export class DrawFishFamilyComponent implements OnInit{
                 this.seqItems[this.selectedSeqIndex].imgUrl = this.canvas.rasterize(this.selectedSeq, this.startDate);
                 this.canvasImage = this.seqItems[this.selectedSeqIndex].imgUrl;
 
+
+                this.canvasStatusInfoDialog();
+
+                // // full screen 닫기
+                // this.closeFullscreen();
+                //
+                // // 그리기 저장 후 종료 시 새로고침 실행
+                // window.location.reload();
+            }
+
+        });
+
+    }
+
+    canvasStatusInfoDialog(){
+
+        const dialog = this.dialogService.open({
+            title: "물고기 가족에 대해 조금 더 알려주세요!",
+            content: ConfirmDialogComponent,
+            appendTo: this.dialogRef,
+            width: 450,
+            height: 190,
+            minWidth: 250,
+        });
+        dialog.content.instance.text = '지금 물고기 가족은 무엇을 하고 있나요?';
+        dialog.content.instance.useCanvasStatusInfo = true;
+
+
+        // 저장 실행
+        dialog.result.subscribe((result: any) => {
+            if (result.text === 'yes') {
                 // full screen 닫기
                 this.closeFullscreen();
 

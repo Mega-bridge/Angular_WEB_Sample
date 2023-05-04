@@ -13,6 +13,19 @@ export class ConfirmDialogComponent {
   public mode: string = 'dark-1';
 
   public text: string = '';
+
+  public useCanvasStatusInfo : boolean = false;
+  public canvasStatusInfoList: string[] = [
+      '모두 먹이를 먹으러 가고 있습니다.',
+      '모두 놀러가고 있습니다.',
+      '함께 수영을 합니다.',
+      '모두 아무것도 하고 있지 않습니다.',
+      '가족이 각자 자신의 일을 하고 있습니다.',
+      '나만 아무것도 하지 않고 다른 가족들은 각자 자신의 일을 하고 있습니다.',
+      '나를 제외한 다른 가족들은 함께 무엇인가를 하고 있습니다.',
+      '해당사항 없음'
+  ];
+
   constructor(
     private dialogRef: DialogRef,
   ) {}

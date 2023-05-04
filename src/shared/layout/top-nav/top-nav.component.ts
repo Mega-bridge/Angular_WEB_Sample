@@ -60,7 +60,7 @@ export class TopNavComponent implements OnInit {
       content: ConfirmDialogComponent,
       appendTo: this.dialogRef,
       width: 450,
-      height: 185,
+      height: 160,
       minWidth: 250,
       cssClass: 'custom-css-class',
     });
