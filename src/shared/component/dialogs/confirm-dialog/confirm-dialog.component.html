@@ -22,6 +22,7 @@
   <div *ngIf="useCanvasStatusInfo">
     <kendo-dropdownlist
             [data]="canvasStatusInfoList"
+            [(ngModel)]="selectedValue"
     >
     </kendo-dropdownlist>
   </div>

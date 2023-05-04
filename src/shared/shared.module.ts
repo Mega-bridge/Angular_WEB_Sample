@@ -16,7 +16,7 @@ import {ButtonsModule} from "@progress/kendo-angular-buttons";
 import {MatDialogModule} from "@angular/material/dialog";
 import {ConfirmDialogComponent} from "./component/dialogs/confirm-dialog/confirm-dialog.component";
 import {DropDownListModule} from "@progress/kendo-angular-dropdowns";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
     imports: [
@@ -34,6 +34,7 @@ import {ReactiveFormsModule} from "@angular/forms";
         MatDialogModule,
         DropDownListModule,
         ReactiveFormsModule,
+        FormsModule,
     ],
   declarations: [
     // layout

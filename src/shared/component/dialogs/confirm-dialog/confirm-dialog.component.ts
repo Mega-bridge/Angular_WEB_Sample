@@ -1,8 +1,5 @@
 import {Component} from "@angular/core";
-import {Router} from "@angular/router";
-import {MatDialog} from "@angular/material/dialog";
-import { MatDialogRef } from '@angular/material/dialog';
-import {DialogCloseResult, DialogRef, DialogService} from "@progress/kendo-angular-dialog";
+import {DialogRef} from "@progress/kendo-angular-dialog";
 
 @Component({
   selector: 'app-confirm-dialog',
@@ -25,6 +22,7 @@ export class ConfirmDialogComponent {
       '나를 제외한 다른 가족들은 함께 무엇인가를 하고 있습니다.',
       '해당사항 없음'
   ];
+  public selectedValue = '모두 먹이를 먹으러 가고 있습니다.';
 
   constructor(
     private dialogRef: DialogRef,
