@@ -44,6 +44,8 @@ export class ModifyInputInfoComponent implements OnInit{
     public selectedGender = ''
     // 선택된 job
     public selectedJob = ''
+    // 선택된 가족관계 리스트
+    public selectedFamilyList1: any[] = [];
 
     /**
      * 생성자
@@ -67,8 +69,8 @@ export class ModifyInputInfoComponent implements OnInit{
         userName: new FormControl(''), // 사용자 성명
         age: new FormControl(), // 나이
         familyNum: new FormControl(), // 가족 수
-        jobCode: new FormControl(), // 직업 코드
-        genderCode: new FormControl(), // 성별 코드
+        jobId: new FormControl(), // 직업 코드
+        genderId: new FormControl(), // 성별 코드
     });
 
     /**
@@ -76,7 +78,13 @@ export class ModifyInputInfoComponent implements OnInit{
      */
     ngOnInit() {
         // 데이터 로드
+
         this.loadData();
+        setTimeout(()=>{
+            this.test();
+        },1000);
+
+
     }
 
     /**
@@ -88,7 +96,6 @@ export class ModifyInputInfoComponent implements OnInit{
             .subscribe({
                 next: async (data) => {
                     if (data){
-                        console.log(data);
                         this.familyTypeList  = data
                     }
                 }
@@ -108,7 +115,7 @@ export class ModifyInputInfoComponent implements OnInit{
             .subscribe({
                 next: async (data) => {
                     if (data){
-                        this.genderList=data
+                        this.genderList = data
                     }
                 }
             });
@@ -128,15 +135,18 @@ export class ModifyInputInfoComponent implements OnInit{
             .subscribe({
                 next: async (data) => {
                     if (data){
-                        console.log(data)
                         this.patientData=data
-
                         this.selectedGender=this.patientData.genderId;
-                        this.infoForm.controls['jobCode'].value.id=this.patientData.jobId;
+                        this.selectedJob=this.patientData.jobId;
                         this.infoForm.patchValue({...data});
                     }
                 }
             });
+
+
+
+
+
 
     }
 
@@ -145,36 +155,34 @@ export class ModifyInputInfoComponent implements OnInit{
      */
     modifyPatientInfo(){
         this.familyInfo()
+
         let resultFamilyRelation=this.selectedFamilyRelation.join(',');
         let resultFamilyInfo=this.selectedFamilyList.join(',');
-        console.log(this.patientData)
-        console.log(this.patientData.id)
-        console.log(this.selectedGender)
+        this.selectedFamilyList1=this.familyTypeList.filter(option =>this.patientData.familyInfo.split(',').map(Number).includes(option.id))
+            .map(option => option.description);
         const request: PatientInfoRequest = {
             id: this.patientData.id,
             age: Number(this.infoForm.controls['age'].value),
             familyInfo: resultFamilyInfo,
             familyNum: Number(this.infoForm.controls['familyNum'].value),
             familyRelation: resultFamilyRelation,
-            genderId: Number(this.selectedGender),
-            jobId: this.infoForm.controls['jobCode'].value.id,
+            genderId:this.infoForm.controls['genderId'].value,
+            jobId: this.infoForm.controls['jobId'].value,
             userEmail: this.infoForm.controls['userEmail'].value,
             userName: this.infoForm.controls['userName'].value,
         }
-        console.log(request)
+
         // 내담자 추가 정보 수정하기
         this.mindReaderControlService.postPatientInfo(request)
             .subscribe({
                 next: async (data) => {
                     if(data) {
-                        console.log(data);
                         this.startTutorial();
                     }
                 },
                 error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
             });
     }
-
 
     /**
      * 선택된 가족 구성원 값 받아오기
@@ -188,6 +196,15 @@ export class ModifyInputInfoComponent implements OnInit{
         } else {
             this.selectedFamilyType.push(selected);
         }
+    }
+    test(){
+
+        this.selectedFamily=this.familyTypeList.filter(option =>this.patientData.familyInfo.split(',').map(Number).includes(option.id))
+        console.log(this.selectedFamily)
+        this.selectedValues=this.familyRelation.filter(option =>this.patientData.familyRelation.split(',').map(Number).includes(option.id)).map(option => option.description)
+        //this.familyInfo();
+        console.log(this.selectedFamilyList)
+
     }
 
     updateSelectedValue(event:any){
@@ -212,7 +229,10 @@ export class ModifyInputInfoComponent implements OnInit{
             this.selectedFamilyList.push(splitted[0]);
             this.selectedFamilyList.join(',');
             this.selectedFamilyRelation.push(splitted[1]);
+            this.selectedValues=this.selectedFamilyRelation
         });
+        console.log(this.selectedFamilyList)
+        console.log(this.selectedFamilyRelation)
     }
 
 

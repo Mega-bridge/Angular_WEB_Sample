@@ -33,7 +33,7 @@
                         <!--                            <input class="form-input" formControlName="sex" kendoTextBox #sex/>-->
                         <kendo-dropdownlist
                                 [data]="genderList"
-                                formControlName="genderCode"
+                                formControlName="genderId"
                                 textField="description"
                                 valueField="id"
                                 [value]="selectedGender"
@@ -53,9 +53,11 @@
                         <kendo-label class="form-label" [for]="job" text="직업/학년"></kendo-label>
                         <kendo-dropdownlist
                                 [data]="jobList"
-                                formControlName="jobCode"
+                                formControlName="jobId"
                                 textField="description"
                                 valueField="id"
+                                [value]="selectedJob"
+                                [valuePrimitive]="true"
                                 #job
                                 class="form-input">
                         </kendo-dropdownlist>
@@ -93,6 +95,8 @@
                             <div style="font-size:17px;margin-right: 2px" *ngFor="let family of selectedFamily; let i = index">
                                 - {{family.description}}
                                 <ng-container *ngIf="family.description!='나'">
+                                    {{family.numericValue}}
+
                                     <kendo-numerictextbox
                                             [style.width.px]="80"
                                             format="0"
