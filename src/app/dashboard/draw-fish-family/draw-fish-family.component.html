@@ -28,7 +28,7 @@
 
 <!--        </ng-template>-->
         <ng-template kendoDrawerFooterTemplate >
-            <div *ngIf="!expanded"  (click)="drawer.toggle()" style="display: flex; justify-content: center;padding: 10px; cursor: pointer;">
+            <div *ngIf="!expanded" style="display: flex; justify-content: center;padding: 10px; cursor: pointer;">
                 <span   style="font-size: 25px;"> <b> << </b> </span>
             </div>
 
@@ -109,8 +109,9 @@
                     </div>
 
                     <div>
-                        <button class="button-style btn2"(click)="canvasDownload()" >그림 다운로드</button>
-                        <button class="button-style btn2 sm" (click)="drawer.toggle()">결과 보기</button>
+                        <button class="button-style btn2" (click)="canvasDownload()" >그림 다운로드</button>
+                        <button class="button-style btn3" (click)="drawer.toggle()">검토 중</button>
+                        <button *ngIf="false" class="button-style btn4" (click)="drawer.toggle()">결과 보기</button>
                     </div>
                 </div>
             </div>
