@@ -278,7 +278,16 @@ export class DrawFishFamilyComponent implements OnInit{
                             if(!item.deleted){
                                 const testDate = new Date(item.testDate).getFullYear().toString() + '.' + (new Date(item.testDate).getMonth() + 1).toString() + '.' + new Date(item.testDate).getDate().toString();
                                 seq += 1;
-                                this.seqItems.push({id: item.id, seq: item.seq, text: seq.toString() + '회차', date: testDate, imgUrl: item.resultImage ,hour:this.hour,minute:this.minute,second:this.second });
+                                this.seqItems.push({
+                                    id: item.id,
+                                    seq: item.seq,
+                                    text: seq.toString() + '회차',
+                                    date: testDate,
+                                    imgUrl: item.resultImage ,
+                                    hour: Math.floor((item.totalTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+                                    minute:Math.floor((item.totalTime % (1000 * 60 * 60)) / (1000 * 60)),
+                                    second: Math.floor((item.totalTime % (1000 * 60)) / (1000))
+                                })
                             }
 
                         });
