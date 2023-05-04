@@ -3,8 +3,6 @@ import {HttpClient} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 import {LoginRequestModel} from "../model/request/login.request.model";
 import {LoginResultResponse} from "../model/response/login-result.response.model";
-// import { JwtHelperService } from '@auth0/angular-jwt';
-
 
 
 
@@ -25,11 +23,9 @@ export class AuthService {
     /**
      * 생성자
      * @param http
-     * @param jwtHelper
      */
     constructor(
         private http: HttpClient,
-        // private jwtHelper: JwtHelperService
         ) { }
 
 
