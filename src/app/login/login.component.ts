@@ -56,7 +56,20 @@ export class LoginComponent {
                     }
                 },
                 // http error message 출력
-                error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
+                error: (err: HttpErrorResponse) => {
+                    console.log(err);
+                    if(err.status == 401){
+                        this.alertService.openAlert('존재하지 않는 아이디입니다.')
+                    }
+                    else if (err.status == 400){
+                        this.alertService.openAlert('비밀번호를 다시 한 번 확인해주세요.')
+                    }
+                    else {
+                        this.alertService.openAlert(err.message)
+                    }
+
+
+                }
             })
     }
 
