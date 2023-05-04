@@ -19,18 +19,34 @@ export class TokenService implements HttpInterceptor{
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        // 로그인 화면 시 token 미전송
-        if(req.url.includes('/user') || req.url.includes('/login') || req.url.includes('/user/userList')){
-            return next.handle(req);
+        // token 미전송 url
+        // http://localhost:8080/auth/login 로그인 API url
+        // http://localhost:8080/user 회원 생성 API url
+        // http://localhost:8080/user/userList 기존 회원 전체 로드 API url
+        switch (req.url){
+            case 'http://localhost:8080/auth/login':
+            case 'http://localhost:8080/user':
+            case 'http://localhost:8080/user/userList':
+                return next.handle(req);
+            default:
+                let token=req.clone({
+                    setHeaders:{
+                        Authorization: "Bearer "+this.loginService.getToken()
+                    }
+                });
+                return next.handle(token);
         }
 
-        // 모든 구독자에 token 적용
-        let token=req.clone({
-            setHeaders:{
-                Authorization: "Bearer "+this.loginService.getToken()
-            }
-        });
-        return next.handle(token);
+        // if( req.url === 'http://localhost:8080/auth/login' || req.url === 'http://localhost:8080/user' || req.url === 'http://localhost:8080/user/userList'){
+        //     return next.handle(req);
+        // }
+        // // 모든 구독자에 token 적용
+        // let token=req.clone({
+        //     setHeaders:{
+        //         Authorization: "Bearer "+this.loginService.getToken()
+        //     }
+        // });
+        // return next.handle(token);
 
     }
 }
