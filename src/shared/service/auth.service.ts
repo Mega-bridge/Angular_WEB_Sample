@@ -96,11 +96,4 @@ export class AuthService {
     }
 
 
-
-    // isTokenExpired(token: string) {
-    //     return this.jwtHelper.isTokenExpired(token);
-    // }
-
-
-
 }
