@@ -201,7 +201,9 @@ export class ModifyInputInfoComponent implements OnInit{
 
         this.selectedFamily=this.familyTypeList.filter(option =>this.patientData.familyInfo.split(',').map(Number).includes(option.id))
         console.log(this.selectedFamily)
-        this.selectedValues=this.familyRelation.filter(option =>this.patientData.familyRelation.split(',').map(Number).includes(option.id)).map(option => option.description)
+        console.log(this.patientData.familyInfo)
+        this.selectedValues=this.familyRelation.filter(option =>this.patientData.familyRelation.split(',').map(Number).includes(option.id))
+            .map(option => option.description)
         //this.familyInfo();
         console.log(this.selectedFamilyList)
 
