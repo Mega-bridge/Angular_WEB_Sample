@@ -106,7 +106,7 @@ export class TopNavComponent implements OnInit {
    */
   mainPage() {
 
-    this.router.navigateByUrl(`/main`);
+    this.router.navigateByUrl(`/DrawFishFamily`);
 
   }
 
