@@ -624,6 +624,9 @@ export class DrawFishFamilyComponent implements OnInit{
 
                 // full screen 닫기
                 this.closeFullscreen();
+
+                // 그리기 저장 후 종료 시 새로고침 실행
+                window.location.reload();
             }
 
         });
