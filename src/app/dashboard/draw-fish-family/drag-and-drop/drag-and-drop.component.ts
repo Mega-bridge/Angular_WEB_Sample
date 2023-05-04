@@ -393,6 +393,8 @@ export class DragAndDropComponent implements AfterViewInit{
         await this.getObjectCode(1, objectCodeList);
         await this.getObjectCode(2, objectCodeList);
 
+        const endDate = new Date();
+
         // 회차별 데이터셋 생성 request model
         this.mrDataSetModel = {
             seq: dataSetSeq,
@@ -406,7 +408,8 @@ export class DragAndDropComponent implements AfterViewInit{
             etcCount:this.etcCount,
             resultSheetId: 0,
             resultImage: src,
-            deleted: false
+            deleted: false,
+            totalTime: endDate.getTime() - startDate.getTime()
         };
 
         console.log(this.mrDataSetModel);
