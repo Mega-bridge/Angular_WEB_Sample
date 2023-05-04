@@ -144,10 +144,6 @@ export class ModifyInputInfoComponent implements OnInit{
             });
 
 
-
-
-
-
     }
 
     /**
@@ -198,14 +194,15 @@ export class ModifyInputInfoComponent implements OnInit{
         }
     }
     test(){
-
         this.selectedFamily=this.familyTypeList.filter(option =>this.patientData.familyInfo.split(',').map(Number).includes(option.id))
         console.log(this.selectedFamily)
+        console.log(this.selectedFamily.map(option=>option.description))
         console.log(this.patientData.familyInfo)
         this.selectedValues=this.familyRelation.filter(option =>this.patientData.familyRelation.split(',').map(Number).includes(option.id))
             .map(option => option.description)
         //this.familyInfo();
-        console.log(this.selectedFamilyList)
+
+
 
     }
 

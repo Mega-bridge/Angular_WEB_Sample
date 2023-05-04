@@ -9,6 +9,8 @@ import {MrJobCodeResponse} from "../../shared/model/response/mr-job-code.respons
 import {PatientInfoRequest} from "../../shared/model/request/patient-info.request.model";
 import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../shared/service/alert.service";
+import {AuthService} from "../../shared/service/auth.service";
+import {UserService} from "../../shared/service/user.service";
 
 @Component({
     selector: 'app-input-info',
@@ -36,16 +38,23 @@ export class InputInfoComponent implements OnInit{
     public selectedFamilyRelation: string[] = [];
     // 라디오 버튼 선택 저장
     public selectedValues: string[] = [];
+    // 로그인 사용자 이메일
+    public userEmail: string = '';
+    // 로그인 사용자 이름
+    public userName: string = '';
 
     /**
      * 생성자
      * @param mindReaderControlService
      * @param router
+     * @param authService
      */
     constructor(
         private mindReaderControlService:MindReaderControlService,
         private router: Router,
         private alertService: AlertService,
+        private authService: AuthService,
+        private userService: UserService
 
     ) {
     }
@@ -61,6 +70,17 @@ export class InputInfoComponent implements OnInit{
     });
 
     ngOnInit() {
+        // 사용자 조회
+        this.userService.getUserData(String(this.authService.getUserEmail()))
+            .subscribe({
+                next: async (data) => {
+                    if (data){
+                        this.userEmail=data.email;
+                        this.userName=data.username;
+                    }
+                }
+            });
+
         // 가족 리스트 조회
         this.mindReaderControlService.getFamily()
             .subscribe({
@@ -128,7 +148,7 @@ export class InputInfoComponent implements OnInit{
                 next: async (data) => {
                     if(data) {
                         console.log(data);
-                        this.startLogin();
+                        this.startDrawing();
                     }
                 },
                 error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)

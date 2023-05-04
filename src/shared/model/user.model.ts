@@ -3,11 +3,11 @@
  */
 
 export class UserModel {
-    public id: number = 0;
+    public id?: number = 0;
     public email: string = '';
     public username: string = '';
     public password: string = '';
-    public role: string = '';
-    public createDate: Date | null = null;
-    public updateDate: Date | null = null;
+    public role?: string = '';
+    public createDate?: Date | null = null;
+    public updateDate?: Date | null = null;
 }

@@ -25,7 +25,7 @@ export class TutorialComponent{
             this.router.navigateByUrl(`/input-info`);
         }
         else{
-            this.router.navigateByUrl(`/DrawFishFamily`);
+            this.router.navigateByUrl(`/input-info`);
         }
 
 

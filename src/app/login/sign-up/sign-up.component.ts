@@ -40,20 +40,16 @@ export class SignUpComponent implements OnInit{
      * 회원가입 폼
      */
     public signUpForm: FormGroup = new FormGroup({
-        id: new FormControl(''), // id
         email: new FormControl(''), // email
         name: new FormControl(''), // 사용자 이름
         password: new FormControl(''), // 비밀번호
         confirmPassword: new FormControl(''), // 확인 비밀번호
-        createDate: new FormControl(new Date()), // 생성된 날짜
-        updateDate: new FormControl(new Date()), // 수정된 날짜
-        role: new FormControl('') // 권한
     });
 
     ngOnInit() {
         // 데이터 로드
         this.dataLoad();
-    }
+        }
 
     /**
      * 회원 data load
@@ -64,11 +60,13 @@ export class SignUpComponent implements OnInit{
             .subscribe({
                 next: async (data) => {
                     if (data){
+                        console.log(data)
                         this.userData = data;
                     }
                 }
             });
     }
+
 
     /**
      * 회원가입
@@ -84,22 +82,19 @@ export class SignUpComponent implements OnInit{
         }
         else{
             const request: UserModel = {
-                id: this.signUpForm.controls['id'].value,
-                createDate: this.signUpForm.controls['createDate'].value,
                 email: this.signUpForm.controls['email'].value,
                 password: this.signUpForm.controls['password'].value,
-                updateDate: this.signUpForm.controls['updateDate'].value,
                 username: this.signUpForm.controls['name'].value,
-                role: this.signUpForm.controls['role'].value
             }
+            console.log(request)
             // 회원가입
             this.userProvider.signUp(request)
                 .subscribe({
                     next: async (response)=>{
                         if(response){
                             this.alertService.openAlert('회원가입이 완료되었습니다.');
-                            // 회원 가입후 추가 정보 기입
-                            this.inputInfo();
+                            // 회원 가입후 로그인
+                            this.login();
                         }
                     },
                     // http error message 출력
@@ -119,6 +114,7 @@ export class SignUpComponent implements OnInit{
      * ID 중복확인 event
      */
     duplicationCheck() {
+
         let checkNum = 0;
         console.log(this.userData)
         for (let i = 0; i < this.userData.length; i++){

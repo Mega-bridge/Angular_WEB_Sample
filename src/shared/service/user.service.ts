@@ -17,15 +17,14 @@ export class UserService {
      * 생성자
      * @param http
      */
-    constructor(private http: HttpClient,
-                private loginProvider: AuthService) { }
+    constructor(private http: HttpClient) { }
 
 
     /**
      * 사용자 생성
      */
     signUp(request: UserModel):Observable<UserModel> {
-        return this.http.post<UserModel>(`${this.SEVER_URL}/`,request);
+        return this.http.post<UserModel>(`${this.SEVER_URL}`,request);
     }
 
     /**
