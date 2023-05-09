@@ -19,10 +19,6 @@ import {LayoutModule} from "@progress/kendo-angular-layout";
                 pathMatch: 'full',
             },
 
-            {
-                path: 'DrawFishFamily',
-                component: DrawFishFamilyComponent
-            },
         ]),
         SharedModule,
         NgIf,

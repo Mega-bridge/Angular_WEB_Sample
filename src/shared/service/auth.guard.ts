@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router} from '@angular/router';
+import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
 
 import {AuthService} from "./auth.service";
 
@@ -12,7 +12,7 @@ export class AuthGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
         // 관리자
-        if (route.data && route.data["roles"]){
+        if (route.data && route.data["roles"] && this.loginService.isAuthenticated()){
             let roles = route.data["roles"] as string;
             return roles[0] == this.loginService.getUserRole();
         }
@@ -21,7 +21,7 @@ export class AuthGuard implements CanActivate {
         else{
             // 토큰 유효 기간 확인
             if (!this.loginService.isAuthenticated()) {
-                this.loginService.removeToken();
+                this.loginService.removeSessionStorage();
                 this.router.navigateByUrl('main');
                 return false;
             }

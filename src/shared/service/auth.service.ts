@@ -96,9 +96,10 @@ export class AuthService {
     /**
      * logout 시 저장되어 있는 세션 정보 삭제
      */
-    removeToken(): void {
+    removeSessionStorage(): void {
         sessionStorage.removeItem(this.TOKEN_NAME);
         sessionStorage.removeItem(this.USER_EMAIL);
+        sessionStorage.removeItem(this.USER_ROLE);
     }
 
 
