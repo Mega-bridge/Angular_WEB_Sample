@@ -82,6 +82,7 @@ export class SignUpComponent implements OnInit{
         }
         else{
             const request: UserModel = {
+                role: 'ROLE_USER',
                 email: this.signUpForm.controls['email'].value,
                 password: this.signUpForm.controls['password'].value,
                 username: this.signUpForm.controls['name'].value,

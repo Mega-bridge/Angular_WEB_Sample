@@ -7,7 +7,7 @@ export class UserModel {
     public email: string = '';
     public username: string = '';
     public password: string = '';
-    public role?: string = '';
+    public role: string = '';
     public createDate?: Date | null = null;
     public updateDate?: Date | null = null;
 }
