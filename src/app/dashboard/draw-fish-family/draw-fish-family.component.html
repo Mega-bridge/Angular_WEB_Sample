@@ -101,7 +101,7 @@
                 <div class="image-container"  [ngStyle] = "{'background-image': 'url('+canvasImage+')'}">
                     <!--                    <img [src]="this.canvasImage">-->
                 </div>
-                <div style="display: flex;flex-direction: row; justify-content: space-between;align-items: center;">
+                <div style="display: flex;flex-direction: row; justify-content: space-between;align-items: center;flex-wrap: nowrap;">
                     <div>
 
                         <button class="button-style" *ngIf="canvasImage==''" (click)="openFullscreen()">그리기 모드</button>
@@ -109,7 +109,7 @@
 
                     </div>
 
-                    <div>
+                    <div style="display: flex; flex-wrap: nowrap;">
                         <button class="button-style btn2" (click)="canvasDownload()" >그림 다운로드</button>
                         <button class="button-style btn3" (click)="drawer.toggle()">검토 중</button>
                         <button *ngIf="false" class="button-style btn4" (click)="drawer.toggle()">결과 보기</button>

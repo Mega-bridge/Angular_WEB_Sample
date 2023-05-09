@@ -37,7 +37,7 @@ export class DrawFishFamilyComponent implements OnInit{
     ];
 
     /** 회차 items */
-    public seqItems : {id?: number, seq: number,text: string, date: string, imgUrl: string, hour: number,minute: number,second: number,detailFishId?:number}[] = [];
+    public seqItems : {id?: number, seq: number,text: string, date: string, imgUrl: string, hour: number,minute: number,second: number,detailFishDescription?:string}[] = [];
 
     /** 회차 선택 */
     public selectedSeq: number = 0;
@@ -307,7 +307,7 @@ export class DrawFishFamilyComponent implements OnInit{
                                     hour: Math.floor((item.totalTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
                                     minute:Math.floor((item.totalTime % (1000 * 60 * 60)) / (1000 * 60)),
                                     second: Math.floor((item.totalTime % (1000 * 60)) / (1000)),
-                                    detailFishId: item.detailFishId
+                                    detailFishDescription: this.detailFishList.filter(detailItem => detailItem.id == item.detailFishId).map(item => item.description)[0]
                                 })
                             }
 
@@ -359,26 +359,17 @@ export class DrawFishFamilyComponent implements OnInit{
         this.selectedSeqIndex = index;
         // 해당 DataSet의 어항 그림 화면에 적용
         this.canvasImage = this.seqItems[index].imgUrl;
+        // 헤당 DataSet의 물고기 행동 설명
+        this.detailFish = item.detailFishDescription;
 
         this.second = item.second;
         this.minute = item.minute;
         this.hour = item.hour;
 
 
-        // 해당 DataSet의 물고기 가족 행동 정보 조회
-        item.detailFishId ? this.getDetailFish(item.detailFishId) : this.detailFish = '';
 
         // 해당 DataSet의 Object Seq 조회
         this.getSeqObjectCode();
-    }
-
-
-    /**
-     * DataSet에 저장되어 있는 detailFish id -> description
-     * @param detailFishId
-     */
-    getDetailFish(detailFishId: number){
-        this.detailFish = this.detailFishList.filter(item => item.id == detailFishId).map(item => item.description)[0];
     }
 
 
@@ -685,14 +676,14 @@ export class DrawFishFamilyComponent implements OnInit{
         dialog.result.subscribe((result: any) => {
             if (result.text === 'yes') {
 
-                this.seqItems[this.selectedSeqIndex].imgUrl = this.canvas.rasterize(this.selectedSeq, this.startDate,result.detailFishId);
+                this.seqItems[this.selectedSeqIndex].imgUrl = this.canvas.rasterize(this.selectedSeq, this.startDate, result.detailFishId);
                 this.canvasImage = this.seqItems[this.selectedSeqIndex].imgUrl;
 
                 // full screen 닫기
                 this.closeFullscreen();
 
                 // 그리기 저장 후 종료 시 새로고침 실행
-                window.location.reload();
+                this.seqItems[this.selectedSeqIndex].imgUrl? window.location.reload() : '';
             }
 
         });

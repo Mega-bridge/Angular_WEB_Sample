@@ -43,7 +43,6 @@ export class ConfirmDialogComponent {
                   if (data){
                       this.detailFishList = data;
                       this.selectedValue = this.detailFishList[0];
-                      console.log(this.detailFishList);
                   }
               }
           })
