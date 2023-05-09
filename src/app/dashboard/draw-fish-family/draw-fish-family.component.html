@@ -271,8 +271,8 @@
 
             <!-- 물고기 외 -->
             <kendo-popup [anchor]="anchor7"
-                         [anchorAlign]="anchorAlign"
-                         [popupAlign]="popupAlign"
+                         [anchorAlign]="isFamilyAfterFish?bottomAnchorAlign:anchorAlign"
+                         [popupAlign]="isFamilyAfterFish?bottomPopupAlign:popupAlign"
                          [animate]="animate"
                          [margin]="etcMargin"
                          *ngIf="showEtc">
@@ -348,7 +348,7 @@
                 </div>
 
                 <div class="img-card" #anchor7>
-                    <div class="img-card-header" *ngIf="isSelectedFishBowl && !isFamilyAfterFish">
+                    <div class="img-card-header" *ngIf="isSelectedFishBowl ">
                         <img class="img-card-style" src="{{etcImgList[0]}}" (click)="closeOpenPopUp('showEtc')">
                     </div>
                 </div>
