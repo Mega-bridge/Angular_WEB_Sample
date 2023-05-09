@@ -5,7 +5,7 @@ import {DOCUMENT} from "@angular/common";
 import {MrFamilyCodeResponse} from "../../../shared/model/response/mr-family-code.response.model";
 import {MrObjectImageResponse} from "../../../shared/model/response/mr-object-image.response.model";
 import {MindReaderControlService} from "../../../shared/service/mind-reader-control.service";
-import {single} from "rxjs";
+import {async, single} from "rxjs";
 import {DrawerPosition} from "@progress/kendo-angular-layout";
 import {ConfirmDialogComponent} from "../../../shared/component/dialogs/confirm-dialog/confirm-dialog.component";
 import {DialogService} from "@progress/kendo-angular-dialog";
@@ -67,6 +67,9 @@ export class DrawFishFamilyComponent implements OnInit{
 
     public bottomAnchorAlign: Align = { horizontal: "right", vertical: "bottom" };
     public bottomPopupAlign: Align = { horizontal: "left", vertical: "bottom" };
+
+    public margin = { horizontal: 0, vertical: -50 };
+    public etcMargin = { horizontal: 0, vertical: -100 };
 
     public animate : PopupAnimation = {
         type: 'fade',
@@ -620,7 +623,7 @@ export class DrawFishFamilyComponent implements OnInit{
     }
 
     /**
-     * canvas 저장하기
+     * canvas 저장하기 실행
      */
     public rasterize() {
         const dialog = this.dialogService.open({
@@ -637,26 +640,16 @@ export class DrawFishFamilyComponent implements OnInit{
         // 저장 실행
         dialog.result.subscribe((result: any) => {
             if (result.text === 'yes') {
-                // API에서 불러옴
-                // 캔버스 그리는데 걸리는 시간 출력
-                // this.endDate=new Date();
-                // this.hour=(Math.abs(this.endDate.getHours()-this.startDate.getHours()))
-                // this.minute=(Math.abs(this.endDate.getMinutes()-this.startDate.getMinutes()))
-                // this.second=(Math.abs(this.endDate.getSeconds()-this.startDate.getSeconds()))
-
-
                 // 물고기 행동 정보 선택
                 this.canvasStatusInfoDialog();
-
             }
 
         });
-
     }
 
 
     /**
-     * 물고기 가족 행동 정보 추가 다이얼로그
+     * 물고기 가족 행동 정보 추가 다이얼로그 및 어항 정보 저장
      */
     canvasStatusInfoDialog(){
 
@@ -673,19 +666,18 @@ export class DrawFishFamilyComponent implements OnInit{
 
 
         // 저장 실행
-        dialog.result.subscribe((result: any) => {
-            if (result.text === 'yes') {
+        dialog.result.subscribe({
+            next: async (result: any) => {
+                if (result.text === 'yes') {
+                    this.canvas.rasterize(this.selectedSeq, this.startDate, result.detailFishId);
 
-                this.seqItems[this.selectedSeqIndex].imgUrl = this.canvas.rasterize(this.selectedSeq, this.startDate, result.detailFishId);
-                this.canvasImage = this.seqItems[this.selectedSeqIndex].imgUrl;
+                    // full screen 닫기
+                    this.closeFullscreen();
 
-                // full screen 닫기
-                this.closeFullscreen();
-
-                // 그리기 저장 후 종료 시 새로고침 실행
-                this.seqItems[this.selectedSeqIndex].imgUrl? window.location.reload() : '';
+                    // 저장 alert
+                    this.alertService.openAlert('성공적으로 저장되었습니다.');
+                }
             }
-
         });
 
     }

@@ -145,6 +145,7 @@
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
                          [animate]="animate"
+                         [margin]="margin"
                          *ngIf="showFishes">
 
                 <div  class="pop-up-select-image">
@@ -170,6 +171,7 @@
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
                          [animate]="animate"
+                         [margin]="margin"
                          *ngIf="showRoundFishes">
 
                 <div  class="pop-up-select-image">
@@ -195,6 +197,7 @@
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
                          [animate]="animate"
+                         [margin]="margin"
                          *ngIf="showWhales">
 
                 <div  class="pop-up-select-image">
@@ -219,6 +222,7 @@
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
                          [animate]="animate"
+                         [margin]="margin"
                          *ngIf="showSharks">
 
                 <div  class="pop-up-select-image">
@@ -241,9 +245,10 @@
 
             <!-- 장어 -->
             <kendo-popup [anchor]="anchor6"
-                         [anchorAlign]="bottomAnchorAlign"
-                         [popupAlign]="bottomPopupAlign"
+                         [anchorAlign]="anchorAlign"
+                         [popupAlign]="popupAlign"
                          [animate]="animate"
+                         [margin]="margin"
                          *ngIf="showEels">
 
                 <div  class="pop-up-select-image">
@@ -266,9 +271,10 @@
 
             <!-- 물고기 외 -->
             <kendo-popup [anchor]="anchor7"
-                         [anchorAlign]="bottomAnchorAlign"
-                         [popupAlign]="bottomPopupAlign"
+                         [anchorAlign]="anchorAlign"
+                         [popupAlign]="popupAlign"
                          [animate]="animate"
+                         [margin]="etcMargin"
                          *ngIf="showEtc">
 
                 <div  class="pop-up-select-image">
@@ -342,7 +348,7 @@
                 </div>
 
                 <div class="img-card" #anchor7>
-                    <div class="img-card-header" *ngIf="isSelectedFishBowl">
+                    <div class="img-card-header" *ngIf="isSelectedFishBowl && !isFamilyAfterFish">
                         <img class="img-card-style" src="{{etcImgList[0]}}" (click)="closeOpenPopUp('showEtc')">
                     </div>
                 </div>

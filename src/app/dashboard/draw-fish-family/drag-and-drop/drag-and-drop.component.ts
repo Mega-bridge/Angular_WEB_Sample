@@ -362,18 +362,12 @@ export class DragAndDropComponent implements AfterViewInit{
      */
     rasterize(dataSetSeq: any, startDate: Date, detailFishId: number) {
 
-        // cavas img로 저장
-        const image = new Image();
-        image.src = this.canvas.toDataURL({format: 'png'});
+            // cavas img로 저장
+            const image = new Image();
+            image.src = this.canvas.toDataURL({format: 'png'});
 
-        // 회차별 dataSet 생성
-        this.createDataSet(dataSetSeq,startDate, detailFishId,image.src);
-
-        // 회차별 오브젝트 생성
-        this.createObjectSet(dataSetSeq);
-
-        this.canvas.clear();
-        return image.src;
+            // 회차별 dataSet 생성
+            this.createDataSet(dataSetSeq, startDate, detailFishId, image.src);
     }
 
 
@@ -423,7 +417,8 @@ export class DragAndDropComponent implements AfterViewInit{
             .subscribe({
                 next: async(data) => {
                     if(data){
-                        console.log(data);
+                        // DataSet 생성 성공 시 회차별 오브젝트 생성
+                        this.createObjectSet(dataSetSeq);
                     }
                     else{
                         console.log('실패....^^');
@@ -511,13 +506,17 @@ export class DragAndDropComponent implements AfterViewInit{
         console.log('삭제 오브젝트 포함 데이터 : ')
         console.log(this.allMrObjectModelList)
 
-        console.log(this.mrObjectModelList);
         // 회차별 오브젝트 생성
         this.mindReaderControlService.postObject(this.mrObjectModelList)
             .subscribe({
                 next: async (data) => {
                     if(data){
                         console.log(data);
+                        // 회차별 오브젝트 생성 성공 시 canvas 초기화
+                        this.canvas.clear();
+
+                        // 그리기 저장 후 종료 시 새로고침 실행
+                        window.location.reload();
                     }
                     else{
                         console.log('실패....^^');
