@@ -47,6 +47,13 @@ export class TopNavComponent implements OnInit {
     return  this.loginService.getToken();
   }
 
+  /**
+   * login 사용자 역할 조회
+   */
+  checkRole(){
+    return this.loginService.getUserRole() == 'ROLE_ADMIN';
+  }
+
   toggleSidebar() {
     this.sideNavToggled.emit();
   }
@@ -68,7 +75,7 @@ export class TopNavComponent implements OnInit {
 
     dialog.result.subscribe((result: any) => {
       if (result.text === 'yes') {
-        this.loginService.removeToken();
+        this.loginService.removeSessionStorage();
         // 페이지 새로고침
         window.location.reload();
       } else {
@@ -105,9 +112,7 @@ export class TopNavComponent implements OnInit {
    * main 화면으로 이동
    */
   mainPage() {
-
     this.router.navigateByUrl(`/DrawFishFamily`);
-
   }
 
   /**
@@ -115,6 +120,13 @@ export class TopNavComponent implements OnInit {
    */
   modifyInfo(){
     this.router.navigateByUrl('/modify-input-info')
+  }
+
+  /**
+   * 관리자 페이지 이동
+   */
+  adminPage(){
+    this.router.navigateByUrl('/admin')
   }
 
 

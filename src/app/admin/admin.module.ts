@@ -10,18 +10,11 @@ import {AuthGuard} from "../../shared/service/auth.guard";
             {
                 path: '',
                 component: AdminComponent,
-                canActivate:[AuthGuard],
-                data:{
-                    roles: ['ROLE_ADMIN']
-                },
+                pathMatch:'full',
             },
             {
                 path: 'survey',
                 component: SurveyComponent,
-                canActivate:[AuthGuard],
-                data:{
-                    roles: ['ROLE_ADMIN']
-                },
             }
         ])
     ],
