@@ -171,8 +171,10 @@ export class DrawFishFamilyComponent implements OnInit{
     /** 가족 선택 Disabled 여부 **/
     public isDisabled: boolean = false;
 
-    /** 가족 선택 전 물고기 이미지 선택 여부 **/
+    /** 가족 선택 여부 **/
     public isFamilyAfterFish: boolean = false;
+    /** 어항 선택 여부 **/
+    public isSelectedFishBowl:boolean =false;
 
     /** 캔버스 팝업 여부 */
     public isPopupOpen: boolean = false;
@@ -473,6 +475,7 @@ export class DrawFishFamilyComponent implements OnInit{
     selectWater(fishBowl: string) {
         this.showFishBowl = false;
         this.selectedFishBowl = fishBowl;
+        this.isSelectedFishBowl = true;
 
         const fishbowlCode = this.objectData.filter(item => item.path == fishBowl ).map(item => item.objectCodeId);
         this.canvas.setWater(fishBowl,fishbowlCode[0]);
@@ -651,13 +654,9 @@ export class DrawFishFamilyComponent implements OnInit{
                 // this.second=(Math.abs(this.endDate.getSeconds()-this.startDate.getSeconds()))
 
 
+                // 물고기 행동 정보 선택
                 this.canvasStatusInfoDialog();
 
-                // // full screen 닫기
-                // this.closeFullscreen();
-                //
-                // // 그리기 저장 후 종료 시 새로고침 실행
-                // window.location.reload();
             }
 
         });
@@ -693,7 +692,7 @@ export class DrawFishFamilyComponent implements OnInit{
                 this.closeFullscreen();
 
                 // 그리기 저장 후 종료 시 새로고침 실행
-                // window.location.reload();
+                window.location.reload();
             }
 
         });

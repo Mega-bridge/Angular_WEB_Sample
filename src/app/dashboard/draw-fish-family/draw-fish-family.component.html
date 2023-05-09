@@ -288,7 +288,7 @@
                     </div>
                 </div>
 
-                <div class="img-card-family">
+                <div class="img-card-family"  *ngIf="isSelectedFishBowl">
                     <div class="img-card-header">가족 선택</div>
                     <div class="img-card-body">
                         <kendo-chiplist
@@ -342,7 +342,7 @@
                 </div>
 
                 <div class="img-card" #anchor7>
-                    <div class="img-card-header">
+                    <div class="img-card-header" *ngIf="isSelectedFishBowl">
                         <img class="img-card-style" src="{{etcImgList[0]}}" (click)="closeOpenPopUp('showEtc')">
                     </div>
                 </div>
