@@ -13,6 +13,7 @@ import {Router} from "@angular/router";
 import {AuthService} from "../../../shared/service/auth.service";
 import {UserService} from "../../../shared/service/user.service";
 import {AlertService} from "../../../shared/service/alert.service";
+import {MrDetailFishResponseModel} from "../../../shared/model/response/mr-detail-fish.response.model";
 
 @Component({
     selector: 'app-dashboard-draw-fish-family',
@@ -36,7 +37,7 @@ export class DrawFishFamilyComponent implements OnInit{
     ];
 
     /** 회차 items */
-    public seqItems : {id?: number, seq: number,text: string, date: string, imgUrl: string, hour: number,minute: number,second: number}[] = [];
+    public seqItems : {id?: number, seq: number,text: string, date: string, imgUrl: string, hour: number,minute: number,second: number,detailFishId?:number}[] = [];
 
     /** 회차 선택 */
     public selectedSeq: number = 0;
@@ -52,6 +53,13 @@ export class DrawFishFamilyComponent implements OnInit{
 
     // 가족관계 리스트
     public familyTypeList : MrFamilyCodeResponse[] = [];
+
+    // 물고기 가족 행동 상세정보 리스트
+    public detailFishList: MrDetailFishResponseModel[] = [];
+
+    // 물고기 가족 행동 상세정보
+    public detailFish: string = '';
+
 
     // popUp 위치
     public anchorAlign: Align = { horizontal: "right", vertical: "top" };
@@ -262,6 +270,16 @@ export class DrawFishFamilyComponent implements OnInit{
         // 사용자 데이터셋 조회
         this.getDataSet();
 
+        this.mindReaderControlService.getDetailFish()
+            .subscribe({
+                next: async (data) => {
+                    if (data){
+                        this.detailFishList = data;
+
+                    }
+                }
+            })
+
     }
 
 
@@ -286,7 +304,8 @@ export class DrawFishFamilyComponent implements OnInit{
                                     imgUrl: item.resultImage ,
                                     hour: Math.floor((item.totalTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
                                     minute:Math.floor((item.totalTime % (1000 * 60 * 60)) / (1000 * 60)),
-                                    second: Math.floor((item.totalTime % (1000 * 60)) / (1000))
+                                    second: Math.floor((item.totalTime % (1000 * 60)) / (1000)),
+                                    detailFishId: item.detailFishId
                                 })
                             }
 
@@ -343,8 +362,21 @@ export class DrawFishFamilyComponent implements OnInit{
         this.minute = item.minute;
         this.hour = item.hour;
 
+
+        // 해당 DataSet의 물고기 가족 행동 정보 조회
+        item.detailFishId ? this.getDetailFish(item.detailFishId) : this.detailFish = '';
+
         // 해당 DataSet의 Object Seq 조회
         this.getSeqObjectCode();
+    }
+
+
+    /**
+     * DataSet에 저장되어 있는 detailFish id -> description
+     * @param detailFishId
+     */
+    getDetailFish(detailFishId: number){
+        this.detailFish = this.detailFishList.filter(item => item.id == detailFishId).map(item => item.description)[0];
     }
 
 
@@ -619,10 +651,6 @@ export class DrawFishFamilyComponent implements OnInit{
                 // this.second=(Math.abs(this.endDate.getSeconds()-this.startDate.getSeconds()))
 
 
-                this.seqItems[this.selectedSeqIndex].imgUrl = this.canvas.rasterize(this.selectedSeq, this.startDate);
-                this.canvasImage = this.seqItems[this.selectedSeqIndex].imgUrl;
-
-
                 this.canvasStatusInfoDialog();
 
                 // // full screen 닫기
@@ -636,6 +664,10 @@ export class DrawFishFamilyComponent implements OnInit{
 
     }
 
+
+    /**
+     * 물고기 가족 행동 정보 추가 다이얼로그
+     */
     canvasStatusInfoDialog(){
 
         const dialog = this.dialogService.open({
@@ -653,11 +685,15 @@ export class DrawFishFamilyComponent implements OnInit{
         // 저장 실행
         dialog.result.subscribe((result: any) => {
             if (result.text === 'yes') {
+
+                this.seqItems[this.selectedSeqIndex].imgUrl = this.canvas.rasterize(this.selectedSeq, this.startDate,result.detailFishId);
+                this.canvasImage = this.seqItems[this.selectedSeqIndex].imgUrl;
+
                 // full screen 닫기
                 this.closeFullscreen();
 
                 // 그리기 저장 후 종료 시 새로고침 실행
-                window.location.reload();
+                // window.location.reload();
             }
 
         });

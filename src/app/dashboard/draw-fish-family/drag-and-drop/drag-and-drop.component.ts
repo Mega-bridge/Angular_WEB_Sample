@@ -358,15 +358,16 @@ export class DragAndDropComponent implements AfterViewInit{
      * canvas 저장
      * @param dataSetSeq
      * @param startDate
+     * @param detailFishId
      */
-    rasterize(dataSetSeq: any, startDate: Date) {
+    rasterize(dataSetSeq: any, startDate: Date, detailFishId: number) {
 
         // cavas img로 저장
         const image = new Image();
         image.src = this.canvas.toDataURL({format: 'png'});
 
         // 회차별 dataSet 생성
-        this.createDataSet(dataSetSeq,startDate, image.src);
+        this.createDataSet(dataSetSeq,startDate, detailFishId,image.src);
 
         // 회차별 오브젝트 생성
         this.createObjectSet(dataSetSeq);
@@ -382,9 +383,10 @@ export class DragAndDropComponent implements AfterViewInit{
      * 회차 별 dataSet 생성
      * @param dataSetSeq
      * @param startDate
+     * @param detailFishId
      * @param src
      */
-    async createDataSet(dataSetSeq: number, startDate:Date, src?:any) {
+    async createDataSet(dataSetSeq: number, startDate:Date,detailFishId: number ,src?:any) {
         // canvas 내 objectCodeId List
         const objectCodeList = this.canvas.getObjects().map(item => item.toObject().objectCodeId);
 
@@ -407,6 +409,7 @@ export class DragAndDropComponent implements AfterViewInit{
             fishCount: this.fishCount,
             etcCount:this.etcCount,
             resultImage: src,
+            detailFishId: detailFishId,
             deleted: false,
             totalTime: endDate.getTime() - startDate.getTime()
         };

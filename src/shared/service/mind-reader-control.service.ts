@@ -12,6 +12,7 @@ import {MrObjectCodeResponseModel} from "../model/response/mr-object-code.respon
 import {MrDataSetResponseModel} from "../model/response/mr-data-set.response.model";
 import {PatientInfoRequest} from "../model/request/patient-info.request.model";
 import {MrPatientInfoResponse} from "../model/response/mr-patient-info.response.model";
+import {MrDetailFishResponseModel} from "../model/response/mr-detail-fish.response.model";
 
 @Injectable({
     providedIn: 'root'
@@ -65,6 +66,12 @@ export class MindReaderControlService {
         return this.http.get<MrDataSetResponseModel>(`${this.MR_CONTROL_URL}/dataSet/${seq}`);
     }
 
+    /**
+     * 물고기 가족 행동 조회
+     */
+    getDetailFish():Observable<MrDetailFishResponseModel[]>{
+        return this.http.get<MrDetailFishResponseModel[]>(`${this.MR_CONTROL_URL}/detailFish`);
+    }
 
 
     /**
