@@ -316,10 +316,8 @@ export class DrawFishFamilyComponent implements OnInit{
 
                         });
 
-                        // 저장되어있는 전체 DataSet 수 (Delete 포함), seq를 부여하기 위해 할당
-                        this.dataSetCount = data.length;
-                        // 추가될 DataSet의 seq를 위해 전체 DataSet의 마지막 seq 저장
-                        this.selectedSeq = data.length-1;
+                        // 마지막 seq 조회
+                        this.selectedSeq = data[data.length - 1].seq;
 
                         // 기존 DataSet이 있지만 모두 삭제되어 사용자에게 보여줄 DataSet이 없을 경우 미실행
                         if(this.seqItems.length != 0){
@@ -389,7 +387,7 @@ export class DrawFishFamilyComponent implements OnInit{
 
         // 회차 추가
         this.seqItems.push({
-            seq: this.dataSetCount,
+            seq: this.selectedSeq + 1,
             text: `${this.seqItems.length + 1}회차`,
             date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
             imgUrl: '',
@@ -398,8 +396,6 @@ export class DrawFishFamilyComponent implements OnInit{
             second:0
         });
 
-        // dataSet의 실질적인 seq 부여를 위해 dataSet Count
-        this.dataSetCount += 1;
 
         // 회차 추가 시 추가된 회차로 자동 선택
         this.selectSeq(this.seqItems[this.seqItems.length -1], this.seqItems.length -1);
@@ -649,7 +645,7 @@ export class DrawFishFamilyComponent implements OnInit{
 
 
     /**
-     * 물고기 가족 행동 정보 추가 다이얼로그 및 어항 정보 저장
+     * 물고기 가족 행동 정보 추가 다이얼로그 및 어항 정보 저
      */
     canvasStatusInfoDialog(){
 
