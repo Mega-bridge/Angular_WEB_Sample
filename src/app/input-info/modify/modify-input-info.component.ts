@@ -47,6 +47,11 @@ export class ModifyInputInfoComponent implements OnInit{
     // 선택된 가족관계 리스트
     public selectedFamilyList1: any[] = [];
 
+    public dfsf:any[]=[]
+
+    public asdf:any[]=[];
+    public test1:any[]=[];
+    public saveArray:any;
     /**
      * 생성자
      * @param mindReaderControlService
@@ -84,7 +89,7 @@ export class ModifyInputInfoComponent implements OnInit{
             this.test();
         },1000);
 
-
+    console.log(this.selectedFamilyList)
     }
 
     /**
@@ -97,6 +102,7 @@ export class ModifyInputInfoComponent implements OnInit{
                 next: async (data) => {
                     if (data){
                         this.familyTypeList  = data
+                        console.log(data)
                     }
                 }
             });
@@ -139,6 +145,7 @@ export class ModifyInputInfoComponent implements OnInit{
                         this.selectedGender=this.patientData.genderId;
                         this.selectedJob=this.patientData.jobId;
                         this.infoForm.patchValue({...data});
+                        console.log(data)
                     }
                 }
             });
@@ -146,14 +153,55 @@ export class ModifyInputInfoComponent implements OnInit{
 
     }
 
+    test(){
+        console.log(this.selectedValues)
+        console.log(this.patientData.familyInfo)
+        console.log(this.dfsf)
+        this.dfsf  =this.patientData.familyInfo.split(',').map(Number)
+        this.asdf  =this.patientData.familyRelation.split(',').map(Number)
+        this.test1 = this.dfsf.map((item, index) => `${item}_${this.asdf[index]}`);
+        console.log(this.asdf)
+        console.log(this.dfsf)
+        console.log(this.selectedFamily)
+        this.dfsf  = this.dfsf.reduce((acc, val) => {
+            const index = parseInt(val) - 1; // 배열 인덱스는 0부터 시작하므로 1을 뺍니다.
+            acc[index] = acc[index] ? acc[index] + 1 : 1; // 해당 인덱스의 값을 1 증가시킵니다.
+            return acc;
+        }, []);
+        this.dfsf=this.dfsf.filter(item => item !== null)
+        this.selectedFamily=this.familyTypeList.filter(option =>this.patientData.familyInfo.split(',').map(Number).includes(option.id))
+       /* this.selectedValues=this.familyRelation.filter(option =>this.patientData.familyRelation.split(',').map(Number).includes(option.id))
+            .map(option => option.description)*/
+        console.log(this.selectedFamily)
+    }
+    /**
+     * 가족 데이터
+     */
+    familyInfo(){
+        console.log(this.selectedValues)
+
+        console.log(this.test1)
+        console.log(this.dfsf)
+        //this.selectedValues = this.selectedValues.filter(item => item !== null);
+        this.test1.forEach(item => {
+            const splitted = item.split('_');
+            this.selectedFamilyList.push(splitted[0]);
+            this.selectedFamilyList.join(',');
+            this.selectedFamilyRelation.push(splitted[1]);
+            this.selectedValues=this.selectedFamilyRelation
+        });
+        console.log(this.dfsf)
+    }
+
     /**
      * 추가 정보 수정하기
      */
     modifyPatientInfo(){
         this.familyInfo()
-
+        console.log(this.selectedFamilyRelation)
         let resultFamilyRelation=this.selectedFamilyRelation.join(',');
         let resultFamilyInfo=this.selectedFamilyList.join(',');
+        console.log(resultFamilyRelation)
         this.selectedFamilyList1=this.familyTypeList.filter(option =>this.patientData.familyInfo.split(',').map(Number).includes(option.id))
             .map(option => option.description);
         const request: PatientInfoRequest = {
@@ -168,6 +216,7 @@ export class ModifyInputInfoComponent implements OnInit{
             userName: this.infoForm.controls['userName'].value,
         }
 
+        console.log(this.selectedValues)
         // 내담자 추가 정보 수정하기
         this.mindReaderControlService.postPatientInfo(request)
             .subscribe({
@@ -193,47 +242,6 @@ export class ModifyInputInfoComponent implements OnInit{
             this.selectedFamilyType.push(selected);
         }
     }
-    test(){
-        this.selectedFamily=this.familyTypeList.filter(option =>this.patientData.familyInfo.split(',').map(Number).includes(option.id))
-        console.log(this.selectedFamily)
-        console.log(this.selectedFamily.map(option=>option.description))
-        console.log(this.patientData.familyInfo)
-        this.selectedValues=this.familyRelation.filter(option =>this.patientData.familyRelation.split(',').map(Number).includes(option.id))
-            .map(option => option.description)
-        //this.familyInfo();
-
-
-
-    }
-
-    updateSelectedValue(event:any){
-        // if (event.target.checked) {
-        //     this.radioValues.push(event);
-        // } else {
-        //     const index = this.radioValues.indexOf(event);
-        //     if (index !== -1) {
-        //         this.radioValues.splice(index, 1);
-        //     }
-        // }
-
-    }
-
-    /**
-     * 가족 데이터
-     */
-    familyInfo(){
-        this.selectedValues = this.selectedValues.filter(item => item !== null);
-        this.selectedValues.forEach(item => {
-            const splitted = item.split('_');
-            this.selectedFamilyList.push(splitted[0]);
-            this.selectedFamilyList.join(',');
-            this.selectedFamilyRelation.push(splitted[1]);
-            this.selectedValues=this.selectedFamilyRelation
-        });
-        console.log(this.selectedFamilyList)
-        console.log(this.selectedFamilyRelation)
-    }
-
 
 
     /**

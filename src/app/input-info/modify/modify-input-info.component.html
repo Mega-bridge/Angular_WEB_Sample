@@ -92,23 +92,22 @@
                     <!--                            </div>-->
                     <div class="input-info">
                         <kendo-label class="form-label" text="가족과의 관계">
-                            <div style="font-size:17px;margin-right: 2px" *ngFor="let family of selectedFamily; let i = index">
+                            <div *ngFor="let family of selectedFamily; let i = index">
                                 - {{family.description}}
                                 <ng-container *ngIf="family.description!='나'">
-                                    {{family.numericValue}}
                                     <kendo-numerictextbox
                                             [style.width.px]="80"
                                             format="0"
                                             [min]="0"
                                             [max]="100"
-                                            [(ngModel)]="family.length"
-                                    >
-                                    </kendo-numerictextbox>
-                                    <ng-container *ngFor="let j of [].constructor(family.numericValue); let k = index">
+                                            [(ngModel)]="dfsf[i]"
+                                    ></kendo-numerictextbox>
+
+                                    <ng-container *ngFor="let j of [].constructor(dfsf[i]); let k = index">
                                         <div style="display: flex; flex-wrap: wrap; width: 100%;">
                                             <div style="font-size: 15px;margin-top:7px">{{family.description}} {{k+1}}</div>
-                                            <div *ngFor="let item of familyRelation;let m = index" style="font-size: 15px; margin: 5px 5px;">
-                                                <input type="radio"  name="{{family.description + k}}" value="{{family.id+'_'+item.id}}" [(ngModel)]="selectedValues[k * familyRelation.length+i]"/>
+                                            <div *ngFor="let item of familyRelation; let m = index" style="font-size: 15px; margin: 5px 5px;">
+                                                <input type="radio" name="{{family.description + k}}" value="{{family.id+'_'+item.id}}" [(ngModel)]="test1[i * familyRelation.length + k ]"/>
                                                 {{item.description}}
                                             </div>
                                         </div>
@@ -116,6 +115,7 @@
                                 </ng-container>
                             </div>
                         </kendo-label>
+
                     </div>
                 </div>
                 <!--                        <input class="form-input" formControlName="familyRelationCode" kendoTextBox #familyRelationCode/>-->
