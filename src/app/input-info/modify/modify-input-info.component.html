@@ -75,6 +75,7 @@
                                 textField="description"
                                 valueField="description"
                                 [(ngModel)]="selectedFamily"
+                                (ngModelChange)="addFamily()"
                         ></kendo-multiselect>
                     </kendo-label>
                     <div class="input-info">
@@ -88,16 +89,17 @@
                                             [min]="0"
                                             [max]="10"
                                             [(ngModel)]="resultInfo[i]"
-                                            (ngModelChange)="onValueChange($event,resultInfo,i)">
+                                     (click)="clickTextBox($event,resultInfo,i)">
                                     </kendo-numerictextbox>
+
 
                                     <ng-container *ngFor="let j of [].constructor(resultInfo[i]); let k = index">
                                         <div style="display: flex; flex-wrap: wrap; width: 100%;">
                                             <div style="font-size: 15px;margin-top:7px">{{family.description}} {{k+1}}</div>
                                             <div *ngFor="let item of familyRelation; let m = index" style="font-size: 15px; margin: 5px 5px;">
-                                                <input type="radio" name="{{family.description + k}}" value="{{family.id + '_' + item.id}}" [(ngModel)]="test1[i * selectedFamily.length + k]" />
+                                                <input type="radio" name="{{family.description + k}}" value="{{family.id + '_' + item.id}}" [(ngModel)]="familyData[i][k]" />
                                                 {{item.description}}
-                                                {{i * selectedFamily.length + k}}
+
                                             </div>
                                         </div>
                                     </ng-container>

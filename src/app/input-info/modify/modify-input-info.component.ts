@@ -10,7 +10,6 @@ import {PatientInfoRequest} from "../../../shared/model/request/patient-info.req
 import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../../shared/service/alert.service";
 import {AuthService} from "../../../shared/service/auth.service";
-import {MrPatientInfoResponse} from "../../../shared/model/response/mr-patient-info.response.model";
 
 @Component({
     selector: 'app-modify-input-info',
@@ -30,6 +29,7 @@ export class ModifyInputInfoComponent implements OnInit{
     public jobList: MrJobCodeResponse[] = [];
     // 내담자 정보 조회
     public patientData: any;
+
     ////////////////////////////
     // 선택한 가족 관계
     public selectedFamily: any[]=[];
@@ -44,11 +44,13 @@ export class ModifyInputInfoComponent implements OnInit{
     public selectedGender = ''
     // 선택된 job
     public selectedJob = ''
+    // 최종 가족 구성원
     public resultInfo:any[]=[]
-
+    // 최종 가족 관계
     public resultRelation:any[]=[];
-    public test1:any[]=[];
-    public resultIndex:number=0;
+    // 가족 구성원 + 가족 관계 데이터
+    public familyData:any[]=[];
+
     /**
      * 생성자
      * @param mindReaderControlService
@@ -61,7 +63,6 @@ export class ModifyInputInfoComponent implements OnInit{
         private router: Router,
         private alertService: AlertService,
         private authService: AuthService
-
     ) {
     }
 
@@ -80,10 +81,9 @@ export class ModifyInputInfoComponent implements OnInit{
      */
     ngOnInit() {
         // 데이터 로드
-
         this.loadData();
         setTimeout(()=>{
-            this.test();
+            this.dataSetting();
         },1000);
     }
 
@@ -142,45 +142,48 @@ export class ModifyInputInfoComponent implements OnInit{
                     }
                 }
             });
-
-
     }
 
-    test(){
-        console.log(this.patientData.familyRelation)
-        console.log(this.test1)
-        this.resultInfo  =this.patientData.familyInfo.split(',').map(Number)
+    /**
+     * 홈페이지 리로드시 가족 구성원, 관계 데이터 세팅
+     */
+    dataSetting(){
+        this.resultInfo = this.patientData.familyInfo.split(',').map(Number)
+        this.selectedFamily = this.resultInfo.filter((value, index, array) => array.indexOf(value) === index);
         this.resultRelation  =this.patientData.familyRelation.split(',').map(Number)
-        console.log(this.resultRelation)
-        this.test1 = this.resultInfo.map((item, index) => `${item}_${this.resultRelation[index]}`);
-        this.resultInfo  = this.resultInfo.reduce((acc, val) => {
-            const index = parseInt(val) - 1; // 배열 인덱스는 0부터 시작하므로 1을 뺍니다.
-            acc[index] = acc[index] ? acc[index] + 1 : 1; // 해당 인덱스의 값을 1 증가시킵니다.
-            return acc;
-        }, []);
-        this.resultInfo=this.resultInfo.filter(item => item !== null)
+
+        // 가족 구성원에 따른 가족 관계 이중 리스트
+        this.familyData = this.selectedFamily.map((item, index) => {
+            const list = this.resultRelation.splice(0, this.resultInfo.filter(item2 => item2 == item).length).map((item3, index1) => {
+                if (this.resultInfo.filter(item2 => item2 == item).length == index1) {
+                    this.resultRelation = this.resultRelation.slice(index + 1);
+                }
+                return `${item}_${item3}`;
+            });
+            return list;
+        });
+
+        // numeric text box 에 들어갈 변수
+        const uniqueArr = Array.from(new Set(this.resultInfo));
+        this.resultInfo = uniqueArr.map((item) => this.resultInfo.filter((i) => i === item).length);
+
         // 가족 선택 리스트
-        this.selectedFamily=this.familyList.filter(option =>this.patientData.familyInfo.split(',').map(Number).includes(option.id))
-       /* this.selectedValues=this.familyRelation.filter(option =>this.patientData.familyRelation.split(',').map(Number).includes(option.id))
-            .map(option => option.description)*/
-        console.log(this.test1)
+        this.selectedFamily = this.selectedFamily.map(id => {
+            return this.familyList.find(item => item.id === id);
+        });
     }
     /**
      * 가족 데이터
      */
     familyInfo(){
-        //this.selectedValues = this.selectedValues.filter(item => item !== null);
-        console.log(this.test1)
-        this.test1.forEach(item => {
+        const test2: string[] = [].concat.apply([],this.familyData);
+        test2.forEach(item => {
             const splitted = item.split('_');
             this.selectedFamilyList.push(splitted[0]);
             this.selectedFamilyList.join(',');
             this.selectedFamilyRelation.push(splitted[1]);
             this.selectedValues=this.selectedFamilyRelation
         });
-        console.log(this.selectedFamily)  // 가족
-        console.log(this.selectedFamilyRelation) //관계
-
     }
 
     /**
@@ -188,13 +191,8 @@ export class ModifyInputInfoComponent implements OnInit{
      */
     modifyPatientInfo(){
         this.familyInfo()
-        console.log(this.selectedFamilyRelation)
-        console.log(this.selectedValues)
-
         let resultFamilyRelation=this.selectedFamilyRelation.join(',');
         let resultFamilyInfo=this.selectedFamilyList.join(',');
-       /* this.selectedFamilyList1=this.familyList.filter(option =>this.patientData.familyInfo.split(',').map(Number).includes(option.id))
-            .map(option => option.description);*/
         const request: PatientInfoRequest = {
             id: this.patientData.id,
             age: Number(this.infoForm.controls['age'].value),
@@ -206,15 +204,7 @@ export class ModifyInputInfoComponent implements OnInit{
             userEmail: this.infoForm.controls['userEmail'].value,
             userName: this.infoForm.controls['userName'].value,
         }
-
-
-        console.log(this.test1)
-        console.log(this.resultInfo)
-        console.log(resultFamilyRelation)
-        this.test1=this.resultInfo
-        console.log(request)
-
-
+        this.familyData=this.resultInfo
         // 내담자 추가 정보 수정하기
         this.mindReaderControlService.postPatientInfo(request)
             .subscribe({
@@ -228,14 +218,29 @@ export class ModifyInputInfoComponent implements OnInit{
     }
 
     /**
-     * 라디오버튼 삭제 시 값 초기화
+     * 가족 구성원 추가 이벤트
      */
-    onValueChange(event: any,myValue:number[],i:any) {
-        this.resultIndex=0;
-        let index = myValue.slice(0, i + 1).reduce((acc, val) => acc + val, 0);
-        this.test1[index+1]=null;
-        this.test1=this.test1.filter((item) => item !== null)
+    addFamily(){
+        this.resultInfo.push(1);
+        this.familyData.push([]);
     }
+
+    /**
+     * numeric text box 클릭 이벤트
+     * @param event
+     * @param myValue
+     * @param i
+     */
+    clickTextBox(event:any,myValue:any,i:any){
+        if (event.target.className.includes('down') || event.target.className.includes('decrease')){
+            this.familyData[i][this.familyData[i].length - 1] = null;
+            this.familyData[i] =this.familyData[i].filter((item: any) => item !== null);
+        }
+        else{
+            this.familyData[i].push(String(myValue.id) + '_0');
+        }
+    }
+
 
     /**
      * 튜토리얼 화면으로 이동
