@@ -186,6 +186,7 @@ export class DragAndDropComponent implements AfterViewInit{
             // console.log('centerPoint (X, Y): ' + centerPoint);
             // console.log('-----------------------');
 
+
         });
 
         // 각도값
@@ -204,8 +205,9 @@ export class DragAndDropComponent implements AfterViewInit{
             // console.log('////////Object Modified///////////////');
             // console.log('좌우 반전 여부:' + modifiedObject?.flipX);
             // console.log('상하 반전 여부:' + modifiedObject?.flipY);
-            // console.log('Object Width:' + modifiedObject?.getScaledWidth());
-            // console.log('Object Height:' + modifiedObject?.getScaledHeight());
+            console.log('Object Width:' + modifiedObject?.getScaledWidth());
+            console.log('Object Height:' + modifiedObject?.getScaledHeight());
+            console.log('Object Height:' + modifiedObject?.scaleX);
             // // console.log('상하 반전 여부:' + modifiedObject?.cacheHeight);
             // console.log('-----------------------');
 
@@ -484,8 +486,8 @@ export class DragAndDropComponent implements AfterViewInit{
                     name: item.name != null ? Number(item.name) : null,
                     objectCodeId: item.toObject().objectCodeId,
                     userEmail: this.userEmail? this.userEmail : '' ,
-                    width: item.getScaledWidth(),
-                    height: item.getScaledHeight(),
+                    width: Number(item.scaleX),
+                    height: Number(item.scaleY),
                     x: item.getCenterPoint().x,
                     y: item.getCenterPoint().y,
                     objectSeq: item.toObject().id,
@@ -501,6 +503,7 @@ export class DragAndDropComponent implements AfterViewInit{
         for (let i=0;i<this.mrObjectModelList.length;i++){
             this.allMrObjectModelList.push(this.mrObjectModelList[i]);
         }
+
         // objectSeq 순으로 정렬
         this.allMrObjectModelList.sort((a, b) => a.objectSeq - b.objectSeq);
         console.log('삭제 오브젝트 포함 데이터 : ')
