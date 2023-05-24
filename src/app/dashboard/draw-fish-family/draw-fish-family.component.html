@@ -39,7 +39,8 @@
             <div>
                 <div *ngIf="expanded" style="padding: 10px;font-size: 20px;">
                     수고하셨습니다! <br>
-                    어항 속 모습을 통해 해석된 당신의 심리는 아래와 같습니다.
+                    어항 속 모습을 통해 해석된 당신의 심리는 아래와 같습니다. <br>
+                    {{resultAnswerData.description}}
                 </div>
             </div>
 
@@ -112,7 +113,7 @@
                     <div style="display: flex; flex-wrap: nowrap;">
                         <button class="button-style btn2" (click)="canvasDownload()" >그림 다운로드</button>
                         <button class="button-style btn3" (click)="drawer.toggle()">검토 중</button>
-                        <button *ngIf="false" class="button-style btn4" (click)="drawer.toggle()">결과 보기</button>
+                        <button *ngIf="answerResult" class="button-style btn4" (click)="drawer.toggle()">결과 보기</button>
                     </div>
                 </div>
             </div>

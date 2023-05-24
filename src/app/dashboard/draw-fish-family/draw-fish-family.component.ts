@@ -23,6 +23,9 @@ import {MrDetailFishResponseModel} from "../../../shared/model/response/mr-detai
 
 export class DrawFishFamilyComponent implements OnInit{
 
+    /** data set */
+    public originDataSet: any[] = [];
+
     /** user email */
     public userEmail: string |null = '';
 
@@ -182,6 +185,12 @@ export class DrawFishFamilyComponent implements OnInit{
     /** 캔버스 팝업 여부 */
     public isPopupOpen: boolean = false;
 
+    /** 결과 답안 검토 여부 */
+    public answerResult: boolean = false;
+
+    /** 결과 답안 데이터 */
+    public resultAnswerData: any;
+
     /** canvas */
     @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
     @ViewChild('canvas', { static: true }) canvas_el!: ElementRef<HTMLCanvasElement>;
@@ -294,7 +303,7 @@ export class DrawFishFamilyComponent implements OnInit{
             .subscribe({
                 next: async (data) => {
                     if(data.length != 0){
-                        console.log(data);
+                        this.originDataSet = data;
                         var seq: number = 0;
                         data.map(item => {
 
@@ -327,6 +336,20 @@ export class DrawFishFamilyComponent implements OnInit{
                             this.selectSeq(this.seqItems[this.selectedSeqIndex], this.selectedSeqIndex);
                         }
 
+                        // 설문 답안 불러오기
+                        this.mindReaderControlService.getAnswer(this.originDataSet[this.selectedSeq-1].id)
+                            .subscribe({
+                                next: async (data) => {
+                                    if (data){
+                                        console.log('123')
+                                        this.resultAnswerData=data
+
+                                        this.answerResult=true
+
+                                    }
+                                }
+                            })
+
                     }
                 }
 
@@ -356,6 +379,8 @@ export class DrawFishFamilyComponent implements OnInit{
 
         // DataSet의 회차
         this.selectedSeq = item.seq;
+        // 답안 결과를 위한 인덱스 가져오기
+        this.resultSheet(index)
         // 화면에 보여지는 DataSet list의 index
         this.selectedSeqIndex = index;
         // 해당 DataSet의 어항 그림 화면에 적용
@@ -368,9 +393,10 @@ export class DrawFishFamilyComponent implements OnInit{
         this.hour = item.hour;
 
 
-
         // 해당 DataSet의 Object Seq 조회
         this.getSeqObjectCode();
+        // 결과 보기 버튼 비활성
+        this.answerResult=false
     }
 
 
@@ -717,7 +743,23 @@ export class DrawFishFamilyComponent implements OnInit{
         if (this.document.webkitExitFullscreen) {
             this.document.webkitExitFullscreen();
         }
+    }
 
+    /**
+     * 결과지 작성
+     */
+    resultSheet(index:number){
+        this.mindReaderControlService.getAnswer(this.originDataSet[index].id)
+            .subscribe({
+                next: async (data) => {
+                    if (data){
+                        this.resultAnswerData=data
+                        // 결과 보기 버튼 활성화
+                        this.answerResult=true
+
+                    }
+                }
+            })
     }
 
 
