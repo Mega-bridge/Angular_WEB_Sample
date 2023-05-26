@@ -21,7 +21,9 @@
   <p style="font-size: 16px; padding: 3px; margin: 0.5em;" [innerHtml]="text">{{text}}</p>
   <div *ngIf="useCanvasStatusInfo">
     <kendo-dropdownlist
-            [data]="canvasStatusInfoList"
+            [data]="detailFishList"
+            textField="description"
+            valueField="id"
             [(ngModel)]="selectedValue"
     >
     </kendo-dropdownlist>

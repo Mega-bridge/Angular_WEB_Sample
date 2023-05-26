@@ -39,7 +39,8 @@
             <div>
                 <div *ngIf="expanded" style="padding: 10px;font-size: 20px;">
                     수고하셨습니다! <br>
-                    어항 속 모습을 통해 해석된 당신의 심리는 아래와 같습니다.
+                    어항 속 모습을 통해 해석된 당신의 심리는 아래와 같습니다. <br>
+                    {{resultAnswerData.description}}
                 </div>
             </div>
 
@@ -101,17 +102,18 @@
                 <div class="image-container"  [ngStyle] = "{'background-image': 'url('+canvasImage+')'}">
                     <!--                    <img [src]="this.canvasImage">-->
                 </div>
-                <div style="display: flex;flex-direction: row; justify-content: space-between;">
+                <div style="display: flex;flex-direction: row; justify-content: space-between;align-items: center;flex-wrap: nowrap;">
                     <div>
 
                         <button class="button-style" *ngIf="canvasImage==''" (click)="openFullscreen()">그리기 모드</button>
+                        <span style="font-size: 20px;">{{detailFish}}</span>
 
                     </div>
 
-                    <div>
+                    <div style="display: flex; flex-wrap: nowrap;">
                         <button class="button-style btn2" (click)="canvasDownload()" >그림 다운로드</button>
                         <button class="button-style btn3" (click)="drawer.toggle()">검토 중</button>
-                        <button *ngIf="false" class="button-style btn4" (click)="drawer.toggle()">결과 보기</button>
+                        <button *ngIf="answerResult" class="button-style btn4" (click)="drawer.toggle()">결과 보기</button>
                     </div>
                 </div>
             </div>
@@ -144,6 +146,7 @@
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
                          [animate]="animate"
+                         [margin]="margin"
                          *ngIf="showFishes">
 
                 <div  class="pop-up-select-image">
@@ -169,6 +172,7 @@
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
                          [animate]="animate"
+                         [margin]="margin"
                          *ngIf="showRoundFishes">
 
                 <div  class="pop-up-select-image">
@@ -194,6 +198,7 @@
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
                          [animate]="animate"
+                         [margin]="margin"
                          *ngIf="showWhales">
 
                 <div  class="pop-up-select-image">
@@ -218,6 +223,7 @@
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
                          [animate]="animate"
+                         [margin]="margin"
                          *ngIf="showSharks">
 
                 <div  class="pop-up-select-image">
@@ -240,9 +246,10 @@
 
             <!-- 장어 -->
             <kendo-popup [anchor]="anchor6"
-                         [anchorAlign]="bottomAnchorAlign"
-                         [popupAlign]="bottomPopupAlign"
+                         [anchorAlign]="anchorAlign"
+                         [popupAlign]="popupAlign"
                          [animate]="animate"
+                         [margin]="margin"
                          *ngIf="showEels">
 
                 <div  class="pop-up-select-image">
@@ -265,9 +272,10 @@
 
             <!-- 물고기 외 -->
             <kendo-popup [anchor]="anchor7"
-                         [anchorAlign]="bottomAnchorAlign"
-                         [popupAlign]="bottomPopupAlign"
+                         [anchorAlign]="isFamilyAfterFish?bottomAnchorAlign:anchorAlign"
+                         [popupAlign]="isFamilyAfterFish?bottomPopupAlign:popupAlign"
                          [animate]="animate"
+                         [margin]="etcMargin"
                          *ngIf="showEtc">
 
                 <div  class="pop-up-select-image">
@@ -287,7 +295,7 @@
                     </div>
                 </div>
 
-                <div class="img-card-family">
+                <div class="img-card-family"  *ngIf="isSelectedFishBowl">
                     <div class="img-card-header">가족 선택</div>
                     <div class="img-card-body">
                         <kendo-chiplist
@@ -306,42 +314,42 @@
                 </div>
 
                 <div class="img-card" #anchor2>
-                    <div class="img-card-header"  *ngIf="!isFamilyAfterFish">
+                    <div class="img-card-header"  *ngIf="isFamilyAfterFish">
 <!--                        <span class="img-card-text" *ngIf="!isFamilyAfterFish">가족을 선택해주세요</span>-->
                         <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/fish.svg" (click)="closeOpenPopUp('showFishes')">
                     </div>
                 </div>
 
                 <div class="img-card" #anchor3>
-                    <div class="img-card-header" *ngIf="!isFamilyAfterFish">
+                    <div class="img-card-header" *ngIf="isFamilyAfterFish">
 <!--                        <span class="img-card-text" *ngIf="!isFamilyAfterFish">가족을 선택해주세요</span>-->
                         <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/roundFish.svg" (click)="closeOpenPopUp('showRoundFishes')">
                     </div>
                 </div>
 
                 <div class="img-card" #anchor4>
-                    <div class="img-card-header" *ngIf="!isFamilyAfterFish">
+                    <div class="img-card-header" *ngIf="isFamilyAfterFish">
 <!--                        <span class="img-card-text" *ngIf="!isFamilyAfterFish">가족을 선택해주세요</span>-->
                         <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/whale.svg" (click)="closeOpenPopUp('showWhales')">
                     </div>
                 </div>
 
                 <div class="img-card" #anchor5>
-                    <div class="img-card-header" *ngIf="!isFamilyAfterFish">
+                    <div class="img-card-header" *ngIf="isFamilyAfterFish">
 <!--                        <span class="img-card-text" *ngIf="!isFamilyAfterFish">가족을 선택해주세요</span>-->
                         <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/shark.svg" (click)="closeOpenPopUp('showSharks')">
                     </div>
                 </div>
 
                 <div class="img-card" #anchor6>
-                    <div class="img-card-header" *ngIf="!isFamilyAfterFish">
+                    <div class="img-card-header" *ngIf="isFamilyAfterFish">
 <!--                        <span class="img-card-text" *ngIf="!isFamilyAfterFish">가족을 선택해주세요</span>-->
                         <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/eel.svg" (click)="closeOpenPopUp('showEels')">
                     </div>
                 </div>
 
                 <div class="img-card" #anchor7>
-                    <div class="img-card-header">
+                    <div class="img-card-header" *ngIf="isSelectedFishBowl ">
                         <img class="img-card-style" src="{{etcImgList[0]}}" (click)="closeOpenPopUp('showEtc')">
                     </div>
                 </div>

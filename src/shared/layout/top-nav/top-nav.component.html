@@ -21,7 +21,10 @@
 <!--    <span style="font-size: 15px;">Connect your business</span>-->
   </div>
 </div>
-  <div *ngIf="checkToken()">
+ <div *ngIf="checkToken()">
+     <button *ngIf="checkRole()" mat-raised-button color="#f44237" (click)="adminPage()"  >
+         <span>관리자 페이지 이동</span >
+     </button>
     <button mat-raised-button color="#f44237" (click)="modifyInfo()">
       <span>정보 수정</span>
     </button>

@@ -5,7 +5,7 @@ import {DOCUMENT} from "@angular/common";
 import {MrFamilyCodeResponse} from "../../../shared/model/response/mr-family-code.response.model";
 import {MrObjectImageResponse} from "../../../shared/model/response/mr-object-image.response.model";
 import {MindReaderControlService} from "../../../shared/service/mind-reader-control.service";
-import {single} from "rxjs";
+import {async, single} from "rxjs";
 import {DrawerPosition} from "@progress/kendo-angular-layout";
 import {ConfirmDialogComponent} from "../../../shared/component/dialogs/confirm-dialog/confirm-dialog.component";
 import {DialogService} from "@progress/kendo-angular-dialog";
@@ -13,6 +13,7 @@ import {Router} from "@angular/router";
 import {AuthService} from "../../../shared/service/auth.service";
 import {UserService} from "../../../shared/service/user.service";
 import {AlertService} from "../../../shared/service/alert.service";
+import {MrDetailFishResponseModel} from "../../../shared/model/response/mr-detail-fish.response.model";
 
 @Component({
     selector: 'app-dashboard-draw-fish-family',
@@ -21,6 +22,9 @@ import {AlertService} from "../../../shared/service/alert.service";
 })
 
 export class DrawFishFamilyComponent implements OnInit{
+
+    /** data set */
+    public originDataSet: any[] = [];
 
     /** user email */
     public userEmail: string |null = '';
@@ -36,7 +40,7 @@ export class DrawFishFamilyComponent implements OnInit{
     ];
 
     /** 회차 items */
-    public seqItems : {id?: number, seq: number,text: string, date: string, imgUrl: string, hour: number,minute: number,second: number}[] = [];
+    public seqItems : {id?: number, seq: number,text: string, date: string, imgUrl: string, hour: number,minute: number,second: number,detailFishDescription?:string}[] = [];
 
     /** 회차 선택 */
     public selectedSeq: number = 0;
@@ -53,12 +57,22 @@ export class DrawFishFamilyComponent implements OnInit{
     // 가족관계 리스트
     public familyTypeList : MrFamilyCodeResponse[] = [];
 
+    // 물고기 가족 행동 상세정보 리스트
+    public detailFishList: MrDetailFishResponseModel[] = [];
+
+    // 물고기 가족 행동 상세정보
+    public detailFish: string = '';
+
+
     // popUp 위치
     public anchorAlign: Align = { horizontal: "right", vertical: "top" };
     public popupAlign: Align = { horizontal: "left", vertical: "top" };
 
     public bottomAnchorAlign: Align = { horizontal: "right", vertical: "bottom" };
     public bottomPopupAlign: Align = { horizontal: "left", vertical: "bottom" };
+
+    public margin = { horizontal: 0, vertical: -50 };
+    public etcMargin = { horizontal: 0, vertical: -100 };
 
     public animate : PopupAnimation = {
         type: 'fade',
@@ -163,11 +177,19 @@ export class DrawFishFamilyComponent implements OnInit{
     /** 가족 선택 Disabled 여부 **/
     public isDisabled: boolean = false;
 
-    /** 가족 선택 전 물고기 이미지 선택 여부 **/
+    /** 가족 선택 여부 **/
     public isFamilyAfterFish: boolean = false;
+    /** 어항 선택 여부 **/
+    public isSelectedFishBowl:boolean =false;
 
     /** 캔버스 팝업 여부 */
     public isPopupOpen: boolean = false;
+
+    /** 결과 답안 검토 여부 */
+    public answerResult: boolean = false;
+
+    /** 결과 답안 데이터 */
+    public resultAnswerData: any;
 
     /** canvas */
     @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
@@ -262,6 +284,16 @@ export class DrawFishFamilyComponent implements OnInit{
         // 사용자 데이터셋 조회
         this.getDataSet();
 
+        this.mindReaderControlService.getDetailFish()
+            .subscribe({
+                next: async (data) => {
+                    if (data){
+                        this.detailFishList = data;
+
+                    }
+                }
+            })
+
     }
 
 
@@ -271,7 +303,7 @@ export class DrawFishFamilyComponent implements OnInit{
             .subscribe({
                 next: async (data) => {
                     if(data.length != 0){
-                        console.log(data);
+                        this.originDataSet = data;
                         var seq: number = 0;
                         data.map(item => {
 
@@ -286,16 +318,15 @@ export class DrawFishFamilyComponent implements OnInit{
                                     imgUrl: item.resultImage ,
                                     hour: Math.floor((item.totalTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
                                     minute:Math.floor((item.totalTime % (1000 * 60 * 60)) / (1000 * 60)),
-                                    second: Math.floor((item.totalTime % (1000 * 60)) / (1000))
+                                    second: Math.floor((item.totalTime % (1000 * 60)) / (1000)),
+                                    detailFishDescription: this.detailFishList.filter(detailItem => detailItem.id == item.detailFishId).map(item => item.description)[0]
                                 })
                             }
 
                         });
 
-                        // 저장되어있는 전체 DataSet 수 (Delete 포함), seq를 부여하기 위해 할당
-                        this.dataSetCount = data.length;
-                        // 추가될 DataSet의 seq를 위해 전체 DataSet의 마지막 seq 저장
-                        this.selectedSeq = data.length-1;
+                        // 마지막 seq 조회
+                        this.selectedSeq = data[data.length - 1].seq;
 
                         // 기존 DataSet이 있지만 모두 삭제되어 사용자에게 보여줄 DataSet이 없을 경우 미실행
                         if(this.seqItems.length != 0){
@@ -304,6 +335,20 @@ export class DrawFishFamilyComponent implements OnInit{
                             this.selectedSeqIndex = this.seqItems.length -1;
                             this.selectSeq(this.seqItems[this.selectedSeqIndex], this.selectedSeqIndex);
                         }
+
+                        // 설문 답안 불러오기
+                        this.mindReaderControlService.getAnswer(this.originDataSet[this.selectedSeq-1].id)
+                            .subscribe({
+                                next: async (data) => {
+                                    if (data){
+                                        console.log('123')
+                                        this.resultAnswerData=data
+
+                                        this.answerResult=true
+
+                                    }
+                                }
+                            })
 
                     }
                 }
@@ -334,17 +379,24 @@ export class DrawFishFamilyComponent implements OnInit{
 
         // DataSet의 회차
         this.selectedSeq = item.seq;
+        // 답안 결과를 위한 인덱스 가져오기
+        this.resultSheet(index)
         // 화면에 보여지는 DataSet list의 index
         this.selectedSeqIndex = index;
         // 해당 DataSet의 어항 그림 화면에 적용
         this.canvasImage = this.seqItems[index].imgUrl;
+        // 헤당 DataSet의 물고기 행동 설명
+        this.detailFish = item.detailFishDescription;
 
         this.second = item.second;
         this.minute = item.minute;
         this.hour = item.hour;
 
+
         // 해당 DataSet의 Object Seq 조회
         this.getSeqObjectCode();
+        // 결과 보기 버튼 비활성
+        this.answerResult=false
     }
 
 
@@ -361,7 +413,7 @@ export class DrawFishFamilyComponent implements OnInit{
 
         // 회차 추가
         this.seqItems.push({
-            seq: this.dataSetCount,
+            seq: this.selectedSeq + 1,
             text: `${this.seqItems.length + 1}회차`,
             date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
             imgUrl: '',
@@ -370,8 +422,6 @@ export class DrawFishFamilyComponent implements OnInit{
             second:0
         });
 
-        // dataSet의 실질적인 seq 부여를 위해 dataSet Count
-        this.dataSetCount += 1;
 
         // 회차 추가 시 추가된 회차로 자동 선택
         this.selectSeq(this.seqItems[this.seqItems.length -1], this.seqItems.length -1);
@@ -441,6 +491,7 @@ export class DrawFishFamilyComponent implements OnInit{
     selectWater(fishBowl: string) {
         this.showFishBowl = false;
         this.selectedFishBowl = fishBowl;
+        this.isSelectedFishBowl = true;
 
         const fishbowlCode = this.objectData.filter(item => item.path == fishBowl ).map(item => item.objectCodeId);
         this.canvas.setWater(fishBowl,fishbowlCode[0]);
@@ -594,7 +645,7 @@ export class DrawFishFamilyComponent implements OnInit{
     }
 
     /**
-     * canvas 저장하기
+     * canvas 저장하기 실행
      */
     public rasterize() {
         const dialog = this.dialogService.open({
@@ -611,31 +662,17 @@ export class DrawFishFamilyComponent implements OnInit{
         // 저장 실행
         dialog.result.subscribe((result: any) => {
             if (result.text === 'yes') {
-                // API에서 불러옴
-                // 캔버스 그리는데 걸리는 시간 출력
-                // this.endDate=new Date();
-                // this.hour=(Math.abs(this.endDate.getHours()-this.startDate.getHours()))
-                // this.minute=(Math.abs(this.endDate.getMinutes()-this.startDate.getMinutes()))
-                // this.second=(Math.abs(this.endDate.getSeconds()-this.startDate.getSeconds()))
-
-
-                this.seqItems[this.selectedSeqIndex].imgUrl = this.canvas.rasterize(this.selectedSeq, this.startDate);
-                this.canvasImage = this.seqItems[this.selectedSeqIndex].imgUrl;
-
-
+                // 물고기 행동 정보 선택
                 this.canvasStatusInfoDialog();
-
-                // // full screen 닫기
-                // this.closeFullscreen();
-                //
-                // // 그리기 저장 후 종료 시 새로고침 실행
-                // window.location.reload();
             }
 
         });
-
     }
 
+
+    /**
+     * 물고기 가족 행동 정보 추가 다이얼로그 및 어항 정보 저
+     */
     canvasStatusInfoDialog(){
 
         const dialog = this.dialogService.open({
@@ -651,15 +688,18 @@ export class DrawFishFamilyComponent implements OnInit{
 
 
         // 저장 실행
-        dialog.result.subscribe((result: any) => {
-            if (result.text === 'yes') {
-                // full screen 닫기
-                this.closeFullscreen();
+        dialog.result.subscribe({
+            next: async (result: any) => {
+                if (result.text === 'yes') {
+                    this.canvas.rasterize(this.selectedSeq, this.startDate, result.detailFishId);
 
-                // 그리기 저장 후 종료 시 새로고침 실행
-                window.location.reload();
+                    // full screen 닫기
+                    this.closeFullscreen();
+
+                    // 저장 alert
+                    this.alertService.openAlert('성공적으로 저장되었습니다.');
+                }
             }
-
         });
 
     }
@@ -703,7 +743,23 @@ export class DrawFishFamilyComponent implements OnInit{
         if (this.document.webkitExitFullscreen) {
             this.document.webkitExitFullscreen();
         }
+    }
 
+    /**
+     * 결과지 작성
+     */
+    resultSheet(index:number){
+        this.mindReaderControlService.getAnswer(this.originDataSet[index].id)
+            .subscribe({
+                next: async (data) => {
+                    if (data){
+                        this.resultAnswerData=data
+                        // 결과 보기 버튼 활성화
+                        this.answerResult=true
+
+                    }
+                }
+            })
     }
 
 

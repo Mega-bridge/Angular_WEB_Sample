@@ -52,9 +52,19 @@ const routes: Routes = [
         canActivate:[AuthGuard],
         loadChildren: () => import('./dashboard/dash-board.module').then(i => i.DashBoardModule)
       },
+      {
+        path: 'admin',
+        canActivate:[AuthGuard],
+        data:{
+          roles: ['ROLE_ADMIN']
+        },
+        loadChildren: () => import('./admin/admin.module').then(i => i.AdminModule)
+      }
+
 
     ]
   },
+
 
 
 ];

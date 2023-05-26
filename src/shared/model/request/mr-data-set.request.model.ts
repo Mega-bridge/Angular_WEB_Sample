@@ -27,6 +27,7 @@ export class MrDataSetRequestModel {
 
     // 결과 이미지
     public resultImage ?: any ;
+    public detailFishId:number = 0;
     public deleted?: boolean = false;
 
 

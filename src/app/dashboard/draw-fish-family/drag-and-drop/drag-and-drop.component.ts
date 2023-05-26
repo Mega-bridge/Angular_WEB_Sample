@@ -186,6 +186,7 @@ export class DragAndDropComponent implements AfterViewInit{
             // console.log('centerPoint (X, Y): ' + centerPoint);
             // console.log('-----------------------');
 
+
         });
 
         // 각도값
@@ -204,8 +205,9 @@ export class DragAndDropComponent implements AfterViewInit{
             // console.log('////////Object Modified///////////////');
             // console.log('좌우 반전 여부:' + modifiedObject?.flipX);
             // console.log('상하 반전 여부:' + modifiedObject?.flipY);
-            // console.log('Object Width:' + modifiedObject?.getScaledWidth());
-            // console.log('Object Height:' + modifiedObject?.getScaledHeight());
+            console.log('Object Width:' + modifiedObject?.getScaledWidth());
+            console.log('Object Height:' + modifiedObject?.getScaledHeight());
+            console.log('Object Height:' + modifiedObject?.scaleX);
             // // console.log('상하 반전 여부:' + modifiedObject?.cacheHeight);
             // console.log('-----------------------');
 
@@ -358,21 +360,16 @@ export class DragAndDropComponent implements AfterViewInit{
      * canvas 저장
      * @param dataSetSeq
      * @param startDate
+     * @param detailFishId
      */
-    rasterize(dataSetSeq: any, startDate: Date) {
+    rasterize(dataSetSeq: any, startDate: Date, detailFishId: number) {
 
-        // cavas img로 저장
-        const image = new Image();
-        image.src = this.canvas.toDataURL({format: 'png'});
+            // cavas img로 저장
+            const image = new Image();
+            image.src = this.canvas.toDataURL({format: 'png'});
 
-        // 회차별 dataSet 생성
-        this.createDataSet(dataSetSeq,startDate, image.src);
-
-        // 회차별 오브젝트 생성
-        this.createObjectSet(dataSetSeq);
-
-        this.canvas.clear();
-        return image.src;
+            // 회차별 dataSet 생성
+            this.createDataSet(dataSetSeq, startDate, detailFishId, image.src);
     }
 
 
@@ -382,9 +379,10 @@ export class DragAndDropComponent implements AfterViewInit{
      * 회차 별 dataSet 생성
      * @param dataSetSeq
      * @param startDate
+     * @param detailFishId
      * @param src
      */
-    async createDataSet(dataSetSeq: number, startDate:Date, src?:any) {
+    async createDataSet(dataSetSeq: number, startDate:Date,detailFishId: number ,src?:any) {
         // canvas 내 objectCodeId List
         const objectCodeList = this.canvas.getObjects().map(item => item.toObject().objectCodeId);
 
@@ -407,6 +405,7 @@ export class DragAndDropComponent implements AfterViewInit{
             fishCount: this.fishCount,
             etcCount:this.etcCount,
             resultImage: src,
+            detailFishId: detailFishId,
             deleted: false,
             totalTime: endDate.getTime() - startDate.getTime()
         };
@@ -420,7 +419,8 @@ export class DragAndDropComponent implements AfterViewInit{
             .subscribe({
                 next: async(data) => {
                     if(data){
-                        console.log(data);
+                        // DataSet 생성 성공 시 회차별 오브젝트 생성
+                        this.createObjectSet(dataSetSeq);
                     }
                     else{
                         console.log('실패....^^');
@@ -486,8 +486,8 @@ export class DragAndDropComponent implements AfterViewInit{
                     name: item.name != null ? Number(item.name) : null,
                     objectCodeId: item.toObject().objectCodeId,
                     userEmail: this.userEmail? this.userEmail : '' ,
-                    width: item.getScaledWidth(),
-                    height: item.getScaledHeight(),
+                    width: Number(item.scaleX),
+                    height: Number(item.scaleY),
                     x: item.getCenterPoint().x,
                     y: item.getCenterPoint().y,
                     objectSeq: item.toObject().id,
@@ -503,18 +503,23 @@ export class DragAndDropComponent implements AfterViewInit{
         for (let i=0;i<this.mrObjectModelList.length;i++){
             this.allMrObjectModelList.push(this.mrObjectModelList[i]);
         }
+
         // objectSeq 순으로 정렬
         this.allMrObjectModelList.sort((a, b) => a.objectSeq - b.objectSeq);
         console.log('삭제 오브젝트 포함 데이터 : ')
         console.log(this.allMrObjectModelList)
 
-        console.log(this.mrObjectModelList);
         // 회차별 오브젝트 생성
         this.mindReaderControlService.postObject(this.mrObjectModelList)
             .subscribe({
                 next: async (data) => {
                     if(data){
                         console.log(data);
+                        // 회차별 오브젝트 생성 성공 시 canvas 초기화
+                        this.canvas.clear();
+
+                        // 그리기 저장 후 종료 시 새로고침 실행
+                        window.location.reload();
                     }
                     else{
                         console.log('실패....^^');

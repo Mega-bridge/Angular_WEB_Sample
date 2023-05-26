@@ -19,6 +19,8 @@ export class AuthService {
     public TOKEN_NAME = 'userJWT';
     /** 로그인한 email 정보 */
     public USER_EMAIL = 'userEmail';
+    /** 로그인한 사용자 role 정보 */
+    public USER_ROLE = 'userRole';
 
     /**
      * 생성자
@@ -38,12 +40,28 @@ export class AuthService {
             .pipe(
                 map((result) => {
                     console.log(result);
-                    // 사용자 token 정보 저장
+                    // 사용자 정보 저장
                     this.setToken(result.jwt);
                     this.setUserEmail(result.user.email);
+                    this.setUserRole(result.user.role);
                     return result
                 })
             );
+    }
+
+    /**
+     * login한 사용자 역할 정보 저장
+     * @param role
+     */
+    setUserRole(role: string) {
+        sessionStorage.setItem(this.USER_ROLE, role);
+    }
+
+    /**
+     * login한 사용자 역할 정보 조회
+     */
+    getUserRole() {
+        return sessionStorage.getItem(this.USER_ROLE);
     }
 
     /**
@@ -54,7 +72,7 @@ export class AuthService {
     }
 
     /**
-     * login한 email 가져오기
+     * login한 email 조회
      */
     getUserEmail(){
         return sessionStorage.getItem(this.USER_EMAIL);
@@ -78,9 +96,10 @@ export class AuthService {
     /**
      * logout 시 저장되어 있는 세션 정보 삭제
      */
-    removeToken(): void {
+    removeSessionStorage(): void {
         sessionStorage.removeItem(this.TOKEN_NAME);
         sessionStorage.removeItem(this.USER_EMAIL);
+        sessionStorage.removeItem(this.USER_ROLE);
     }
 
 
