@@ -379,8 +379,11 @@ export class DrawFishFamilyComponent implements OnInit{
 
         // DataSet의 회차
         this.selectedSeq = item.seq;
-        // 답안 결과를 위한 인덱스 가져오기
-        this.resultSheet(index)
+        console.log(item.seq)
+        if(index==item.seq){
+            // 답안 결과를 위한 인덱스 가져오기
+            this.resultSheet(index)
+        }
         // 화면에 보여지는 DataSet list의 index
         this.selectedSeqIndex = index;
         // 해당 DataSet의 어항 그림 화면에 적용

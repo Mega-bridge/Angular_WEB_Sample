@@ -40,7 +40,10 @@
                 <div *ngIf="expanded" style="padding: 10px;font-size: 20px;">
                     수고하셨습니다! <br>
                     어항 속 모습을 통해 해석된 당신의 심리는 아래와 같습니다. <br>
-                    {{resultAnswerData.description}}
+                    <ng-container *ngIf="resultAnswerData==undefined">
+                        {{resultAnswerData.description}}
+                    </ng-container>
+
                 </div>
             </div>
 
