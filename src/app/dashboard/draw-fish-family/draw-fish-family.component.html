@@ -65,7 +65,7 @@
             </div>
 
             <div class="card-seq-wrap">
-                <div class="card-seq"  *ngFor="let item of seqItems; let i = index" (click)="selectSeq(item, i)" [style.background-color] ="selectedSeq === item.seq ? '#cccccc' : ''">
+                <div class="card-seq"  *ngFor="let item of seqItems; let i = index" (click)="selectSeq(item, i)" [style.background-color] ="selectedSeqIndex === i ? '#cccccc' : ''">
                     <div>
                     <span class="title">{{item.text}}</span>
                     <span class="sub">{{item.date}}</span>
@@ -133,7 +133,7 @@
                          *ngIf="showFishBowl">
 
                 <div  class="pop-up-select-image">
-                    <div *ngFor="let img of fishBowlImgList" class="img-wrap">
+                    <div *ngFor="let img of fishBowlImgList" class="img-wrap" style="width: 100%;">
                         <img  (click)="selectWater(img)" [src]="img"  alt=""
                               [style.box-shadow]="selectedFishBowl === img ? '0 0 4px blue' : ''"/>
                     </div>
@@ -150,14 +150,21 @@
                          *ngIf="showFishes">
 
                 <div  class="pop-up-select-image">
-                    <div style="border-bottom: #cccccc dashed 1px; display: flex; ">
+                    <div style="border-bottom: #cccccc dashed 1px; display: flex; margin-bottom: 15px; width: 100%;    background-color: #ffffff;
+    border: solid 1px #e0e0e0;
+    border-top-right-radius: 1.5rem;
+    border-top-left-radius: 1.5rem;"
+                    >
                         <div *ngFor="let faceImg of generalFaceImgList" class="img-wrap face">
                             <img  (click)="selectFishFace($event,faceImg,'GE')" [src]="faceImg"  alt=""
                                   [style.box-shadow]="selectedFishFace === faceImg ? '0 0 4px blue' : ''"/>
                         </div>
                     </div>
 
-                    <div style="display: flex; ">
+                    <div style="display: flex; width: 100%; background-color: #ffffff;
+    border: solid 1px #e0e0e0;
+    border-bottom-right-radius: 1.5rem;
+    border-bottom-left-radius: 1.5rem; ">
                         <div *ngFor="let bodyImg of generalBodyImgList;let i = index"  class="img-wrap">
                             <img  (click)="selectFishBody($event,bodyImg)" [src]="bodyImg"  alt=""
                                   [style.box-shadow]="selectedFishBody === bodyImg ? '0 0 4px blue' : ''"/>
@@ -355,15 +362,20 @@
                 </div>
             </div>
 
-            <div>
+            <div style="display: flex; flex-direction: column; width: 89vw; height:100vh;align-items: center;  justify-content: space-evenly;">
+                    <div class="btn-wrap">
+                        <button class="button-style del" (click)="removeSelected();"> DELETE
+                        </button>
+                        <button class="button-style" (click)="rasterize()">완료</button>
+                    </div>
+
                 <app-dashboard-drag-and-drop [userEmail]="userEmail" #canvas></app-dashboard-drag-and-drop>
+
+
             </div>
+            <div></div>
         </div>
-        <div class="btn-wrap">
-            <button class="button-style del" (click)="removeSelected();"> DELETE
-            </button>
-            <button class="button-style" (click)="rasterize()">SAVE</button>
-        </div>
+
     </div>
 </div>
 

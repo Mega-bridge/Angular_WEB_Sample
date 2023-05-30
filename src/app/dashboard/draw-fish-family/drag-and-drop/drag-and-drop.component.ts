@@ -364,14 +364,14 @@ export class DragAndDropComponent implements AfterViewInit{
      * @param startDate
      * @param detailFishId
      */
-    rasterize(dataSetSeq: any, startDate: Date, detailFishId: number) {
+    rasterize(dataSetSeq: any, startDate: Date, detailFishId: number, patientInfoId:number) {
 
             // cavas img로 저장
             const image = new Image();
             image.src = this.canvas.toDataURL({format: 'png'});
 
             // 회차별 dataSet 생성
-            this.createDataSet(dataSetSeq, startDate, detailFishId, image.src);
+            this.createDataSet(dataSetSeq, startDate, detailFishId, patientInfoId,image.src);
     }
 
 
@@ -384,7 +384,7 @@ export class DragAndDropComponent implements AfterViewInit{
      * @param detailFishId
      * @param src
      */
-    async createDataSet(dataSetSeq: number, startDate:Date,detailFishId: number ,src?:any) {
+    async createDataSet(dataSetSeq: number, startDate:Date,detailFishId: number,patientInfoId:number ,src?:any) {
         // canvas 내 objectCodeId List
         const objectCodeList = this.canvas.getObjects().map(item => item.toObject().objectCodeId);
 
@@ -394,13 +394,15 @@ export class DragAndDropComponent implements AfterViewInit{
         await this.getObjectCode(2, objectCodeList);
 
         const endDate = new Date();
+        console.log("dataSetSeq");
+        console.log(dataSetSeq);
 
         // 회차별 데이터셋 생성 request model
         this.mrDataSetModel = {
             seq: dataSetSeq,
             testDate: startDate.getTime(),
             userEmail: this.userEmail? this.userEmail : '',
-            patientInfoId: this.authService.getUserId() ? Number(this.authService.getUserId()) : null,
+            patientInfoId: patientInfoId,
             fishbowlCode: this.fishbowlCode,
             waterHeight: this.waterHeight,
             actionCount: this.controlCount,

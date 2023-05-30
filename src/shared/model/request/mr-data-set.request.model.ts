@@ -10,7 +10,7 @@ export class MrDataSetRequestModel {
     // user.id
     public userEmail:string = '';
     // mr_patient_info.id
-    public patientInfoId: number | null = 0;
+    public patientInfoId: number | null = null;
     // mr_object_code.id
     public fishbowlCode: number = 0;
     // mr_object_code.water_height
