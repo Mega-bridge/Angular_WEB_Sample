@@ -14,13 +14,15 @@ export class AuthService {
     public SEVER_URL = 'http://localhost:8080/auth';
 
     /** 로그인한 email */
-    public userId: string= '';
+    public userEmail: string= '';
     /** 로그인한 token 정보 */
     public TOKEN_NAME = 'userJWT';
     /** 로그인한 email 정보 */
     public USER_EMAIL = 'userEmail';
     /** 로그인한 사용자 role 정보 */
     public USER_ROLE = 'userRole';
+    /** 로그인한 사용자 Id 정보 */
+    public USER_ID = 'userId';
 
     /**
      * 생성자
@@ -35,7 +37,7 @@ export class AuthService {
      * 로그인 처리
      */
     login(request: LoginRequestModel):Observable<LoginResultResponse> {
-        this.userId=request.email;
+        this.userEmail=request.email;
         return this.http.post<LoginResultResponse>(`${this.SEVER_URL}/login`,request)
             .pipe(
                 map((result) => {
@@ -44,6 +46,7 @@ export class AuthService {
                     this.setToken(result.jwt);
                     this.setUserEmail(result.user.email);
                     this.setUserRole(result.user.role);
+                    result.user.id ? this.setUserId(result.user.id.toString()) : '';
                     return result
                 })
             );
@@ -69,6 +72,19 @@ export class AuthService {
      */
     setUserEmail(email: string){
         sessionStorage.setItem(this.USER_EMAIL,email);
+    }
+
+    /**
+     * login한 user Id 저장
+     */
+    setUserId(Id: string){
+        sessionStorage.setItem(this.USER_ID, Id);
+    }
+    /**
+     * login한 user Id 조회
+     */
+    getUserId(){
+        return sessionStorage.getItem(this.USER_ID);
     }
 
     /**

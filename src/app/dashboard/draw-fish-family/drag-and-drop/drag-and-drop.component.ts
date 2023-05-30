@@ -14,6 +14,7 @@ import {MindReaderControlService} from "../../../../shared/service/mind-reader-c
 import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../../../shared/service/alert.service";
 import {MrDataSetRequestModel} from "../../../../shared/model/request/mr-data-set.request.model";
+import {AuthService} from "../../../../shared/service/auth.service";
 
 
 
@@ -100,6 +101,7 @@ export class DragAndDropComponent implements AfterViewInit{
     constructor(
         public mindReaderControlService: MindReaderControlService,
         private alertService: AlertService,
+        private authService: AuthService,
     ) {
         this.canvas = new fabric.Canvas('canvas');
     }
@@ -398,7 +400,7 @@ export class DragAndDropComponent implements AfterViewInit{
             seq: dataSetSeq,
             testDate: startDate.getTime(),
             userEmail: this.userEmail? this.userEmail : '',
-            patientInfoId: null,
+            patientInfoId: this.authService.getUserId() ? Number(this.authService.getUserId()) : null,
             fishbowlCode: this.fishbowlCode,
             waterHeight: this.waterHeight,
             actionCount: this.controlCount,
