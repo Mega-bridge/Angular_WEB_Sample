@@ -141,11 +141,11 @@ export class MindReaderControlService {
     /**
      * 내담자 추가 정보 조회
      */
-    getPatientInfo(email: string): Observable<MrPatientInfoResponse[]>{
+    getPatientInfo(email: string): Observable<MrPatientInfoResponse>{
         const param={
             email: email
         }
-        return this.http.get<MrPatientInfoResponse[]>(`${this.MR_CONTROL_URL}/patientInfo`,{params: param})
+        return this.http.get<MrPatientInfoResponse>(`${this.MR_CONTROL_URL}/patientInfo`,{params: param})
     }
 
     /**

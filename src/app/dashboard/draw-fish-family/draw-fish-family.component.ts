@@ -29,6 +29,9 @@ export class DrawFishFamilyComponent implements OnInit{
     /** user email */
     public userEmail: string |null = '';
 
+    /** patient info Id */
+    public patientInfoId :number = 0;
+
     /** 결과지 슬라이더 열기 */
     public expanded = false;
     /** 결과지 슬라이더 위치 */
@@ -205,7 +208,7 @@ export class DrawFishFamilyComponent implements OnInit{
      * @param mindReaderControlService
      * @param dialogService
      * @param router
-     * @param loginProvider
+     * @param authService
      * @param userService
      * @param alertService
      */
@@ -214,7 +217,7 @@ export class DrawFishFamilyComponent implements OnInit{
         private mindReaderControlService:MindReaderControlService,
         private dialogService: DialogService,
         private router: Router,
-        private loginProvider: AuthService,
+        private authService: AuthService,
         private userService:UserService,
         private alertService: AlertService
     ) {}
@@ -279,7 +282,14 @@ export class DrawFishFamilyComponent implements OnInit{
             });
 
         // 사용자 정보 조회
-        this.userEmail =  this.loginProvider.getUserEmail() != null ? this.loginProvider.getUserEmail() : '';
+        this.userEmail =  this.authService.getUserEmail() != null ? this.authService.getUserEmail() : '';
+        this.mindReaderControlService.getPatientInfo(this.userEmail? this.userEmail : '')
+            .subscribe({
+                next: async (data) => {
+                    this.patientInfoId = data?.id;
+                }
+
+            })
 
         // 사용자 데이터셋 조회
         this.getDataSet();
@@ -425,6 +435,7 @@ export class DrawFishFamilyComponent implements OnInit{
             second:0
         });
 
+        this.selectedSeq += 1;
 
         // 회차 추가 시 추가된 회차로 자동 선택
         this.selectSeq(this.seqItems[this.seqItems.length -1], this.seqItems.length -1);
@@ -694,7 +705,7 @@ export class DrawFishFamilyComponent implements OnInit{
         dialog.result.subscribe({
             next: async (result: any) => {
                 if (result.text === 'yes') {
-                    this.canvas.rasterize(this.selectedSeq, this.startDate, result.detailFishId);
+                    this.canvas.rasterize(this.selectedSeq, this.startDate, result.detailFishId, this.patientInfoId);
 
                     // full screen 닫기
                     this.closeFullscreen();
