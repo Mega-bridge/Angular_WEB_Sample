@@ -18,13 +18,13 @@ export class TopNavComponent implements OnInit {
    * @param dialog
    * @param router
    * @param dialogService
-   * @param loginService
+   * @param authService
    */
   constructor(
     public dialog: MatDialog,
     private router: Router,
     private dialogService: DialogService,
-    private loginService:AuthService,
+    private authService:AuthService,
   ) {}
 
   @Output() sideNavToggled = new EventEmitter<void>();
@@ -32,6 +32,13 @@ export class TopNavComponent implements OnInit {
   /** 다이얼로그 생성 컨테이너 지정 */
   @ViewChild('dialog', {read: ViewContainerRef})
   public dialogRef!: ViewContainerRef;
+
+  public userName = this.authService.getUserName();
+
+  public settings = [
+    { text: "추가정보" },
+    { text: "로그아웃" },
+  ];
 
   /**
    * 초기화
@@ -44,14 +51,14 @@ export class TopNavComponent implements OnInit {
    * login token 정보 확인
    */
   checkToken(){
-    return  this.loginService.getToken();
+    return  this.authService.getToken();
   }
 
   /**
    * login 사용자 역할 조회
    */
   checkRole(){
-    return this.loginService.getUserRole() == 'ROLE_ADMIN';
+    return this.authService.getUserRole() == 'ROLE_ADMIN';
   }
 
   toggleSidebar() {
@@ -75,7 +82,7 @@ export class TopNavComponent implements OnInit {
 
     dialog.result.subscribe((result: any) => {
       if (result.text === 'yes') {
-        this.loginService.removeSessionStorage();
+        this.authService.removeSessionStorage();
         // 페이지 새로고침
         window.location.reload();
       } else {
@@ -129,6 +136,18 @@ export class TopNavComponent implements OnInit {
     this.router.navigateByUrl('/admin')
   }
 
+  onItemClick(e:any){
+    switch (e.text){
+      case '추가정보':
+        this.modifyInfo()
+        break;
+      case '로그아웃':
+        this.openDialog()
+        break;
+      default:
+        break;
+    }
+  }
 
 
 }

@@ -15,23 +15,52 @@
 <!--&lt;!&ndash;    </button>&ndash;&gt;-->
 <!--</mat-toolbar>-->
 
-<div class="top-nav-wrap" style="display: flex; justify-content: space-between; align-items: center; padding: 5px;">
+<div class="top-nav-wrap" >
   <div (click)="mainPage()" style=" cursor: pointer;">
     <span style="font-size: 25px; font-weight: 500;">MindReader</span> <br>
 <!--    <span style="font-size: 15px;">Connect your business</span>-->
   </div>
+
 </div>
- <div *ngIf="checkToken()">
-     <button *ngIf="checkRole()" mat-raised-button color="#f44237" (click)="adminPage()"  >
-         <span>관리자 페이지 이동</span >
-     </button>
-    <button mat-raised-button color="#f44237" (click)="modifyInfo()">
-      <span>정보 수정</span>
-    </button>
-  <button mat-raised-button color="#f44237" (click)="openDialog()">
-    <span>logout</span >
-  </button>
-  </div>
+<div *ngIf="checkToken()" style="width: 90%;display: flex; justify-content: space-between; align-items: center; padding: 5px;">
+    <!--     <button *ngIf="checkRole()" mat-raised-button color="#f44237" (click)="adminPage()"  >-->
+    <!--         <span>관리자 페이지 이동</span >-->
+    <!--     </button>-->
+
+    <div></div>
+    <div>
+        <span style="font-size: 25px;">{{userName}} </span>
+        <span>/ 성별 / 나이 / 회차</span>
+    </div>
+    <div>
+
+        <kendo-dropdownbutton
+                [data]="settings"
+                icon="calendar"
+                size="large"
+                rounded="medium"
+                fillMode="solid"
+                [buttonClass]="{ 'custom-border': true}"
+                (itemClick)="onItemClick($event)"
+                style="margin-right: 5px;"
+        >
+            회차
+        </kendo-dropdownbutton>
+
+        <kendo-dropdownbutton
+                [data]="settings"
+                icon="user"
+                size="large"
+                rounded="medium"
+                fillMode="solid"
+                [buttonClass]="{ 'custom-border': true}"
+                (itemClick)="onItemClick($event)"
+        >
+            로그인
+        </kendo-dropdownbutton>
+    </div>
+</div>
+
 
 
 <ng-container #dialog></ng-container>
