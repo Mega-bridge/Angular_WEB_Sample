@@ -23,6 +23,8 @@ export class AuthService {
     public USER_ROLE = 'userRole';
     /** 로그인한 사용자 Id 정보 */
     public USER_ID = 'userId';
+    /** 로그인한 사용자 NAME 정보 */
+    public USER_NAME = 'username';
 
     /**
      * 생성자
@@ -46,6 +48,8 @@ export class AuthService {
                     this.setToken(result.jwt);
                     this.setUserEmail(result.user.email);
                     this.setUserRole(result.user.role);
+                    this.setUserName(result.user.username);
+
                     result.user.id ? this.setUserId(result.user.id.toString()) : '';
                     return result
                 })
@@ -81,6 +85,12 @@ export class AuthService {
         sessionStorage.setItem(this.USER_ID, Id);
     }
     /**
+     * login한 user Name 저장
+     */
+    setUserName(Name: string){
+        sessionStorage.setItem(this.USER_NAME, Name);
+    }
+    /**
      * login한 user Id 조회
      */
     getUserId(){
@@ -92,6 +102,13 @@ export class AuthService {
      */
     getUserEmail(){
         return sessionStorage.getItem(this.USER_EMAIL);
+    }
+
+    /**
+     * login한 NAME 조회
+     */
+    getUserName(){
+        return sessionStorage.getItem(this.USER_NAME);
     }
 
     /**
@@ -116,6 +133,7 @@ export class AuthService {
         sessionStorage.removeItem(this.TOKEN_NAME);
         sessionStorage.removeItem(this.USER_EMAIL);
         sessionStorage.removeItem(this.USER_ROLE);
+        sessionStorage.removeItem(this.USER_NAME);
     }
 
 

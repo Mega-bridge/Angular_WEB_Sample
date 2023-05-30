@@ -87,7 +87,9 @@ export class ModifyInputInfoComponent implements OnInit{
         setTimeout(()=>{
             this.dataSetting();
         },1000);
+        this.getId=String(this.authService.getUserEmail());
         this.infoForm.patchValue({ userEmail: this.authService.getUserEmail() });
+        this.infoForm.patchValue({ userName: this.authService.getUserName() });
 
 
     }
