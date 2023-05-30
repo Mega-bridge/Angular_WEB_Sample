@@ -76,6 +76,7 @@ export class DrawFishFamilyComponent implements OnInit{
 
     public margin = { horizontal: 0, vertical: -50 };
     public etcMargin = { horizontal: 0, vertical: -100 };
+    public etcMargin2 = { horizontal: 0, vertical: 0 };
 
     public animate : PopupAnimation = {
         type: 'fade',
