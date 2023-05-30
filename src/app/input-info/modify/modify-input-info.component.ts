@@ -52,6 +52,8 @@ export class ModifyInputInfoComponent implements OnInit{
     public familyData:any[]=[];
     // 로그인 한 아이디
     public getId: string = '';
+    // 사용자 아이디
+    public userId: number = 0;
 
     /**
      * 생성자
@@ -82,14 +84,16 @@ export class ModifyInputInfoComponent implements OnInit{
      * 초기화
      */
     ngOnInit() {
+        this.getId=String(this.authService.getUserEmail());
+        this.infoForm.patchValue({ userEmail: this.authService.getUserEmail() });
+        this.infoForm.patchValue({ userName: this.authService.getUserName() });
+
         // 데이터 로드
         this.loadData();
         setTimeout(()=>{
             this.dataSetting();
         },1000);
-        this.getId=String(this.authService.getUserEmail());
-        this.infoForm.patchValue({ userEmail: this.authService.getUserEmail() });
-        this.infoForm.patchValue({ userName: this.authService.getUserName() });
+
 
 
     }
@@ -200,11 +204,15 @@ export class ModifyInputInfoComponent implements OnInit{
      * 추가 정보 수정하기
      */
     modifyPatientInfo(){
+        if(this.patientData!=undefined){
+            this.userId=this.patientData.id
+        }
+
         this.familyInfo()
         let resultFamilyRelation=this.selectedFamilyRelation.join(',');
         let resultFamilyInfo=this.selectedFamilyList.join(',');
         const request: PatientInfoRequest = {
-            id: 0,
+            id: this.userId,
             age: Number(this.infoForm.controls['age'].value),
             familyInfo: resultFamilyInfo,
             familyNum: Number(this.infoForm.controls['familyNum'].value),
