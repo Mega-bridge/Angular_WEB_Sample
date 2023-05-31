@@ -14,6 +14,7 @@ import {AuthService} from "../../../shared/service/auth.service";
 import {UserService} from "../../../shared/service/user.service";
 import {AlertService} from "../../../shared/service/alert.service";
 import {MrDetailFishResponseModel} from "../../../shared/model/response/mr-detail-fish.response.model";
+import {DrawFishFamilyService} from "../../../shared/service/draw-fish-family.service";
 
 @Component({
     selector: 'app-dashboard-draw-fish-family',
@@ -220,8 +221,11 @@ export class DrawFishFamilyComponent implements OnInit{
         private router: Router,
         private authService: AuthService,
         private userService:UserService,
-        private alertService: AlertService
-    ) {}
+        private alertService: AlertService,
+        private drawFishFamilyService: DrawFishFamilyService
+    ) {
+        drawFishFamilyService.subject$.subscribe()
+    }
 
     ngOnInit() {
         // full screen element
@@ -336,6 +340,8 @@ export class DrawFishFamilyComponent implements OnInit{
 
                         });
 
+                        this.drawFishFamilyService.sendData(this.seqItems);
+
                         // 마지막 seq 조회
                         this.selectedSeq = data[data.length - 1].seq;
 
@@ -390,7 +396,6 @@ export class DrawFishFamilyComponent implements OnInit{
 
         // DataSet의 회차
         this.selectedSeq = item.seq;
-        console.log(item.seq)
         if(index==item.seq){
             // 답안 결과를 위한 인덱스 가져오기
             this.resultSheet(index)
@@ -419,8 +424,8 @@ export class DrawFishFamilyComponent implements OnInit{
      */
     addSeq(){
 
-        // 최대회차 25회로 제한
-        if(this.seqItems.length == 24) {
+        // 최대회차 24회로 제한
+        if(this.seqItems.length == 25) {
             this.alertService.openAlert('상담은 24회차까지 진행됩니다.');
             return;
         }
@@ -428,7 +433,7 @@ export class DrawFishFamilyComponent implements OnInit{
         // 회차 추가
         this.seqItems.push({
             seq: this.selectedSeq + 1,
-            text: `${this.seqItems.length + 1}회차`,
+            text: `${this.seqItems.length}회차`,
             date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
             imgUrl: '',
             hour:0,

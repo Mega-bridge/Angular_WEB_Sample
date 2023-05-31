@@ -32,20 +32,25 @@
         <span style="font-size: 25px;">{{userName}} </span>
         <span>/ 성별 / 나이 / 회차</span>
     </div>
-    <div>
+    <div style="display: flex;    align-items: center;">
+        <kendo-dropdownlist
+                [data]="seqItems"
+                [popupSettings]="{
+                width: 150,
+                popupClass: 'top-dropdownlist'
 
-        <kendo-dropdownbutton
-                [data]="settings"
-                icon="calendar"
+                }"
+                textField="text"
+                valueField="id"
+                iconClass="k-i-calendar"
                 size="large"
-                rounded="medium"
                 fillMode="flat"
-                [buttonClass]="{ 'custom-border': true}"
-                (itemClick)="onItemClick($event)"
-                style="margin-right: 5px;"
+                style="margin-right: 10px;background-color: unset; background-image: none;
+    border: none;
+    width: 110px;"
         >
             회차
-        </kendo-dropdownbutton>
+        </kendo-dropdownlist>
 
         <kendo-dropdownbutton
                 [data]="settings"
@@ -55,8 +60,8 @@
                 fillMode="flat"
                 [buttonClass]="{ 'custom-border': true}"
                 (itemClick)="onItemClick($event)"
+                class="top-dropdown"
         >
-            로그인
         </kendo-dropdownbutton>
     </div>
 </div>

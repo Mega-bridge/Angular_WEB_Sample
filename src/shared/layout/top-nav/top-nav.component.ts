@@ -4,6 +4,8 @@ import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogService} from "@progress/kendo-angular-dialog";
 import {AuthService} from "../../service/auth.service";
+import {DrawFishFamilyService} from "../../service/draw-fish-family.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-top-nav',
@@ -12,6 +14,15 @@ import {AuthService} from "../../service/auth.service";
 })
 export class TopNavComponent implements OnInit {
 
+  public subscription: Subscription;
+  public seqItems : {id?: number, seq?: number,text: string, date?: string, imgUr?: string, hour?: number,minute?: number,second?: number,detailFishDescription?:string}[] = [];
+
+  public userName: string | null = this.authService.getUserName();
+
+  public settings = [
+    { text: "추가정보" },
+    { text: "로그아웃" },
+  ];
 
   /**
    * 생성자
@@ -25,7 +36,18 @@ export class TopNavComponent implements OnInit {
     private router: Router,
     private dialogService: DialogService,
     private authService:AuthService,
-  ) {}
+    private drawFishFamilyService: DrawFishFamilyService
+  ) {
+    this.subscription = drawFishFamilyService.subject$.subscribe(
+      data => {
+        this.seqItems = data;
+        this.seqItems.splice(0,0,{text:'회차 추가'})
+        console.log("this.seqItems");
+        console.log(this.seqItems);
+    })
+
+  }
+
 
   @Output() sideNavToggled = new EventEmitter<void>();
 
@@ -33,18 +55,11 @@ export class TopNavComponent implements OnInit {
   @ViewChild('dialog', {read: ViewContainerRef})
   public dialogRef!: ViewContainerRef;
 
-  public userName = this.authService.getUserName();
-
-  public settings = [
-    { text: "추가정보" },
-    { text: "로그아웃" },
-  ];
 
   /**
    * 초기화
    */
   ngOnInit() {
-
   }
 
   /**
@@ -147,6 +162,11 @@ export class TopNavComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  ngOnDestroy() {
+    // prevent memory leak when component destroyed
+    this.subscription.unsubscribe();
   }
 
 

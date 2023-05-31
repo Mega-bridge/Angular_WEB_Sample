@@ -35,7 +35,7 @@ import {LayoutModule} from "@progress/kendo-angular-layout";
     DrawFishFamilyComponent
   ],
   providers: [
-    DrawFishFamilyComponent
+    DrawFishFamilyComponent,
   ]
 })
 export class DashBoardModule { }
