@@ -6,6 +6,7 @@ import {LoginRequestModel} from "../../shared/model/request/login.request.model"
 import {NotificationService} from "@progress/kendo-angular-notification";
 import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../shared/service/alert.service";
+import {finalize} from "rxjs";
 
 
 @Component({
@@ -19,13 +20,13 @@ export class LoginComponent {
     /**
      * 생성자
      * @param router
-     * @param loginProvider
+     * @param authService
      * @param notificationService
      * @param alertService
      */
     constructor(
         private router: Router,
-        private loginProvider: AuthService,
+        private authService: AuthService,
         private notificationService: NotificationService,
         private alertService: AlertService
     ) {}
@@ -47,12 +48,22 @@ export class LoginComponent {
             password: this.loginForm.controls['password'].value
         }
         // login
-        this.loginProvider.login(request)
+        this.authService.login(request)
+            .pipe(finalize(() => {
+
+            }))
             .subscribe({
                 next: async (response) => {
                     if (response) {
-                        // 로그인 성공 시 튜토리얼로 이동
-                        this.tutorial();
+                        if (this.authService.isAuthenticated()) {
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 15);
+
+                            // 로그인 성공 시 튜토리얼로 이동
+                            this.tutorial();
+                        }
+
                     }
                 },
                 // http error message 출력
