@@ -8,28 +8,16 @@
         [(expanded)]="expanded"
         [autoCollapse]="false"
         [position]="position"
-        [width]="600"
-        [miniWidth]="55"
+        [width]="450"
+        [miniWidth]="45"
 
-        [style]="{'transform': 'translate(0px, 61px)', 'border-left': '#cccccc solid 1px'}"
+        [style]="{'transform': 'translate(0px, 10vh)', 'border': '#cccccc solid 1px','border-radius' : '.5rem'}"
         class="drawer-style"
     >
 
-<!--        <ng-template kendoDrawerHeaderTemplate>-->
-<!--&lt;!&ndash;            <span *ngIf="!expanded" (click)="drawer.toggle()" style="font-size: 20px;align-items: center"><<</span>&ndash;&gt;-->
-<!--            <span  *ngIf="expanded"  (click)="drawer.toggle()"> <b> >> </b> </span>-->
-<!--            <span *ngIf="expanded" style="font-size: 20px;">결과지</span>-->
-<!--        </ng-template>-->
-<!--        <ng-template kendoDrawerItemTemplate let-item >-->
-
-<!--            <span  *ngIf="!expanded" class="k-icon item-icon flag k-i-arrow-seek-left" (click)="drawer.toggle()"></span>-->
-<!--&lt;!&ndash;            <span  *ngIf="expanded" class="k-icon item-icon flag k-i-arrow-seek-right" (click)="drawer.toggle()"></span>&ndash;&gt;-->
-<!--&lt;!&ndash;            <span *ngIf="expanded" (click)="drawer.toggle()">결과지</span>&ndash;&gt;-->
-
-<!--        </ng-template>-->
         <ng-template kendoDrawerFooterTemplate >
             <div *ngIf="!expanded" style="display: flex; justify-content: center;padding: 10px; cursor: pointer;">
-                <span   style="font-size: 25px;"> <b> << </b> </span>
+                <span  (click)="drawer.toggle()" style="font-size: 25px;"> <b> << </b> </span>
             </div>
 
             <div kendoTooltip *ngIf="expanded" style="padding: 10px; border-bottom: #cccccc solid 1px;">
@@ -52,72 +40,71 @@
     </kendo-drawer>
     <kendo-drawer-content>
 
-        <div class="side">
-            <div class="card-title">
-                <span>회차</span>
-                <span style="
-                padding: 5px;
-                border: #cccccc solid 1px;
-                border-radius: 50%;
-                width: 15px;
-                height: 15px;
-                text-align: center;
-                line-height: 20px;
-                cursor: pointer;"
-                      (click)="addSeq()">+</span>
-            </div>
+<!--        <div class="side">-->
+<!--            <div class="card-title">-->
+<!--                <span>회차</span>-->
+<!--                <span style="-->
+<!--                padding: 5px;-->
+<!--                border: #cccccc solid 1px;-->
+<!--                border-radius: 50%;-->
+<!--                width: 15px;-->
+<!--                height: 15px;-->
+<!--                text-align: center;-->
+<!--                line-height: 20px;-->
+<!--                cursor: pointer;"-->
+<!--                      (click)="addSeq()">+</span>-->
+<!--            </div>-->
 
-            <div class="card-seq-wrap">
-                <div class="card-seq"  *ngFor="let item of seqItems; let i = index" (click)="selectSeq(item, i)" [style.background-color] ="selectedSeqIndex === i ? '#cccccc' : ''">
-                    <div>
-                    <span class="title">{{item.text}}</span>
-                    <span class="sub">{{item.date}}</span>
-                    </div>
-                    <div style="width: 18px;
-                    height: 18px;
-                    color: #ff0000;
-                    border: #ff0000 solid 1px;
-                    border-radius: 50%;
-                    text-align: center;
-                    cursor: pointer;"
-                    (click)="deleteSeq(item, i)">
-                        <span>-</span>
-                    </div>
+<!--            <div class="card-seq-wrap">-->
+<!--                <div class="card-seq"  *ngFor="let item of seqItems; let i = index" (click)="selectSeq(item, i)" [style.background-color] ="selectedSeqIndex === i ? '#cccccc' : ''">-->
+<!--                    <div>-->
+<!--                    <span class="title">{{item.text}}</span>-->
+<!--                    <span class="sub">{{item.date}}</span>-->
+<!--                    </div>-->
+<!--                    <div style="width: 18px;-->
+<!--                    height: 18px;-->
+<!--                    color: #ff0000;-->
+<!--                    border: #ff0000 solid 1px;-->
+<!--                    border-radius: 50%;-->
+<!--                    text-align: center;-->
+<!--                    cursor: pointer;"-->
+<!--                    (click)="deleteSeq(item, i)">-->
+<!--                        <span>-</span>-->
+<!--                    </div>-->
 
-                </div>
+<!--                </div>-->
 
-            </div>
+<!--            </div>-->
 
-            <div class="card-title sub">
-                <span>오브젝트 선택 순서</span>
-            </div>
-            <div class="card-seq-wrap" style="height: 40%; border: none;">
-                <div style="overflow-y: scroll; padding: 10px 20px;">
-                    <div *ngFor="let item of selectedObjectList; let i = index" style="padding: 5px 0;">
-                        <span style="font-size: 12px;">{{i}}. {{item}}</span><br>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!--            <div class="card-title sub">-->
+<!--                <span>오브젝트 선택 순서</span>-->
+<!--            </div>-->
+<!--            <div class="card-seq-wrap" style="height: 40%; border: none;">-->
+<!--                <div style="padding: 10px 20px;">-->
+<!--                    <div *ngFor="let item of selectedObjectList; let i = index" style="padding: 5px 0;">-->
+<!--                        <span style="font-size: 12px;">{{i}}. {{item}}</span><br>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
         <div class="container">
             <div class="canvas-wrap">
-                {{hour}}시간 {{minute}}분 {{second}}초
+<!--                {{hour}}시간 {{minute}}분 {{second}}초-->
                 <div class="image-container"  [ngStyle] = "{'background-image': 'url('+canvasImage+')'}">
                     <!--                    <img [src]="this.canvasImage">-->
                 </div>
                 <div style="display: flex;flex-direction: row; justify-content: space-between;align-items: center;flex-wrap: nowrap;">
                     <div>
-
-                        <button class="button-style" *ngIf="canvasImage==''" (click)="openFullscreen()">그리기 모드</button>
                         <span style="font-size: 20px;">{{detailFish}}</span>
+<!--                        <button class="button-style" *ngIf="canvasImage==''" (click)="openFullscreen()">그리기 모드</button>-->
 
                     </div>
 
-                    <div style="display: flex; flex-wrap: nowrap;" *ngIf="canvasImage !=''">
-                        <button class="button-style btn2" (click)="canvasDownload()" >그림 다운로드</button>
-                        <button class="button-style btn3" (click)="drawer.toggle()">검토 중</button>
-                        <button *ngIf="answerResult" class="button-style btn4" (click)="drawer.toggle()">결과 보기</button>
-                    </div>
+<!--                    <div style="display: flex; flex-wrap: nowrap;" *ngIf="canvasImage !=''">-->
+<!--&lt;!&ndash;                        <button class="button-style btn2" (click)="canvasDownload()" >그림 다운로드</button>&ndash;&gt;-->
+<!--                        <button class="button-style btn3" (click)="drawer.toggle()">검토 중</button>-->
+<!--                        <button *ngIf="answerResult" class="button-style btn4" (click)="drawer.toggle()">결과 보기</button>-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>
@@ -138,7 +125,7 @@
             >
 
                 <div  class="pop-up-select-image">
-                    <div class="img-wrap-border" style="height: 113px; border-radius: 1.5rem;">
+                    <div class="img-wrap-border" style="height: 128px; border-radius: 1.5rem;">
                         <div *ngFor="let img of fishBowlImgList" class="img-wrap" style="width: 100%;"
                              [style.background-color]="selectedFishBowl === img ? '#e0e0e0' : ''">
                             <img  (click)="selectWater(img)" [src]="img"  alt=""/>
@@ -315,7 +302,7 @@
 
                 <div>
                 <div class="img-card"  #anchor1>
-                    <div class="img-card-header" [style.background-color]="showFishBowl ? '#fe5f57' : '#f3f4f5'">
+                    <div class="img-card-header" [style.background-color]="showFishBowl ? '#cf3640' : 'unset'">
                         <img class="img-card-style"  src="{{fishBowlImgList[0]}}" (click)="closeOpenPopUp('showFishBowl')">
                     </div>
                 </div>
@@ -339,42 +326,42 @@
                 </div>
 
                 <div class="img-card" #anchor2>
-                    <div class="img-card-header"  *ngIf="isFamilyAfterFish" [style.background-color]="showFishes ? '#fe5f57' : '#f3f4f5'">
+                    <div class="img-card-header"  *ngIf="isFamilyAfterFish" [style.background-color]="showFishes ? '#cf3640' : 'unset'">
 <!--                        <span class="img-card-text" *ngIf="!isFamilyAfterFish">가족을 선택해주세요</span>-->
-                        <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/fish.svg" (click)="closeOpenPopUp('showFishes')">
+                        <img  class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/fish.svg" (click)="closeOpenPopUp('showFishes')">
                     </div>
                 </div>
 
                 <div class="img-card" #anchor3>
-                    <div class="img-card-header" *ngIf="isFamilyAfterFish" [style.background-color]="showRoundFishes ? '#fe5f57' : '#f3f4f5'">
+                    <div class="img-card-header" *ngIf="isFamilyAfterFish" [style.background-color]="showRoundFishes ? '#cf3640' : 'unset'">
 <!--                        <span class="img-card-text" *ngIf="!isFamilyAfterFish">가족을 선택해주세요</span>-->
                         <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/roundFish.svg" (click)="closeOpenPopUp('showRoundFishes')">
                     </div>
                 </div>
 
                 <div class="img-card" #anchor4>
-                    <div class="img-card-header" *ngIf="isFamilyAfterFish" [style.background-color]="showWhales ? '#fe5f57' : '#f3f4f5'">
+                    <div class="img-card-header" *ngIf="isFamilyAfterFish" [style.background-color]="showWhales ? '#cf3640' : 'unset'">
 <!--                        <span class="img-card-text" *ngIf="!isFamilyAfterFish">가족을 선택해주세요</span>-->
                         <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/whale.svg" (click)="closeOpenPopUp('showWhales')">
                     </div>
                 </div>
 
                 <div class="img-card" #anchor5>
-                    <div class="img-card-header" *ngIf="isFamilyAfterFish" [style.background-color]="showSharks ? '#fe5f57' : '#f3f4f5'">
+                    <div class="img-card-header" *ngIf="isFamilyAfterFish" [style.background-color]="showSharks ? '#cf3640' : 'unset'">
 <!--                        <span class="img-card-text" *ngIf="!isFamilyAfterFish">가족을 선택해주세요</span>-->
                         <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/shark.svg" (click)="closeOpenPopUp('showSharks')">
                     </div>
                 </div>
 
                 <div class="img-card" #anchor6>
-                    <div class="img-card-header" *ngIf="isFamilyAfterFish" [style.background-color]="showEels ? '#fe5f57' : '#f3f4f5'">
+                    <div class="img-card-header" *ngIf="isFamilyAfterFish" [style.background-color]="showEels ? '#cf3640' : 'unset'">
 <!--                        <span class="img-card-text" *ngIf="!isFamilyAfterFish">가족을 선택해주세요</span>-->
                         <img class="img-card-style" [ngStyle]="{'pointer-events': isFamilyAfterFish ? 'auto' : 'none'}" src="../assets/img/eel.svg" (click)="closeOpenPopUp('showEels')">
                     </div>
                 </div>
 
                 <div class="img-card" #anchor7>
-                    <div class="img-card-header" *ngIf="isSelectedFishBowl " [style.background-color]="showEtc ? '#fe5f57' : '#f3f4f5'">
+                    <div class="img-card-header" *ngIf="isSelectedFishBowl " [style.background-color]="showEtc ? '#cf3640' : 'unset'">
                         <img class="img-card-style" src="{{etcImgList[0]}}" (click)="closeOpenPopUp('showEtc')">
                     </div>
                 </div>

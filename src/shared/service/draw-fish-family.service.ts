@@ -6,14 +6,22 @@ import {Subject} from "rxjs";
 })
 export class DrawFishFamilyService {
 
-    private missionAnnouncedSource = new Subject<string>();
-    private missionConfirmedSource = new Subject<string>();
+    private selectItem = new Subject<any>();
+    private selectItemIndex = new Subject<number>();
+    private seqItems = new Subject<any>();
+    private deleteItem = new Subject<boolean>();
+    private saveItem = new Subject<boolean>();
+    private start = new Subject<boolean>();
 
-    private subject = new Subject<any>();
-    subject$ = this.subject.asObservable();
+    seqItems$ = this.seqItems.asObservable();
+    selectItem$ = this.selectItem.asObservable();
+    selectItemIndex$ = this.selectItemIndex.asObservable();
+    deleteItem$ = this.deleteItem.asObservable();
+    saveItem$ = this.saveItem.asObservable();
+    start$ = this.start.asObservable();
 
     sendData(data: any){
-        this.subject.next(data);
+        this.seqItems.next(data);
         console.log("sendData() data: ", data);
     }
 
@@ -21,14 +29,34 @@ export class DrawFishFamilyService {
     //    this.subject.next()
     // }
 
-    missionAnnounced$ = this.missionAnnouncedSource.asObservable();
-    missionConfirmed$ = this.missionAnnouncedSource.asObservable();
 
-    announceMission(mission: string){
-        this.missionAnnouncedSource.next(mission);
+    openFullScreen(){
+        this.start.next(true);
     }
 
-    confirmMission(astronaut: string){
-        this.missionConfirmedSource.next(astronaut);
+    closeFullScreen(){
+        this.start.next(false);
     }
+
+    selectSeqItem(item: any, index: number){
+        this.selectItem.next(item);
+        this.selectItemIndex.next(index);
+    }
+
+    deleteSeqItem(){
+        this.deleteItem.next(true);
+    }
+
+    saveSeqItem(){
+        this.saveItem.next(true);
+    }
+
+
+    getSelectSeqItem(){
+        return this.selectItem;
+    }
+    getSelectSeqItemIndex(){
+        return this.selectItemIndex;
+    }
+
 }

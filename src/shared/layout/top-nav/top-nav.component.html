@@ -20,38 +20,47 @@
     <span style="font-size: 25px; font-weight: 500;">MindReader</span> <br>
 <!--    <span style="font-size: 15px;">Connect your business</span>-->
   </div>
-
 </div>
-<div *ngIf="checkToken()" style="width: 90%;display: flex; justify-content: space-between; align-items: center; padding: 5px;">
-    <!--     <button *ngIf="checkRole()" mat-raised-button color="#f44237" (click)="adminPage()"  >-->
-    <!--         <span>관리자 페이지 이동</span >-->
-    <!--     </button>-->
 
-    <div></div>
+
+<div *ngIf="checkToken()" style="width: 53%;display: flex; justify-content: space-between; align-items: center; padding: 5px;">
+<!--         <button *ngIf="checkRole()" mat-raised-button color="#f44237" (click)="adminPage()"  >-->
+<!--             <span>관리자 페이지 이동</span >-->
+<!--         </button>-->
+
+
     <div>
         <span style="font-size: 25px;">{{userName}} </span>
-        <span>/ 성별 / 나이 / 회차</span>
+        <span>/ 성별 / 나이 &nbsp;&nbsp;&nbsp;</span>
     </div>
     <div style="display: flex;    align-items: center;">
+        <span *ngIf="selectSeqIndex && selectSeqIndex != 0" style="margin-right: 2.5px;">{{selectedItem.date}}</span>
+        <span style="font-size: 13px;">( {{selectedItem.hour}}시간 {{selectedItem.minute}}분 {{selectedItem.second}}초 ) &nbsp;</span>
+        <span>||</span>
+        <button class="button-style" (click)="openFullscreen()" *ngIf="selectSeqIndex == 0">시작하기</button>
         <kendo-dropdownlist
                 [data]="seqItems"
                 [popupSettings]="{
                 width: 150,
                 popupClass: 'top-dropdownlist'
-
                 }"
                 textField="text"
                 valueField="id"
                 iconClass="k-i-calendar"
                 size="large"
                 fillMode="flat"
-                style="margin-right: 10px;background-color: unset; background-image: none;
-    border: none;
-    width: 110px;"
+                style="margin-right: 10px;background-color: unset; background-image: none; border: none; width: 110px;"
+                (selectionChange)="selectSeq($event)"
+                [(ngModel)]="selectedItem"
+                *ngIf="selectSeqIndex"
         >
-            회차
         </kendo-dropdownlist>
-
+        <kendo-button *ngIf="selectSeqIndex" style="border: none; background-color: unset; background-image: none;" (click)="saveSeq()" >
+            <kendo-icon name="download"  [themeColor]="'info'" style="font-size: 24px;"></kendo-icon>
+        </kendo-button>
+        <kendo-button *ngIf="selectSeqIndex"  style="border: none; background-color: unset; background-image: none;" (click)="deleteSeq()" >
+            <kendo-icon name="trash"  [themeColor]="'error'" style="font-size: 24px;"></kendo-icon>
+        </kendo-button>
         <kendo-dropdownbutton
                 [data]="settings"
                 icon="user"

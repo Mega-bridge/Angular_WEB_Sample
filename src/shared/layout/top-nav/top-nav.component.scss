@@ -16,3 +16,21 @@
   //border-bottom: #a7a7a7 solid 1px;
   //box-shadow:  4px 0 4px -4px #a7a7a7;
 }
+
+.button-style{
+  cursor: pointer;
+  margin: 10px;
+  height: 33px;
+  width : 95px;
+  border: none;
+  border-radius: 1.5em;
+  color: #ffffff;
+  background-color: #ca3d57;
+  box-shadow: 4px 6px 4px -4px #a7a7a7;
+  font-size: 17px;
+
+  &.del{
+    background-color: #fe5e23;
+
+  }
+}

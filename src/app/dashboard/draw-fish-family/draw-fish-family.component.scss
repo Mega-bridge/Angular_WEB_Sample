@@ -22,7 +22,7 @@
 
   .card-seq-wrap{
     height: 50%;
-    overflow: scroll;
+    overflow-y: scroll;
     .card-seq{
       height: 10px;
       cursor: pointer;
@@ -116,7 +116,7 @@
           width: 150px;
           height: 100vh;
           //border: #666666 dashed 1px;
-          overflow: scroll;
+          overflow: auto;
         background-color: #323232 ;
 
 
@@ -127,7 +127,7 @@
             margin: 5px;
             //border-bottom: #f0f0f0 solid 1px;
             border-radius: 5px;
-            background-color: #f3f4f5;
+            //background-color: #f3f4f5;
             text-align: center;
             position: relative;
             height: 110px;
@@ -135,6 +135,9 @@
             .img-card-style{
               width: 120px;
               height: 110px;
+              filter: invert(100%);
+
+
             }
 
             .img-card-text{
@@ -181,11 +184,12 @@
         border-radius: 1.5rem;
         width: min-content;
         height: min-content;
-        overflow: scroll;
+        overflow: auto;
 
         //padding: 10px;
         .img-wrap-border{
           display: flex;
+          align-items: center;
           width: 100%;
           background-color: #ffffff;
           border: solid 1px #e0e0e0;
@@ -257,9 +261,9 @@
 
   cursor: pointer;
   margin: 10px;
-  height: 50px;
+  height: 38px;
   width : 100px;
-  border-radius: .5em;
+  border-radius: 1.5em;
   border: none;
   background-color: #fe5e23;
   color: #ffffff;
