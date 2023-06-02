@@ -35,7 +35,7 @@
     </div>
     <div style="display: flex;    align-items: center;">
         <span *ngIf="selectSeqIndex && selectSeqIndex != 0" style="margin-right: 2.5px;">{{selectedItem.date}}</span>
-        <span style="font-size: 13px;">( {{selectedItem.hour}}시간 {{selectedItem.minute}}분 {{selectedItem.second}}초 ) &nbsp;</span>
+        <span style="font-size: 13px;">( {{selectedItem ? selectedItem.hour : ''}}시간 {{selectedItem ? selectedItem.minute : ''}}분 {{selectedItem ? selectedItem.second : ''}}초 ) &nbsp;</span>
         <span>||</span>
         <button class="button-style" (click)="openFullscreen()" *ngIf="selectSeqIndex == 0">시작하기</button>
         <kendo-dropdownlist
