@@ -1,4 +1,13 @@
-import {Component, ElementRef, Inject, OnInit, TemplateRef, ViewChild, ViewContainerRef} from "@angular/core";
+import {
+    Component,
+    ElementRef,
+    Inject,
+    OnDestroy,
+    OnInit,
+    TemplateRef,
+    ViewChild,
+    ViewContainerRef
+} from "@angular/core";
 import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component"
 import {Align, PopupAnimation} from "@progress/kendo-angular-popup";
 import {DOCUMENT} from "@angular/common";
@@ -22,7 +31,7 @@ import {DrawFishFamilyService} from "../../../shared/service/draw-fish-family.se
     styleUrls: ['draw-fish-family.component.scss']
 })
 
-export class DrawFishFamilyComponent implements OnInit{
+export class DrawFishFamilyComponent implements OnInit,OnDestroy{
 
     /** data set */
     public originDataSet: any[] = [];
@@ -204,7 +213,11 @@ export class DrawFishFamilyComponent implements OnInit{
     @ViewChild('dialog', {read: ViewContainerRef})
     public dialogRef!: ViewContainerRef;
 
-    //public subscription: Subscription;
+    public subscription: Subscription;
+    public subscription2: Subscription;
+    public subscription3: Subscription;
+    public subscription4: Subscription;
+    public subscription5: Subscription;
 
     public selectSeqItem: any[] = [];
 
@@ -230,31 +243,31 @@ export class DrawFishFamilyComponent implements OnInit{
         private drawFishFamilyService: DrawFishFamilyService
     ) {
 
-        drawFishFamilyService.selectItem$.subscribe(
+        this.subscription = drawFishFamilyService.selectItem$.subscribe(
             item => {
                 this.selectSeqItem = item;
             }
         );
-        drawFishFamilyService.selectItemIndex$.subscribe(
+        this.subscription2 = drawFishFamilyService.selectItemIndex$.subscribe(
             index => {
                 this.selectedSeqIndex = index;
                 this.selectSeq(this.selectSeqItem,this.selectedSeqIndex);
             }
         );
 
-        drawFishFamilyService.deleteItem$.subscribe(
+        this.subscription3 = drawFishFamilyService.deleteItem$.subscribe(
             isDelete => {
                 if(isDelete) this.deleteSeq(this.selectSeqItem, this.selectedSeqIndex);
             }
         );
 
-        drawFishFamilyService.start$.subscribe(
+        this.subscription4 = drawFishFamilyService.start$.subscribe(
             isStart => {
                 if(isStart) this.openFullscreen();
             }
         );
 
-        drawFishFamilyService.saveItem$.subscribe(
+        this.subscription5 = drawFishFamilyService.saveItem$.subscribe(
             isSave => {
                 if(isSave) this.canvasDownload();
             }
@@ -327,6 +340,9 @@ export class DrawFishFamilyComponent implements OnInit{
             .subscribe({
                 next: async (data) => {
                     this.patientInfoId = data?.id;
+                    this.drawFishFamilyService.sendPatientData(data);
+                    console.log(data);
+
                 }
 
             })
@@ -824,9 +840,15 @@ export class DrawFishFamilyComponent implements OnInit{
             })
     }
 
-    // ngOnDestroy() {
-    //     // prevent memory leak when component destroyed
-    //     this.subscription.unsubscribe();
-    // }
+    /**
+     * 구독 해제
+     */
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+        this.subscription2.unsubscribe();
+        this.subscription3.unsubscribe();
+        this.subscription4.unsubscribe();
+        this.subscription5.unsubscribe();
+    }
 
 }

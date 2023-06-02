@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter, ViewContainerRef, ViewChild} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, ViewContainerRef, ViewChild, OnDestroy} from '@angular/core';
 import {ConfirmDialogComponent} from "../../component/dialogs/confirm-dialog/confirm-dialog.component";
 import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
@@ -6,6 +6,7 @@ import {DialogService} from "@progress/kendo-angular-dialog";
 import {AuthService} from "../../service/auth.service";
 import {DrawFishFamilyService} from "../../service/draw-fish-family.service";
 import {Subscription} from "rxjs";
+import {AlertService} from "../../service/alert.service";
 
 
 @Component({
@@ -13,16 +14,18 @@ import {Subscription} from "rxjs";
   templateUrl: './top-nav.component.html',
   styleUrls: ['./top-nav.component.scss']
 })
-export class TopNavComponent implements OnInit {
+export class TopNavComponent implements OnInit,OnDestroy {
 
   public subscription: Subscription;
+  public subscription2: Subscription;
   public seqItems : {id?: number, seq?: number,text: string, date?: string, imgUr?: string, hour?: number,minute?: number,second?: number,detailFishDescription?:string}[] = [];
-
   public userName: string | null = this.authService.getUserName();
 
   public selectedItem:any ;
+  public preSelectedItem:any ;
+  public patientData:any;
 
-  public selectSeqIndex : number | null = null;
+  public selectSeqIndex : number  = 0;
 
   public settings = [
     { text: "추가정보" },
@@ -41,6 +44,7 @@ export class TopNavComponent implements OnInit {
     private router: Router,
     private dialogService: DialogService,
     private authService:AuthService,
+    private alertService: AlertService,
     private drawFishFamilyService: DrawFishFamilyService
   ) {
     this.subscription = drawFishFamilyService.seqItems$.subscribe(
@@ -48,10 +52,16 @@ export class TopNavComponent implements OnInit {
         this.seqItems = data;
         this.seqItems.splice(0,0,{text:'회차 추가'})
         this.selectedItem = this.seqItems[this.seqItems.length -1];
+        this.preSelectedItem = this.selectedItem;
         this.selectSeqIndex = this.seqItems.length -1;
-        console.log("this.seqItems");
         console.log(this.seqItems);
     })
+
+    this.subscription2 = drawFishFamilyService.patientInfo$.subscribe(
+        patientData => {
+            this.patientData = patientData;
+        }
+    )
 
   }
 
@@ -158,11 +168,10 @@ export class TopNavComponent implements OnInit {
     }
   }
 
-  ngOnDestroy() {
-    // prevent memory leak when component destroyed
-    this.subscription.unsubscribe();
-  }
 
+  /**
+   * 그리기 모드 시작
+   */
   openFullscreen() {
     this.drawFishFamilyService.openFullScreen();
   }
@@ -173,26 +182,60 @@ export class TopNavComponent implements OnInit {
    * @param e
    */
   selectSeq(e : any){
-    console.log(e);
-    this.selectSeqIndex = 0;
-    this.selectedItem = e;
 
+    // 기존 회차 선택
     if(e.seq){
+      this.selectedItem = e;
+      this.preSelectedItem = e;
+
       this.seqItems.map((item, index) => {
         if(item.seq === e.seq) this.selectSeqIndex = index; return;
       });
-    }
 
-    this.drawFishFamilyService.selectSeqItem(e, this.selectSeqIndex);
+      this.drawFishFamilyService.selectSeqItem(e, this.selectSeqIndex);
+    }
+    // 24회 상담 모두 소진한 후 회차 추가
+    else if(this.seqItems.length >= 25){
+      this.alertService.openAlert('상담은 24회차까지 진행됩니다.');
+    }
+    // 회차 추가
+    else{
+      this.selectedItem = e;
+      this.selectSeqIndex = 0;
+      this.drawFishFamilyService.selectSeqItem(e, this.selectSeqIndex);
+    }
 
   }
 
+  // public itemDisabled(itemArgs: { dataItem: any; index: number }) {
+  //   console.log(this.seqItems);
+  //   console.log(itemArgs);
+  //   if(this.seqItems && this.seqItems.length >= 24){
+  //     return itemArgs.index === 0;
+  //   }
+  //   return false;
+  // }
+
+  /**
+   * 회차 삭제
+   */
   deleteSeq(){
     this.drawFishFamilyService.deleteSeqItem();
   }
 
+  /**
+   * 회차 다운로드
+   */
   saveSeq(){
     this.drawFishFamilyService.saveSeqItem();
+  }
+
+  /**
+   * 구독 해제
+   */
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+    this.subscription2.unsubscribe();
   }
 
 }

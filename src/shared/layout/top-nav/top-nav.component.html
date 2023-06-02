@@ -31,13 +31,15 @@
 
     <div>
         <span style="font-size: 25px;">{{userName}} </span>
-        <span>/ 성별 / 나이 &nbsp;&nbsp;&nbsp;</span>
+        <span> &nbsp;/ {{patientData ? (patientData.genderId == 0 ? '남' : '여') : ''}} / 만 {{patientData ? patientData.age : ''}}세 / {{selectedItem ? selectedItem.text : ''}}&nbsp;</span>
+<!--        <span>||</span>-->
+        <span *ngIf="selectSeqIndex && selectSeqIndex != 0" style="margin-right: 2.5px;">-&nbsp;{{selectedItem.date}}</span>
+        <span style="font-size: 13px;">( {{selectedItem ? selectedItem.hour : ''}}시간 {{selectedItem ? selectedItem.minute : ''}}분 {{selectedItem ? selectedItem.second : ''}}초 ) &nbsp;</span>
     </div>
     <div style="display: flex;    align-items: center;">
-        <span *ngIf="selectSeqIndex && selectSeqIndex != 0" style="margin-right: 2.5px;">{{selectedItem.date}}</span>
-        <span style="font-size: 13px;">( {{selectedItem ? selectedItem.hour : ''}}시간 {{selectedItem ? selectedItem.minute : ''}}분 {{selectedItem ? selectedItem.second : ''}}초 ) &nbsp;</span>
-        <span>||</span>
-        <button class="button-style" (click)="openFullscreen()" *ngIf="selectSeqIndex == 0">시작하기</button>
+
+
+        <button class="button-style" (click)="openFullscreen()" *ngIf="selectSeqIndex == 0 && seqItems.length <= 25">시작하기</button>
         <kendo-dropdownlist
                 [data]="seqItems"
                 [popupSettings]="{
@@ -51,7 +53,7 @@
                 fillMode="flat"
                 style="margin-right: 10px;background-color: unset; background-image: none; border: none; width: 110px;"
                 (selectionChange)="selectSeq($event)"
-                [(ngModel)]="selectedItem"
+                [(ngModel)]="seqItems.length >= 25 ? preSelectedItem : selectedItem"
                 *ngIf="selectSeqIndex"
         >
         </kendo-dropdownlist>
