@@ -14,6 +14,7 @@ import {MindReaderControlService} from "../../../../shared/service/mind-reader-c
 import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../../../shared/service/alert.service";
 import {MrDataSetRequestModel} from "../../../../shared/model/request/mr-data-set.request.model";
+import {AuthService} from "../../../../shared/service/auth.service";
 
 
 
@@ -81,7 +82,7 @@ export class DragAndDropComponent implements AfterViewInit{
 
     public url: string | ArrayBuffer = '';
     public size: any = {
-        width: 900,
+        width: 1200,
         height: 900
     };
 
@@ -100,6 +101,7 @@ export class DragAndDropComponent implements AfterViewInit{
     constructor(
         public mindReaderControlService: MindReaderControlService,
         private alertService: AlertService,
+        private authService: AuthService,
     ) {
         this.canvas = new fabric.Canvas('canvas');
     }
@@ -111,7 +113,8 @@ export class DragAndDropComponent implements AfterViewInit{
             selection: true,
             selectionBorderColor: 'blue',
             isDrawingMode: false,
-            backgroundColor:'#ffffff'
+            backgroundColor:'#ebebeb'
+
         });
         // this.canvas.setWidth(window.innerWidth * 0.61);
         // this.canvas.setHeight(window.innerHeight * 0.7);
@@ -231,10 +234,10 @@ export class DragAndDropComponent implements AfterViewInit{
         this.waterUrl = opt;
         this.fishbowlCode = fishbowlCode;
         this.canvas.setBackgroundImage(this.waterUrl, this.canvas.renderAll.bind(this.canvas), {
-            top: 150,
-            left: -30,
-            scaleX:0.55,
-            scaleY: 0.55
+            top: 50,
+            left: 60,
+            scaleX:0.6,
+            scaleY: 0.6
         });
 
     }
@@ -362,14 +365,14 @@ export class DragAndDropComponent implements AfterViewInit{
      * @param startDate
      * @param detailFishId
      */
-    rasterize(dataSetSeq: any, startDate: Date, detailFishId: number) {
+    rasterize(dataSetSeq: any, startDate: Date, detailFishId: number, patientInfoId:number) {
 
             // cavas img로 저장
             const image = new Image();
             image.src = this.canvas.toDataURL({format: 'png'});
 
             // 회차별 dataSet 생성
-            this.createDataSet(dataSetSeq, startDate, detailFishId, image.src);
+            this.createDataSet(dataSetSeq, startDate, detailFishId, patientInfoId,image.src);
     }
 
 
@@ -382,7 +385,7 @@ export class DragAndDropComponent implements AfterViewInit{
      * @param detailFishId
      * @param src
      */
-    async createDataSet(dataSetSeq: number, startDate:Date,detailFishId: number ,src?:any) {
+    async createDataSet(dataSetSeq: number, startDate:Date,detailFishId: number,patientInfoId:number ,src?:any) {
         // canvas 내 objectCodeId List
         const objectCodeList = this.canvas.getObjects().map(item => item.toObject().objectCodeId);
 
@@ -392,13 +395,15 @@ export class DragAndDropComponent implements AfterViewInit{
         await this.getObjectCode(2, objectCodeList);
 
         const endDate = new Date();
+        console.log("dataSetSeq");
+        console.log(dataSetSeq);
 
         // 회차별 데이터셋 생성 request model
         this.mrDataSetModel = {
             seq: dataSetSeq,
             testDate: startDate.getTime(),
             userEmail: this.userEmail? this.userEmail : '',
-            patientInfoId: null,
+            patientInfoId: patientInfoId,
             fishbowlCode: this.fishbowlCode,
             waterHeight: this.waterHeight,
             actionCount: this.controlCount,

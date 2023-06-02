@@ -1,11 +1,20 @@
-import {Component, ElementRef, Inject, OnInit, TemplateRef, ViewChild, ViewContainerRef} from "@angular/core";
+import {
+    Component,
+    ElementRef,
+    Inject,
+    OnDestroy,
+    OnInit,
+    TemplateRef,
+    ViewChild,
+    ViewContainerRef
+} from "@angular/core";
 import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component"
 import {Align, PopupAnimation} from "@progress/kendo-angular-popup";
 import {DOCUMENT} from "@angular/common";
 import {MrFamilyCodeResponse} from "../../../shared/model/response/mr-family-code.response.model";
 import {MrObjectImageResponse} from "../../../shared/model/response/mr-object-image.response.model";
 import {MindReaderControlService} from "../../../shared/service/mind-reader-control.service";
-import {async, single} from "rxjs";
+import {async, single, Subscription} from "rxjs";
 import {DrawerPosition} from "@progress/kendo-angular-layout";
 import {ConfirmDialogComponent} from "../../../shared/component/dialogs/confirm-dialog/confirm-dialog.component";
 import {DialogService} from "@progress/kendo-angular-dialog";
@@ -14,6 +23,7 @@ import {AuthService} from "../../../shared/service/auth.service";
 import {UserService} from "../../../shared/service/user.service";
 import {AlertService} from "../../../shared/service/alert.service";
 import {MrDetailFishResponseModel} from "../../../shared/model/response/mr-detail-fish.response.model";
+import {DrawFishFamilyService} from "../../../shared/service/draw-fish-family.service";
 
 @Component({
     selector: 'app-dashboard-draw-fish-family',
@@ -21,13 +31,16 @@ import {MrDetailFishResponseModel} from "../../../shared/model/response/mr-detai
     styleUrls: ['draw-fish-family.component.scss']
 })
 
-export class DrawFishFamilyComponent implements OnInit{
+export class DrawFishFamilyComponent implements OnInit,OnDestroy{
 
     /** data set */
     public originDataSet: any[] = [];
 
     /** user email */
     public userEmail: string |null = '';
+
+    /** patient info Id */
+    public patientInfoId :number = 0;
 
     /** 결과지 슬라이더 열기 */
     public expanded = false;
@@ -73,6 +86,7 @@ export class DrawFishFamilyComponent implements OnInit{
 
     public margin = { horizontal: 0, vertical: -50 };
     public etcMargin = { horizontal: 0, vertical: -100 };
+    public etcMargin2 = { horizontal: 0, vertical: 0 };
 
     public animate : PopupAnimation = {
         type: 'fade',
@@ -199,13 +213,22 @@ export class DrawFishFamilyComponent implements OnInit{
     @ViewChild('dialog', {read: ViewContainerRef})
     public dialogRef!: ViewContainerRef;
 
+    public subscription: Subscription;
+    public subscription2: Subscription;
+    public subscription3: Subscription;
+    public subscription4: Subscription;
+    public subscription5: Subscription;
+
+    public selectSeqItem: any[] = [];
+
+
     /**
      *
      * @param document
      * @param mindReaderControlService
      * @param dialogService
      * @param router
-     * @param loginProvider
+     * @param authService
      * @param userService
      * @param alertService
      */
@@ -214,10 +237,43 @@ export class DrawFishFamilyComponent implements OnInit{
         private mindReaderControlService:MindReaderControlService,
         private dialogService: DialogService,
         private router: Router,
-        private loginProvider: AuthService,
+        private authService: AuthService,
         private userService:UserService,
-        private alertService: AlertService
-    ) {}
+        private alertService: AlertService,
+        private drawFishFamilyService: DrawFishFamilyService
+    ) {
+
+        this.subscription = drawFishFamilyService.selectItem$.subscribe(
+            item => {
+                this.selectSeqItem = item;
+            }
+        );
+        this.subscription2 = drawFishFamilyService.selectItemIndex$.subscribe(
+            index => {
+                this.selectedSeqIndex = index;
+                this.selectSeq(this.selectSeqItem,this.selectedSeqIndex);
+            }
+        );
+
+        this.subscription3 = drawFishFamilyService.deleteItem$.subscribe(
+            isDelete => {
+                if(isDelete) this.deleteSeq(this.selectSeqItem, this.selectedSeqIndex);
+            }
+        );
+
+        this.subscription4 = drawFishFamilyService.start$.subscribe(
+            isStart => {
+                if(isStart) this.openFullscreen();
+            }
+        );
+
+        this.subscription5 = drawFishFamilyService.saveItem$.subscribe(
+            isSave => {
+                if(isSave) this.canvasDownload();
+            }
+        );
+
+    }
 
     ngOnInit() {
         // full screen element
@@ -279,7 +335,17 @@ export class DrawFishFamilyComponent implements OnInit{
             });
 
         // 사용자 정보 조회
-        this.userEmail =  this.loginProvider.getUserEmail() != null ? this.loginProvider.getUserEmail() : '';
+        this.userEmail =  this.authService.getUserEmail() != null ? this.authService.getUserEmail() : '';
+        this.mindReaderControlService.getPatientInfo(this.userEmail? this.userEmail : '')
+            .subscribe({
+                next: async (data) => {
+                    this.patientInfoId = data?.id;
+                    this.drawFishFamilyService.sendPatientData(data);
+                    console.log(data);
+
+                }
+
+            })
 
         // 사용자 데이터셋 조회
         this.getDataSet();
@@ -325,6 +391,8 @@ export class DrawFishFamilyComponent implements OnInit{
 
                         });
 
+                        this.drawFishFamilyService.sendData(this.seqItems);
+
                         // 마지막 seq 조회
                         this.selectedSeq = data[data.length - 1].seq;
 
@@ -341,7 +409,6 @@ export class DrawFishFamilyComponent implements OnInit{
                             .subscribe({
                                 next: async (data) => {
                                     if (data){
-                                        console.log('123')
                                         this.resultAnswerData=data
 
                                         this.answerResult=true
@@ -377,10 +444,17 @@ export class DrawFishFamilyComponent implements OnInit{
      */
     selectSeq(item: any, index: number){
 
-        // DataSet의 회차
-        this.selectedSeq = item.seq;
-        // 답안 결과를 위한 인덱스 가져오기
-        this.resultSheet(index)
+        if(index == 0){
+            this.addSeq();
+            return;
+        }
+
+        this.selectSeqItem = item;
+
+        if(index==item.seq){
+            // 답안 결과를 위한 인덱스 가져오기
+            this.resultSheet(index)
+        }
         // 화면에 보여지는 DataSet list의 index
         this.selectedSeqIndex = index;
         // 해당 DataSet의 어항 그림 화면에 적용
@@ -405,16 +479,17 @@ export class DrawFishFamilyComponent implements OnInit{
      */
     addSeq(){
 
-        // 최대회차 25회로 제한
-        if(this.seqItems.length == 24) {
+        // 최대회차 24회로 제한
+        if(this.seqItems.length >= 25) {
             this.alertService.openAlert('상담은 24회차까지 진행됩니다.');
             return;
         }
 
+
         // 회차 추가
         this.seqItems.push({
             seq: this.selectedSeq + 1,
-            text: `${this.seqItems.length + 1}회차`,
+            text: `${this.seqItems.length}회차`,
             date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
             imgUrl: '',
             hour:0,
@@ -422,6 +497,7 @@ export class DrawFishFamilyComponent implements OnInit{
             second:0
         });
 
+        this.selectedSeq += 1;
 
         // 회차 추가 시 추가된 회차로 자동 선택
         this.selectSeq(this.seqItems[this.seqItems.length -1], this.seqItems.length -1);
@@ -434,14 +510,15 @@ export class DrawFishFamilyComponent implements OnInit{
 
         // 회차 삭제 확인 다이얼로그
         const dialog = this.dialogService.open({
-            title: `${index + 1}회차를 삭제하시겠습니까?`,
+            title: `${index}회차를 삭제하시겠습니까?`,
             content: ConfirmDialogComponent,
             appendTo: this.dialogRef,
             width: 450,
             height: 180,
             minWidth: 250,
         });
-        dialog.content.instance.text = `삭제 시 복구가 불가합니다. <br> ${index + 1}회차를 정말로 삭제하시겠습니까?`;
+        dialog.content.instance.text = `삭제 시 복구가 불가합니다. <br> ${index}회차를 정말로 삭제하시겠습니까?`;
+        console.log(item);
 
         dialog.result.subscribe((result: any) => {
             // 회차 삭제 진행
@@ -455,7 +532,7 @@ export class DrawFishFamilyComponent implements OnInit{
                         }
                     });
 
-                // 페이지 새로고침
+                // 페이지 새로고
                 window.location.reload();
             }
         });
@@ -691,7 +768,7 @@ export class DrawFishFamilyComponent implements OnInit{
         dialog.result.subscribe({
             next: async (result: any) => {
                 if (result.text === 'yes') {
-                    this.canvas.rasterize(this.selectedSeq, this.startDate, result.detailFishId);
+                    this.canvas.rasterize(this.selectedSeq, this.startDate, result.detailFishId, this.patientInfoId);
 
                     // full screen 닫기
                     this.closeFullscreen();
@@ -737,6 +814,7 @@ export class DrawFishFamilyComponent implements OnInit{
      * 그리기 모드 해제
      */
     closeFullscreen() {
+        this.drawFishFamilyService.closeFullScreen();
         this.isPopupOpen=false;
 
         this.document.exitFullscreen();
@@ -762,7 +840,15 @@ export class DrawFishFamilyComponent implements OnInit{
             })
     }
 
+    /**
+     * 구독 해제
+     */
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+        this.subscription2.unsubscribe();
+        this.subscription3.unsubscribe();
+        this.subscription4.unsubscribe();
+        this.subscription5.unsubscribe();
+    }
 
-
-    protected readonly single = single;
 }

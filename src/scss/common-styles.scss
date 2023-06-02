@@ -53,7 +53,7 @@
 }
 
 .drawer-style{
-  height: 94.6%;
+  height: 75vh;
   kendo-drawer .k-drawer{
     .k-drawer-mini{
       border-left: #cccccc solid 1px;
@@ -90,4 +90,82 @@
 .k-chip-solid-base {
     padding-inline: 0;
 }
+//////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////
+// k-popup 스타일
+//////////////////////////////////////////////////////
+.draw-popup{
+.k-popup{
+
+    border-radius: 1.5rem;
+    border: none;
+  }
+
+}
+//////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////
+// kendo dropdownbutton 스타일
+//////////////////////////////////////////////////////
+.top-dropdown{
+  .k-button-icon {
+    width: 50%;
+    //padding-top: 5px;
+  }
+  .k-button{
+    flex-wrap: wrap;
+  }
+}
+
+.k-menu-popup{
+  width: 150px;
+  .k-link, .k-menu-group .k-item.k-focus{
+    .k-link {
+      box-shadow: none;
+      color: #ca3d57;
+    }
+  }
+  .k-menu-group-lg .k-menu-link {
+    //padding-block: 6px;
+    //padding-inline: 8px;
+    padding-inline-end: 8px;
+    span{
+      justify-content: center;
+    }
+  }
+
+  //.k-menu-group .k-menu-item{
+  //  align-items: center;
+  //  span{
+  //    padding-inline-end: unset;
+  //  }
+  //}
+  //.k-link .k-menu-link{
+  //  .k-menu-link-text{
+  //    span{
+  //      padding: 0;
+  //    }
+  //  }
+  //
+  //}
+}
+
+.top-dropdownlist{
+  .k-list-item{
+    height: 32px;
+  }
+  .k-focus{
+    box-shadow: none;
+    color: #ca3d57;
+    background-color: unset;
+  }
+}
+
+.k-button-icon{
+  font-size: 20px;
+}
+
 //////////////////////////////////////////////////////

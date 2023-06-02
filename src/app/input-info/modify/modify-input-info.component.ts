@@ -50,6 +50,10 @@ export class ModifyInputInfoComponent implements OnInit{
     public resultRelation:any[]=[];
     // 가족 구성원 + 가족 관계 데이터
     public familyData:any[]=[];
+    // 로그인 한 아이디
+    public getId: string = '';
+    // 사용자 아이디
+    public userId: number = 0;
 
     /**
      * 생성자
@@ -80,11 +84,18 @@ export class ModifyInputInfoComponent implements OnInit{
      * 초기화
      */
     ngOnInit() {
+        this.getId=String(this.authService.getUserEmail());
+        this.infoForm.patchValue({ userEmail: this.authService.getUserEmail() });
+        this.infoForm.patchValue({ userName: this.authService.getUserName() });
+
         // 데이터 로드
         this.loadData();
         setTimeout(()=>{
             this.dataSetting();
         },1000);
+
+
+
     }
 
     /**
@@ -131,7 +142,7 @@ export class ModifyInputInfoComponent implements OnInit{
             });
 
         // 내담자 추가 정보 조회
-        this.mindReaderControlService.getPatientInfo(String(this.authService.getUserEmail()))
+        this.mindReaderControlService.getPatientInfo(this.getId)
             .subscribe({
                 next: async (data) => {
                     if (data){
@@ -148,29 +159,32 @@ export class ModifyInputInfoComponent implements OnInit{
      * 홈페이지 리로드시 가족 구성원, 관계 데이터 세팅
      */
     dataSetting(){
-        this.resultInfo = this.patientData.familyInfo.split(',').map(Number)
-        this.selectedFamily = this.resultInfo.filter((value, index, array) => array.indexOf(value) === index);
-        this.resultRelation  =this.patientData.familyRelation.split(',').map(Number)
+        if(this.patientData!=undefined){
 
-        // 가족 구성원에 따른 가족 관계 이중 리스트
-        this.familyData = this.selectedFamily.map((item, index) => {
-            const list = this.resultRelation.splice(0, this.resultInfo.filter(item2 => item2 == item).length).map((item3, index1) => {
-                if (this.resultInfo.filter(item2 => item2 == item).length == index1) {
-                    this.resultRelation = this.resultRelation.slice(index + 1);
-                }
-                return `${item}_${item3}`;
+            this.resultInfo = this.patientData.familyInfo.split(',').map(Number)
+            this.selectedFamily = this.resultInfo.filter((value, index, array) => array.indexOf(value) === index);
+            this.resultRelation  =this.patientData.familyRelation.split(',').map(Number)
+
+            // 가족 구성원에 따른 가족 관계 이중 리스트
+            this.familyData = this.selectedFamily.map((item, index) => {
+                const list = this.resultRelation.splice(0, this.resultInfo.filter(item2 => item2 == item).length).map((item3, index1) => {
+                    if (this.resultInfo.filter(item2 => item2 == item).length == index1) {
+                        this.resultRelation = this.resultRelation.slice(index + 1);
+                    }
+                    return `${item}_${item3}`;
+                });
+                return list;
             });
-            return list;
-        });
 
-        // numeric text box 에 들어갈 변수
-        const uniqueArr = Array.from(new Set(this.resultInfo));
-        this.resultInfo = uniqueArr.map((item) => this.resultInfo.filter((i) => i === item).length);
+            // numeric text box 에 들어갈 변수
+            const uniqueArr = Array.from(new Set(this.resultInfo));
+            this.resultInfo = uniqueArr.map((item) => this.resultInfo.filter((i) => i === item).length);
 
-        // 가족 선택 리스트
-        this.selectedFamily = this.selectedFamily.map(id => {
-            return this.familyList.find(item => item.id === id);
-        });
+            // 가족 선택 리스트
+            this.selectedFamily = this.selectedFamily.map(id => {
+                return this.familyList.find(item => item.id === id);
+            });
+        }
     }
     /**
      * 가족 데이터
@@ -190,11 +204,15 @@ export class ModifyInputInfoComponent implements OnInit{
      * 추가 정보 수정하기
      */
     modifyPatientInfo(){
+        if(this.patientData!=undefined){
+            this.userId=this.patientData.id
+        }
+
         this.familyInfo()
         let resultFamilyRelation=this.selectedFamilyRelation.join(',');
         let resultFamilyInfo=this.selectedFamilyList.join(',');
         const request: PatientInfoRequest = {
-            id: this.patientData.id,
+            id: this.userId,
             age: Number(this.infoForm.controls['age'].value),
             familyInfo: resultFamilyInfo,
             familyNum: Number(this.infoForm.controls['familyNum'].value),
