@@ -7,6 +7,7 @@ import {AuthService} from "../../service/auth.service";
 import {DrawFishFamilyService} from "../../service/draw-fish-family.service";
 import {Subscription} from "rxjs";
 import {AlertService} from "../../service/alert.service";
+import {MindReaderControlService} from "../../service/mind-reader-control.service";
 
 
 @Component({
@@ -17,7 +18,7 @@ import {AlertService} from "../../service/alert.service";
 export class TopNavComponent implements OnInit,OnDestroy {
 
   public subscription: Subscription;
-  public subscription2: Subscription;
+
   public seqItems : {id?: number, seq?: number,text: string, date?: string, imgUr?: string, hour?: number,minute?: number,second?: number,detailFishDescription?:string}[] = [];
   public userName: string | null = this.authService.getUserName();
 
@@ -45,7 +46,9 @@ export class TopNavComponent implements OnInit,OnDestroy {
     private dialogService: DialogService,
     private authService:AuthService,
     private alertService: AlertService,
-    private drawFishFamilyService: DrawFishFamilyService
+    private drawFishFamilyService: DrawFishFamilyService,
+    private mindReaderControlService:MindReaderControlService,
+
   ) {
     this.subscription = drawFishFamilyService.seqItems$.subscribe(
       data => {
@@ -54,14 +57,7 @@ export class TopNavComponent implements OnInit,OnDestroy {
         this.selectedItem = this.seqItems[this.seqItems.length -1];
         this.preSelectedItem = this.selectedItem;
         this.selectSeqIndex = this.seqItems.length -1;
-        console.log(this.seqItems);
     })
-
-    this.subscription2 = drawFishFamilyService.patientInfo$.subscribe(
-        patientData => {
-            this.patientData = patientData;
-        }
-    )
 
   }
 
@@ -77,6 +73,14 @@ export class TopNavComponent implements OnInit,OnDestroy {
    * 초기화
    */
   ngOnInit() {
+    var userEmail =  this.authService.getUserEmail() != null ? this.authService.getUserEmail() : '';
+    this.mindReaderControlService.getPatientInfo(userEmail? userEmail : '')
+        .subscribe({
+          next: async (data) => {
+            this.patientData = data;
+          }
+
+        })
   }
 
   /**
@@ -235,7 +239,6 @@ export class TopNavComponent implements OnInit,OnDestroy {
    */
   ngOnDestroy() {
     this.subscription.unsubscribe();
-    this.subscription2.unsubscribe();
   }
 
 }

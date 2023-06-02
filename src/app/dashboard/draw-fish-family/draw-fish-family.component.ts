@@ -340,7 +340,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
             .subscribe({
                 next: async (data) => {
                     this.patientInfoId = data?.id;
-                    this.drawFishFamilyService.sendPatientData(data);
+                    //this.drawFishFamilyService.sendPatientData(data);
                     console.log(data);
 
                 }

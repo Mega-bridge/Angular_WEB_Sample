@@ -31,10 +31,11 @@
 
     <div>
         <span style="font-size: 25px;">{{userName}} </span>
-        <span> &nbsp;/ {{patientData ? (patientData.genderId == 0 ? '남' : '여') : ''}} / 만 {{patientData ? patientData.age : ''}}세 / {{selectedItem ? selectedItem.text : ''}}&nbsp;</span>
+        <span> &nbsp;/ {{patientData ? (patientData.genderId == 0 ? '남' : '여') : ''}} / 만 {{patientData ? patientData.age : ''}}세 </span>
+        <span *ngIf="selectSeqIndex && selectSeqIndex != 0">/ {{selectedItem ? selectedItem.text : ''}}&nbsp;</span>
 <!--        <span>||</span>-->
         <span *ngIf="selectSeqIndex && selectSeqIndex != 0" style="margin-right: 2.5px;">-&nbsp;{{selectedItem.date}}</span>
-        <span style="font-size: 13px;">( {{selectedItem ? selectedItem.hour : ''}}시간 {{selectedItem ? selectedItem.minute : ''}}분 {{selectedItem ? selectedItem.second : ''}}초 ) &nbsp;</span>
+        <span *ngIf="selectSeqIndex && selectSeqIndex != 0" style="font-size: 13px;">( {{selectedItem ? selectedItem.hour : ''}}시간 {{selectedItem ? selectedItem.minute : ''}}분 {{selectedItem ? selectedItem.second : ''}}초 ) &nbsp;</span>
     </div>
     <div style="display: flex;    align-items: center;">
 
