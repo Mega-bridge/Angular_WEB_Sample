@@ -32,6 +32,8 @@ export class TopNavComponent implements OnInit,OnDestroy {
     { text: "추가정보" },
     { text: "로그아웃" },
   ];
+  
+  public checked = false;
 
   /**
    * 생성자
@@ -232,6 +234,20 @@ export class TopNavComponent implements OnInit,OnDestroy {
    */
   saveSeq(){
     this.drawFishFamilyService.saveSeqItem();
+  }
+
+  /**
+   * 튜토리얼 모드 on/off
+   * @param e
+   */
+  isTutorial(e:any){
+    
+    if(e){
+      this.router.navigate(['/tutorial']);
+    }
+    else{
+      this.router.navigate(['/DrawFishFamily']);
+    }
   }
 
   /**

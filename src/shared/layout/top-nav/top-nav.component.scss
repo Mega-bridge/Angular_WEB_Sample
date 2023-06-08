@@ -9,7 +9,7 @@
 .top-nav-wrap{
   width: 10%;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   padding: 5px;
   background-color: #ffffff;
@@ -34,3 +34,4 @@
 
   }
 }
+
