@@ -235,10 +235,10 @@ export class DragAndDropComponent implements AfterViewInit{
         this.waterUrl = opt;
         this.fishbowlCode = fishbowlCode;
         this.canvas.setBackgroundImage(this.waterUrl, this.canvas.renderAll.bind(this.canvas), {
-            top: -40,
-            left: 0,
-            scaleX:0.53,
-            scaleY: 0.53
+            top: 40,
+            left: 40,
+            scaleX:0.5,
+            scaleY: 0.5
         });
 
     }
@@ -254,7 +254,7 @@ export class DragAndDropComponent implements AfterViewInit{
         fabric.loadSVGFromURL(el, (objects, options) => {
             const image = fabric.util.groupSVGElements(objects, options);
             image.set({
-                left: left == 0? left:400,
+                left: left? left:400,
                 top: top? top:400,
                 angle: 0,
                 padding: 10,

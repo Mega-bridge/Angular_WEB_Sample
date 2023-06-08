@@ -167,6 +167,19 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     public eelBodyImgList:string[] = [];
 
     /** 물고기 외 img list */
+    /**
+     * 0 물풀 WW
+     * 1 물방울 WD
+     * 2 돌 ST
+     * 3 먹이 BE
+     * 4 어항 소품 BE, HA, TA
+     * 5 물고기 외 BE
+     */
+    public etc_0_ImgList:string[] = [];
+    public etc_1_ImgList:string[] = [];
+    public etc_2_ImgList:string[] = [];
+    public etc_3_ImgList:string[] = [];
+    public etc_4_ImgList:string[] = [];
     public etcImgList:string[] = [];
 
 
@@ -314,12 +327,20 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
                         // 장어 비늘
                         this.eelBodyImgList = data.filter(item => item.path.includes('/eel/') && item.path.includes('F_EE_GE_')).map(item => item.path);
 
-                        // 물고기 외
-                        this.etcImgList = data.filter(item => item.path.includes('/etc/')).map(item => item.path);
-                        this.etcImgList.push('assets/img/fishBowl/FB_TA_0.svg');
-                        this.etcImgList.push('assets/img/fishBowl/FB_HA.svg');
                         // 어항
                         this.fishBowlImgList = data.filter(item => item.path.includes('/fishBowl/')).map(item => item.path);
+
+                         // 물고기 외
+                         this.etc_0_ImgList = data.filter(item => item.path.includes('/etc_0/')).map(item => item.path);
+                         this.etc_1_ImgList = data.filter(item => item.path.includes('/etc_1/')).map(item => item.path);
+                         this.etc_2_ImgList = data.filter(item => item.path.includes('/etc_2/')).map(item => item.path);
+                         this.etc_3_ImgList = data.filter(item => item.path.includes('/etc_3/')).map(item => item.path);
+                         this.etc_4_ImgList = data.filter(item => item.path.includes('/etc_4/')).map(item => item.path);
+
+                         console.log(this.etc_4_ImgList);
+                        //  this.etcImgList = data.filter(item => item.path.includes('/etc/')).map(item => item.path);
+                        //  this.etcImgList.push('assets/img/etc/FB_TA_0.svg');
+                        //  this.etcImgList.push('assets/img/etc/FB_HA_0.svg');
                     }
                 },
             })
@@ -692,12 +713,12 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         const objectCodeId = this.objectData.filter(item => item.path == img ).map(item => item.objectCodeId);
         
 
-        if(img.includes('_HA')){
-            this.canvas.getImgPolaroid(img,objectCodeId[0],999,-32,0,0.53);
+        if(img.includes('_HA_')){
+            this.canvas.getImgPolaroid(img,objectCodeId[0],999,40,40,0.5);
         
         }
         else if(img.includes('_TA_')){
-            this.canvas.getImgPolaroid(img,objectCodeId[0],999, 710, 0, 0.07);
+            this.canvas.getImgPolaroid(img,objectCodeId[0],999, 745, 30, 0.07);
             
         }
         else{
