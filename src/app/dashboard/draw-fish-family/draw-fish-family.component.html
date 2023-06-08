@@ -122,11 +122,12 @@
                          [animate]="animate"
                          *ngIf="showFishBowl"
                          class="draw-popup"
+                         [margin] ="isFamilyAfterFish?{ horizontal: 30, vertical: -50 }:{ horizontal: 30, vertical: -300 }"
             >
 
-                <div  class="pop-up-select-image">
-                    <div class="img-wrap-border" style="height: 128px; border-radius: 1.5rem;">
-                        <div *ngFor="let img of fishBowlImgList" class="img-wrap" style="width: 100%;"
+                <div  class="pop-up-select-image" style=" border: 1px solid #e0e0e0;">
+                    <div style="height: 800px; border-radius: 1.5rem;">
+                        <div *ngFor="let img of fishBowlImgList" class="img-wrap" style="width: 100%; border-bottom: 1px solid #e0e0e0;"
                              [style.background-color]="selectedFishBowl === img ? '#e0e0e0' : ''">
                             <img  (click)="selectWater(img)" [src]="img"  alt=""/>
                         </div>
@@ -140,11 +141,11 @@
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
                          [animate]="animate"
-                         [margin]="margin"
+                         [margin]="{ horizontal: 30, vertical: -130 }"
                          *ngIf="showFishes"
                          class="draw-popup">
 
-                <div  class="pop-up-select-image">
+                <div  class="pop-up-select-image" >
                     <div class="img-wrap-border top">
                         <div *ngFor="let faceImg of generalFaceImgList" class="img-wrap face"
                              [style.background-color]="selectedFishFace === faceImg ? '#e0e0e0' : ''">
@@ -167,7 +168,7 @@
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
                          [animate]="animate"
-                         [margin]="margin"
+                         [margin]="{ horizontal: 30, vertical: -250 }"
                          *ngIf="showRoundFishes"
                          class="draw-popup">
 
@@ -194,7 +195,7 @@
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
                          [animate]="animate"
-                         [margin]="margin"
+                         [margin]="{ horizontal: 30, vertical: -370 }"
                          *ngIf="showWhales"
                          class="draw-popup">
 
@@ -220,7 +221,7 @@
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
                          [animate]="animate"
-                         [margin]="margin"
+                         [margin]="{ horizontal: 30, vertical: -490 }"
                          *ngIf="showSharks"
                          class="draw-popup">
 
@@ -247,11 +248,11 @@
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
                          [animate]="animate"
-                         [margin]="margin"
+                         [margin]="{ horizontal: 30, vertical: -610 }"
                          *ngIf="showEels"
                          class="draw-popup">
 
-                <div  class="pop-up-select-image">
+                <div  class="pop-up-select-image" style="height: 760px;">
                     <div class="img-wrap-border top">
                         <div *ngFor="let faceImg of eelFaceImgList" class="img-wrap"
                              [style.background-color]="selectedFishFace === faceImg ? '#e0e0e0' : ''">
@@ -279,7 +280,7 @@
                          class="draw-popup">
 
                 <div  class="pop-up-select-image" style=" border: 1px solid #e0e0e0;">
-                    <div style="display: flex; width: 705px; height: 500px; flex-wrap: wrap;">
+                    <div style="display: flex; height: 800px; flex-direction: column;">
                         <div *ngFor="let img of etcImgList" class="img-wrap" style=" border-bottom: 1px solid #e0e0e0;"
                              [style.background-color]="selectedEtc === img ? '#e0e0e0' : ''">
                             <img  (click)="selectEtcObject($event, img)" [src]="img"  alt="smile"/>

@@ -62,7 +62,7 @@
     .image-container{
       //border: 1px solid black;
       //padding-top: 100%;
-      height: 41.25vw;
+      height: 37vw;
       width: 55vw;
       background-size: contain;
       background-repeat: no-repeat;
@@ -175,20 +175,22 @@
 
       .pop-up-select-image{
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
+        flex-direction: column;
+        //flex-wrap: wrap;
         justify-content: flex-start;
         align-content: center;
         //border: #666666 solid 1px;
         border: none;
         border-radius: 1.5rem;
-        width: min-content;
-        height: min-content;
+        //width: min-content;
+        height: 800px;
         overflow: auto;
+        background-color: #ebebeb;
 
         //padding: 10px;
         .img-wrap-border{
           display: flex;
+          flex-direction: column;
           align-items: center;
           width: 100%;
           background-color: #ffffff;
@@ -212,7 +214,7 @@
           border-right: 1px solid #e0e0e0;
 
           img{
-            width: 110px;
+            width: 90px;
             cursor: pointer;
             -webkit-transition: .3s ease-in-out;
             transition: .3s ease-in-out;

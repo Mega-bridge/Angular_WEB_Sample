@@ -113,7 +113,7 @@ export class DragAndDropComponent implements AfterViewInit{
             selection: true,
             selectionBorderColor: 'blue',
             isDrawingMode: false,
-            backgroundColor:'#ebebeb'
+            backgroundColor:''
 
         });
         // this.canvas.setWidth(window.innerWidth * 0.61);
@@ -145,10 +145,10 @@ export class DragAndDropComponent implements AfterViewInit{
             if(e.selected){
                 const selectedObject = e.selected[0];
                 this.getId();
-                console.log('///////////////////////');
-                console.log('object Id (timestamp): ' + this.props.id);
-                console.log('object Name: ' + selectedObject.name);
-                console.log('-----------------------');
+                // console.log('///////////////////////');
+                // console.log('object Id (timestamp): ' + this.props.id);
+                // console.log('object Name: ' + selectedObject.name);
+                // console.log('-----------------------');
             }
 
             // const selectedObject: any = e.selected? e.selected[0]: e.selected;
@@ -185,6 +185,7 @@ export class DragAndDropComponent implements AfterViewInit{
             //console.log(e);
             const movedObject: any = e.target;
             var centerPoint = movedObject.getCenterPoint();
+            // console.log(movedObject);
             // console.log('////////Object Moving///////////////');
             // console.log('centerPoint (X, Y): ' + centerPoint);
             // console.log('-----------------------');
@@ -208,9 +209,9 @@ export class DragAndDropComponent implements AfterViewInit{
             // console.log('////////Object Modified///////////////');
             // console.log('좌우 반전 여부:' + modifiedObject?.flipX);
             // console.log('상하 반전 여부:' + modifiedObject?.flipY);
-            console.log('Object Width:' + modifiedObject?.getScaledWidth());
-            console.log('Object Height:' + modifiedObject?.getScaledHeight());
-            console.log('Object Height:' + modifiedObject?.scaleX);
+            // console.log('Object Width:' + modifiedObject?.getScaledWidth());
+            // console.log('Object Height:' + modifiedObject?.getScaledHeight());
+            // console.log('Object Height:' + modifiedObject?.scaleX);
             // // console.log('상하 반전 여부:' + modifiedObject?.cacheHeight);
             // console.log('-----------------------');
 
@@ -234,10 +235,10 @@ export class DragAndDropComponent implements AfterViewInit{
         this.waterUrl = opt;
         this.fishbowlCode = fishbowlCode;
         this.canvas.setBackgroundImage(this.waterUrl, this.canvas.renderAll.bind(this.canvas), {
-            top: 50,
-            left: 60,
-            scaleX:0.6,
-            scaleY: 0.6
+            top: -40,
+            left: 0,
+            scaleX:0.53,
+            scaleY: 0.53
         });
 
     }
@@ -248,26 +249,27 @@ export class DragAndDropComponent implements AfterViewInit{
      * @param familyType
      * @param objectCodeId
      */
-    getImgPolaroid(event: any, objectCodeId: any,familyType?: any) {
+    getImgPolaroid(event: any, objectCodeId: any,familyType?: any, top?: number, left?:number, scale?: number) {
         const el = event;
         fabric.loadSVGFromURL(el, (objects, options) => {
             const image = fabric.util.groupSVGElements(objects, options);
             image.set({
-                left: 350,
-                top: 380,
+                left: left == 0? left:400,
+                top: top? top:400,
                 angle: 0,
                 padding: 10,
                 cornerSize: 20,
                 cornerColor: 'rgba(255, 87, 34, 0.7)',
-                hasRotatingPoint: true,
-                selectable: true,
-                strokeWidth:10,
-                name:familyType ? familyType : null,
-
+                hasRotatingPoint: top? false:true,
+                selectable: top? false:true,
+                evented: top? false:true,
+                strokeWidth:0,
+                name:familyType != 999 && familyType ? familyType : null,
             });
             this.extend(image, this.randomId(), new Date().getTime(),objectCodeId);
             //console.log(image.toObject().id);
-            image.scale(0.15);
+            image.scale(scale?scale: 0.2);
+        
             this.canvas.add(image);
 
 
@@ -483,6 +485,7 @@ export class DragAndDropComponent implements AfterViewInit{
      * @param dataSetSeq
      */
     createObjectSet(dataSetSeq: number):void {
+        console.log(dataSetSeq);
         // 회차별 오브젝트 생성 request model
         this.mrObjectModelList = this.canvas.getObjects().map((item:fabric.Object, index) => {
                 const mrList: MrObjectModel = {

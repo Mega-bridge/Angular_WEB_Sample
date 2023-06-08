@@ -1,25 +1,9 @@
-<!--<mat-toolbar class="fix-nav" [style]="{ 'background-color':'white' }">-->
-<!--  <button type="button" mat-icon-button class="visible-md" (click)="toggleSidebar()">-->
-<!--    <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>-->
-<!--  </button>-->
-<!--  <div>-->
-<!--    <span style="font-size: 25px; font-weight: 500;">MegaBridge</span> <br>-->
-<!--    <span style="font-size: 15px;">Connect your business</span>-->
-<!--  </div>-->
-<!--  <span class="nav-spacer"></span>-->
-<!--    <button mat-raised-button color="#f44237" (click)="openDialog()">-->
-<!--      <span>logout</span>-->
-<!--    </button>-->
-<!--&lt;!&ndash;    <button mat-button (click)="openDialog2()">&ndash;&gt;-->
-<!--&lt;!&ndash;      <span>logout</span>&ndash;&gt;-->
-<!--&lt;!&ndash;    </button>&ndash;&gt;-->
-<!--</mat-toolbar>-->
-
-<div class="top-nav-wrap" >
-  <div (click)="mainPage()" style=" cursor: pointer;">
+<div (click)="mainPage()" style=" cursor: pointer;" class="top-nav-wrap" >
+  
+    <img src="assets/img/MB_logo1.png" style="width: 30px; height: 30px; padding: 0 5px 4px;">
     <span style="font-size: 25px; font-weight: 500;">MindReader</span> <br>
 <!--    <span style="font-size: 15px;">Connect your business</span>-->
-  </div>
+  
 </div>
 
 
@@ -31,15 +15,17 @@
 
     <div>
         <span style="font-size: 25px;">{{userName}} </span>
-        <span> &nbsp;/ {{patientData ? (patientData.genderId == 0 ? '남' : '여') : ''}} / 만 {{patientData ? patientData.age : ''}}세 / {{selectedItem ? selectedItem.text : ''}}&nbsp;</span>
+        <span> &nbsp;/ {{patientData ? (patientData.genderId == 0 ? '남' : '여') : ''}} / 만 {{patientData ? patientData.age : ''}}세 /&nbsp;</span>
+        <span *ngIf="selectSeqIndex && selectSeqIndex != 0;" 
+            style=" background-color:#000000; color: #ffffff; border-radius: 1.5rem; font-size: 13px; padding: 3px 10px;" 
+            >{{selectedItem ? selectedItem.text : ''}}</span>
 <!--        <span>||</span>-->
-        <span *ngIf="selectSeqIndex && selectSeqIndex != 0" style="margin-right: 2.5px;">-&nbsp;{{selectedItem.date}}</span>
-        <span style="font-size: 13px;">( {{selectedItem ? selectedItem.hour : ''}}시간 {{selectedItem ? selectedItem.minute : ''}}분 {{selectedItem ? selectedItem.second : ''}}초 ) &nbsp;</span>
+        <span *ngIf="selectSeqIndex && selectSeqIndex != 0" style="margin-right: 2.5px; font-size: 13px;">&nbsp;-&nbsp;{{selectedItem.date}}</span>
+        <span *ngIf="selectSeqIndex && selectSeqIndex != 0" style="font-size: 13px;">( {{selectedItem ? selectedItem.hour : ''}}시간 {{selectedItem ? selectedItem.minute : ''}}분 {{selectedItem ? selectedItem.second : ''}}초 ) &nbsp;</span>
     </div>
-    <div style="display: flex;    align-items: center;">
+    <div style="display: flex; align-items: center;">
 
-
-        <button class="button-style" (click)="openFullscreen()" *ngIf="selectSeqIndex == 0 && seqItems.length <= 25">시작하기</button>
+        
         <kendo-dropdownlist
                 [data]="seqItems"
                 [popupSettings]="{
@@ -51,18 +37,12 @@
                 iconClass="k-i-calendar"
                 size="large"
                 fillMode="flat"
-                style="margin-right: 10px;background-color: unset; background-image: none; border: none; width: 110px;"
+                style="margin-right: 5px;background-color: unset; background-image: none; border: none; width: 110px;"
                 (selectionChange)="selectSeq($event)"
                 [(ngModel)]="seqItems.length >= 25 ? preSelectedItem : selectedItem"
-                *ngIf="selectSeqIndex"
+                
         >
         </kendo-dropdownlist>
-        <kendo-button *ngIf="selectSeqIndex" style="border: none; background-color: unset; background-image: none;" (click)="saveSeq()" >
-            <kendo-icon name="download"  [themeColor]="'info'" style="font-size: 24px;"></kendo-icon>
-        </kendo-button>
-        <kendo-button *ngIf="selectSeqIndex"  style="border: none; background-color: unset; background-image: none;" (click)="deleteSeq()" >
-            <kendo-icon name="trash"  [themeColor]="'error'" style="font-size: 24px;"></kendo-icon>
-        </kendo-button>
         <kendo-dropdownbutton
                 [data]="settings"
                 icon="user"
@@ -74,6 +54,23 @@
                 class="top-dropdown"
         >
         </kendo-dropdownbutton>
+
+        <span style="margin:0 10px;">||</span>
+        
+        <kendo-label text="튜토리얼 모드" style="margin-right: 5px; font-size: 13px;">
+            <kendo-switch style="margin-left: 4px;" [(ngModel)]="checked" (valueChange)="isTutorial($event)"></kendo-switch>
+        </kendo-label>
+
+        <button class="button-style" (click)="openFullscreen()" *ngIf="selectSeqIndex == 0 && seqItems.length <= 25">시작하기</button>
+
+        <kendo-button *ngIf="selectSeqIndex" style="border: none; background-color: unset; background-image: none;margin-left: 5px;" (click)="saveSeq()" >
+            <kendo-icon name="download"  [themeColor]="'info'" style="font-size: 24px;"></kendo-icon>
+        </kendo-button>
+
+        <kendo-button *ngIf="selectSeqIndex"  style="border: none; background-color: unset; background-image: none;" (click)="deleteSeq()" >
+            <kendo-icon name="trash"  [themeColor]="'error'" style="font-size: 24px;"></kendo-icon>
+        </kendo-button>
+        
     </div>
 </div>
 
