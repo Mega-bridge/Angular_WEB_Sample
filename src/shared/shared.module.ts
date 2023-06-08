@@ -18,6 +18,8 @@ import {ConfirmDialogComponent} from "./component/dialogs/confirm-dialog/confirm
 import {DropDownListModule} from "@progress/kendo-angular-dropdowns";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {IconModule} from "@progress/kendo-angular-icons";
+import { LabelModule } from "@progress/kendo-angular-label";
+import { InputsModule } from "@progress/kendo-angular-inputs";
 
 @NgModule({
     imports: [
@@ -37,6 +39,8 @@ import {IconModule} from "@progress/kendo-angular-icons";
         ReactiveFormsModule,
         FormsModule,
         IconModule,
+        LabelModule,
+        InputsModule
     ],
   declarations: [
     // layout

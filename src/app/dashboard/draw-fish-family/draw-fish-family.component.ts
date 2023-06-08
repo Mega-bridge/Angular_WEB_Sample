@@ -84,9 +84,8 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     public bottomAnchorAlign: Align = { horizontal: "right", vertical: "bottom" };
     public bottomPopupAlign: Align = { horizontal: "left", vertical: "bottom" };
 
-    public margin = { horizontal: 0, vertical: -50 };
-    public etcMargin = { horizontal: 0, vertical: -100 };
-    public etcMargin2 = { horizontal: 0, vertical: 0 };
+    public etcMargin = { horizontal: 30, vertical: -400 };
+    public etcMargin2 = { horizontal: 30, vertical: 0 };
 
     public animate : PopupAnimation = {
         type: 'fade',
@@ -317,9 +316,10 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
 
                         // 물고기 외
                         this.etcImgList = data.filter(item => item.path.includes('/etc/')).map(item => item.path);
+                        this.etcImgList.push('assets/img/fishBowl/FB_TA_0.svg');
+                        this.etcImgList.push('assets/img/fishBowl/FB_HA.svg');
                         // 어항
                         this.fishBowlImgList = data.filter(item => item.path.includes('/fishBowl/')).map(item => item.path);
-
                     }
                 },
             })
@@ -485,10 +485,11 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
             return;
         }
 
+        this.selectedSeq += 1;
 
         // 회차 추가
         this.seqItems.push({
-            seq: this.selectedSeq + 1,
+            seq: this.selectedSeq,
             text: `${this.seqItems.length}회차`,
             date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
             imgUrl: '',
@@ -497,7 +498,6 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
             second:0
         });
 
-        this.selectedSeq += 1;
 
         // 회차 추가 시 추가된 회차로 자동 선택
         this.selectSeq(this.seqItems[this.seqItems.length -1], this.seqItems.length -1);
@@ -688,10 +688,22 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
      * @param img
      */
     public getImgPolaroid(img:string) {
-
+        
         const objectCodeId = this.objectData.filter(item => item.path == img ).map(item => item.objectCodeId);
+        
 
-        this.canvas.getImgPolaroid(img,objectCodeId[0],this.selectedFamilyType);
+        if(img.includes('_HA')){
+            this.canvas.getImgPolaroid(img,objectCodeId[0],999,-32,0,0.53);
+        
+        }
+        else if(img.includes('_TA_')){
+            this.canvas.getImgPolaroid(img,objectCodeId[0],999, 710, 0, 0.07);
+            
+        }
+        else{
+            this.canvas.getImgPolaroid(img,objectCodeId[0],this.selectedFamilyType);
+        }
+
 
         // 물고기 선택 후 버튼 해제
         if(this.selectedFamilyType != null){
@@ -768,6 +780,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         dialog.result.subscribe({
             next: async (result: any) => {
                 if (result.text === 'yes') {
+                    console.log(this.selectedSeq);
                     this.canvas.rasterize(this.selectedSeq, this.startDate, result.detailFishId, this.patientInfoId);
 
                     // full screen 닫기
