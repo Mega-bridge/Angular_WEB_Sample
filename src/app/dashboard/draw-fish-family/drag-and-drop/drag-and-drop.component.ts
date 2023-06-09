@@ -264,8 +264,8 @@ export class DragAndDropComponent implements AfterViewInit{
                 selectable: top? false:true,
                 evented: top? false:true,
                 strokeWidth:0,
-                name:familyType != 999 && familyType ? familyType : null,
-            });
+                name: familyType != 999 && (familyType || familyType == 0 )? familyType : null,
+        });
             this.extend(image, this.randomId(), new Date().getTime(),objectCodeId);
             //console.log(image.toObject().id);
             image.scale(scale?scale: 0.2);
