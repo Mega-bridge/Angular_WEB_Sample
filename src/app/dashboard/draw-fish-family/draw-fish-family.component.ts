@@ -126,6 +126,13 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     /** 어항 선택 */
     public showFishBowl: boolean = false;
 
+    public showEtc_0: boolean = false;
+    public showEtc_1: boolean = false;
+    public showEtc_2: boolean = false;
+    public showEtc_3: boolean = false;
+    public showEtc_4: boolean = false;
+    public showEtc_5: boolean = false;
+
     // object 이미지 경로 리스트
     /** 어항 물 양 img list */
     public fishBowlImgList: string[] = [];
@@ -180,6 +187,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     public etc_2_ImgList:string[] = [];
     public etc_3_ImgList:string[] = [];
     public etc_4_ImgList:string[] = [];
+    public etc_5_ImgList:string[] = [];
     public etcImgList:string[] = [];
 
 
@@ -336,6 +344,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
                          this.etc_2_ImgList = data.filter(item => item.path.includes('/etc_2/')).map(item => item.path);
                          this.etc_3_ImgList = data.filter(item => item.path.includes('/etc_3/')).map(item => item.path);
                          this.etc_4_ImgList = data.filter(item => item.path.includes('/etc_4/')).map(item => item.path);
+                         this.etc_5_ImgList = data.filter(item => item.path.includes('/etc_5/')).map(item => item.path);
 
                          console.log(this.etc_4_ImgList);
                         //  this.etcImgList = data.filter(item => item.path.includes('/etc/')).map(item => item.path);
@@ -570,14 +579,24 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
      * @param type
      */
     closeOpenPopUp(type ?:string):void {
+        this.showFishBowl = type === 'showFishBowl' ? !this.showFishBowl : false;
         this.showFishes = type === 'showFishes' ? !this.showFishes : false;
         this.showWhales = type === 'showWhales' ? !this.showWhales : false;
         this.showRoundFishes = type === 'showRoundFishes' ? !this.showRoundFishes : false;
         this.showSharks = type === 'showSharks' ? !this.showSharks : false;
         this.showEels = type === 'showEels' ? !this.showEels : false;
-        this.showEtc = type === 'showEtc' ? !this.showEtc : false;
-        this.showFishBowl = type === 'showFishBowl' ? !this.showFishBowl : false;
 
+        this.showEtc = type === 'showEtc' ? !this.showEtc : false;
+
+    }
+
+    closeOpenPopUpEtc(type: string){
+        this.showEtc_0 = type === 'showEtc_0' ? !this.showEtc_0 : false;
+        this.showEtc_1 = type === 'showEtc_1' ? !this.showEtc_0 : false;
+        this.showEtc_2 = type === 'showEtc_2' ? !this.showEtc_0 : false;
+        this.showEtc_3 = type === 'showEtc_3' ? !this.showEtc_0 : false;
+        this.showEtc_4 = type === 'showEtc_4' ? !this.showEtc_0 : false;
+        this.showEtc_5 = type === 'showEtc_5' ? !this.showEtc_0 : false;
     }
 
 

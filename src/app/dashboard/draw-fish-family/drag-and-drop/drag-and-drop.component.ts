@@ -15,6 +15,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../../../shared/service/alert.service";
 import {MrDataSetRequestModel} from "../../../../shared/model/request/mr-data-set.request.model";
 import {AuthService} from "../../../../shared/service/auth.service";
+import { __values } from "tslib";
 
 
 
@@ -22,6 +23,7 @@ import {AuthService} from "../../../../shared/service/auth.service";
 @Component({
     selector: 'app-dashboard-drag-and-drop',
     templateUrl: 'drag-and-drop.component.html',
+    styleUrls: ['drag-and-drop.component.scss']
 })
 
 @Injectable({
@@ -93,6 +95,10 @@ export class DragAndDropComponent implements AfterViewInit{
     public objectSeq: number = 0;
 
 
+    
+    public controlEventHandler: ((event: Event) => void) | null = null;
+
+
     /**
      *
      * @param mindReaderControlService
@@ -139,6 +145,10 @@ export class DragAndDropComponent implements AfterViewInit{
         // });
 
 
+        
+        
+        
+        
 
         this.canvas.on('selection:created',e => {
             console.log(e);
@@ -199,6 +209,8 @@ export class DragAndDropComponent implements AfterViewInit{
             // console.log('////////Object Rotating///////////////');
             // console.log('angle: ' + movedObject.angle);
             // console.log('-----------------------');
+            
+            this.updateControls();
         })
 
 
@@ -217,14 +229,124 @@ export class DragAndDropComponent implements AfterViewInit{
 
             this.controlCount += 1;
             console.log('control Count: ' + this.controlCount);
+            this.updateControls();
         });
 
+
+
+        // // 각도 조절
+        // const angleInputElement = document.querySelector('#angle-control');
+        // if (angleInputElement) {
+        //     angleInputElement.addEventListener('change', (event) => {
+        //         const newValue = (event.target as HTMLInputElement).value;
+        //         //this.changeControl('#angle-control', 'angle');
+        //     });
+        // }
+
+        // // 사이즈 조절
+        // const inputElementScale = document.querySelector('#scale-control');
+        // if (inputElementScale) {
+        //     inputElementScale.addEventListener('change', (event) => {
+        //         const newValue = (event.target as HTMLInputElement).value;
+        //         this.changeControl('#scale-control', 'scale');    
+        //     });
+        // }
+
     }
 
 
-    drawingMode() {
-        this.canvas.isDrawingMode = !this.canvas.isDrawingMode;
+   
+    
+
+
+    /**
+     * object -> control bar value 전달
+     */
+    updateControls() {
+        var activeGroup = this.canvas.getActiveObject();
+        
+        // 각도
+        var angleInputElement : HTMLInputElement | null = document.querySelector('#angle-control');
+        var angleVal = activeGroup?.angle?.toString();
+
+        // 사이즈
+        var scaleInputElement : HTMLInputElement | null = document.querySelector('#scale-control');
+        var scaleVal = activeGroup?.scaleX?.toString();
+        
+        // 각도
+        if(angleInputElement){    
+            angleInputElement.value = angleVal ? angleVal: '0';
+        }
+
+        // 사이즈
+        if(scaleInputElement){
+            scaleInputElement.value = scaleVal ? scaleVal : '0.2';
+        }
+        
     }
+
+
+    /**
+     * 컨트롤 바
+     * @param val 
+     */
+    changeControl(htmlId: string, type: string){
+        var control: HTMLInputElement | null = document.querySelector(htmlId);
+        var activeGroup = this.canvas.getActiveObject();
+        
+        
+        if(control && activeGroup?.evented){
+
+            if (this.controlEventHandler) {
+                control.removeEventListener('input', this.controlEventHandler);
+            } 
+
+            if (activeGroup && control?.value) {
+                switch (type) {
+                  case 'angle':
+                    activeGroup.set('angle', parseInt(control.value, 10)).setCoords();
+                    break;
+                  case 'scale':
+                    activeGroup.scale(parseFloat(control.value)).setCoords();
+                    break;
+                }
+                
+            }
+
+            this.canvas.requestRenderAll();
+            this.canvas.renderAll();    
+            
+        }
+        
+        // var activeGroups = this.canvas.getActiveObjects();
+        // activeGroups.forEach((object:fabric.Object) => {
+        //     if(control){
+            
+        //         if (this.angleControlEventHandler) {
+        //             control.removeEventListener('input', this.angleControlEventHandler);
+        //         }        
+        //         let self = this;
+        //         this.angleControlEventHandler = function() {
+        //             if (control?.value) {
+        //                 switch (type) {
+        //                   case 'angle':
+        //                     object.set('angle', parseInt(control.value, 10)).setCoords();
+        //                     break;
+        //                   case 'scale':
+        //                     object.scale(parseFloat(control.value)).setCoords();
+        //                     break;
+        //                 }
+        //               }
+        //               self.canvas.renderAll();
+        //         };
+        //         control.addEventListener('input', this.angleControlEventHandler);
+    
+        
+                
+        //     }
+        // })
+    }
+   
 
     /**
      * 어항 설정
@@ -261,10 +383,12 @@ export class DragAndDropComponent implements AfterViewInit{
                 cornerSize: 20,
                 cornerColor: 'rgba(255, 87, 34, 0.7)',
                 hasRotatingPoint: top? false:true,
-                selectable: top? false:true,
+                hasControls : top? false: true,
+                selectable: true,
                 evented: top? false:true,
                 strokeWidth:0,
                 name:familyType != 999 && familyType ? familyType : null,
+                centeredRotation:true
             });
             this.extend(image, this.randomId(), new Date().getTime(),objectCodeId);
             //console.log(image.toObject().id);
@@ -536,6 +660,13 @@ export class DragAndDropComponent implements AfterViewInit{
                 error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
             });
     }
+
+
+
+    drawingMode() {
+        this.canvas.isDrawingMode = !this.canvas.isDrawingMode;
+    }
+
 
 
 }
