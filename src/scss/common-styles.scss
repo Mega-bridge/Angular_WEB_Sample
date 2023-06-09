@@ -99,13 +99,25 @@
 .draw-popup{
   box-shadow: 0px 0px 8px 0px #979797;
   border-radius: 1.5rem;
-.k-popup{
-
+  
+  .k-popup{
+    background-color: unset;
     border-radius: 1.5rem;
     border: none;
   }
 
+  &.label{
+    box-shadow: unset;
+    .k-popup{
+      background-color: unset;
+      border-radius: 1.5rem;
+      border: none;
+      box-shadow: unset;
+    }
+  }
+
 }
+
 //////////////////////////////////////////////////////
 
 

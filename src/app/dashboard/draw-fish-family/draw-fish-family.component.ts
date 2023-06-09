@@ -84,7 +84,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     public bottomAnchorAlign: Align = { horizontal: "right", vertical: "bottom" };
     public bottomPopupAlign: Align = { horizontal: "left", vertical: "bottom" };
 
-    public etcMargin = { horizontal: 30, vertical: -400 };
+    public etcMargin = { horizontal: 30, vertical: -150 };
     public etcMargin2 = { horizontal: 30, vertical: 0 };
 
     public animate : PopupAnimation = {
@@ -586,7 +586,21 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         this.showSharks = type === 'showSharks' ? !this.showSharks : false;
         this.showEels = type === 'showEels' ? !this.showEels : false;
 
-        this.showEtc = type === 'showEtc' ? !this.showEtc : false;
+        if(type === 'showEtc'){
+            this.showEtc = !this.showEtc;
+            this.showEtc_0 = !this.showEtc_0;
+        }
+        else{
+            this.showEtc = false;
+            this.showEtc_0 = false;
+            this.showEtc_1 = false;
+            this.showEtc_2 = false;
+            this.showEtc_3 = false;
+            this.showEtc_4 = false;
+            this.showEtc_5 = false;
+
+        }
+        
 
     }
 
