@@ -61,7 +61,8 @@ export class LoginComponent {
                             }, 15);
 
                             // 로그인 성공 시 튜토리얼로 이동
-                            this.tutorial();
+                            // this.tutorial();
+                            this.startDraw();
                         }
 
                     }
@@ -95,6 +96,13 @@ export class LoginComponent {
      */
     signup() {
         this.router.navigateByUrl(`/sign-up`);
+    }
+
+    /**
+     * 그리기 main 화면으로 이동
+     */
+    startDraw(){
+        this.router.navigateByUrl(`/DrawFishFamily`);
     }
 
 }

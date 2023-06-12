@@ -22,6 +22,10 @@ export class DrawFishFamilyService {
     private patientInfo = new Subject<any>();
     patientInfo$ = this.patientInfo.asObservable();
 
+    /* 회차 추가 여부 */
+    private addItem = new Subject<boolean>();
+    addItem$ = this.addItem.asObservable();
+
     /* 회차 삭제 여부 */
     private deleteItem = new Subject<boolean>();
     deleteItem$ = this.deleteItem.asObservable();
@@ -73,6 +77,10 @@ export class DrawFishFamilyService {
     selectSeqItem(item: any, index: number){
         this.selectItem.next(item);
         this.selectItemIndex.next(index);
+    }
+
+    addSeqItem(){
+        this.addItem.next(true);
     }
 
     /**

@@ -18,6 +18,9 @@ import {MindReaderControlService} from "../../service/mind-reader-control.servic
 export class TopNavComponent implements OnInit,OnDestroy {
 
   public subscription: Subscription;
+  public subscription2: Subscription;
+  public subscription3: Subscription;
+  public subscription4: Subscription;
 
   public seqItems : {id?: number, seq?: number,text: string, date?: string, imgUr?: string, hour?: number,minute?: number,second?: number,detailFishDescription?:string}[] = [];
   public userName: string | null = this.authService.getUserName();
@@ -28,10 +31,18 @@ export class TopNavComponent implements OnInit,OnDestroy {
 
   public selectSeqIndex : number  = 0;
 
+  public isAdd: boolean = false;
+
   public settings = [
     { text: "추가정보" },
     { text: "로그아웃" },
   ];
+
+  public options = [
+    {text: '다운로드', icon: 'download'},
+    {text: '삭제', icon: 'trash'},
+
+  ]
   
   public checked = false;
 
@@ -55,11 +66,29 @@ export class TopNavComponent implements OnInit,OnDestroy {
     this.subscription = drawFishFamilyService.seqItems$.subscribe(
       data => {
         this.seqItems = data;
-        this.seqItems.splice(0,0,{text:'회차 추가'})
-        this.selectedItem = this.seqItems[this.seqItems.length -1];
-        this.preSelectedItem = this.selectedItem;
-        this.selectSeqIndex = this.seqItems.length -1;
-    })
+        //this.seqItems.splice(0,0,{text:'회차 추가'})
+        //this.selectedItem = this.seqItems[this.seqItems.length -1];
+        //this.preSelectedItem = this.selectedItem;
+    });
+
+    this.subscription2 = drawFishFamilyService.selectItemIndex$.subscribe(
+      index => {
+          this.selectSeqIndex = index;
+    });
+
+    this.subscription3 = drawFishFamilyService.addItem$.subscribe(
+      isAdd => {
+          if(isAdd) this.isAdd = isAdd;
+    });
+
+    this.subscription4 = drawFishFamilyService.selectItem$.subscribe(
+      item => {
+          this.selectedItem = item;
+      });
+
+
+
+
 
   }
 
@@ -174,6 +203,20 @@ export class TopNavComponent implements OnInit,OnDestroy {
     }
   }
 
+  onOptionClick(e:any){
+    switch(e.text){
+      case '다운로드':
+        this.saveSeq();
+        break;
+      case '삭제':
+        this.deleteSeq();
+        break;
+      default:
+        break;
+
+    }
+  }
+
 
   /**
    * 그리기 모드 시작
@@ -187,31 +230,31 @@ export class TopNavComponent implements OnInit,OnDestroy {
    * 회차 선택 이벤트
    * @param e
    */
-  selectSeq(e : any){
+  // selectSeq(e : any){
 
-    // 기존 회차 선택
-    if(e.seq){
-      this.selectedItem = e;
-      this.preSelectedItem = e;
+  //   // 기존 회차 선택
+  //   if(e.seq){
+  //     this.selectedItem = e;
+  //     this.preSelectedItem = e;
 
-      this.seqItems.map((item, index) => {
-        if(item.seq === e.seq) this.selectSeqIndex = index; return;
-      });
+  //     this.seqItems.map((item, index) => {
+  //       if(item.seq === e.seq) this.selectSeqIndex = index; return;
+  //     });
 
-      this.drawFishFamilyService.selectSeqItem(e, this.selectSeqIndex);
-    }
-    // 24회 상담 모두 소진한 후 회차 추가
-    else if(this.seqItems.length >= 25){
-      this.alertService.openAlert('상담은 24회차까지 진행됩니다.');
-    }
-    // 회차 추가
-    else{
-      this.selectedItem = e;
-      this.selectSeqIndex = 0;
-      this.drawFishFamilyService.selectSeqItem(e, this.selectSeqIndex);
-    }
+  //     this.drawFishFamilyService.selectSeqItem(e, this.selectSeqIndex);
+  //   }
+  //   // 24회 상담 모두 소진한 후 회차 추가
+  //   else if(this.seqItems.length >= 25){
+  //     this.alertService.openAlert('상담은 24회차까지 진행됩니다.');
+  //   }
+  //   // 회차 추가
+  //   else{
+  //     this.selectedItem = e;
+  //     this.selectSeqIndex = 0;
+  //     this.drawFishFamilyService.selectSeqItem(e, this.selectSeqIndex);
+  //   }
 
-  }
+  // }
 
   // public itemDisabled(itemArgs: { dataItem: any; index: number }) {
   //   console.log(this.seqItems);
@@ -255,6 +298,9 @@ export class TopNavComponent implements OnInit,OnDestroy {
    */
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.subscription2.unsubscribe();
+    this.subscription3.unsubscribe();
+    this.subscription4.unsubscribe();
   }
 
 }
