@@ -84,6 +84,9 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
     public anchorAlign: Align = { horizontal: "right", vertical: "top" };
     public popupAlign: Align = { horizontal: "left", vertical: "top" };
 
+    public centerAnchorAlign: Align = { horizontal: "right", vertical: "center" };
+    public centerPopupAlign: Align = { horizontal: "left", vertical: "center" };
+
     public bottomAnchorAlign: Align = { horizontal: "right", vertical: "bottom" };
     public bottomPopupAlign: Align = { horizontal: "left", vertical: "bottom" };
 
@@ -104,6 +107,8 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
     public hour: number=0;
     public minute: number=0;
     public second: number=0;
+
+    public infoCount = 0;
 
 
     ///// 어항 그리기 /////
@@ -641,6 +646,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
         this.showFishBowl = false;
         this.selectedFishBowl = fishBowl;
         this.isSelectedFishBowl = true;
+        this.infoCount += 1;
 
         const fishbowlCode = this.objectData.filter(item => item.path == fishBowl ).map(item => item.objectCodeId);
         this.canvas.setWater(fishBowl,fishbowlCode[0]);
@@ -734,6 +740,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
      * @param bodyImg
      */
     selectFishBody(event: any, bodyImg:string){
+        this.infoCount += 1;
         // 최종 선택된 물고기 전달
         this.selectedFishBody = bodyImg;
         this.getImgPolaroid(bodyImg);
@@ -748,6 +755,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
      * @param img
      */
     selectEtcObject(event:any, img: any):void {
+        this.infoCount += 1;
         this.selectedEtc = img;
         // this.selectedObjectList.push(img);
 
@@ -765,15 +773,15 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
         
 
         if(img.includes('_HA_')){
-            this.canvas.getImgPolaroid(img,objectCodeId[0],999,40,40,0.5);
+            this.canvas.getImgPolaroid(img,objectCodeId[0],40,40,0.5);
         
         }
         else if(img.includes('_TA_')){
-            this.canvas.getImgPolaroid(img,objectCodeId[0],999, 745, 30, 0.07);
+            this.canvas.getImgPolaroid(img,objectCodeId[0], 745, 30, 0.07);
             
         }
         else{
-            this.canvas.getImgPolaroid(img,objectCodeId[0],this.selectedFamilyType);
+            this.canvas.getImgPolaroid(img,objectCodeId[0]);
         }
 
 

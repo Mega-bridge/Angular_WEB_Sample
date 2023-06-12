@@ -20,6 +20,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {IconModule} from "@progress/kendo-angular-icons";
 import { LabelModule } from "@progress/kendo-angular-label";
 import { InputsModule } from "@progress/kendo-angular-inputs";
+import { IndicatorsModule } from '@progress/kendo-angular-indicators';
 
 @NgModule({
     imports: [
@@ -40,7 +41,8 @@ import { InputsModule } from "@progress/kendo-angular-inputs";
         FormsModule,
         IconModule,
         LabelModule,
-        InputsModule
+        InputsModule,
+        IndicatorsModule
     ],
   declarations: [
     // layout

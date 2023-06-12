@@ -16,7 +16,7 @@ import {AlertService} from "../../../../shared/service/alert.service";
 import {MrDataSetRequestModel} from "../../../../shared/model/request/mr-data-set.request.model";
 import {AuthService} from "../../../../shared/service/auth.service";
 import { __values } from "tslib";
-
+import { MrFamilyCodeResponse } from "src/shared/model/response/mr-family-code.response.model";
 
 
 
@@ -30,7 +30,7 @@ import { __values } from "tslib";
     providedIn: 'root'
 })
 
-export class DragAndDropComponent implements AfterViewInit{
+export class DragAndDropComponent implements OnInit,AfterViewInit{
 
     @ViewChild('htmlCanvas', {read: ElementRef})
     public htmlCanvasElement!: ElementRef;
@@ -94,6 +94,16 @@ export class DragAndDropComponent implements AfterViewInit{
 
     public objectSeq: number = 0;
 
+    // 가족관계 리스트
+    public familyTypeList : MrFamilyCodeResponse[] = [];
+    /** 선택된 가족 관계 */
+    public selectedFamilyType: any  = null;
+
+    public defaultItem: { description: string; id: any } = {
+        description: "가족관계를 선택해주세요..",
+        id: null,
+      };
+
 
     
     public controlEventHandler: ((event: Event) => void) | null = null;
@@ -110,6 +120,18 @@ export class DragAndDropComponent implements AfterViewInit{
         private authService: AuthService,
     ) {
         this.canvas = new fabric.Canvas('canvas');
+    }
+
+    ngOnInit(): void {
+        // 가족 리스트 가져오기
+        this.mindReaderControlService.getFamily()
+            .subscribe({
+                next: async (data) => {
+                    if (data){
+                        this.familyTypeList = data;
+                    }
+                }
+            });
     }
 
     ngAfterViewInit(): void {
@@ -155,11 +177,13 @@ export class DragAndDropComponent implements AfterViewInit{
             if(e.selected){
                 const selectedObject = e.selected[0];
                 this.getId();
+                console.log(selectedObject);
                 // console.log('///////////////////////');
                 // console.log('object Id (timestamp): ' + this.props.id);
-                // console.log('object Name: ' + selectedObject.name);
+                console.log('object Name: ' + selectedObject.name);
                 // console.log('-----------------------');
             }
+
 
             // const selectedObject: any = e.selected? e.selected[0]: e.selected;
             //
@@ -230,6 +254,7 @@ export class DragAndDropComponent implements AfterViewInit{
             this.controlCount += 1;
             console.log('control Count: ' + this.controlCount);
             this.updateControls();
+            
         });
 
 
@@ -254,6 +279,15 @@ export class DragAndDropComponent implements AfterViewInit{
 
     }
 
+
+    selectFamily(e:any){
+        console.log(e);        
+        
+        var activeGroup = this.canvas.getActiveObject();
+        console.log(activeGroup);
+        activeGroup?.set('name',e.id).setCoords();
+        console.log(activeGroup);
+    }
 
    
     
@@ -315,6 +349,7 @@ export class DragAndDropComponent implements AfterViewInit{
         
         if(control && activeGroup?.evented){
 
+            
             if (this.controlEventHandler) {
                 control.removeEventListener('input', this.controlEventHandler);
             } 
@@ -398,7 +433,7 @@ export class DragAndDropComponent implements AfterViewInit{
      * @param familyType
      * @param objectCodeId
      */
-    getImgPolaroid(event: any, objectCodeId: any,familyType?: any, top?: number, left?:number, scale?: number) {
+    getImgPolaroid(event: any, objectCodeId: any, top?: number, left?:number, scale?: number) {
         const el = event;
         fabric.loadSVGFromURL(el, (objects, options) => {
             const image = fabric.util.groupSVGElements(objects, options);
@@ -414,7 +449,6 @@ export class DragAndDropComponent implements AfterViewInit{
                 selectable: true,
                 evented: top? false:true,
                 strokeWidth:0,
-                name: familyType != 999 && (familyType || familyType == 0 )? familyType : null,
             });
             this.extend(image, this.randomId(), new Date().getTime(),objectCodeId);
             //console.log(image.toObject().id);

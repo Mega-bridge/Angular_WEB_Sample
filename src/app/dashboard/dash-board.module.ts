@@ -9,6 +9,9 @@ import {InputsModule} from "@progress/kendo-angular-inputs";
 import {PopupModule} from "@progress/kendo-angular-popup";
 import {LayoutModule} from "@progress/kendo-angular-layout";
 
+import { IndicatorsModule } from "@progress/kendo-angular-indicators";
+import {DropDownListModule} from "@progress/kendo-angular-dropdowns";
+
 
 @NgModule({
     imports: [
@@ -29,6 +32,8 @@ import {LayoutModule} from "@progress/kendo-angular-layout";
         ChipModule,
         PopupModule,
         LayoutModule,
+        IndicatorsModule,
+        DropDownListModule
     ],
   declarations: [
     DragAndDropComponent,
