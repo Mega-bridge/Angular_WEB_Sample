@@ -90,13 +90,50 @@
         <div class="container">
             <div class="side">
                 <div style="background-color: #ffffff; margin-bottom: 4%; border-radius: 1.5rem; height: 48%; box-shadow: 0px 0px 13px 0px #979797;">
-                    <div class="card-title"> 회차 정보</div>
-                    <div>회차,,,,,</div>
+                    <div class="card-title"> 
+                        <span>회차 정보</span>
+                        <span style="
+                            padding: 5px;
+                            border: #cccccc solid 1px;
+                            border-radius: 50%;
+                            width: 15px;
+                            height: 15px;
+                            text-align: center;
+                            line-height: 20px;
+                            cursor: pointer;"
+                            (click)="addSeq()">+</span>
+                    </div>
+
+                    <div class="card-seq-wrap">
+                                       <div class="card-seq"  *ngFor="let item of seqItems; let i = index" (click)="selectSeq(item, i)" [style.background-color] ="selectedSeqIndex === i ? '#cccccc' : ''" [style.color]="selectedSeqIndex === i ? '#000000' : '#a7a7a7'">
+                                           <div>
+                                           <span class="title">{{item.text}}</span> <br>
+                                           <span class="sub">{{item.date}} ( {{item.hour}}시간 {{item.minute}}분 {{item.second}}초 )</span>
+                                           </div>
+                                           <!-- <div style="width: 18px;
+                                           height: 18px;
+                                           color: #ff0000;
+                                           border: #ff0000 solid 1px;
+                                           border-radius: 50%;
+                                           text-align: center;
+                                           cursor: pointer;"
+                                           (click)="deleteSeq(item, i)">
+                                               <span>-</span>
+                                           </div> -->
+                        
+                                       </div>
+                    </div>
                 </div>
     
                 <div style="background-color: #ffffff; border-radius: 1.5rem; height: 48%; box-shadow: 0px 0px 13px 0px #979797;">
                     <div class="card-title"> 추가된 순서 </div>
-                    <div>순서,,,</div>
+                    <div class="card-seq-wrap" >
+                        <div style="padding: 10px 20px;">
+                            <div *ngFor="let item of selectedObjectList; let i = index" style="padding: 5px 0;">
+                                <span style="font-size: 12px;">{{i+1}}. {{item}}</span><br>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -293,7 +330,7 @@
 
             
                     <div style="display: flex; height: fit-content; max-height: 800px; flex-direction: row;" #anchorEtc_0>
-                        <div style="box-shadow: 0px 0px 8px 0px #979797; border-radius: 1.5rem; z-index: 1002;">
+                        <div style="box-shadow: 0px 0px 18px -4px #979797; border-radius: 1.5rem; z-index: 1002;">
                             <div  *ngIf="showEtc_0" class="pop-up-select-image" style="background-color: #ffffff;">
                                 <div   *ngFor="let img of etc_0_ImgList" class="img-wrap" style=" border-bottom: 1px solid #e0e0e0;">
                                     <img  (click)="selectEtcObject($event, img)" [src]= "img"/>
@@ -333,34 +370,40 @@
                         </div>
 
                         <div style="height: fit-content; margin-top: 24px; margin-left: 2px;">
-                            <div class="text-wrap" (click)="closeOpenPopUpEtc('showEtc_0')" [style.background-color]="showEtc_0 ? '#cf3640' : 'unset'" [style.color]="showEtc_0 ? '#ffffff' : '#000000'" [style.z-index]="showEtc_0 ? '1003' :'auto'">
+                            <div class="text-wrap" (click)="closeOpenPopUpEtc('showEtc_0')" 
+                            [style.background-color]="showEtc_0 ? '#cf3640' : '#ffffff'" [style.color]="showEtc_0 ? '#ffffff' : '#000000'" [style.z-index]="showEtc_0 ? '1003' :'auto'">
                                 물풀
                                 <!-- <img  (click)="closeOpenPopUpEtc('showEtc_0')" src="{{etc_0_ImgList[0]}}"/> -->
                             </div>
                                         
-                            <div class="text-wrap" (click)="closeOpenPopUpEtc('showEtc_1')">
+                            <div class="text-wrap" (click)="closeOpenPopUpEtc('showEtc_1')"
+                            [style.background-color]="showEtc_1 ? '#cf3640' : '#ffffff'" [style.color]="showEtc_1 ? '#ffffff' : '#000000'" [style.z-index]="showEtc_1 ? '1003' :'auto'">
                                 물방울                            
                                 <!-- <img  (click)="closeOpenPopUpEtc('showEtc_1')" src="{{etc_1_ImgList[0]}}"/> -->
                             </div>
                             
-                            <div class="text-wrap" (click)="closeOpenPopUpEtc('showEtc_2')">
+                            <div class="text-wrap" (click)="closeOpenPopUpEtc('showEtc_2')"
+                            [style.background-color]="showEtc_2 ? '#cf3640' : '#ffffff'" [style.color]="showEtc_2 ? '#ffffff' : '#000000'" [style.z-index]="showEtc_2 ? '1003' :'auto'">
                                 돌
                                 <!-- <img  (click)="closeOpenPopUpEtc('showEtc_2')" src="{{etc_2_ImgList[0]}}"/> -->
                             </div>
 
-                            <div class="text-wrap" (click)="closeOpenPopUpEtc('showEtc_3')">
+                            <div class="text-wrap" (click)="closeOpenPopUpEtc('showEtc_3')"
+                            [style.background-color]="showEtc_3 ? '#cf3640' : '#ffffff'" [style.color]="showEtc_3 ? '#ffffff' : '#000000'" [style.z-index]="showEtc_3 ? '1003' :'auto'">
                                 먹이
                                 <!-- <img  (click)="closeOpenPopUpEtc('showEtc_3')" src="{{etc_3_ImgList[0]}}"/> -->
                             </div>
                             
                             
-                            <div class="text-wrap" (click)="closeOpenPopUpEtc('showEtc_4')">
+                            <div class="text-wrap" (click)="closeOpenPopUpEtc('showEtc_4')"
+                            [style.background-color]="showEtc_4 ? '#cf3640' : '#ffffff'" [style.color]="showEtc_4 ? '#ffffff' : '#000000'" [style.z-index]="showEtc_4 ? '1003' :'auto'">
                                 어항꾸미기
                                 <!-- <img  (click)="closeOpenPopUpEtc('showEtc_4')" src="{{etc_4_ImgList[0]}}"/> -->
                             </div>
                             
                             
-                            <div class="text-wrap" (click)="closeOpenPopUpEtc('showEtc_5')">
+                            <div class="text-wrap" (click)="closeOpenPopUpEtc('showEtc_5')"
+                            [style.background-color]="showEtc_5 ? '#cf3640' : '#ffffff'" [style.color]="showEtc_5 ? '#ffffff' : '#000000'" [style.z-index]="showEtc_5 ? '1003' :'auto'">
                                 물고기 외
                                 <!-- <img  (click)="closeOpenPopUpEtc('showEtc_5')" src="{{etc_5_ImgList[0]}}"/> -->
                             </div>

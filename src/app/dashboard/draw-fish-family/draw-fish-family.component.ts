@@ -233,8 +233,8 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     @ViewChild('dialog', {read: ViewContainerRef})
     public dialogRef!: ViewContainerRef;
 
-    public subscription: Subscription;
-    public subscription2: Subscription;
+    // public subscription: Subscription;
+    // public subscription2: Subscription;
     public subscription3: Subscription;
     public subscription4: Subscription;
     public subscription5: Subscription;
@@ -263,17 +263,17 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         private drawFishFamilyService: DrawFishFamilyService
     ) {
 
-        this.subscription = drawFishFamilyService.selectItem$.subscribe(
-            item => {
-                this.selectSeqItem = item;
-            }
-        );
-        this.subscription2 = drawFishFamilyService.selectItemIndex$.subscribe(
-            index => {
-                this.selectedSeqIndex = index;
-                this.selectSeq(this.selectSeqItem,this.selectedSeqIndex);
-            }
-        );
+        // this.subscription = drawFishFamilyService.selectItem$.subscribe(
+        //     item => {
+        //         this.selectSeqItem = item;
+        //     }
+        // );
+        // this.subscription2 = drawFishFamilyService.selectItemIndex$.subscribe(
+        //     index => {
+        //         this.selectedSeqIndex = index;
+        //         this.selectSeq(this.selectSeqItem,this.selectedSeqIndex);
+        //     }
+        // );
 
         this.subscription3 = drawFishFamilyService.deleteItem$.subscribe(
             isDelete => {
@@ -346,7 +346,6 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
                          this.etc_4_ImgList = data.filter(item => item.path.includes('/etc_4/')).map(item => item.path);
                          this.etc_5_ImgList = data.filter(item => item.path.includes('/etc_5/')).map(item => item.path);
 
-                         console.log(this.etc_4_ImgList);
                         //  this.etcImgList = data.filter(item => item.path.includes('/etc/')).map(item => item.path);
                         //  this.etcImgList.push('assets/img/etc/FB_TA_0.svg');
                         //  this.etcImgList.push('assets/img/etc/FB_HA_0.svg');
@@ -370,9 +369,6 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
             .subscribe({
                 next: async (data) => {
                     this.patientInfoId = data?.id;
-                    //this.drawFishFamilyService.sendPatientData(data);
-                    console.log(data);
-
                 }
 
             })
@@ -479,6 +475,8 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
             return;
         }
 
+        this.drawFishFamilyService.selectSeqItem(item,index);
+
         this.selectSeqItem = item;
 
         if(index==item.seq){
@@ -510,7 +508,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     addSeq(){
 
         // 최대회차 24회로 제한
-        if(this.seqItems.length >= 25) {
+        if(this.seqItems.length >= 24) {
             this.alertService.openAlert('상담은 24회차까지 진행됩니다.');
             return;
         }
@@ -520,7 +518,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         // 회차 추가
         this.seqItems.push({
             seq: this.selectedSeq,
-            text: `${this.seqItems.length}회차`,
+            text: `${this.seqItems.length +1 }회차`,
             date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
             imgUrl: '',
             hour:0,
@@ -531,6 +529,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
 
         // 회차 추가 시 추가된 회차로 자동 선택
         this.selectSeq(this.seqItems[this.seqItems.length -1], this.seqItems.length -1);
+        this.drawFishFamilyService.addSeqItem();
     }
 
     /**
@@ -540,14 +539,14 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
 
         // 회차 삭제 확인 다이얼로그
         const dialog = this.dialogService.open({
-            title: `${index}회차를 삭제하시겠습니까?`,
+            title: `${index+1}회차를 삭제하시겠습니까?`,
             content: ConfirmDialogComponent,
             appendTo: this.dialogRef,
             width: 450,
             height: 180,
             minWidth: 250,
         });
-        dialog.content.instance.text = `삭제 시 복구가 불가합니다. <br> ${index}회차를 정말로 삭제하시겠습니까?`;
+        dialog.content.instance.text = `삭제 시 복구가 불가합니다. <br> ${index +1}회차를 정말로 삭제하시겠습니까?`;
         console.log(item);
 
         dialog.result.subscribe((result: any) => {
@@ -911,8 +910,8 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
      * 구독 해제
      */
     ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.subscription2.unsubscribe();
+        // this.subscription.unsubscribe();
+        // this.subscription2.unsubscribe();
         this.subscription3.unsubscribe();
         this.subscription4.unsubscribe();
         this.subscription5.unsubscribe();
