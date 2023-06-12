@@ -6,7 +6,10 @@ import {
     OnInit,
     TemplateRef,
     ViewChild,
-    ViewContainerRef
+    ViewContainerRef,
+    AfterViewInit,
+    AfterViewChecked
+    
 } from "@angular/core";
 import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component"
 import {Align, PopupAnimation} from "@progress/kendo-angular-popup";
@@ -31,7 +34,7 @@ import {DrawFishFamilyService} from "../../../shared/service/draw-fish-family.se
     styleUrls: ['draw-fish-family.component.scss']
 })
 
-export class DrawFishFamilyComponent implements OnInit,OnDestroy{
+export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecked{
 
     /** data set */
     public originDataSet: any[] = [];
@@ -260,7 +263,8 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         private authService: AuthService,
         private userService:UserService,
         private alertService: AlertService,
-        private drawFishFamilyService: DrawFishFamilyService
+        private drawFishFamilyService: DrawFishFamilyService,
+        private elementRef: ElementRef
     ) {
 
         // this.subscription = drawFishFamilyService.selectItem$.subscribe(
@@ -384,7 +388,11 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
 
                     }
                 }
-            })
+            });
+        
+        
+
+
 
     }
 
@@ -430,6 +438,8 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
                             this.selectSeq(this.seqItems[this.selectedSeqIndex], this.selectedSeqIndex);
                         }
 
+                        
+
                         // 설문 답안 불러오기
                         this.mindReaderControlService.getAnswer(this.originDataSet[this.selectedSeq-1].id)
                             .subscribe({
@@ -447,6 +457,15 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
                 }
 
             })
+    }
+
+
+
+    /**
+     * 초기 회차 선택 스크롤 하단으로 이동
+     */
+    ngAfterViewChecked():void {
+        this.elementRef.nativeElement.querySelector('#seq-info').scrollTop =this.elementRef.nativeElement.querySelector('#seq-info').scrollHeight;
     }
 
     /**

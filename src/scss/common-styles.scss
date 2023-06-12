@@ -146,11 +146,12 @@
 }
 
 .k-menu-popup{
-  width: 150px;
+  width: 100px;
   .k-link, .k-menu-group .k-item.k-focus{
     .k-link {
       //box-shadow: none;
-      // color: #ca3d57;
+      color: #4685c1;
+      font-weight: bold;
     }
   }
   .k-menu-group-lg .k-menu-link {

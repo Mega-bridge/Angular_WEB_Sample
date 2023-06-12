@@ -16,14 +16,16 @@
     <div>
         <span style="font-size: 25px;">{{userName}} </span>
         <span style="color: #595959;"> &nbsp;/ {{patientData ? (patientData.genderId == 0 ? '남' : '여') : ''}} / 만 {{patientData ? patientData.age : ''}}세 /&nbsp;</span>
-        <kendo-dropdownbutton 
+        <kendo-dropdownbutton
+            *ngIf="selectSeqIndex;"  
             [data]="options"
             size="small"
             rounded="full"
             themeColor="dark"
-            *ngIf="selectSeqIndex;" 
             (itemClick)="onOptionClick($event)"
-            class="top-dropdown-option">
+            [popupSettings] = "{align: 'center'}"
+            class="top-dropdown-option"
+        >
             {{selectedItem ? selectedItem.text : ''}} ∨
         </kendo-dropdownbutton>
         <!-- <span *ngIf="selectSeqIndex;" 
@@ -60,6 +62,7 @@
                 rounded="medium"
                 fillMode="flat"
                 [buttonClass]="{ 'custom-border': true}"
+                [popupSettings] = "{align: 'center'}"
                 (itemClick)="onItemClick($event)"
                 class="top-dropdown"
         >
@@ -73,13 +76,13 @@
 
         <button class="button-style" (click)="openFullscreen()" *ngIf="isAdd">시작하기</button>
 
-        <kendo-button *ngIf="selectSeqIndex" style="border: none; background-color: unset; background-image: none;margin-left: 5px;" (click)="saveSeq()" >
+        <!-- <kendo-button *ngIf="selectSeqIndex" style="border: none; background-color: unset; background-image: none;margin-left: 5px;" (click)="saveSeq()" >
             <kendo-icon name="download"  [themeColor]="'info'" style="font-size: 24px;"></kendo-icon>
         </kendo-button>
 
         <kendo-button *ngIf="selectSeqIndex"  style="border: none; background-color: unset; background-image: none;" (click)="deleteSeq()" >
             <kendo-icon name="trash"  [themeColor]="'error'" style="font-size: 24px;"></kendo-icon>
-        </kendo-button>
+        </kendo-button> -->
         
     </div>
 </div>

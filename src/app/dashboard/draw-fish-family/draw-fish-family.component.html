@@ -40,53 +40,6 @@
     </kendo-drawer>
     <kendo-drawer-content>
 
-<!--        <div class="side">-->
-<!--            <div class="card-title">-->
-<!--                <span>회차</span>-->
-<!--                <span style="-->
-<!--                padding: 5px;-->
-<!--                border: #cccccc solid 1px;-->
-<!--                border-radius: 50%;-->
-<!--                width: 15px;-->
-<!--                height: 15px;-->
-<!--                text-align: center;-->
-<!--                line-height: 20px;-->
-<!--                cursor: pointer;"-->
-<!--                      (click)="addSeq()">+</span>-->
-<!--            </div>-->
-
-<!--            <div class="card-seq-wrap">-->
-<!--                <div class="card-seq"  *ngFor="let item of seqItems; let i = index" (click)="selectSeq(item, i)" [style.background-color] ="selectedSeqIndex === i ? '#cccccc' : ''">-->
-<!--                    <div>-->
-<!--                    <span class="title">{{item.text}}</span>-->
-<!--                    <span class="sub">{{item.date}}</span>-->
-<!--                    </div>-->
-<!--                    <div style="width: 18px;-->
-<!--                    height: 18px;-->
-<!--                    color: #ff0000;-->
-<!--                    border: #ff0000 solid 1px;-->
-<!--                    border-radius: 50%;-->
-<!--                    text-align: center;-->
-<!--                    cursor: pointer;"-->
-<!--                    (click)="deleteSeq(item, i)">-->
-<!--                        <span>-</span>-->
-<!--                    </div>-->
-
-<!--                </div>-->
-
-<!--            </div>-->
-
-<!--            <div class="card-title sub">-->
-<!--                <span>오브젝트 선택 순서</span>-->
-<!--            </div>-->
-<!--            <div class="card-seq-wrap" style="height: 40%; border: none;">-->
-<!--                <div style="padding: 10px 20px;">-->
-<!--                    <div *ngFor="let item of selectedObjectList; let i = index" style="padding: 5px 0;">-->
-<!--                        <span style="font-size: 12px;">{{i}}. {{item}}</span><br>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
         <div class="container">
             <div class="side">
                 <div style="background-color: #ffffff; margin-bottom: 4%; border-radius: 1.5rem; height: 48%; box-shadow: 0px 0px 13px 0px #979797;">
@@ -104,24 +57,24 @@
                             (click)="addSeq()">+</span>
                     </div>
 
-                    <div class="card-seq-wrap">
-                                       <div class="card-seq"  *ngFor="let item of seqItems; let i = index" (click)="selectSeq(item, i)" [style.background-color] ="selectedSeqIndex === i ? '#cccccc' : ''" [style.color]="selectedSeqIndex === i ? '#000000' : '#a7a7a7'">
-                                           <div>
-                                           <span class="title">{{item.text}}</span> <br>
-                                           <span class="sub">{{item.date}} ( {{item.hour}}시간 {{item.minute}}분 {{item.second}}초 )</span>
-                                           </div>
-                                           <!-- <div style="width: 18px;
-                                           height: 18px;
-                                           color: #ff0000;
-                                           border: #ff0000 solid 1px;
-                                           border-radius: 50%;
-                                           text-align: center;
-                                           cursor: pointer;"
-                                           (click)="deleteSeq(item, i)">
-                                               <span>-</span>
-                                           </div> -->
-                        
-                                       </div>
+                    <div class="card-seq-wrap" id="seq-info">
+                        <div class="card-seq"  *ngFor="let item of seqItems; let i = index" (click)="selectSeq(item, i)" [style.background-color] ="selectedSeqIndex === i ? '#cccccc' : ''" [style.color]="selectedSeqIndex === i ? '#000000' : '#a7a7a7'">
+                            <div>
+                                <span class="title">{{item.text}}</span> <br>
+                                <span class="sub">{{item.date}} ( {{item.hour}}시간 {{item.minute}}분 {{item.second}}초 )</span>
+                            </div>
+                            <!-- <div style="width: 18px;
+                            height: 18px;
+                            color: #ff0000;
+                            border: #ff0000 solid 1px;
+                            border-radius: 50%;
+                            text-align: center;
+                            cursor: pointer;"
+                            (click)="deleteSeq(item, i)">
+                                <span>-</span>
+                            </div> -->
+        
+                        </div>
                     </div>
                 </div>
     
