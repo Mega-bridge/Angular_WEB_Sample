@@ -272,6 +272,14 @@ export class DragAndDropComponent implements AfterViewInit{
         // 사이즈
         var scaleInputElement : HTMLInputElement | null = document.querySelector('#scale-control');
         var scaleVal = activeGroup?.scaleX?.toString();
+
+        // left
+        var leftInputElement : HTMLInputElement | null = document.querySelector('#left-control');
+        var leftVal = activeGroup?.left?.toString();
+
+        // top
+        var topInputElement : HTMLInputElement | null = document.querySelector('#top-control');
+        var topVal = activeGroup?.top?.toString();
         
         // 각도
         if(angleInputElement){    
@@ -281,6 +289,16 @@ export class DragAndDropComponent implements AfterViewInit{
         // 사이즈
         if(scaleInputElement){
             scaleInputElement.value = scaleVal ? scaleVal : '0.2';
+        }
+
+        // left
+        if(leftInputElement){
+            leftInputElement.value = leftVal ? leftVal : '400';
+        }
+
+        // top
+        if(topInputElement){
+            topInputElement.value = topVal ? topVal : '400';
         }
         
     }
@@ -303,12 +321,21 @@ export class DragAndDropComponent implements AfterViewInit{
 
             if (activeGroup && control?.value) {
                 switch (type) {
-                  case 'angle':
-                    activeGroup.set('angle', parseInt(control.value, 10)).setCoords();
-                    break;
-                  case 'scale':
-                    activeGroup.scale(parseFloat(control.value)).setCoords();
-                    break;
+                    case 'angle':
+                        activeGroup.set('angle', parseInt(control.value, 10)).setCoords();
+                        break;
+                    case 'scaÍle':
+                        activeGroup.scale(parseFloat(control.value)).setCoords();
+                        break;
+                    case 'left':
+                        activeGroup.set('left', parseInt(control.value, 10)).setCoords();
+                        break;
+                    case 'top':
+                        activeGroup.set('top', parseInt(control.value, 10)).setCoords();
+                        break;
+                    default:
+                        break;
+
                 }
                 
             }

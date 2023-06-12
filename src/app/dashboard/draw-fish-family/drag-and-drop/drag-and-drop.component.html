@@ -5,6 +5,8 @@
 <div class="control-wrap">
 <label><span>Angle:</span> <input type="range" id="angle-control" value="0" min="0" max="360" (input)="changeControl('#angle-control','angle')"></label>
 <label><span>Scale:</span> <input type="range" id="scale-control" value="0.2" min="0.1" max="3" step="0.1" (input)="changeControl('#scale-control','scale')"></label>
+<label><span>Left:</span> <input type="range" id="left-control" value="150" min="0" max="1200" (input)="changeControl('#left-control','left')"></label>
+<label><span>Top:</span> <input type="range" id="top-control" value="150" min="0" max="900" (input)="changeControl('#top-control','top')"></label>
 <button class="button-style del" (click)="removeSelected();"> DELETE
 </button>
 </div>
