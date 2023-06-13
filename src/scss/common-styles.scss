@@ -147,9 +147,14 @@
 
 .k-menu-popup{
   width: 100px;
+  border-radius: 0.5rem;
+
   .k-link, .k-menu-group .k-item.k-focus{
+    
+
     .k-link {
-      //box-shadow: none;
+      box-shadow: none;
+      background-color: #ebebeb;
       color: #4685c1;
       font-weight: bold;
     }

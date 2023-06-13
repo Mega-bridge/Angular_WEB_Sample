@@ -55,6 +55,17 @@
                 
         >
         </kendo-dropdownlist> -->
+        
+
+        
+        <kendo-label text="튜토리얼 모드" style="margin-right: 5px; font-size: 13px;">
+            <kendo-switch style="margin-left: 4px;" [(ngModel)]="checked" (valueChange)="isTutorial($event)"></kendo-switch>
+        </kendo-label>
+
+        <button class="button-style" (click)="openFullscreen()" *ngIf="isAdd">시작하기</button>
+
+        <span style="margin:0 10px;">||</span>
+
         <kendo-dropdownbutton
                 [data]="settings"
                 icon="user"
@@ -67,14 +78,6 @@
                 class="top-dropdown"
         >
         </kendo-dropdownbutton>
-
-        <span style="margin:0 10px;">||</span>
-        
-        <kendo-label text="튜토리얼 모드" style="margin-right: 5px; font-size: 13px;">
-            <kendo-switch style="margin-left: 4px;" [(ngModel)]="checked" (valueChange)="isTutorial($event)"></kendo-switch>
-        </kendo-label>
-
-        <button class="button-style" (click)="openFullscreen()" *ngIf="isAdd">시작하기</button>
 
         <!-- <kendo-button *ngIf="selectSeqIndex" style="border: none; background-color: unset; background-image: none;margin-left: 5px;" (click)="saveSeq()" >
             <kendo-icon name="download"  [themeColor]="'info'" style="font-size: 24px;"></kendo-icon>
