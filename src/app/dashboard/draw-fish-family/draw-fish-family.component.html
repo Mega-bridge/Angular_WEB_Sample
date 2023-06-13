@@ -374,10 +374,10 @@
 
             <!-- 물고기 외 -->
             <kendo-popup [anchor]="anchor7"
-                         [anchorAlign]="isFamilyAfterFish?bottomAnchorAlign:anchorAlign"
-                         [popupAlign]="isFamilyAfterFish?bottomPopupAlign:popupAlign"
+                         [anchorAlign]="anchorAlign"
+                         [popupAlign]="popupAlign"
                          [animate]="animate"
-                         [margin]="isFamilyAfterFish?etcMargin2:etcMargin"
+                         [margin]="{ horizontal: 30, vertical: -400 }"
                          *ngIf="showEtc"
                          class="draw-popup label"
                          >

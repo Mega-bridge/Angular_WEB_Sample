@@ -97,7 +97,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     // 가족관계 리스트
     public familyTypeList : MrFamilyCodeResponse[] = [];
     /** 선택된 가족 관계 */
-    public selectedFamilyType: any  = null;
+    public selectedFamilyType : number = 0;
 
     public defaultItem: { description: string; id: any } = {
         description: "가족관계를 선택해주세요..",
@@ -182,6 +182,9 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 // console.log('object Id (timestamp): ' + this.props.id);
                 console.log('object Name: ' + selectedObject.name);
                 // console.log('-----------------------');
+
+                this.selectedFamilyType = selectedObject.name ? Number(selectedObject.name) : 0;
+                console.log(this.selectedFamilyType);
             }
 
 
@@ -279,6 +282,11 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
     }
 
+
+    /**
+     * 가족관계 선택/변경   
+     * @param e 
+     */
 
     selectFamily(e:any){
         console.log(e);        
@@ -433,8 +441,9 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
      * @param familyType
      * @param objectCodeId
      */
-    getImgPolaroid(event: any, objectCodeId: any, top?: number, left?:number, scale?: number) {
+    getImgPolaroid(event: any, objectCodeId: any,selectedFamilyType?:any, top?: number, left?:number, scale?: number) {
         const el = event;
+        console.log(selectedFamilyType);
         fabric.loadSVGFromURL(el, (objects, options) => {
             const image = fabric.util.groupSVGElements(objects, options);
             image.set({
@@ -449,12 +458,16 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 selectable: true,
                 evented: top? false:true,
                 strokeWidth:0,
+                name: selectedFamilyType? selectedFamilyType.id : null
+
             });
             this.extend(image, this.randomId(), new Date().getTime(),objectCodeId);
             //console.log(image.toObject().id);
             image.scale(scale?scale: 0.2);
         
             this.canvas.add(image);
+
+           
 
 
             this.selectItemAfterAdded(image);

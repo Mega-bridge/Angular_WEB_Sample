@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SideNavComponent } from "./layout/side-nav/side-nav.component";
 import { TopNavComponent } from "./layout/top-nav/top-nav.component";
@@ -52,6 +52,10 @@ import { IndicatorsModule } from '@progress/kendo-angular-indicators';
     // dialogs
     ConfirmDialogComponent
   ],
-  exports: [LayoutComponent]
+  exports: [LayoutComponent],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA,
+    NO_ERRORS_SCHEMA
+  ]
 })
 export class SharedModule { }

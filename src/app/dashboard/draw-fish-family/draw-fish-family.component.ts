@@ -211,7 +211,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
 
 
     /** 선택된 가족 관계 */
-    public selectedFamilyType: number | null = null;
+    public selectedFamilyType: any | null = null;
 
     /** 선택한 가족 관계 list */
     public selectedObjectList: string[] = [];
@@ -660,7 +660,8 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
         if (e.length != 0){
             this.familyTypeList[e].selected = true;
             // 선택된 가족관계 id 할당
-            this.selectedFamilyType = this.familyTypeList[e].id;
+            // this.selectedFamilyType = this.familyTypeList[e].id;
+            this.selectedFamilyType = this.familyTypeList[e];
 
             // 가족 관계를 선택해야 물고기 선택 가능
             this.isFamilyAfterFish=true;
@@ -773,21 +774,21 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
         
 
         if(img.includes('_HA_')){
-            this.canvas.getImgPolaroid(img,objectCodeId[0],40,40,0.5);
+            this.canvas.getImgPolaroid(img,objectCodeId[0],this.selectedFamilyType,40,40,0.5);
         
         }
         else if(img.includes('_TA_')){
-            this.canvas.getImgPolaroid(img,objectCodeId[0], 745, 30, 0.07);
+            this.canvas.getImgPolaroid(img,objectCodeId[0],this.selectedFamilyType, 745, 30, 0.07);
             
         }
         else{
-            this.canvas.getImgPolaroid(img,objectCodeId[0]);
+            this.canvas.getImgPolaroid(img,objectCodeId[0],this.selectedFamilyType);
         }
 
 
         // 물고기 선택 후 버튼 해제
         if(this.selectedFamilyType != null){
-            this.familyTypeList[this.selectedFamilyType].selected=false;
+            this.familyTypeList[this.selectedFamilyType.id].selected=false;
         }
 
         // 물고기 선택 후 가족 관계 Disabled True
