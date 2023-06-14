@@ -1,41 +1,55 @@
 <div class="container">
     <div class="sign-up-wrap" [formGroup]="signUpForm">
+        <div style="background-color: #000000;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            color: #fe5e23;
+            text-align: center;
+            line-height: 90px;
+            font-size: 12px;
+            margin-top: 40px;">Mind Reader</div>
         <div class="title">
             <span style="font-size:30px;">회원가입</span>
+            <div style="border: 2px solid #000000; width: 23px;margin-top: 30px;"></div>
         </div>
-        <div style="margin-left:20%">
+        <div class="title">
             <div class="content-box">
                 <kendo-formfield>
-                    <kendo-label class="label" text="이름"></kendo-label>
-                    <input class="input-style" formControlName="name" placeholder="Name" kendoTextBox/>
+                    <!-- <kendo-label class="label" text="이름"></kendo-label> -->
+                    <input class="input-style" formControlName="name" placeholder=" 이름" kendoTextBox/>
                 </kendo-formfield>
             </div>
             <div class="content-box">
                 <kendo-formfield>
-                    <kendo-label class="label" text="아이디" ></kendo-label>
-                    <input class="input-style" formControlName="email" placeholder="Email" kendoTextBox/>
-                    <button style="margin-left: 10px" (click)="duplicationCheck();">중복확인</button>
+                    <!-- <kendo-label class="label" text="아이디" ></kendo-label> -->
+                    <div>
+                        <input class="input-style" style="width: 296px;" formControlName="email" placeholder=" 이메일" kendoTextBox/>
+                        <button style="margin-left: 10px; border-radius: 1.5rem; padding: 5px 8px;" (click)="duplicationCheck();">중복확인</button>
+                    </div>
+                    
                 </kendo-formfield>
             </div>
             <div class="content-box">
                 <kendo-formfield>
-                    <kendo-label class="label" text="비밀번호"></kendo-label>
-                    <input type="password" class="input-style" formControlName="password" placeholder="Password" kendoTextBox/>
+                    <!-- <kendo-label class="label" text="비밀번호"></kendo-label> -->
+                    <input type="password" class="input-style" formControlName="password" placeholder=" 비밀번호" kendoTextBox/>
                 </kendo-formfield>
             </div>
             <div class="content-box">
                 <kendo-formfield>
-                    <kendo-label class="label" text="비밀번호 확인"></kendo-label>
-                    <input type="password" class="input-style" formControlName="confirmPassword" placeholder="Password" kendoTextBox/>
+                    <!-- <kendo-label class="label" text="비밀번호 확인"></kendo-label> -->
+                    <input type="password" class="input-style" formControlName="confirmPassword" placeholder=" 비밀번호 확인" kendoTextBox/>
                 </kendo-formfield>
             </div>
+            <div  class="content-box">
+                <div>
+                    <mat-checkbox (click)="checkEvent()">개인정보 수집 및 이용에 동의합니다.</mat-checkbox>
+                </div>
+        <!--            <button class="button add_info" (click)="inputInfo()" >추가정보 작성(선택사항)</button>-->
+                    <button class="button sign-up-complete"  (click)="signup()">가입 완료</button>
+            </div>
         </div>
-        <div style="text-align: center">
-        <div>
-            <mat-checkbox (click)="checkEvent()">개인정보 수집 및 이용에 동의합니다.</mat-checkbox>
-        </div>
-<!--            <button class="button add_info" (click)="inputInfo()" >추가정보 작성(선택사항)</button>-->
-            <button class="button sign-up-complete"  (click)="signup()">가입 완료</button>
-        </div>
+        
     </div>
 </div>
