@@ -1,29 +1,41 @@
 <div class="container" (keydown.enter)="login()">
     <div class="login-wrap" [formGroup]="loginForm">
-        <div class="title">
-            <span style="font-size:30px;">Login</span>
+        <div style="background-color: #000000;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            color: #fe5e23;
+            text-align: center;
+            line-height: 90px;
+            font-size: 12px;
+            margin-top: 40px;">Mind Reader</div>
+        <div class="title" >
+            <span style="font-size:30px;">로그인</span>
+            <div style="border: 2px solid #000000; width: 23px;margin-top: 30px;"></div>
         </div>
-        <div style="margin-left:20%">
+        <div class="title" >
             <div class="content-box">
                 <kendo-formfield>
-                    <kendo-label class="label" text="아이디"></kendo-label>
-                    <input Placeholder="Email" class="input-style" formControlName="email" kendoTextBox/>
+                    <!-- <kendo-label class="label" text="아이디"></kendo-label> -->
+                    <input Placeholder=" 이메일" class="input-style" formControlName="email" kendoTextBox/>
 
                 </kendo-formfield>
             </div>
             <div class="content-box">
                 <kendo-formfield>
-                    <kendo-label class="label" text="비밀번호"></kendo-label>
-                    <input type="password" Placeholder="Password" class="input-style" formControlName="password" kendoTextBox/>
+                    <!-- <kendo-label class="label" text="비밀번호"></kendo-label> -->
+                    <input type="password" Placeholder=" 비밀번호" class="input-style" formControlName="password" kendoTextBox/>
                 </kendo-formfield>
             </div>
+            <div class="content-box">
+                <button class="button login"  (click)="login()">로그인</button>
+            </div>
+            <div style="text-align: right; margin: 10px;">회원이 아니신가요? &nbsp;&nbsp;
+                <b style="text-decoration: underline;" (click)="signup()">회원가입</b>
+            </div>
         </div>
-        <div style="text-align: center">
-            <button class="button login"  (click)="login()">로그인</button>
-        </div>
-        <div style="text-align: right; margin: 10px;">회원이 아니신가요?
-            <b style="text-decoration: underline;" (click)="signup()">회원가입</b>
-        </div>
+       
+        
 
     </div>
 </div>
