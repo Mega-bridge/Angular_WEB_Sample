@@ -236,6 +236,8 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
     /** canvas */
     @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
     @ViewChild('canvas', { static: true }) canvas_el!: ElementRef<HTMLCanvasElement>;
+    @ViewChild('drawer')
+    private drawer: any;
 
     /** 다이얼로그 생성 */
     @ViewChild('dialog', {read: ViewContainerRef})
@@ -246,8 +248,11 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
     public subscription3: Subscription;
     public subscription4: Subscription;
     public subscription5: Subscription;
-
+    public subscription6: Subscription;
+    
     public selectSeqItem: any[] = [];
+
+    public isReload : boolean = true;
 
 
     /**
@@ -299,6 +304,12 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
         this.subscription5 = drawFishFamilyService.saveItem$.subscribe(
             isSave => {
                 if(isSave) this.canvasDownload();
+            }
+        );
+
+        this.subscription6 = drawFishFamilyService.openResult$.subscribe(
+            isOpenResult => {
+                if(isOpenResult) this.drawer.toggle();
             }
         );
 
@@ -442,6 +453,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
                             this.selectedSeqIndex = this.seqItems.length -1;
                             this.selectSeq(this.seqItems[this.selectedSeqIndex], this.selectedSeqIndex);
                         }
+                        
 
                         
 
@@ -452,8 +464,12 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
                                     if (data){
                                         this.resultAnswerData=data
 
+                                        console.log(this.resultAnswerData);
                                         this.answerResult=true
 
+                                    }
+                                    else{
+                                        console.log('결과지 없슈! 기다리쇼!');
                                     }
                                 }
                             })
@@ -462,6 +478,8 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
                 }
 
             })
+
+            
     }
 
 
@@ -471,6 +489,15 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
      */
     ngAfterViewChecked():void {
         this.elementRef.nativeElement.querySelector('#seq-info').scrollTop =this.elementRef.nativeElement.querySelector('#seq-info').scrollHeight;
+
+        if(!this.isReload){
+            return;
+        }
+
+        
+        this.isReload = !this.isReload;
+        
+        
     }
 
     /**
@@ -494,10 +521,6 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
      */
     selectSeq(item: any, index: number){
 
-        if(index == 0){
-            this.addSeq();
-            return;
-        }
 
         this.drawFishFamilyService.selectSeqItem(item,index);
 
@@ -882,7 +905,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
         const downloadLink = document.createElement('a');
         document.body.appendChild(downloadLink);
         downloadLink.href = this.canvasImage;
-        downloadLink.download = this.seqItems[this.selectedSeqIndex].date + '.png';
+        downloadLink.download = this.authService.getUserName() + '_' +this.seqItems[this.selectedSeqIndex].date + '.png';
         downloadLink.click();
 
     }

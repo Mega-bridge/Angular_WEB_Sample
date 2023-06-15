@@ -97,7 +97,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     // 가족관계 리스트
     public familyTypeList : MrFamilyCodeResponse[] = [];
     /** 선택된 가족 관계 */
-    public selectedFamilyType : number = 0;
+    public selectedFamilyType : any;
 
     public defaultItem: { description: string; id: any } = {
         description: "가족관계를 선택해주세요..",
@@ -129,6 +129,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 next: async (data) => {
                     if (data){
                         this.familyTypeList = data;
+                        this.selectedFamilyType = this.familyTypeList[2];
                     }
                 }
             });
@@ -183,7 +184,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 console.log('object Name: ' + selectedObject.name);
                 // console.log('-----------------------');
 
-                this.selectedFamilyType = selectedObject.name ? Number(selectedObject.name) : 0;
+                this.selectedFamilyType = this.familyTypeList[selectedObject.name ? Number(selectedObject.name) : 0];
+            
                 console.log(this.selectedFamilyType);
             }
 
@@ -295,6 +297,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         console.log(activeGroup);
         activeGroup?.set('name',e.id).setCoords();
         console.log(activeGroup);
+        console.log(this.selectedFamilyType);
     }
 
    
@@ -466,9 +469,6 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             image.scale(scale?scale: 0.2);
         
             this.canvas.add(image);
-
-           
-
 
             this.selectItemAfterAdded(image);
         });

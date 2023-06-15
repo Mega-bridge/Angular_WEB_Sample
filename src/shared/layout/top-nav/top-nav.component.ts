@@ -46,6 +46,7 @@ export class TopNavComponent implements OnInit,OnDestroy {
   
   public checked = false;
 
+  public isOpenResult = false;
   /**
    * 생성자
    * @param dialog
@@ -291,6 +292,13 @@ export class TopNavComponent implements OnInit,OnDestroy {
     else{
       this.router.navigate(['/DrawFishFamily']);
     }
+  }
+
+  /**
+   * 결과보기
+   */
+  openResult(){
+    this.drawFishFamilyService.openResultScreen();
   }
 
   /**

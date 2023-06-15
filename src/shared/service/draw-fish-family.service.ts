@@ -38,6 +38,10 @@ export class DrawFishFamilyService {
     private start = new Subject<boolean>();
     start$ = this.start.asObservable();
 
+     /* 결과 보기 */
+     private openResult = new Subject<boolean>();
+     openResult$ = this.openResult.asObservable();
+
     /**
      * 회차 정보 공유
      * @param data
@@ -60,6 +64,13 @@ export class DrawFishFamilyService {
      */
     openFullScreen(){
         this.start.next(true);
+    }
+
+    /**
+     * 결과보기 여부 설정
+     */
+    openResultScreen(){
+        this.openResult.next(true);
     }
 
     /**

@@ -2,16 +2,14 @@
 <kendo-drawer-container>
     <kendo-drawer
         #drawer
-
         mode="overlay"
         [mini]="true"
         [(expanded)]="expanded"
         [autoCollapse]="false"
         [position]="position"
-        [width]="450"
-        [miniWidth]="45"
-
-        [style]="{'transform': 'translate(0px, 15vh)', 'border-radius' : '.5rem'}"
+        [width]="550"
+        [miniWidth]="0"
+        [style]="{'transform': 'translate(-1vw, 10vh)', 'border-radius' : '.5rem'}"
         class="drawer-style"
     >
 
@@ -20,12 +18,12 @@
                 <span  (click)="drawer.toggle()" style="font-size: 25px;"> <b> << </b> </span>
             </div>
 
-            <div kendoTooltip *ngIf="expanded" style="padding: 10px; border-bottom: #cccccc solid 1px;background-color: #252525;color: #ffffff;">
-                <span (click)="drawer.toggle()" style="font-size: 25px;cursor: pointer;" title="닫기"> <b> >> </b> </span>
-                <span style="font-size: 25px;">결과지</span>
+            <div kendoTooltip *ngIf="expanded" style="padding: 10px; border-bottom: #cccccc solid 1px;background-color: #252525;color: #ffffff;text-align: center;">
+                <!-- <span (click)="drawer.toggle()" style="font-size: 25px;cursor: pointer;" title="닫기"> <b> >> </b> </span> -->
+                <span style="font-size: 20px;">결과지</span>
             </div>
             <div>
-                <div *ngIf="expanded" style="padding: 10px;font-size: 20px;">
+                <div *ngIf="expanded" style="padding: 15px;font-size: 12px;">
                     수고하셨습니다! <br>
                     어항 속 모습을 통해 해석된 당신의 심리는 아래와 같습니다. <br>
                     <ng-container *ngIf="resultAnswerData==undefined">
@@ -67,7 +65,12 @@
                         <div class="card-seq"  *ngFor="let item of seqItems; let i = index" (click)="selectSeq(item, i)" [style.background-color] ="selectedSeqIndex === i ? '#cccccc' : ''" [style.color]="selectedSeqIndex === i ? '#000000' : '#a7a7a7'">
                             <div>
                                 <span class="title">{{item.text}}</span> <br>
-                                <span class="sub">{{item.date}} ( {{item.hour}}시간 {{item.minute}}분 {{item.second}}초 )</span>
+                                <div>
+                                    <kendo-icon name="trash"  [themeColor]="'error'" style="font-size: 15px;"></kendo-icon>
+                                </div>
+                                <span class="sub">
+                                    {{item.date}} ( {{item.hour}}시간 {{item.minute}}분 {{item.second}}초 )
+                                </span>
                             </div>
                             <!-- <div style="width: 18px;
                             height: 18px;
@@ -126,8 +129,9 @@
                          [anchorAlign]="centerAnchorAlign"
                          [popupAlign]="centerPopupAlign"
                          [margin] ="{ horizontal: 0, vertical: 0 }"
+                         class="popup-description"
                          >
-                         <div style="font-size: 20px; background-color: #323232; color: #ffffff; padding: 5px 15px;  width: fit-content;">
+                         <div style="font-size: 17px; background-color: #323232; color: #ffffff; padding: 5px 15px;  width: fit-content; border-radius: 1.5rem;">
                             1. 먼저 어항에 물을 채워주세요.
                          </div>
             </kendo-popup>
@@ -137,8 +141,9 @@
                          [anchorAlign]="centerAnchorAlign"
                          [popupAlign]="centerPopupAlign"
                          [margin] ="{ horizontal: 0, vertical: 0 }"
+                         class="popup-description"
                          >
-                         <div style="font-size: 20px; background-color: #323232; color: #ffffff; padding: 5px 15px;  width: fit-content;">
+                         <div style="font-size: 17px; background-color: #323232; color: #ffffff; padding: 5px 15px;  width: fit-content; border-radius: 1.5rem;">
                             2. 어항에 들어갈 물고기의 가족관계를 선택해주세요.
                          </div>
             </kendo-popup>
@@ -148,8 +153,9 @@
                          [anchorAlign]="centerAnchorAlign"
                          [popupAlign]="centerPopupAlign"
                          [margin] ="{ horizontal: 0, vertical: 0 }"
+                         class="popup-description"
                          >
-                         <div style="font-size: 20px; background-color: #323232; color: #ffffff; padding: 5px 15px; width: fit-content;">
+                         <div style="font-size: 17px; background-color: #323232; color: #ffffff; padding: 5px 15px;  width: fit-content; border-radius: 1.5rem;">
                             3. 물고기 가족을 그려주세요.
                          </div>
             </kendo-popup>
@@ -160,8 +166,9 @@
                          [anchorAlign]="centerAnchorAlign"
                          [popupAlign]="centerPopupAlign"
                          [margin] ="{ horizontal: 0, vertical: 0 }"
+                         class="popup-description"
                          >
-                         <div style="font-size: 20px; background-color: #323232; color: #ffffff; padding: 5px 15px;  width: fit-content;">
+                         <div style="font-size: 17px; background-color: #323232; color: #ffffff; padding: 5px 15px;  width: fit-content; border-radius: 1.5rem;">
                             3-1. 더 추가하고 싶은 것으로 어항을 꾸며주세요.
                          </div>
             </kendo-popup>
@@ -490,24 +497,24 @@
                 </div>
 
                 <div #anchor8>
-                <div class="img-card-family"  *ngIf="isSelectedFishBowl" >
-                    <div class="img-card-header">가족 선택</div>
-                    <div class="img-card-body">
-                        <kendo-chiplist
-                                selection="single"
-                                (selectedChange)="selectFamilyType($event)"
-                        >
-                            <kendo-chip
-                                    *ngFor="let family of familyTypeList;"
-                                    [label]="family.description"
-                                    [disabled]="isDisabled"
-                                    [selected]="family.selected"
+                    <div class="img-card-family"  *ngIf="isSelectedFishBowl" >
+                        <div class="img-card-header">가족 선택</div>
+                        <div class="img-card-body">
+                            <kendo-chiplist
+                                    selection="single"
+                                    (selectedChange)="selectFamilyType($event)"
                             >
-                            </kendo-chip>
-                        </kendo-chiplist>
+                                <kendo-chip
+                                        *ngFor="let family of familyTypeList;"
+                                        [label]="family.description"
+                                        [disabled]="isDisabled"
+                                        [selected]="family.selected"
+                                >
+                                </kendo-chip>
+                            </kendo-chiplist>
+                        </div>
                     </div>
-                </div>
-            </div>
+                 </div>
 
                 <div class="img-card" #anchor2>
                     <div class="img-card-header"  *ngIf="isSelectedFishBowl" [style.background-color]="showFishes ? '#cf3640' : 'unset'">

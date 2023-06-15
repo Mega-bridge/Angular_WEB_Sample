@@ -53,7 +53,7 @@
 }
 
 .drawer-style{
-  height: 75vh;
+  height: 87vh;
   kendo-drawer .k-drawer{
     .k-drawer-mini{
       border-left: #cccccc solid 1px;
@@ -116,6 +116,14 @@
     }
   }
 
+}
+
+.popup-description{
+  .k-popup{
+    background-color: unset;
+    border-radius: 1.5rem;
+    border: 1px solid #ffffff;
+  }
 }
 
 //////////////////////////////////////////////////////
