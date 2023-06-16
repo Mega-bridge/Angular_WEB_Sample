@@ -1,7 +1,7 @@
 .side{
   position:absolute;
   left: 1vw;
-  top: 7vh;
+  top: 2vh;
   width: 250px;
   height: 80%;
 
@@ -44,19 +44,24 @@
     height: 75%;
     overflow-y: scroll;
     .card-seq{
-      height: 25px;
+      height: 40px;
       cursor: pointer;
       padding: 15px 25px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+
       .title{
-        font-size: 16px;
-        font-weight: bold;
+        background-color: #bfbfbf;
+        color: #ffffff;
+        padding: 5px 10px;
+        border-radius: 1.5rem;
+        font-size: 15px;
         margin-right: 10px;
+        width: 45px;
+        text-align : center;
       }
       .sub{
-        font-size: 12px;
+        font-size: 13px;
         font-weight: normal;
       }
 
@@ -69,23 +74,29 @@
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   background-color: #ebebeb;
 
 
   .canvas-wrap{
     display: flex;
     flex-direction: column;
-    min-width: 935px;
+    justify-content: space-evenly;
+    
+    min-width: 980px;
+    width: 100%;
+    height: 100%;
+    //margin-top: 1vh;
     //width:50%;
 
 
     .image-container{
       //border: 1px solid black;
       //padding-top: 100%;
-      height: 80vh;
+      //margin-top: 25px;
+      height: 80%;
       width: 100%;
-      background-size: cover;
+      background-size: contain;
       background-repeat: no-repeat;
       background-position: top;
     }

@@ -5,5 +5,5 @@ export class MrFamilyCodeResponse {
     public id: number = 0;
     public code: string = '';
     public description: string = '';
-    public selected: boolean = false;
+    //public selected: boolean = false;
 }

@@ -82,6 +82,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
     public waterUrl: string = '';
 
+    /** canvas img URL */
     public url: string | ArrayBuffer = '';
     public size: any = {
         width: 1200,
@@ -89,7 +90,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     };
 
     public json: any;
-    public selected: any;
+    public isSelected: boolean = false;
     public moved: any;
 
     public objectSeq: number = 0;
@@ -102,9 +103,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     public defaultItem: { description: string; id: any } = {
         description: "가족관계를 선택해주세요..",
         id: null,
-      };
-
-
+    };
+   
     
     public controlEventHandler: ((event: Event) => void) | null = null;
 
@@ -129,7 +129,6 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 next: async (data) => {
                     if (data){
                         this.familyTypeList = data;
-                        this.selectedFamilyType = this.familyTypeList[2];
                     }
                 }
             });
@@ -169,13 +168,22 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
 
         
-        
+        /**
+         * 선택된 object가 없을 경우
+         */
+        this.canvas.on('selection:cleared', e =>{
+            this.isSelected = false;
+        })
         
         
 
+        /**
+         * object가 선택된 경우
+         */
         this.canvas.on('selection:created',e => {
             console.log(e);
             if(e.selected){
+                this.isSelected = true;
                 const selectedObject = e.selected[0];
                 this.getId();
                 console.log(selectedObject);
@@ -184,39 +192,10 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 console.log('object Name: ' + selectedObject.name);
                 // console.log('-----------------------');
 
-                this.selectedFamilyType = this.familyTypeList[selectedObject.name ? Number(selectedObject.name) : 0];
+                this.selectedFamilyType = selectedObject.name ? this.familyTypeList[Number(selectedObject.name)] : null;
             
-                console.log(this.selectedFamilyType);
             }
 
-
-            // const selectedObject: any = e.selected? e.selected[0]: e.selected;
-            //
-            // // 선택된 객체 위에 삭제 버튼 추가
-            // var deleteButton = new fabric.Text('X', {
-            //     left: selectedObject.left + selectedObject.width,
-            //     top: selectedObject.top,
-            //     fontFamily: 'Arial',
-            //     fontSize: 16,
-            //     fill: 'white',
-            //     backgroundColor: 'black',
-            //     padding: 5
-            // });
-            // deleteButton.set({ left: selectedObject.left, top: selectedObject.top - selectedObject.height / 2 - 15 });
-            // this.canvas.add(deleteButton);
-            //
-            // // 삭제 버튼 클릭 이벤트 핸들러
-            // deleteButton.on('mousedown',e1 =>  {
-            //     this.canvas.remove(selectedObject);
-            //     this.canvas.remove(deleteButton);
-            //     this.canvas.renderAll();
-            // });
-            // console.log(selectedObject.source);
-            // console.log(selectedObject.toObject());
-
-
-
-           // this.resetPanels();
         });
 
         // 위치 좌표값
@@ -250,37 +229,19 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             // console.log('////////Object Modified///////////////');
             // console.log('좌우 반전 여부:' + modifiedObject?.flipX);
             // console.log('상하 반전 여부:' + modifiedObject?.flipY);
-            // console.log('Object Width:' + modifiedObject?.getScaledWidth());
-            // console.log('Object Height:' + modifiedObject?.getScaledHeight());
-            // console.log('Object Height:' + modifiedObject?.scaleX);
+            console.log('Object Width:' + modifiedObject?.getScaledWidth());
+            console.log(typeof(modifiedObject?.getScaledWidth()));
+            console.log('Object Height:' + modifiedObject?.getScaledHeight());
+            console.log('Object Height:' + modifiedObject?.scaleX);
             // // console.log('상하 반전 여부:' + modifiedObject?.cacheHeight);
             // console.log('-----------------------');
 
             this.controlCount += 1;
-            console.log('control Count: ' + this.controlCount);
+            // console.log('control Count: ' + this.controlCount);
             this.updateControls();
             
         });
 
-
-
-        // // 각도 조절
-        // const angleInputElement = document.querySelector('#angle-control');
-        // if (angleInputElement) {
-        //     angleInputElement.addEventListener('change', (event) => {
-        //         const newValue = (event.target as HTMLInputElement).value;
-        //         //this.changeControl('#angle-control', 'angle');
-        //     });
-        // }
-
-        // // 사이즈 조절
-        // const inputElementScale = document.querySelector('#scale-control');
-        // if (inputElementScale) {
-        //     inputElementScale.addEventListener('change', (event) => {
-        //         const newValue = (event.target as HTMLInputElement).value;
-        //         this.changeControl('#scale-control', 'scale');    
-        //     });
-        // }
 
     }
 
@@ -291,13 +252,10 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
      */
 
     selectFamily(e:any){
-        console.log(e);        
-        
         var activeGroup = this.canvas.getActiveObject();
-        console.log(activeGroup);
+        
         activeGroup?.set('name',e.id).setCoords();
-        console.log(activeGroup);
-        console.log(this.selectedFamilyType);
+        this.selectedFamilyType = e;
     }
 
    
@@ -370,7 +328,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                     case 'angle':
                         activeGroup.set('angle', parseInt(control.value, 10)).setCoords();
                         break;
-                    case 'scaÍle':
+                    case 'scale':
                         activeGroup.scale(parseFloat(control.value)).setCoords();
                         break;
                     case 'left':
@@ -446,7 +404,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
      */
     getImgPolaroid(event: any, objectCodeId: any,selectedFamilyType?:any, top?: number, left?:number, scale?: number) {
         const el = event;
-        console.log(selectedFamilyType);
+        
         fabric.loadSVGFromURL(el, (objects, options) => {
             const image = fabric.util.groupSVGElements(objects, options);
             image.set({
@@ -691,8 +649,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                     name: item.name != null ? Number(item.name) : null,
                     objectCodeId: item.toObject().objectCodeId,
                     userEmail: this.userEmail? this.userEmail : '' ,
-                    width: Number(item.scaleX),
-                    height: Number(item.scaleY),
+                    width:  item.getScaledWidth(),
+                    height: item.getScaledHeight(),
                     x: item.getCenterPoint().x,
                     y: item.getCenterPoint().y,
                     objectSeq: item.toObject().id,

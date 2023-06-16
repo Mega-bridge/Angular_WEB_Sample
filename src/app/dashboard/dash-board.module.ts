@@ -8,6 +8,7 @@ import {ButtonModule, ChipModule} from "@progress/kendo-angular-buttons";
 import {InputsModule} from "@progress/kendo-angular-inputs";
 import {PopupModule} from "@progress/kendo-angular-popup";
 import {LayoutModule} from "@progress/kendo-angular-layout";
+import { ButtonsModule } from '@progress/kendo-angular-buttons';
 
 import { IndicatorsModule } from "@progress/kendo-angular-indicators";
 import {DropDownListModule} from "@progress/kendo-angular-dropdowns";
@@ -34,6 +35,7 @@ import {DropDownListModule} from "@progress/kendo-angular-dropdowns";
         LayoutModule,
         IndicatorsModule,
         DropDownListModule,
+        ButtonsModule
         
     ],
   declarations: [

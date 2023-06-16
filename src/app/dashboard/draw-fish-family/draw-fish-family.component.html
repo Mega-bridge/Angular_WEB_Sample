@@ -62,16 +62,15 @@
                     </div>
 
                     <div class="card-seq-wrap" id="seq-info">
-                        <div class="card-seq"  *ngFor="let item of seqItems; let i = index" (click)="selectSeq(item, i)" [style.background-color] ="selectedSeqIndex === i ? '#cccccc' : ''" [style.color]="selectedSeqIndex === i ? '#000000' : '#a7a7a7'">
-                            <div>
-                                <span class="title">{{item.text}}</span> <br>
-                                <div>
-                                    <kendo-icon name="trash"  [themeColor]="'error'" style="font-size: 15px;"></kendo-icon>
-                                </div>
-                                <span class="sub">
-                                    {{item.date}} ( {{item.hour}}시간 {{item.minute}}분 {{item.second}}초 )
-                                </span>
+                        <div class="card-seq"  *ngFor="let item of seqItems; let i = index" (click)="selectSeq(seqItems[seqItems.length -1 - i], seqItems.length -1 - i)" [style.color]="selectedSeqIndex === seqItems.length -1 - i ? '#000000' : '#a7a7a7'">
+                            
+                            <span class="title" [style.background-color] ="selectedSeqIndex === seqItems.length -1 - i ? '#ca3d57' : ''" >{{seqItems[seqItems.length -1 - i].text}}</span> <br>
+                        
+                            <div class="sub">
+                                <span class="k-icon k-i-calendar" style="margin: 2px 5px;"></span> {{seqItems[seqItems.length -1 - i].date.getFullYear()}}. {{seqItems[seqItems.length -1 - i].date.getMonth()}}. {{seqItems[seqItems.length -1 - i].date.getDate()}} <br>
+                                <span class="k-icon k-i-clock" style="margin: 2px 5px;"></span> {{seqItems[seqItems.length -1 - i].hour}} : {{seqItems[seqItems.length -1 - i].minute}} : {{seqItems[seqItems.length -1 - i].second}} 
                             </div>
+                        
                             <!-- <div style="width: 18px;
                             height: 18px;
                             color: #ff0000;
@@ -104,9 +103,9 @@
 
                 <div class="image-container"  [ngStyle] = "{'background-image': 'url('+canvasImage+')'}">
                 </div>
-                <div style="display: flex;flex-direction: row; justify-content: center;align-items: center;flex-wrap: nowrap;">
-                    <div>
-                        <span style="font-size: 30px;">{{detailFish}}</span>
+                <div *ngIf="detailFish" style="display: flex;flex-direction: row; justify-content: center;align-items: center;flex-wrap: nowrap;padding-bottom: 50px;">
+                    <div  style="font-size: 20px; background-color: #ffffff; border: 1px solid #000000; border-radius: 2.5rem; padding: 15px 50px; width: fit-content;height: fit-content;">
+                        <span>{{detailFish}}</span>
                     </div>
 <!--                    <div style="display: flex; flex-wrap: nowrap;" *ngIf="canvasImage !=''">-->
 <!--&lt;!&ndash;                        <button class="button-style btn2" (click)="canvasDownload()" >그림 다운로드</button>&ndash;&gt;-->
@@ -128,35 +127,35 @@
                          *ngIf="!showFishBowl && !selectedFishBowl && infoCount < 2"
                          [anchorAlign]="centerAnchorAlign"
                          [popupAlign]="centerPopupAlign"
-                         [margin] ="{ horizontal: 0, vertical: 0 }"
+                         [margin] ="{ horizontal: 20, vertical: 0 }"
                          class="popup-description"
                          >
-                         <div style="font-size: 17px; background-color: #323232; color: #ffffff; padding: 5px 15px;  width: fit-content; border-radius: 1.5rem;">
+                         <div style="font-size: 17px; border: 3px solid #ca3d57; padding: 10px 15px;  width: fit-content; border-radius: 1.5rem;">
                             1. 먼저 어항에 물을 채워주세요.
                          </div>
             </kendo-popup>
 
-            <kendo-popup [anchor]="anchor8"
+            <!-- <kendo-popup [anchor]="anchor8"
                          *ngIf="selectedFishBowl && !isFamilyAfterFish && infoCount < 2"
                          [anchorAlign]="centerAnchorAlign"
                          [popupAlign]="centerPopupAlign"
-                         [margin] ="{ horizontal: 0, vertical: 0 }"
+                         [margin] ="{ horizontal: 20, vertical: 0 }"
                          class="popup-description"
                          >
-                         <div style="font-size: 17px; background-color: #323232; color: #ffffff; padding: 5px 15px;  width: fit-content; border-radius: 1.5rem;">
+                         <div style="font-size: 17px; border: 3px solid #ca3d57; padding: 10px 15px;  width: fit-content; border-radius: 1.5rem;">
                             2. 어항에 들어갈 물고기의 가족관계를 선택해주세요.
                          </div>
-            </kendo-popup>
+            </kendo-popup> -->
 
             <kendo-popup [anchor]="anchor2"
                          *ngIf="selectedFishBowl && infoCount < 2"
                          [anchorAlign]="centerAnchorAlign"
                          [popupAlign]="centerPopupAlign"
-                         [margin] ="{ horizontal: 0, vertical: 0 }"
+                         [margin] ="{ horizontal: 20, vertical: 0 }"
                          class="popup-description"
                          >
-                         <div style="font-size: 17px; background-color: #323232; color: #ffffff; padding: 5px 15px;  width: fit-content; border-radius: 1.5rem;">
-                            3. 물고기 가족을 그려주세요.
+                         <div style="font-size: 17px; border: 3px solid #ca3d57; padding: 10px 15px;  width: fit-content; border-radius: 1.5rem;">
+                            2. 물고기 가족을 그려주세요.
                          </div>
             </kendo-popup>
 
@@ -165,11 +164,11 @@
                          *ngIf="selectedFishBowl && infoCount < 2"
                          [anchorAlign]="centerAnchorAlign"
                          [popupAlign]="centerPopupAlign"
-                         [margin] ="{ horizontal: 0, vertical: 0 }"
+                         [margin] ="{ horizontal: 20, vertical: 0 }"
                          class="popup-description"
                          >
-                         <div style="font-size: 17px; background-color: #323232; color: #ffffff; padding: 5px 15px;  width: fit-content; border-radius: 1.5rem;">
-                            3-1. 더 추가하고 싶은 것으로 어항을 꾸며주세요.
+                         <div style="font-size: 17px; border: 3px solid #ca3d57; padding: 10px 15px;  width: fit-content; border-radius: 1.5rem;">
+                            2-1. 더 추가하고 싶은 것으로 어항을 꾸며주세요.
                          </div>
             </kendo-popup>
 
@@ -481,7 +480,7 @@
             <div class="img-card-wrap"   >
                 <div style="
                 background-color: #252525;
-                color: #666666;
+                color: #ca3d57;
                 width: 100%;
                 height: 40px;
                 text-align: center;
@@ -496,7 +495,7 @@
                     </div>
                 </div>
 
-                <div #anchor8>
+                <!-- <div #anchor8>
                     <div class="img-card-family"  *ngIf="isSelectedFishBowl" >
                         <div class="img-card-header">가족 선택</div>
                         <div class="img-card-body">
@@ -514,7 +513,7 @@
                             </kendo-chiplist>
                         </div>
                     </div>
-                 </div>
+                 </div> -->
 
                 <div class="img-card" #anchor2>
                     <div class="img-card-header"  *ngIf="isSelectedFishBowl" [style.background-color]="showFishes ? '#cf3640' : 'unset'">

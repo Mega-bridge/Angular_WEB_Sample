@@ -122,7 +122,7 @@
   .k-popup{
     background-color: unset;
     border-radius: 1.5rem;
-    border: 1px solid #ffffff;
+    border: none;
   }
 }
 
@@ -154,12 +154,11 @@
 }
 
 .k-menu-popup{
-  width: 100px;
+  //width: 100px;
   border-radius: 0.5rem;
 
   .k-link, .k-menu-group .k-item.k-focus{
     
-
     .k-link {
       box-shadow: none;
       background-color: #ebebeb;
@@ -180,13 +179,21 @@
   .k-menu-group-sm .k-menu-link {
     //padding-block: 6px;
     //padding-inline: 8px;
-    padding-inline-end: 8px;
+    //padding-inline-end: 8px;
+    padding: 15px;
     height: 32px;
     span{
       justify-content: center;
     }
 
     
+  }
+
+  .k-menu-group-md .k-menu-link {
+    //padding-block: 6px;
+    //padding-inline: 8px;
+    //padding-inline-end: 8px;
+    width: 158px;
   }
 
   //.k-menu-group .k-menu-item{

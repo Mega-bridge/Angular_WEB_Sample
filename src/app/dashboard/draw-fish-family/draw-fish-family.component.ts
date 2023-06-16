@@ -34,7 +34,7 @@ import {DrawFishFamilyService} from "../../../shared/service/draw-fish-family.se
     styleUrls: ['draw-fish-family.component.scss']
 })
 
-export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecked{
+export class DrawFishFamilyComponent implements OnInit,OnDestroy{
 
     /** data set */
     public originDataSet: any[] = [];
@@ -56,7 +56,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
     ];
 
     /** 회차 items */
-    public seqItems : {id?: number, seq: number,text: string, date: string, imgUrl: string, hour: number,minute: number,second: number,detailFishDescription?:string}[] = [];
+    public seqItems : {id?: number, seq: number,text: string, date: any, imgUrl: string, hour: number,minute: number,second: number,detailFishDescription?:string}[] = [];
 
     /** 회차 선택 */
     public selectedSeq: number = 0;
@@ -250,7 +250,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
     public subscription5: Subscription;
     public subscription6: Subscription;
     
-    public selectSeqItem: any[] = [];
+    public selectSeqItem : {id?: number, seq: number,text: string, date: string, imgUrl: string, hour: number,minute: number,second: number,detailFishDescription?:string}[] = [];
 
     public isReload : boolean = true;
 
@@ -424,7 +424,9 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
                         data.map(item => {
 
                             if(!item.deleted){
-                                const testDate = new Date(item.testDate).getFullYear().toString() + '.' + (new Date(item.testDate).getMonth() + 1).toString() + '.' + new Date(item.testDate).getDate().toString();
+                                //const testDate = new Date(item.testDate).getFullYear().toString() + '.' + (new Date(item.testDate).getMonth() + 1).toString() + '.' + new Date(item.testDate).getDate().toString();
+                                const testDate = new Date(item.testDate);
+                                
                                 seq += 1;
                                 this.seqItems.push({
                                     id: item.id,
@@ -445,6 +447,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
 
                         // 마지막 seq 조회
                         this.selectedSeq = data[data.length - 1].seq;
+                        
 
                         // 기존 DataSet이 있지만 모두 삭제되어 사용자에게 보여줄 DataSet이 없을 경우 미실행
                         if(this.seqItems.length != 0){
@@ -487,29 +490,32 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
     /**
      * 초기 회차 선택 스크롤 하단으로 이동
      */
-    ngAfterViewChecked():void {
-        this.elementRef.nativeElement.querySelector('#seq-info').scrollTop =this.elementRef.nativeElement.querySelector('#seq-info').scrollHeight;
+    // ngAfterViewChecked():void {
+    //     this.elementRef.nativeElement.querySelector('#seq-info').scrollTop =this.elementRef.nativeElement.querySelector('#seq-info').scrollHeight;
 
-        if(!this.isReload){
-            return;
-        }
+    //     if(!this.isReload){
+    //         return;
+    //     }
 
         
-        this.isReload = !this.isReload;
+    //     this.isReload = !this.isReload;
         
         
-    }
+    // }
 
     /**
      * 회차별 오브젝트 순서 조회
      */
-    getSeqObjectCode():void {
-        this.mindReaderControlService.getObjectCodeSeq(this.selectedSeq)
+    getSeqObjectCode(seq?:number):void {
+        
+        this.mindReaderControlService.getObjectCodeSeq(seq? seq : this.selectedSeq)
             .subscribe({
                 next: async (data) => {
                     this.selectedObjectList = data.map(item => item.description);
                 }
             });
+
+        console.log(this.selectedObjectList);
     }
 
 
@@ -543,7 +549,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
 
 
         // 해당 DataSet의 Object Seq 조회
-        this.getSeqObjectCode();
+        this.getSeqObjectCode(item.seq);
         // 결과 보기 버튼 비활성
         this.answerResult=false
     }
@@ -566,7 +572,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
         this.seqItems.push({
             seq: this.selectedSeq,
             text: `${this.seqItems.length +1 }회차`,
-            date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
+            date: new Date(),
             imgUrl: '',
             hour:0,
             minute:0,
@@ -681,7 +687,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
      */
     selectFamilyType(e:any){
         if (e.length != 0){
-            this.familyTypeList[e].selected = true;
+            // this.familyTypeList[e].selected = true;
             // 선택된 가족관계 id 할당
             // this.selectedFamilyType = this.familyTypeList[e].id;
             this.selectedFamilyType = this.familyTypeList[e];
@@ -811,7 +817,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy,AfterViewChecke
 
         // 물고기 선택 후 버튼 해제
         if(this.selectedFamilyType != null){
-            this.familyTypeList[this.selectedFamilyType.id].selected=false;
+            // this.familyTypeList[this.selectedFamilyType.id].selected=false;
         }
 
         // 물고기 선택 후 가족 관계 Disabled True
