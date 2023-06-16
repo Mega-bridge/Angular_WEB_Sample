@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SideNavComponent } from "./layout/side-nav/side-nav.component";
 import { TopNavComponent } from "./layout/top-nav/top-nav.component";
@@ -20,6 +20,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {IconModule} from "@progress/kendo-angular-icons";
 import { LabelModule } from "@progress/kendo-angular-label";
 import { InputsModule } from "@progress/kendo-angular-inputs";
+import { IndicatorsModule } from '@progress/kendo-angular-indicators';
 
 @NgModule({
     imports: [
@@ -40,7 +41,8 @@ import { InputsModule } from "@progress/kendo-angular-inputs";
         FormsModule,
         IconModule,
         LabelModule,
-        InputsModule
+        InputsModule,
+        IndicatorsModule
     ],
   declarations: [
     // layout
@@ -50,6 +52,10 @@ import { InputsModule } from "@progress/kendo-angular-inputs";
     // dialogs
     ConfirmDialogComponent
   ],
-  exports: [LayoutComponent]
+  exports: [LayoutComponent],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA,
+    NO_ERRORS_SCHEMA
+  ]
 })
 export class SharedModule { }

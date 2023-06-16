@@ -53,7 +53,7 @@
 }
 
 .drawer-style{
-  height: 75vh;
+  height: 87vh;
   kendo-drawer .k-drawer{
     .k-drawer-mini{
       border-left: #cccccc solid 1px;
@@ -99,13 +99,33 @@
 .draw-popup{
   box-shadow: 0px 0px 8px 0px #979797;
   border-radius: 1.5rem;
-.k-popup{
-
+  
+  .k-popup{
+    background-color: unset;
     border-radius: 1.5rem;
     border: none;
   }
 
+  &.label{
+    box-shadow: unset;
+    .k-popup{
+      background-color: unset;
+      border-radius: 1.5rem;
+      border: none;
+      box-shadow: unset;
+    }
+  }
+
 }
+
+.popup-description{
+  .k-popup{
+    background-color: unset;
+    border-radius: 1.5rem;
+    border: none;
+  }
+}
+
 //////////////////////////////////////////////////////
 
 
@@ -123,12 +143,27 @@
   }
 }
 
+.top-dropdown-option{
+  .k-button{
+    //background-color: #000000;
+    font-size: 13px;
+    padding: 3px 10px;
+    line-height: 1.2;
+  }
+
+}
+
 .k-menu-popup{
-  width: 150px;
+  //width: 100px;
+  border-radius: 0.5rem;
+
   .k-link, .k-menu-group .k-item.k-focus{
+    
     .k-link {
       box-shadow: none;
+      background-color: #ebebeb;
       color: #ca3d57;
+      font-weight: bold;
     }
   }
   .k-menu-group-lg .k-menu-link {
@@ -138,6 +173,27 @@
     span{
       justify-content: center;
     }
+
+    
+  }
+  .k-menu-group-sm .k-menu-link {
+    //padding-block: 6px;
+    //padding-inline: 8px;
+    //padding-inline-end: 8px;
+    padding: 15px;
+    height: 32px;
+    span{
+      justify-content: center;
+    }
+
+    
+  }
+
+  .k-menu-group-md .k-menu-link {
+    //padding-block: 6px;
+    //padding-inline: 8px;
+    //padding-inline-end: 8px;
+    width: 158px;
   }
 
   //.k-menu-group .k-menu-item{

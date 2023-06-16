@@ -2,7 +2,49 @@
 <!--        #htmlCanvas-->
 <!--        [ngStyle] = "{'background-image': 'url('+waterUrl+')'}"-->
 <!--        style=" background-repeat: no-repeat; background-size: 100% 100%;  border: 2px dashed #cccccc; "></canvas>-->
+<div class="control-wrap">
+        <div class="control" >
+                <kendo-dropdownbutton
+                [disabled]="!isSelected"
+                [data]="familyTypeList"
+                textField="description"
+                valueField="id"
+                size="medium"
+                (itemClick)="selectFamily($event)"
+                >가족관계를 선택해주세요.
+                </kendo-dropdownbutton>
+                <span *ngIf="selectedFamilyType"
+                        style="border-radius: 1.5rem; 
+                        background-color: #323232; 
+                        color: #ffffff;
+                        text-align : center; 
+                        padding: 5px 10px;
+                        margin-left: 10px;">{{selectedFamilyType?.description}} </span>
+
+
+                <label><span>회전</span> 
+                        <input [disabled]="!isSelected" type="range" id="angle-control" value="0" min="0" max="360" (input)="changeControl('#angle-control','angle')">
+                </label>
+
+                <label>
+                        <span>크기</span> 
+                        <input [disabled]="!isSelected" type="range" id="scale-control" value="0.2" min="0.1" max="3" step="0.1" (input)="changeControl('#scale-control','scale')">
+                </label>
+                <label>
+                        <span>좌우</span> 
+                        <input [disabled]="!isSelected" type="range" id="left-control" value="150" min="0" max="1200" (input)="changeControl('#left-control','left')">
+                </label>
+                <label>
+                        <span>위아래</span> 
+                        <input [disabled]="!isSelected" type="range" id="top-control" value="150" min="0" max="900" (input)="changeControl('#top-control','top')">
+                </label>
+                <button [disabled]="!isSelected" class="button-style del" (click)="removeSelected();"> DELETE
+                </button>
+        </div>
+</div>
 
 <canvas id="canvas"
         #htmlCanvas
         style=" background-repeat: no-repeat; background-size: 100% 100%; "></canvas>
+        
+

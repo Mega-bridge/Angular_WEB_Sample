@@ -15,20 +15,22 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../../../shared/service/alert.service";
 import {MrDataSetRequestModel} from "../../../../shared/model/request/mr-data-set.request.model";
 import {AuthService} from "../../../../shared/service/auth.service";
-
+import { __values } from "tslib";
+import { MrFamilyCodeResponse } from "src/shared/model/response/mr-family-code.response.model";
 
 
 
 @Component({
     selector: 'app-dashboard-drag-and-drop',
     templateUrl: 'drag-and-drop.component.html',
+    styleUrls: ['drag-and-drop.component.scss']
 })
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class DragAndDropComponent implements AfterViewInit{
+export class DragAndDropComponent implements OnInit,AfterViewInit{
 
     @ViewChild('htmlCanvas', {read: ElementRef})
     public htmlCanvasElement!: ElementRef;
@@ -80,6 +82,7 @@ export class DragAndDropComponent implements AfterViewInit{
 
     public waterUrl: string = '';
 
+    /** canvas img URL */
     public url: string | ArrayBuffer = '';
     public size: any = {
         width: 1200,
@@ -87,10 +90,23 @@ export class DragAndDropComponent implements AfterViewInit{
     };
 
     public json: any;
-    public selected: any;
+    public isSelected: boolean = false;
     public moved: any;
 
     public objectSeq: number = 0;
+
+    // 가족관계 리스트
+    public familyTypeList : MrFamilyCodeResponse[] = [];
+    /** 선택된 가족 관계 */
+    public selectedFamilyType : any;
+
+    public defaultItem: { description: string; id: any } = {
+        description: "가족관계를 선택해주세요..",
+        id: null,
+    };
+   
+    
+    public controlEventHandler: ((event: Event) => void) | null = null;
 
 
     /**
@@ -104,6 +120,18 @@ export class DragAndDropComponent implements AfterViewInit{
         private authService: AuthService,
     ) {
         this.canvas = new fabric.Canvas('canvas');
+    }
+
+    ngOnInit(): void {
+        // 가족 리스트 가져오기
+        this.mindReaderControlService.getFamily()
+            .subscribe({
+                next: async (data) => {
+                    if (data){
+                        this.familyTypeList = data;
+                    }
+                }
+            });
     }
 
     ngAfterViewInit(): void {
@@ -139,45 +167,35 @@ export class DragAndDropComponent implements AfterViewInit{
         // });
 
 
+        
+        /**
+         * 선택된 object가 없을 경우
+         */
+        this.canvas.on('selection:cleared', e =>{
+            this.isSelected = false;
+        })
+        
+        
 
+        /**
+         * object가 선택된 경우
+         */
         this.canvas.on('selection:created',e => {
             console.log(e);
             if(e.selected){
+                this.isSelected = true;
                 const selectedObject = e.selected[0];
                 this.getId();
+                console.log(selectedObject);
                 // console.log('///////////////////////');
                 // console.log('object Id (timestamp): ' + this.props.id);
-                // console.log('object Name: ' + selectedObject.name);
+                console.log('object Name: ' + selectedObject.name);
                 // console.log('-----------------------');
+
+                this.selectedFamilyType = selectedObject.name ? this.familyTypeList[Number(selectedObject.name)] : null;
+            
             }
 
-            // const selectedObject: any = e.selected? e.selected[0]: e.selected;
-            //
-            // // 선택된 객체 위에 삭제 버튼 추가
-            // var deleteButton = new fabric.Text('X', {
-            //     left: selectedObject.left + selectedObject.width,
-            //     top: selectedObject.top,
-            //     fontFamily: 'Arial',
-            //     fontSize: 16,
-            //     fill: 'white',
-            //     backgroundColor: 'black',
-            //     padding: 5
-            // });
-            // deleteButton.set({ left: selectedObject.left, top: selectedObject.top - selectedObject.height / 2 - 15 });
-            // this.canvas.add(deleteButton);
-            //
-            // // 삭제 버튼 클릭 이벤트 핸들러
-            // deleteButton.on('mousedown',e1 =>  {
-            //     this.canvas.remove(selectedObject);
-            //     this.canvas.remove(deleteButton);
-            //     this.canvas.renderAll();
-            // });
-            // console.log(selectedObject.source);
-            // console.log(selectedObject.toObject());
-
-
-
-           // this.resetPanels();
         });
 
         // 위치 좌표값
@@ -199,6 +217,8 @@ export class DragAndDropComponent implements AfterViewInit{
             // console.log('////////Object Rotating///////////////');
             // console.log('angle: ' + movedObject.angle);
             // console.log('-----------------------');
+            
+            this.updateControls();
         })
 
 
@@ -209,22 +229,155 @@ export class DragAndDropComponent implements AfterViewInit{
             // console.log('////////Object Modified///////////////');
             // console.log('좌우 반전 여부:' + modifiedObject?.flipX);
             // console.log('상하 반전 여부:' + modifiedObject?.flipY);
-            // console.log('Object Width:' + modifiedObject?.getScaledWidth());
-            // console.log('Object Height:' + modifiedObject?.getScaledHeight());
-            // console.log('Object Height:' + modifiedObject?.scaleX);
+            console.log('Object Width:' + modifiedObject?.getScaledWidth());
+            console.log(typeof(modifiedObject?.getScaledWidth()));
+            console.log('Object Height:' + modifiedObject?.getScaledHeight());
+            console.log('Object Height:' + modifiedObject?.scaleX);
             // // console.log('상하 반전 여부:' + modifiedObject?.cacheHeight);
             // console.log('-----------------------');
 
             this.controlCount += 1;
-            console.log('control Count: ' + this.controlCount);
+            // console.log('control Count: ' + this.controlCount);
+            this.updateControls();
+            
         });
 
+
     }
 
 
-    drawingMode() {
-        this.canvas.isDrawingMode = !this.canvas.isDrawingMode;
+    /**
+     * 가족관계 선택/변경   
+     * @param e 
+     */
+
+    selectFamily(e:any){
+        var activeGroup = this.canvas.getActiveObject();
+        
+        activeGroup?.set('name',e.id).setCoords();
+        this.selectedFamilyType = e;
     }
+
+   
+    
+
+
+    /**
+     * object -> control bar value 전달
+     */
+    updateControls() {
+        var activeGroup = this.canvas.getActiveObject();
+        
+        // 각도
+        var angleInputElement : HTMLInputElement | null = document.querySelector('#angle-control');
+        var angleVal = activeGroup?.angle?.toString();
+
+        // 사이즈
+        var scaleInputElement : HTMLInputElement | null = document.querySelector('#scale-control');
+        var scaleVal = activeGroup?.scaleX?.toString();
+
+        // left
+        var leftInputElement : HTMLInputElement | null = document.querySelector('#left-control');
+        var leftVal = activeGroup?.left?.toString();
+
+        // top
+        var topInputElement : HTMLInputElement | null = document.querySelector('#top-control');
+        var topVal = activeGroup?.top?.toString();
+        
+        // 각도
+        if(angleInputElement){    
+            angleInputElement.value = angleVal ? angleVal: '0';
+        }
+
+        // 사이즈
+        if(scaleInputElement){
+            scaleInputElement.value = scaleVal ? scaleVal : '0.2';
+        }
+
+        // left
+        if(leftInputElement){
+            leftInputElement.value = leftVal ? leftVal : '400';
+        }
+
+        // top
+        if(topInputElement){
+            topInputElement.value = topVal ? topVal : '400';
+        }
+        
+    }
+
+
+    /**
+     * 컨트롤 바
+     * @param val 
+     */
+    changeControl(htmlId: string, type: string){
+        var control: HTMLInputElement | null = document.querySelector(htmlId);
+        var activeGroup = this.canvas.getActiveObject();
+        
+        
+        if(control && activeGroup?.evented){
+
+            
+            if (this.controlEventHandler) {
+                control.removeEventListener('input', this.controlEventHandler);
+            } 
+
+            if (activeGroup && control?.value) {
+                switch (type) {
+                    case 'angle':
+                        activeGroup.set('angle', parseInt(control.value, 10)).setCoords();
+                        break;
+                    case 'scale':
+                        activeGroup.scale(parseFloat(control.value)).setCoords();
+                        break;
+                    case 'left':
+                        activeGroup.set('left', parseInt(control.value, 10)).setCoords();
+                        break;
+                    case 'top':
+                        activeGroup.set('top', parseInt(control.value, 10)).setCoords();
+                        break;
+                    default:
+                        break;
+
+                }
+                
+            }
+
+            this.canvas.requestRenderAll();
+            this.canvas.renderAll();    
+            
+        }
+        
+        // var activeGroups = this.canvas.getActiveObjects();
+        // activeGroups.forEach((object:fabric.Object) => {
+        //     if(control){
+            
+        //         if (this.angleControlEventHandler) {
+        //             control.removeEventListener('input', this.angleControlEventHandler);
+        //         }        
+        //         let self = this;
+        //         this.angleControlEventHandler = function() {
+        //             if (control?.value) {
+        //                 switch (type) {
+        //                   case 'angle':
+        //                     object.set('angle', parseInt(control.value, 10)).setCoords();
+        //                     break;
+        //                   case 'scale':
+        //                     object.scale(parseFloat(control.value)).setCoords();
+        //                     break;
+        //                 }
+        //               }
+        //               self.canvas.renderAll();
+        //         };
+        //         control.addEventListener('input', this.angleControlEventHandler);
+    
+        
+                
+        //     }
+        // })
+    }
+   
 
     /**
      * 어항 설정
@@ -249,8 +402,9 @@ export class DragAndDropComponent implements AfterViewInit{
      * @param familyType
      * @param objectCodeId
      */
-    getImgPolaroid(event: any, objectCodeId: any,familyType?: any, top?: number, left?:number, scale?: number) {
+    getImgPolaroid(event: any, objectCodeId: any,selectedFamilyType?:any, top?: number, left?:number, scale?: number) {
         const el = event;
+        
         fabric.loadSVGFromURL(el, (objects, options) => {
             const image = fabric.util.groupSVGElements(objects, options);
             image.set({
@@ -261,17 +415,18 @@ export class DragAndDropComponent implements AfterViewInit{
                 cornerSize: 20,
                 cornerColor: 'rgba(255, 87, 34, 0.7)',
                 hasRotatingPoint: top? false:true,
-                selectable: top? false:true,
+                hasControls : top? false: true,
+                selectable: true,
                 evented: top? false:true,
                 strokeWidth:0,
-                name:familyType != 999 && familyType ? familyType : null,
+                name: selectedFamilyType? selectedFamilyType.id : null
+
             });
             this.extend(image, this.randomId(), new Date().getTime(),objectCodeId);
             //console.log(image.toObject().id);
             image.scale(scale?scale: 0.2);
         
             this.canvas.add(image);
-
 
             this.selectItemAfterAdded(image);
         });
@@ -494,8 +649,8 @@ export class DragAndDropComponent implements AfterViewInit{
                     name: item.name != null ? Number(item.name) : null,
                     objectCodeId: item.toObject().objectCodeId,
                     userEmail: this.userEmail? this.userEmail : '' ,
-                    width: Number(item.scaleX),
-                    height: Number(item.scaleY),
+                    width:  item.getScaledWidth(),
+                    height: item.getScaledHeight(),
                     x: item.getCenterPoint().x,
                     y: item.getCenterPoint().y,
                     objectSeq: item.toObject().id,
@@ -536,6 +691,13 @@ export class DragAndDropComponent implements AfterViewInit{
                 error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
             });
     }
+
+
+
+    drawingMode() {
+        this.canvas.isDrawingMode = !this.canvas.isDrawingMode;
+    }
+
 
 
 }

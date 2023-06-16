@@ -1,0 +1,34 @@
+.control-wrap{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    .control{
+      background-color: #ffffff;
+      padding: 5px 22px;
+      border-radius: 1.5rem;
+
+      label{
+        margin: 5px;
+      }
+    }
+
+    .button-style{
+      cursor: pointer;
+      margin: 10px;
+      height: 38px;
+      width : 100px;
+      border: none;
+      border-radius: 1.5em;
+      color: #ffffff;
+      background-color: #ca3d57;
+      box-shadow: 4px 6px 4px -4px #a7a7a7;
+      font-size: 17px;
+
+      &.del{
+        background-color: #fe5e23;
+
+      }
+    }
+  }

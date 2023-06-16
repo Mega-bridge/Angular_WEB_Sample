@@ -6,7 +6,10 @@ import {
     OnInit,
     TemplateRef,
     ViewChild,
-    ViewContainerRef
+    ViewContainerRef,
+    AfterViewInit,
+    AfterViewChecked
+    
 } from "@angular/core";
 import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component"
 import {Align, PopupAnimation} from "@progress/kendo-angular-popup";
@@ -53,7 +56,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     ];
 
     /** 회차 items */
-    public seqItems : {id?: number, seq: number,text: string, date: string, imgUrl: string, hour: number,minute: number,second: number,detailFishDescription?:string}[] = [];
+    public seqItems : {id?: number, seq: number,text: string, date: any, imgUrl: string, hour: number,minute: number,second: number,detailFishDescription?:string}[] = [];
 
     /** 회차 선택 */
     public selectedSeq: number = 0;
@@ -81,10 +84,13 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     public anchorAlign: Align = { horizontal: "right", vertical: "top" };
     public popupAlign: Align = { horizontal: "left", vertical: "top" };
 
+    public centerAnchorAlign: Align = { horizontal: "right", vertical: "center" };
+    public centerPopupAlign: Align = { horizontal: "left", vertical: "center" };
+
     public bottomAnchorAlign: Align = { horizontal: "right", vertical: "bottom" };
     public bottomPopupAlign: Align = { horizontal: "left", vertical: "bottom" };
 
-    public etcMargin = { horizontal: 30, vertical: -400 };
+    public etcMargin = { horizontal: 30, vertical: -150 };
     public etcMargin2 = { horizontal: 30, vertical: 0 };
 
     public animate : PopupAnimation = {
@@ -101,6 +107,8 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     public hour: number=0;
     public minute: number=0;
     public second: number=0;
+
+    public infoCount = 0;
 
 
     ///// 어항 그리기 /////
@@ -125,6 +133,13 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     public showEtc: boolean = false;
     /** 어항 선택 */
     public showFishBowl: boolean = false;
+
+    public showEtc_0: boolean = false;
+    public showEtc_1: boolean = false;
+    public showEtc_2: boolean = false;
+    public showEtc_3: boolean = false;
+    public showEtc_4: boolean = false;
+    public showEtc_5: boolean = false;
 
     // object 이미지 경로 리스트
     /** 어항 물 양 img list */
@@ -180,6 +195,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     public etc_2_ImgList:string[] = [];
     public etc_3_ImgList:string[] = [];
     public etc_4_ImgList:string[] = [];
+    public etc_5_ImgList:string[] = [];
     public etcImgList:string[] = [];
 
 
@@ -195,7 +211,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
 
 
     /** 선택된 가족 관계 */
-    public selectedFamilyType: number | null = null;
+    public selectedFamilyType: any | null = null;
 
     /** 선택한 가족 관계 list */
     public selectedObjectList: string[] = [];
@@ -220,18 +236,23 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     /** canvas */
     @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
     @ViewChild('canvas', { static: true }) canvas_el!: ElementRef<HTMLCanvasElement>;
+    @ViewChild('drawer')
+    private drawer: any;
 
     /** 다이얼로그 생성 */
     @ViewChild('dialog', {read: ViewContainerRef})
     public dialogRef!: ViewContainerRef;
 
-    public subscription: Subscription;
-    public subscription2: Subscription;
+    // public subscription: Subscription;
+    // public subscription2: Subscription;
     public subscription3: Subscription;
     public subscription4: Subscription;
     public subscription5: Subscription;
+    public subscription6: Subscription;
+    
+    public selectSeqItem : {id?: number, seq: number,text: string, date: string, imgUrl: string, hour: number,minute: number,second: number,detailFishDescription?:string}[] = [];
 
-    public selectSeqItem: any[] = [];
+    public isReload : boolean = true;
 
 
     /**
@@ -252,20 +273,21 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         private authService: AuthService,
         private userService:UserService,
         private alertService: AlertService,
-        private drawFishFamilyService: DrawFishFamilyService
+        private drawFishFamilyService: DrawFishFamilyService,
+        private elementRef: ElementRef
     ) {
 
-        this.subscription = drawFishFamilyService.selectItem$.subscribe(
-            item => {
-                this.selectSeqItem = item;
-            }
-        );
-        this.subscription2 = drawFishFamilyService.selectItemIndex$.subscribe(
-            index => {
-                this.selectedSeqIndex = index;
-                this.selectSeq(this.selectSeqItem,this.selectedSeqIndex);
-            }
-        );
+        // this.subscription = drawFishFamilyService.selectItem$.subscribe(
+        //     item => {
+        //         this.selectSeqItem = item;
+        //     }
+        // );
+        // this.subscription2 = drawFishFamilyService.selectItemIndex$.subscribe(
+        //     index => {
+        //         this.selectedSeqIndex = index;
+        //         this.selectSeq(this.selectSeqItem,this.selectedSeqIndex);
+        //     }
+        // );
 
         this.subscription3 = drawFishFamilyService.deleteItem$.subscribe(
             isDelete => {
@@ -282,6 +304,12 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         this.subscription5 = drawFishFamilyService.saveItem$.subscribe(
             isSave => {
                 if(isSave) this.canvasDownload();
+            }
+        );
+
+        this.subscription6 = drawFishFamilyService.openResult$.subscribe(
+            isOpenResult => {
+                if(isOpenResult) this.drawer.toggle();
             }
         );
 
@@ -336,8 +364,8 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
                          this.etc_2_ImgList = data.filter(item => item.path.includes('/etc_2/')).map(item => item.path);
                          this.etc_3_ImgList = data.filter(item => item.path.includes('/etc_3/')).map(item => item.path);
                          this.etc_4_ImgList = data.filter(item => item.path.includes('/etc_4/')).map(item => item.path);
+                         this.etc_5_ImgList = data.filter(item => item.path.includes('/etc_5/')).map(item => item.path);
 
-                         console.log(this.etc_4_ImgList);
                         //  this.etcImgList = data.filter(item => item.path.includes('/etc/')).map(item => item.path);
                         //  this.etcImgList.push('assets/img/etc/FB_TA_0.svg');
                         //  this.etcImgList.push('assets/img/etc/FB_HA_0.svg');
@@ -361,9 +389,6 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
             .subscribe({
                 next: async (data) => {
                     this.patientInfoId = data?.id;
-                    //this.drawFishFamilyService.sendPatientData(data);
-                    console.log(data);
-
                 }
 
             })
@@ -379,7 +404,11 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
 
                     }
                 }
-            })
+            });
+        
+        
+
+
 
     }
 
@@ -395,7 +424,9 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
                         data.map(item => {
 
                             if(!item.deleted){
-                                const testDate = new Date(item.testDate).getFullYear().toString() + '.' + (new Date(item.testDate).getMonth() + 1).toString() + '.' + new Date(item.testDate).getDate().toString();
+                                //const testDate = new Date(item.testDate).getFullYear().toString() + '.' + (new Date(item.testDate).getMonth() + 1).toString() + '.' + new Date(item.testDate).getDate().toString();
+                                const testDate = new Date(item.testDate);
+                                
                                 seq += 1;
                                 this.seqItems.push({
                                     id: item.id,
@@ -416,6 +447,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
 
                         // 마지막 seq 조회
                         this.selectedSeq = data[data.length - 1].seq;
+                        
 
                         // 기존 DataSet이 있지만 모두 삭제되어 사용자에게 보여줄 DataSet이 없을 경우 미실행
                         if(this.seqItems.length != 0){
@@ -424,6 +456,9 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
                             this.selectedSeqIndex = this.seqItems.length -1;
                             this.selectSeq(this.seqItems[this.selectedSeqIndex], this.selectedSeqIndex);
                         }
+                        
+
+                        
 
                         // 설문 답안 불러오기
                         this.mindReaderControlService.getAnswer(this.originDataSet[this.selectedSeq-1].id)
@@ -432,8 +467,12 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
                                     if (data){
                                         this.resultAnswerData=data
 
+                                        console.log(this.resultAnswerData);
                                         this.answerResult=true
 
+                                    }
+                                    else{
+                                        console.log('결과지 없슈! 기다리쇼!');
                                     }
                                 }
                             })
@@ -442,18 +481,41 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
                 }
 
             })
+
+            
     }
+
+
+
+    /**
+     * 초기 회차 선택 스크롤 하단으로 이동
+     */
+    // ngAfterViewChecked():void {
+    //     this.elementRef.nativeElement.querySelector('#seq-info').scrollTop =this.elementRef.nativeElement.querySelector('#seq-info').scrollHeight;
+
+    //     if(!this.isReload){
+    //         return;
+    //     }
+
+        
+    //     this.isReload = !this.isReload;
+        
+        
+    // }
 
     /**
      * 회차별 오브젝트 순서 조회
      */
-    getSeqObjectCode():void {
-        this.mindReaderControlService.getObjectCodeSeq(this.selectedSeq)
+    getSeqObjectCode(seq?:number):void {
+        
+        this.mindReaderControlService.getObjectCodeSeq(seq? seq : this.selectedSeq)
             .subscribe({
                 next: async (data) => {
                     this.selectedObjectList = data.map(item => item.description);
                 }
             });
+
+        console.log(this.selectedObjectList);
     }
 
 
@@ -465,10 +527,8 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
      */
     selectSeq(item: any, index: number){
 
-        if(index == 0){
-            this.addSeq();
-            return;
-        }
+
+        this.drawFishFamilyService.selectSeqItem(item,index);
 
         this.selectSeqItem = item;
 
@@ -489,7 +549,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
 
 
         // 해당 DataSet의 Object Seq 조회
-        this.getSeqObjectCode();
+        this.getSeqObjectCode(item.seq);
         // 결과 보기 버튼 비활성
         this.answerResult=false
     }
@@ -501,7 +561,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     addSeq(){
 
         // 최대회차 24회로 제한
-        if(this.seqItems.length >= 25) {
+        if(this.seqItems.length >= 24) {
             this.alertService.openAlert('상담은 24회차까지 진행됩니다.');
             return;
         }
@@ -511,8 +571,8 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         // 회차 추가
         this.seqItems.push({
             seq: this.selectedSeq,
-            text: `${this.seqItems.length}회차`,
-            date: new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString(),
+            text: `${this.seqItems.length +1 }회차`,
+            date: new Date(),
             imgUrl: '',
             hour:0,
             minute:0,
@@ -522,6 +582,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
 
         // 회차 추가 시 추가된 회차로 자동 선택
         this.selectSeq(this.seqItems[this.seqItems.length -1], this.seqItems.length -1);
+        this.drawFishFamilyService.addSeqItem();
     }
 
     /**
@@ -531,14 +592,14 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
 
         // 회차 삭제 확인 다이얼로그
         const dialog = this.dialogService.open({
-            title: `${index}회차를 삭제하시겠습니까?`,
+            title: `${index+1}회차를 삭제하시겠습니까?`,
             content: ConfirmDialogComponent,
             appendTo: this.dialogRef,
             width: 450,
             height: 180,
             minWidth: 250,
         });
-        dialog.content.instance.text = `삭제 시 복구가 불가합니다. <br> ${index}회차를 정말로 삭제하시겠습니까?`;
+        dialog.content.instance.text = `삭제 시 복구가 불가합니다. <br> ${index +1}회차를 정말로 삭제하시겠습니까?`;
         console.log(item);
 
         dialog.result.subscribe((result: any) => {
@@ -570,14 +631,38 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
      * @param type
      */
     closeOpenPopUp(type ?:string):void {
+        this.showFishBowl = type === 'showFishBowl' ? !this.showFishBowl : false;
         this.showFishes = type === 'showFishes' ? !this.showFishes : false;
         this.showWhales = type === 'showWhales' ? !this.showWhales : false;
         this.showRoundFishes = type === 'showRoundFishes' ? !this.showRoundFishes : false;
         this.showSharks = type === 'showSharks' ? !this.showSharks : false;
         this.showEels = type === 'showEels' ? !this.showEels : false;
-        this.showEtc = type === 'showEtc' ? !this.showEtc : false;
-        this.showFishBowl = type === 'showFishBowl' ? !this.showFishBowl : false;
 
+        if(type === 'showEtc'){
+            this.showEtc = !this.showEtc;
+            this.showEtc_0 = !this.showEtc_0;
+        }
+        else{
+            this.showEtc = false;
+            this.showEtc_0 = false;
+            this.showEtc_1 = false;
+            this.showEtc_2 = false;
+            this.showEtc_3 = false;
+            this.showEtc_4 = false;
+            this.showEtc_5 = false;
+
+        }
+        
+
+    }
+
+    closeOpenPopUpEtc(type: string){
+        this.showEtc_0 = type === 'showEtc_0' ? !this.showEtc_0 : false;
+        this.showEtc_1 = type === 'showEtc_1' ? !this.showEtc_0 : false;
+        this.showEtc_2 = type === 'showEtc_2' ? !this.showEtc_0 : false;
+        this.showEtc_3 = type === 'showEtc_3' ? !this.showEtc_0 : false;
+        this.showEtc_4 = type === 'showEtc_4' ? !this.showEtc_0 : false;
+        this.showEtc_5 = type === 'showEtc_5' ? !this.showEtc_0 : false;
     }
 
 
@@ -590,6 +675,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         this.showFishBowl = false;
         this.selectedFishBowl = fishBowl;
         this.isSelectedFishBowl = true;
+        this.infoCount += 1;
 
         const fishbowlCode = this.objectData.filter(item => item.path == fishBowl ).map(item => item.objectCodeId);
         this.canvas.setWater(fishBowl,fishbowlCode[0]);
@@ -601,9 +687,10 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
      */
     selectFamilyType(e:any){
         if (e.length != 0){
-            this.familyTypeList[e].selected = true;
+            // this.familyTypeList[e].selected = true;
             // 선택된 가족관계 id 할당
-            this.selectedFamilyType = this.familyTypeList[e].id;
+            // this.selectedFamilyType = this.familyTypeList[e].id;
+            this.selectedFamilyType = this.familyTypeList[e];
 
             // 가족 관계를 선택해야 물고기 선택 가능
             this.isFamilyAfterFish=true;
@@ -683,6 +770,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
      * @param bodyImg
      */
     selectFishBody(event: any, bodyImg:string){
+        this.infoCount += 1;
         // 최종 선택된 물고기 전달
         this.selectedFishBody = bodyImg;
         this.getImgPolaroid(bodyImg);
@@ -697,6 +785,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
      * @param img
      */
     selectEtcObject(event:any, img: any):void {
+        this.infoCount += 1;
         this.selectedEtc = img;
         // this.selectedObjectList.push(img);
 
@@ -714,11 +803,11 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         
 
         if(img.includes('_HA_')){
-            this.canvas.getImgPolaroid(img,objectCodeId[0],999,40,40,0.5);
+            this.canvas.getImgPolaroid(img,objectCodeId[0],this.selectedFamilyType,40,40,0.5);
         
         }
         else if(img.includes('_TA_')){
-            this.canvas.getImgPolaroid(img,objectCodeId[0],999, 745, 30, 0.07);
+            this.canvas.getImgPolaroid(img,objectCodeId[0],this.selectedFamilyType, 745, 30, 0.07);
             
         }
         else{
@@ -728,7 +817,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
 
         // 물고기 선택 후 버튼 해제
         if(this.selectedFamilyType != null){
-            this.familyTypeList[this.selectedFamilyType].selected=false;
+            // this.familyTypeList[this.selectedFamilyType.id].selected=false;
         }
 
         // 물고기 선택 후 가족 관계 Disabled True
@@ -822,7 +911,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         const downloadLink = document.createElement('a');
         document.body.appendChild(downloadLink);
         downloadLink.href = this.canvasImage;
-        downloadLink.download = this.seqItems[this.selectedSeqIndex].date + '.png';
+        downloadLink.download = this.authService.getUserName() + '_' +this.seqItems[this.selectedSeqIndex].date + '.png';
         downloadLink.click();
 
     }
@@ -878,8 +967,8 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
      * 구독 해제
      */
     ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.subscription2.unsubscribe();
+        // this.subscription.unsubscribe();
+        // this.subscription2.unsubscribe();
         this.subscription3.unsubscribe();
         this.subscription4.unsubscribe();
         this.subscription5.unsubscribe();

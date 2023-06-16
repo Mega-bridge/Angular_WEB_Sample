@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {SharedModule} from "../../shared/shared.module";
 import {DragAndDropComponent } from "./draw-fish-family/drag-and-drop/drag-and-drop.component"
@@ -8,6 +8,10 @@ import {ButtonModule, ChipModule} from "@progress/kendo-angular-buttons";
 import {InputsModule} from "@progress/kendo-angular-inputs";
 import {PopupModule} from "@progress/kendo-angular-popup";
 import {LayoutModule} from "@progress/kendo-angular-layout";
+import { ButtonsModule } from '@progress/kendo-angular-buttons';
+
+import { IndicatorsModule } from "@progress/kendo-angular-indicators";
+import {DropDownListModule} from "@progress/kendo-angular-dropdowns";
 
 
 @NgModule({
@@ -29,6 +33,10 @@ import {LayoutModule} from "@progress/kendo-angular-layout";
         ChipModule,
         PopupModule,
         LayoutModule,
+        IndicatorsModule,
+        DropDownListModule,
+        ButtonsModule
+        
     ],
   declarations: [
     DragAndDropComponent,
@@ -36,6 +44,10 @@ import {LayoutModule} from "@progress/kendo-angular-layout";
   ],
   providers: [
     DrawFishFamilyComponent,
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA,
+    NO_ERRORS_SCHEMA
   ]
 })
 export class DashBoardModule { }

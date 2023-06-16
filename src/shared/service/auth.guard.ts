@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
             // 토큰 유효 기간 확인
             if (!this.loginService.isAuthenticated()) {
                 this.loginService.removeSessionStorage();
-                this.router.navigateByUrl('main');
+                this.router.navigateByUrl('login');
                 return false;
             }
             return true;

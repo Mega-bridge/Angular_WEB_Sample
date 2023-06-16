@@ -22,6 +22,10 @@ export class DrawFishFamilyService {
     private patientInfo = new Subject<any>();
     patientInfo$ = this.patientInfo.asObservable();
 
+    /* 회차 추가 여부 */
+    private addItem = new Subject<boolean>();
+    addItem$ = this.addItem.asObservable();
+
     /* 회차 삭제 여부 */
     private deleteItem = new Subject<boolean>();
     deleteItem$ = this.deleteItem.asObservable();
@@ -33,6 +37,10 @@ export class DrawFishFamilyService {
     /* 그리기 모드 시작 여부 */
     private start = new Subject<boolean>();
     start$ = this.start.asObservable();
+
+     /* 결과 보기 */
+     private openResult = new Subject<boolean>();
+     openResult$ = this.openResult.asObservable();
 
     /**
      * 회차 정보 공유
@@ -59,6 +67,13 @@ export class DrawFishFamilyService {
     }
 
     /**
+     * 결과보기 여부 설정
+     */
+    openResultScreen(){
+        this.openResult.next(true);
+    }
+
+    /**
      * 그리기 모드 종료 여부 설정
      */
     closeFullScreen(){
@@ -73,6 +88,10 @@ export class DrawFishFamilyService {
     selectSeqItem(item: any, index: number){
         this.selectItem.next(item);
         this.selectItemIndex.next(index);
+    }
+
+    addSeqItem(){
+        this.addItem.next(true);
     }
 
     /**
