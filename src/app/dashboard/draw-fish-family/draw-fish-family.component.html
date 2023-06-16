@@ -397,8 +397,8 @@
                                 </div>
                             </div>
 
-                            <div *ngIf="showEtc_1" class="pop-up-select-image" >
-                                <div   *ngFor="let img of etc_1_ImgList" class="img-wrap" >
+                            <div *ngIf="showEtc_1" class="pop-up-select-image" style="justify-content: center;">
+                                <div   *ngFor="let img of etc_1_ImgList;let i = index" class="img-wrap" [style.border-bottom] = "i == 0? '1px solid #e0e0e0' : 'none' ">
                                     <img  (click)="selectEtcObject($event, img)" [src]= "img"/>
                                 </div>
                             </div>
@@ -409,8 +409,8 @@
                                 </div>
                             </div>
 
-                            <div *ngIf="showEtc_3" class="pop-up-select-image" >
-                                <div   *ngFor="let img of etc_3_ImgList" class="img-wrap" >
+                            <div *ngIf="showEtc_3" class="pop-up-select-image" style="justify-content: center;">
+                                <div   *ngFor="let img of etc_3_ImgList;let i = index" class="img-wrap" [style.border-bottom] = "i == 0? '1px solid #e0e0e0' : 'none' ">
                                     <img  (click)="selectEtcObject($event, img)" [src]= "img"/>
                                 </div>
                             </div>
