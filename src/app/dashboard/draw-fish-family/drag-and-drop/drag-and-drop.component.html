@@ -2,9 +2,31 @@
 <!--        #htmlCanvas-->
 <!--        [ngStyle] = "{'background-image': 'url('+waterUrl+')'}"-->
 <!--        style=" background-repeat: no-repeat; background-size: 100% 100%;  border: 2px dashed #cccccc; "></canvas>-->
+<kendo-popup [anchor]="anchor1"
+                         *ngIf="firstObject == 1  && !selectedFamilyType?.description"
+                         [anchorAlign]="anchorAlign"
+                         [popupAlign]="popupAlign"
+                         [margin] ="{ horizontal: 20, vertical: 0 }"
+                         class="popup-description"
+                         >
+                         <div style="font-size: 17px; border: 3px solid #ca3d57; padding: 10px 15px;  width: fit-content; border-radius: 1.5rem;">
+                                <div style="position: absolute;
+                                background-color: #ca3d57;
+                                border-radius: 1.5rem;
+                                width: fit-content;
+                                padding: 1px 6px;
+                                font-size: 13px;
+                                color: #ffffff;
+                                font-weight: 400;
+                                top: -10px;
+                                left: 10px;">STEP.2-1</div>
+                            물고기의 가족관계를 선택해주세요.
+                         </div>
+            </kendo-popup>
+
 <div class="control-wrap">
-        <div class="control" >
-                <kendo-dropdownbutton
+        <div class="control" #anchor1>
+                <kendo-dropdownbutton 
                 [disabled]="!isSelected"
                 [data]="familyTypeList"
                 textField="description"
@@ -19,7 +41,7 @@
                         color: #ffffff;
                         text-align : center; 
                         padding: 5px 10px;
-                        margin-left: 10px;">{{selectedFamilyType?.description}} </span>
+                        margin-left: 10px;">{{selectedFamilyType?.description}}</span>
 
 
                 <label><span>회전</span> 
@@ -38,7 +60,7 @@
                         <span>위아래</span> 
                         <input [disabled]="!isSelected" type="range" id="top-control" value="150" min="0" max="900" (input)="changeControl('#top-control','top')">
                 </label>
-                <button [disabled]="!isSelected" class="button-style del" (click)="removeSelected();"> DELETE
+                <button [disabled]="!isSelected" class="button-style del" (click)="removeSelected();" [style.OPACITY]="isSelected? '': '50%'"> 삭제
                 </button>
         </div>
 </div>

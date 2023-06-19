@@ -17,7 +17,7 @@ import {MrDataSetRequestModel} from "../../../../shared/model/request/mr-data-se
 import {AuthService} from "../../../../shared/service/auth.service";
 import { __values } from "tslib";
 import { MrFamilyCodeResponse } from "src/shared/model/response/mr-family-code.response.model";
-
+import {Align, PopupAnimation} from "@progress/kendo-angular-popup";
 
 
 @Component({
@@ -36,6 +36,10 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     public htmlCanvasElement!: ElementRef;
 
     @Input() userEmail:string | null = '';
+
+    public anchorAlign: Align = { horizontal: "left", vertical: "bottom" };
+    public popupAlign: Align = { horizontal: "left", vertical: "top" };
+    public firstObject = 0;
 
     public canvas: fabric.Canvas;
 
@@ -427,6 +431,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             image.scale(scale?scale: 0.2);
         
             this.canvas.add(image);
+
+            this.firstObject += 1;
 
             this.selectItemAfterAdded(image);
         });
