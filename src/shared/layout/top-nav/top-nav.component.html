@@ -17,13 +17,13 @@
         <span style="font-size: 25px;">{{userName}} </span>
         <span style="color: #595959;"> &nbsp;/ {{patientData ? (patientData.genderId == 0 ? '남' : '여') : ''}} / 만 {{patientData ? patientData.age : ''}}세 /&nbsp;</span>
         <kendo-dropdownbutton
-            *ngIf="selectSeqIndex;"  
+            *ngIf="selectSeqIndex == 0 || selectSeqIndex"  
             [data]="options"
             size="small"
             rounded="full"
             themeColor="dark"
             (itemClick)="onOptionClick($event)"
-            [popupSettings] = "{align: 'center'}"
+            [popupSettings] = "{align: 'center',popupClass: 'customSeqClass'}"
             class="top-dropdown-option"
         >
             {{selectedItem ? selectedItem.text : ''}} ∨
@@ -58,6 +58,26 @@
         
 
         
+        <div style="display: flex; flex-direction: column;align-items: center; color: #a0a0a0;">
+            <kendo-dropdownbutton
+                    [data]="settings"
+                    icon="user"
+                    size="small"
+                    rounded="medium"
+                    fillMode="flat"
+                    [buttonClass]="{ 'custom-border': true}"
+                    [popupSettings] = "{align: 'center',popupClass: 'customProfileClass'}"
+                    (itemClick)="onItemClick($event)"
+                    class="top-dropdown"
+            > 
+            <span style="font-size: 13px;">로그인 </span>
+            <span style="font-size: 13px;">∨</span>
+            </kendo-dropdownbutton>
+        </div>
+        
+        
+        <span style="margin-right:15px;">||</span>
+        
         <kendo-label text="튜토리얼 모드" style="margin-right: 5px; font-size: 13px;">
             <kendo-switch style="margin-left: 4px;" [(ngModel)]="checked" (valueChange)="isTutorial($event)"></kendo-switch>
         </kendo-label>
@@ -65,20 +85,9 @@
         <button class="button-style" (click)="openFullscreen()" *ngIf="isAdd">시작하기</button>
         <button class="button-style" (click)="openResult()" *ngIf="!isAdd">결과보기</button>
 
-        <span style="margin:0 10px;">||</span>
+       
 
-        <kendo-dropdownbutton
-                [data]="settings"
-                icon="user"
-                size="small"
-                rounded="medium"
-                fillMode="flat"
-                [buttonClass]="{ 'custom-border': true}"
-                [popupSettings] = "{align: 'center'}"
-                (itemClick)="onItemClick($event)"
-                class="top-dropdown"
-        >
-        </kendo-dropdownbutton>
+        
 
         <!-- <kendo-button *ngIf="selectSeqIndex" style="border: none; background-color: unset; background-image: none;margin-left: 5px;" (click)="saveSeq()" >
             <kendo-icon name="download"  [themeColor]="'info'" style="font-size: 24px;"></kendo-icon>

@@ -142,7 +142,7 @@ export class TopNavComponent implements OnInit,OnDestroy {
       content: ConfirmDialogComponent,
       appendTo: this.dialogRef,
       width: 450,
-      height: 160,
+      height: 180,
       minWidth: 250,
       cssClass: 'custom-css-class',
     });
