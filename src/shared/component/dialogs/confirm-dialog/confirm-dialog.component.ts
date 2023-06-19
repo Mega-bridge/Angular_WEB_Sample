@@ -59,6 +59,7 @@ export class ConfirmDialogComponent {
    * 수행한다.
    */
   public submit(): void {
+    console.log(this.selectedValue);
       this.useCanvasStatusInfo ? this.dialogRef.close({text: 'yes', detailFishId: this.selectedValue.id}) :
           this.dialogRef.close({text: 'yes'});
   }

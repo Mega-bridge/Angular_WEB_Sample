@@ -1,11 +1,58 @@
 //////////////////////////////////////////////////////
 /** Kendo-Dialog Title 영역 초기화 */
 //////////////////////////////////////////////////////
+/// 
+
+.detailFishDialogClass{
+  &.k-dialog-wrapper .k-dialog {
+    overflow: hidden;
+    //background-color: #333333;
+    //color: #FFFFFF;
+    //box-shadow: 1px 1px 5px 1px #FFFFFF;
+    border-radius: 2.5rem;
+  
+    .k-dialog-actions .k-icon-button .k-icon {
+      font-size: 20px;
+    }
+
+
+    .k-dialog-titlebar {
+      //background-color: #FFFFFF;
+      //color: #333333;
+      //background-color: #333333;
+      //color: #FFFFFF;
+      //margin: 0 1rem;
+      border: none;
+      background-color: unset;
+    }
+
+    .k-dialog-titlebar-actions{
+      background-color: #ebebeb;
+      justify-content: center;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      background-color: #ebebeb;
+      
+      margin: unset;
+    }
+
+     // 다이얼로그 상단 바 닫기 버튼 제거
+    // .k-dialog-actions {
+    //   display: none;
+    // }
+  
+    
+  }
+}
+
+
 .k-dialog-wrapper .k-dialog {
   overflow: hidden;
   //background-color: #333333;
   //color: #FFFFFF;
-  box-shadow: 1px 1px 5px 1px #FFFFFF;
+  //box-shadow: 1px 1px 5px 1px #FFFFFF;
+  border-radius: 1.5rem;
 
   .k-dialog-titlebar {
     //background-color: #FFFFFF;
@@ -20,10 +67,10 @@
     font-size: 22px;
   }
 
-  // 다이얼로그 상단 바 닫기 버튼 제거
-  //.k-dialog-actions {
+  // // 다이얼로그 상단 바 닫기 버튼 제거
+  // .k-dialog-actions {
   //  display: none;
-  //}
+  // }
 
   .k-dialog-actions .k-icon-button .k-icon {
     font-size: 20px;
@@ -156,6 +203,14 @@
 .k-menu-popup{
   //width: 100px;
   border-radius: 0.5rem;
+  
+  &.customProfileClass{
+   margin-top: 7px;
+  }
+
+  &.customSeqClass{
+    margin-top: 17px;
+   }
 
   .k-link, .k-menu-group .k-item.k-focus{
     
@@ -182,6 +237,7 @@
     //padding-inline-end: 8px;
     padding: 15px;
     height: 32px;
+    width: 158px;
     span{
       justify-content: center;
     }
@@ -210,6 +266,18 @@
   //  }
   //
   //}
+}
+
+.k-popup {
+  &.detailFistClass{
+      border-radius: 1.5rem;
+      padding: 5px;
+
+      
+      li {
+        border-radius: 1.5rem;
+      }
+  }
 }
 
 .top-dropdownlist{

@@ -27,6 +27,7 @@ import {UserService} from "../../../shared/service/user.service";
 import {AlertService} from "../../../shared/service/alert.service";
 import {MrDetailFishResponseModel} from "../../../shared/model/response/mr-detail-fish.response.model";
 import {DrawFishFamilyService} from "../../../shared/service/draw-fish-family.service";
+import { DetailFishDialogComponent } from "../../../shared/component/dialogs/detail-fish-dialog/detail-fish-dialog.component";
 
 @Component({
     selector: 'app-dashboard-draw-fish-family',
@@ -596,7 +597,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
             content: ConfirmDialogComponent,
             appendTo: this.dialogRef,
             width: 450,
-            height: 180,
+            height: 200,
             minWidth: 250,
         });
         dialog.content.instance.text = `삭제 시 복구가 불가합니다. <br> ${index +1}회차를 정말로 삭제하시겠습니까?`;
@@ -852,8 +853,9 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
             content: ConfirmDialogComponent,
             appendTo: this.dialogRef,
             width: 450,
-            height: 180,
+            height: 200,
             minWidth: 250,
+            
         });
         dialog.content.instance.text = '저장 시 수정이 불가합니다.<br>그리기를 끝내시겠습니까?';
 
@@ -875,15 +877,16 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     canvasStatusInfoDialog(){
 
         const dialog = this.dialogService.open({
-            title: "물고기 가족에 대해 조금 더 알려주세요!",
-            content: ConfirmDialogComponent,
+            title: " ",
+            content: DetailFishDialogComponent,
             appendTo: this.dialogRef,
-            width: 450,
-            height: 190,
+            width: 900,
+            height: 500,
             minWidth: 250,
+            cssClass:'detailFishDialogClass'
         });
         dialog.content.instance.text = '지금 물고기 가족은 무엇을 하고 있나요?';
-        dialog.content.instance.useCanvasStatusInfo = true;
+        // dialog.content.instance.useCanvasStatusInfo = true;
 
 
         // 저장 실행

@@ -17,7 +17,7 @@
 <!--  <button mat-button mat-dialog-close cdkFocusInitial>Ok</button>-->
 <!--</div>-->
 
-<div style="margin-bottom: 14px; padding-bottom: 5px;border-bottom: #b7b7b7 1px solid;"  >
+<div style="margin-bottom: 10px; padding-bottom: 20px;border-bottom: #b7b7b7 1px solid;"  >
   <p style="font-size: 16px; padding: 3px; margin: 0.5em;" [innerHtml]="text">{{text}}</p>
   <div *ngIf="useCanvasStatusInfo">
     <kendo-dropdownlist
@@ -34,3 +34,4 @@
   <button kendoButton class="btn-style" (click)="closeDialog()">취소</button>
   <button kendoButton class="btn-style highlight" (click)="submit()">확인</button>
 </div>
+ 

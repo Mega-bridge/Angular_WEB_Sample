@@ -87,10 +87,13 @@
 .btn-style {
   width: 40%;
   font-size: 16px;
+  border-radius: 1.5rem;
+  padding: 7px;
 
   &.highlight{
     color: #ffffff;
-    background-color: #ca3d57;
+    // background-color: #ca3d57;
+    background-color: #000000;
     &.dark-1 {
       background-color: #5b8bd2;
     }
