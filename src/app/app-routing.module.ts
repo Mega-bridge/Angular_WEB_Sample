@@ -16,6 +16,14 @@ const routes: Routes = [
     redirectTo: 'login',
     pathMatch: 'full'
   },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'sign-up',
+    component: SignUpComponent
+  },
 
   {
     path:'',
@@ -26,14 +34,14 @@ const routes: Routes = [
         component: MainComponent,
         loadChildren: () => import('./main/main.module').then(i => i.MainModule)
       },
-      {
-        path: 'login',
-        component: LoginComponent,
-      },
-      {
-        path: 'sign-up',
-        component: SignUpComponent
-      },
+      // {
+      //   path: 'login',
+      //   component: LoginComponent,
+      // },
+      // {
+      //   path: 'sign-up',
+      //   component: SignUpComponent
+      // },
       {
         path: 'input-info',
         component: InputInfoComponent
