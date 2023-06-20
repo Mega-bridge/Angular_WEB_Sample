@@ -37,8 +37,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
     @Input() userEmail:string | null = '';
 
-    public anchorAlign: Align = { horizontal: "left", vertical: "top" };
-    public popupAlign: Align = { horizontal: "left", vertical: "bottom" };
+    public anchorAlign: Align = { horizontal: "left", vertical: "bottom" };
+    public popupAlign: Align = { horizontal: "left", vertical: "top" };
     public isSelectFirstFish = 0;
 
     public canvas: fabric.Canvas;
@@ -67,7 +67,13 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     /** object data set 생성 */
     public mrDataSetModel: MrDataSetRequestModel = new MrDataSetRequestModel();
 
-    public openFam: boolean =false;
+    /** 가족선택 열기 */
+    public openFam: boolean = false;
+
+    public openAngleControl: boolean = false;
+    public openSizeControl: boolean = false;
+    public openLeftControl: boolean = false;
+    public openTopControl: boolean = false;
 
 
     public props = {

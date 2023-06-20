@@ -132,7 +132,7 @@
                          *ngIf="!showFishBowl && !selectedFishBowl && !isSelectFirstFish && !isSelectFirstEtc"
                          [anchorAlign]="centerAnchorAlign"
                          [popupAlign]="centerPopupAlign"
-                         [margin] ="{ horizontal: 20, vertical: 0 }"
+                         [margin] ="{ horizontal: 25, vertical: 0 }"
                          class="popup-description"
                          >
                          <div style="font-size: 17px; border: 3px solid #ca3d57; padding: 10px 15px;  width: fit-content; border-radius: 1.5rem;">
@@ -156,7 +156,7 @@
                          *ngIf="selectedFishBowl && !isSelectFirstFish"
                          [anchorAlign]="centerAnchorAlign"
                          [popupAlign]="centerPopupAlign"
-                         [margin] ="{ horizontal: 20, vertical: 0 }"
+                         [margin] ="{ horizontal: 25, vertical: 0 }"
                          class="popup-description"
                          >
                          <div style="font-size: 17px; border: 3px solid #ca3d57; padding: 10px 15px;  width: fit-content; border-radius: 1.5rem;">
@@ -169,7 +169,7 @@
                          *ngIf="!selectedFishBowl && !isSelectFirstEtc && isSelectFirstFish"
                          [anchorAlign]="centerAnchorAlign"
                          [popupAlign]="centerPopupAlign"
-                         [margin] ="{ horizontal: 20, vertical: 0 }"
+                         [margin] ="{ horizontal: 25, vertical: 0 }"
                          class="popup-description"
                          >
                          <div style="font-size: 17px; border: 3px solid #ca3d57; padding: 10px 15px;  width: fit-content; border-radius: 1.5rem;">
@@ -504,6 +504,7 @@
                         font-size: 12px;
                         top: -10px;
                         left: 10px;">STEP.1</div>
+                        <div class="arrow-right"></div>
                     </div>
                     <div class="img-card"  #anchor1>
                         <div class="img-card-header" [style.background-color]="showFishBowl ? '#cf3640' : 'unset'">
@@ -542,6 +543,7 @@
                         font-size: 12px;
                         top: -10px;
                         left: 10px;">STEP.2</div>
+                        <div class="arrow-right-fish"></div>
                      </div>
                    
                     <div class="img-card" #anchor2>
@@ -589,6 +591,7 @@
                         font-size: 12px;
                         top: -10px;
                         left: 10px;">STEP.3</div>
+                        <div class="arrow-right-etc"></div>
                     </div>
                     <div class="img-card" #anchor7>
                         <div class="img-card-header" *ngIf="isSelectedFishBowl && infoCount >= 2" [style.background-color]="showEtc ? '#cf3640' : 'unset'">

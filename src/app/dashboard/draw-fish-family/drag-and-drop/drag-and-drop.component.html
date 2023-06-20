@@ -6,7 +6,7 @@
                          *ngIf="isSelectFirstFish == 1  && !selectedFamilyType?.description"
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
-                         [margin] ="{ horizontal: 20, vertical: 0 }"
+                         [margin] ="{ horizontal: -20, vertical: 0 }"
                          class="popup-description"
                          >
                          <div style="font-size: 17px; border: 3px solid #ca3d57; padding: 10px 15px;  width: fit-content; border-radius: 1.5rem;">
@@ -29,60 +29,91 @@
         *ngIf="openFam"
         [anchorAlign]="anchorAlign"
         [popupAlign]="popupAlign"
-        [margin] ="{ horizontal: 20, vertical: 0 }"
+        [margin] ="{ horizontal: -20, vertical: 20 }"
         class="popup-description"
         >
+        <div class="arrow-up"></div>
         <kendo-chiplist selection="single"
-                        (selectedChange)="selectFamilyType($event)">
+                        (selectedChange)="selectFamilyType($event)"
+                        ChipListSize="large"
+                        class="customChipListClass">
                 <kendo-chip
                   *ngFor="let familyType of familyTypeList"
                   [label]="familyType.description"
                   [selected]="familyType.selected"
+                  ChipSize="large"
+                  ChipRounded="full"
+                  size="none"
+                  class="customChipClass"
                 >
                 </kendo-chip>
         </kendo-chiplist>
 </kendo-popup>
 
 <div class="control-wrap">
-        <button (click)="openFam = !openFam">open</button>
+        
         <div class="control" #anchor1>
-               
-                <kendo-dropdownbutton 
-                [disabled]="!isSelected"
-                [data]="familyTypeList"
-                textField="description"
-                valueField="id"
-                size="medium"
-                (itemClick)="selectFamily($event)"
+                <div>
+                        <button style="border-radius: 1.5rem;
+                                        padding: 5px 10px;
+                                        margin: 0 10px;"
+                                        (click)="openFam = !openFam"
+                                        >관계</button>
+                <!-- <kendo-dropdownbutton 
+                        [disabled]="!isSelected"
+                        [data]="familyTypeList"
+                        textField="description"
+                        valueField="id"
+                        size="medium"
+                        (itemClick)="selectFamily($event)"
                 >가족관계를 선택해주세요.
-                </kendo-dropdownbutton>
-                <span *ngIf="selectedFamilyType"
-                        style="border-radius: 1.5rem; 
-                        background-color: #323232; 
-                        color: #ffffff;
-                        text-align : center; 
-                        padding: 5px 10px;
-                        margin-left: 10px;">{{selectedFamilyType?.description}}</span>
+                </kendo-dropdownbutton> -->
+                        <span *ngIf="selectedFamilyType"
+                                style="border-radius: 1.5rem; 
+                                background-color: #323232; 
+                                color: #ffffff;
+                                text-align : center; 
+                                padding: 5px 10px;
+                                margin:0 10px;">{{selectedFamilyType?.description}}</span>        
+                </div> 
+                
 
-
-                <label><span>회전</span> 
+                <div (click)="openAngleControl = !openAngleControl" style="border-right: 1px solid #000000;padding: 0px 20px; height: 100%;">
+                        <span>회전</span> 
+                </div>
+                <div *ngIf="openAngleControl" style="border-right: 1px solid #000000;padding: 0px 20px; height: 100%;">
                         <input [disabled]="!isSelected" type="range" id="angle-control" value="0" min="0" max="360" (input)="changeControl('#angle-control','angle')">
-                </label>
+                </div>
+                
 
-                <label>
+                <div (click)="openSizeControl = !openSizeControl" style="border-right: 1px solid #000000;padding: 0px 20px; height: 100%;">
                         <span>크기</span> 
+                </div>
+                <div *ngIf="openSizeControl" style="border-right: 1px solid #000000;padding: 0px 20px; height: 100%;">
                         <input [disabled]="!isSelected" type="range" id="scale-control" value="0.2" min="0.1" max="3" step="0.1" (input)="changeControl('#scale-control','scale')">
-                </label>
-                <label>
+                </div>
+
+                <div (click)="openLeftControl = !openLeftControl" style="border-right: 1px solid #000000;padding: 0px 20px; height: 100%;">
                         <span>좌우</span> 
+                </div>
+                <div *ngIf="openLeftControl" style="border-right: 1px solid #000000;padding: 0px 20px; height: 100%;">
                         <input [disabled]="!isSelected" type="range" id="left-control" value="150" min="0" max="1200" (input)="changeControl('#left-control','left')">
-                </label>
-                <label>
+                </div>
+                
+
+
+                <div (click)="openTopControl = !openTopControl" style="border-right: 1px solid #000000;padding: 0px 20px; height: 100%;">
                         <span>위아래</span> 
+                </div>
+                <div *ngIf="openTopControl" style="border-right: 1px solid #000000;padding: 0px 20px; height: 100%;">
                         <input [disabled]="!isSelected" type="range" id="top-control" value="150" min="0" max="900" (input)="changeControl('#top-control','top')">
-                </label>
-                <button [disabled]="!isSelected" class="button-style del" (click)="removeSelected();" [style.OPACITY]="isSelected? '': '50%'"> 삭제
-                </button>
+                </div>
+                
+
+                <div>
+                        <button [disabled]="!isSelected" class="button-style del" (click)="removeSelected();" [style.OPACITY]="isSelected? '': '50%'"> 삭제</button>
+                </div>
+                
         </div>
 </div>
 
