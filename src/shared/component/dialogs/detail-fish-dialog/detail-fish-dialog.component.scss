@@ -1,0 +1,23 @@
+.btn-style {
+    width: fit-content;
+    height: fit-content;
+    padding: 10px 80px;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #000000;
+    border-radius: 1.5rem;
+
+  
+    &.highlight{
+      color: #ffffff;
+      background-color: #ca3d57;
+      &.dark-1 {
+        background-color: #5b8bd2;
+      }
+      &.dark-2 {
+        background-color: #fe5e23;
+      }
+    }
+  
+  }
+  

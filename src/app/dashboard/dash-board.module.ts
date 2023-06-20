@@ -9,7 +9,7 @@ import {InputsModule} from "@progress/kendo-angular-inputs";
 import {PopupModule} from "@progress/kendo-angular-popup";
 import {LayoutModule} from "@progress/kendo-angular-layout";
 import { ButtonsModule } from '@progress/kendo-angular-buttons';
-
+import { DetailFishDialogComponent } from '../../shared/component/dialogs/detail-fish-dialog/detail-fish-dialog.component';
 import { IndicatorsModule } from "@progress/kendo-angular-indicators";
 import {DropDownListModule} from "@progress/kendo-angular-dropdowns";
 
@@ -40,7 +40,8 @@ import {DropDownListModule} from "@progress/kendo-angular-dropdowns";
     ],
   declarations: [
     DragAndDropComponent,
-    DrawFishFamilyComponent
+    DrawFishFamilyComponent,
+    DetailFishDialogComponent
   ],
   providers: [
     DrawFishFamilyComponent,

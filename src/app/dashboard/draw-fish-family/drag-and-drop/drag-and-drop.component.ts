@@ -17,7 +17,7 @@ import {MrDataSetRequestModel} from "../../../../shared/model/request/mr-data-se
 import {AuthService} from "../../../../shared/service/auth.service";
 import { __values } from "tslib";
 import { MrFamilyCodeResponse } from "src/shared/model/response/mr-family-code.response.model";
-
+import {Align, PopupAnimation} from "@progress/kendo-angular-popup";
 
 
 @Component({
@@ -36,6 +36,10 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     public htmlCanvasElement!: ElementRef;
 
     @Input() userEmail:string | null = '';
+
+    public anchorAlign: Align = { horizontal: "left", vertical: "bottom" };
+    public popupAlign: Align = { horizontal: "left", vertical: "top" };
+    public isSelectFirstFish = 0;
 
     public canvas: fabric.Canvas;
 
@@ -62,6 +66,14 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
     /** object data set 생성 */
     public mrDataSetModel: MrDataSetRequestModel = new MrDataSetRequestModel();
+
+    /** 가족선택 열기 */
+    public openFam: boolean = false;
+
+    public openAngleControl: boolean = false;
+    public openSizeControl: boolean = false;
+    public openLeftControl: boolean = false;
+    public openTopControl: boolean = false;
 
 
     public props = {
@@ -182,7 +194,12 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
          */
         this.canvas.on('selection:created',e => {
             console.log(e);
-            if(e.selected){
+
+            // 다중선택 확인 후 선택 취소 처리
+            if (this.canvas.getActiveObjects().length > 1) {
+                this.canvas.discardActiveObject();
+            }
+            else if(e.selected){
                 this.isSelected = true;
                 const selectedObject = e.selected[0];
                 this.getId();
@@ -191,6 +208,23 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 // console.log('object Id (timestamp): ' + this.props.id);
                 console.log('object Name: ' + selectedObject.name);
                 // console.log('-----------------------');
+
+                this.selectedFamilyType = selectedObject.name ? this.familyTypeList[Number(selectedObject.name)] : null;
+            
+            }
+
+        });
+        /**
+         * 선택된 object가 변경된 경우
+         */
+        this.canvas.on('selection:updated',e => {
+            // 다중선택 확인 후 선택 취소 처리
+            if (this.canvas.getActiveObjects().length > 1) {
+                this.canvas.discardActiveObject();
+            }
+            else if(e.selected){
+                this.isSelected = true;
+                const selectedObject = e.selected[0];
 
                 this.selectedFamilyType = selectedObject.name ? this.familyTypeList[Number(selectedObject.name)] : null;
             
@@ -257,6 +291,37 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         activeGroup?.set('name',e.id).setCoords();
         this.selectedFamilyType = e;
     }
+
+
+    /**
+     * 가족 관계 선택
+     * @param e
+     */
+    selectFamilyType(e:any){
+        console.log(e);
+        this.openFam = !this.openFam;
+        var activeGroup = this.canvas.getActiveObject();
+        
+        activeGroup?.set('name',e.id).setCoords();
+        this.selectedFamilyType = e;
+
+        // if (e.length != 0){
+        //     // this.familyTypeList[e].selected = true;
+        //     // 선택된 가족관계 id 할당
+        //     // this.selectedFamilyType = this.familyTypeList[e].id;
+        //     this.selectedFamilyType = this.familyTypeList[e];
+
+        //     // 가족 관계를 선택해야 물고기 선택 가능
+        //     // this.isFamilyAfterFish=true;
+        // }
+        // else {
+        //     this.selectedFamilyType = null;
+        //     // this.isFamilyAfterFish=false;
+        // }
+
+
+    }
+
 
    
     
@@ -377,6 +442,18 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         //     }
         // })
     }
+
+
+
+    closeOpenControl(type ?:string):void {
+        this.openAngleControl = type === 'openAngleControl' ? !this.openAngleControl : false;
+        this.openSizeControl = type === 'openSizeControl' ? !this.openSizeControl : false;
+        this.openLeftControl = type === 'openLeftControl' ? !this.openLeftControl : false;
+        this.openTopControl = type === 'openTopControl' ? !this.openTopControl : false;
+       
+        
+
+    }
    
 
     /**
@@ -427,6 +504,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             image.scale(scale?scale: 0.2);
         
             this.canvas.add(image);
+
+            this.isSelectFirstFish += 1;
 
             this.selectItemAfterAdded(image);
         });
@@ -697,6 +776,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     drawingMode() {
         this.canvas.isDrawingMode = !this.canvas.isDrawingMode;
     }
+
+
 
 
 

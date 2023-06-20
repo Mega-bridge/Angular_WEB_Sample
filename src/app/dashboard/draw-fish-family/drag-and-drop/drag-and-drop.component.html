@@ -2,44 +2,128 @@
 <!--        #htmlCanvas-->
 <!--        [ngStyle] = "{'background-image': 'url('+waterUrl+')'}"-->
 <!--        style=" background-repeat: no-repeat; background-size: 100% 100%;  border: 2px dashed #cccccc; "></canvas>-->
+<kendo-popup [anchor]="anchor1"
+                         *ngIf="isSelectFirstFish == 1  && !selectedFamilyType?.description && !openFam"
+                         [anchorAlign]="anchorAlign"
+                         [popupAlign]="popupAlign"
+                         [margin] ="{ horizontal: -20, vertical: 0 }"
+                         class="popup-description"
+                         >
+                         <div style="font-size: 17px; border: 3px solid #ca3d57; padding: 10px 15px;  width: fit-content; border-radius: 1.5rem;">
+                                <div style="position: absolute;
+                                background-color: #ca3d57;
+                                border-radius: 1.5rem;
+                                width: fit-content;
+                                padding: 1px 6px;
+                                font-size: 13px;
+                                color: #ffffff;
+                                font-weight: 400;
+                                top: -10px;
+                                left: 10px;">STEP.2-1</div>
+                            물고기의 가족관계를 선택해주세요.
+                         </div>
+            </kendo-popup>
+
+
+<kendo-popup [anchor]="anchor1"
+        *ngIf="openFam"
+        [anchorAlign]="anchorAlign"
+        [popupAlign]="popupAlign"
+        [margin] ="{ horizontal: -20, vertical: 20 }"
+        class="popup-description"
+        >
+        <div class="arrow-up"></div>
+        <kendo-chiplist selection="single"
+                        
+                        ChipListSize="large"
+                        class="customChipListClass">
+                <kendo-chip
+                  *ngFor="let familyType of familyTypeList"
+                  [label]="familyType.description"
+                  [selected]="familyType.selected"
+                  (contentClick)="selectFamilyType(familyType)"
+                  ChipSize="large"
+                  ChipRounded="full"
+                  size="none"
+                  class="customChipClass"
+                >
+                </kendo-chip>
+        </kendo-chiplist>
+</kendo-popup>
+
 <div class="control-wrap">
-        <div class="control" >
-                <kendo-dropdownbutton
-                [disabled]="!isSelected"
-                [data]="familyTypeList"
-                textField="description"
-                valueField="id"
-                size="medium"
-                (itemClick)="selectFamily($event)"
-                >가족관계를 선택해주세요.
-                </kendo-dropdownbutton>
-                <span *ngIf="selectedFamilyType"
+        
+        <div class="control" #anchor1  [style.OPACITY]="isSelected? '': '50%'">
+                <div class="control-box" (click)="openFam = !openFam" style="flex-wrap: wrap; border-top-left-radius: 1.5rem; border-bottom-left-radius: 1.5rem;" [style.background-color]="openFam? '#ca3d57' : '#ffffff'" [style.pointer-events]="isSelected ? 'unset' : 'none'">
+                        <span>관계 ▾</span>
+                        <span *ngIf="selectedFamilyType"
                         style="border-radius: 1.5rem; 
-                        background-color: #323232; 
+                        background-color: #ca3d57; 
                         color: #ffffff;
                         text-align : center; 
                         padding: 5px 10px;
-                        margin-left: 10px;">{{selectedFamilyType?.description}} </span>
+                        margin-left:10px;">{{selectedFamilyType?.description}}</span> 
+                        
+                        
+                        <!-- <button style="border-radius: 1.5rem;
+                                        padding: 5px 10px;
+                                        margin: 0 10px;"
+                                        (click)="openFam = !openFam"
+                                        >관계</button> -->
+                <!-- <kendo-dropdownbutton 
+                        [disabled]="!isSelected"
+                        [data]="familyTypeList"
+                        textField="description"
+                        valueField="id"
+                        size="medium"
+                        (itemClick)="selectFamily($event)"
+                >가족관계를 선택해주세요.
+                </kendo-dropdownbutton> -->
+                              
+                </div> 
+                
 
+                <div class="control-box" (click)="closeOpenControl('openAngleControl')" [style.border-right]="openAngleControl ? 'none': '1px solid #d0d0d0'" [style.pointer-events]="isSelected ? 'unset' : 'none'" >
+                        <span class="control-box-item">회전</span> 
+                </div>
+                <div class="control-box" *ngIf="openAngleControl">
+                        <input class="control-box-item"
+                        [disabled]="!isSelected" type="range" id="angle-control" value="0" min="0" max="360" (input)="changeControl('#angle-control','angle')">
+                </div>
+                
 
-                <label><span>회전</span> 
-                        <input [disabled]="!isSelected" type="range" id="angle-control" value="0" min="0" max="360" (input)="changeControl('#angle-control','angle')">
-                </label>
-
-                <label>
+                <div class="control-box" (click)="closeOpenControl('openSizeControl')" [style.border-right]="openSizeControl ? 'none': '1px solid #d0d0d0'" [style.pointer-events]="isSelected ? 'unset' : 'none'">
                         <span>크기</span> 
-                        <input [disabled]="!isSelected" type="range" id="scale-control" value="0.2" min="0.1" max="3" step="0.1" (input)="changeControl('#scale-control','scale')">
-                </label>
-                <label>
-                        <span>좌우</span> 
-                        <input [disabled]="!isSelected" type="range" id="left-control" value="150" min="0" max="1200" (input)="changeControl('#left-control','left')">
-                </label>
-                <label>
-                        <span>위아래</span> 
-                        <input [disabled]="!isSelected" type="range" id="top-control" value="150" min="0" max="900" (input)="changeControl('#top-control','top')">
-                </label>
-                <button [disabled]="!isSelected" class="button-style del" (click)="removeSelected();"> DELETE
-                </button>
+                </div>
+                <div class="control-box" *ngIf="openSizeControl">
+                        <input class="control-box-item"
+                        [disabled]="!isSelected" type="range" id="scale-control" value="0.2" min="0.1" max="3" step="0.1" (input)="changeControl('#scale-control','scale')">
+                </div>
+
+                <div class="control-box" (click)="closeOpenControl('openLeftControl')" [style.border-right]="openLeftControl ? 'none': '1px solid #d0d0d0'" [style.pointer-events]="isSelected ? 'unset' : 'none'">
+                        <span class="control-box-item">좌우</span> 
+                </div>
+                <div class="control-box" *ngIf="openLeftControl">
+                        <input class="control-box-item"
+                        [disabled]="!isSelected" type="range" id="left-control" value="150" min="0" max="1200" (input)="changeControl('#left-control','left')">
+                </div>
+                
+
+
+                <div class="control-box" (click)="closeOpenControl('openTopControl')" [style.border-right]="openTopControl ? 'none': '1px solid #d0d0d0'" [style.pointer-events]="isSelected ? 'unset' : 'none'">
+                        <span class="control-box-item">위아래</span> 
+                </div>
+                <div class="control-box" *ngIf="openTopControl">
+                        <input class="control-box-item"
+                        [disabled]="!isSelected" type="range" id="top-control" value="150" min="0" max="900" (input)="changeControl('#top-control','top')">
+                </div>
+                
+
+                <div class="control-box"  (click)="removeSelected();" style="border-top-right-radius: 1.5rem; border-bottom-right-radius: 1.5rem;" [style.pointer-events]="isSelected ? 'unset' : 'none'">
+                        <span>지우기</span>
+                        <!-- <button [disabled]="!isSelected" class="button-style del" (click)="removeSelected();">지우기</button> -->
+                </div>
+                
         </div>
 </div>
 

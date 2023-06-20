@@ -297,7 +297,7 @@
   .btn-wrap{
     display:flex;
     justify-content: flex-end;
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
     width: 90%;
 
     .button-style{
@@ -375,4 +375,11 @@ kendo-drawer-container {
 }
 
 
-
+.result-answer-sub-title{
+  width: fit-content;
+  font-size: 15px;
+  background-color: #eeeeee;
+  border-radius: 1.5rem;
+  padding: 5px 30px;
+  margin-bottom: 10px;
+}

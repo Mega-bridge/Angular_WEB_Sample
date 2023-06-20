@@ -27,6 +27,7 @@ import {UserService} from "../../../shared/service/user.service";
 import {AlertService} from "../../../shared/service/alert.service";
 import {MrDetailFishResponseModel} from "../../../shared/model/response/mr-detail-fish.response.model";
 import {DrawFishFamilyService} from "../../../shared/service/draw-fish-family.service";
+import { DetailFishDialogComponent } from "../../../shared/component/dialogs/detail-fish-dialog/detail-fish-dialog.component";
 
 @Component({
     selector: 'app-dashboard-draw-fish-family',
@@ -109,7 +110,8 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     public second: number=0;
 
     public infoCount = 0;
-
+    public isSelectFirstFish: boolean = false;
+    public isSelectFirstEtc: boolean = false;
 
     ///// 어항 그리기 /////
 
@@ -363,7 +365,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
                          this.etc_1_ImgList = data.filter(item => item.path.includes('/etc_1/')).map(item => item.path);
                          this.etc_2_ImgList = data.filter(item => item.path.includes('/etc_2/')).map(item => item.path);
                          this.etc_3_ImgList = data.filter(item => item.path.includes('/etc_3/')).map(item => item.path);
-                         this.etc_4_ImgList = data.filter(item => item.path.includes('/etc_4/')).map(item => item.path);
+                         this.etc_4_ImgList = data.filter(item => item.path.includes('/etc_4/') && !item.path.includes('FB_TA_1')).map(item => item.path);
                          this.etc_5_ImgList = data.filter(item => item.path.includes('/etc_5/')).map(item => item.path);
 
                         //  this.etcImgList = data.filter(item => item.path.includes('/etc/')).map(item => item.path);
@@ -596,7 +598,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
             content: ConfirmDialogComponent,
             appendTo: this.dialogRef,
             width: 450,
-            height: 180,
+            height: 200,
             minWidth: 250,
         });
         dialog.content.instance.text = `삭제 시 복구가 불가합니다. <br> ${index +1}회차를 정말로 삭제하시겠습니까?`;
@@ -637,6 +639,23 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         this.showRoundFishes = type === 'showRoundFishes' ? !this.showRoundFishes : false;
         this.showSharks = type === 'showSharks' ? !this.showSharks : false;
         this.showEels = type === 'showEels' ? !this.showEels : false;
+
+        switch(type){
+            case 'showFishes':
+            case 'showWhales':
+            case 'showRoundFishes':
+            case 'showSharks':
+            case 'showEels':
+                this.isSelectFirstFish = true;
+                break;
+            case 'showEtc':
+                this.isSelectFirstEtc = true;
+                break;
+            default:
+                break;
+        }
+
+
 
         if(type === 'showEtc'){
             this.showEtc = !this.showEtc;
@@ -852,8 +871,9 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
             content: ConfirmDialogComponent,
             appendTo: this.dialogRef,
             width: 450,
-            height: 180,
+            height: 200,
             minWidth: 250,
+            
         });
         dialog.content.instance.text = '저장 시 수정이 불가합니다.<br>그리기를 끝내시겠습니까?';
 
@@ -875,15 +895,16 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     canvasStatusInfoDialog(){
 
         const dialog = this.dialogService.open({
-            title: "물고기 가족에 대해 조금 더 알려주세요!",
-            content: ConfirmDialogComponent,
+            title: " ",
+            content: DetailFishDialogComponent,
             appendTo: this.dialogRef,
-            width: 450,
-            height: 190,
+            width: 900,
+            height: 500,
             minWidth: 250,
+            cssClass:'detailFishDialogClass'
         });
         dialog.content.instance.text = '지금 물고기 가족은 무엇을 하고 있나요?';
-        dialog.content.instance.useCanvasStatusInfo = true;
+        // dialog.content.instance.useCanvasStatusInfo = true;
 
 
         // 저장 실행
@@ -911,7 +932,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         const downloadLink = document.createElement('a');
         document.body.appendChild(downloadLink);
         downloadLink.href = this.canvasImage;
-        downloadLink.download = this.authService.getUserName() + '_' +this.seqItems[this.selectedSeqIndex].date + '.png';
+        downloadLink.download = '[MindReader] ' + this.authService.getUserName() + '_' +this.seqItems[this.selectedSeqIndex].date.getFullYear() + '.' + this.seqItems[this.selectedSeqIndex].date.getMonth() + '.'  + this.seqItems[this.selectedSeqIndex].date.getDate() + '.png';
         downloadLink.click();
 
     }
