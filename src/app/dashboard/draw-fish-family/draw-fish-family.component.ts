@@ -365,7 +365,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
                          this.etc_1_ImgList = data.filter(item => item.path.includes('/etc_1/')).map(item => item.path);
                          this.etc_2_ImgList = data.filter(item => item.path.includes('/etc_2/')).map(item => item.path);
                          this.etc_3_ImgList = data.filter(item => item.path.includes('/etc_3/')).map(item => item.path);
-                         this.etc_4_ImgList = data.filter(item => item.path.includes('/etc_4/')).map(item => item.path);
+                         this.etc_4_ImgList = data.filter(item => item.path.includes('/etc_4/') && !item.path.includes('FB_TA_1')).map(item => item.path);
                          this.etc_5_ImgList = data.filter(item => item.path.includes('/etc_5/')).map(item => item.path);
 
                         //  this.etcImgList = data.filter(item => item.path.includes('/etc/')).map(item => item.path);
