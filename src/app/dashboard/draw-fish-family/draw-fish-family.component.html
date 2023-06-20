@@ -109,7 +109,7 @@
                 <div class="image-container"  [ngStyle] = "{'background-image': 'url('+canvasImage+')'}">
                 </div>
                 <div *ngIf="detailFish" style="display: flex;flex-direction: row; justify-content: center;align-items: center;flex-wrap: nowrap;padding-bottom: 50px;">
-                    <div  style="font-size: 20px; background-color: #ffffff; border: 1px solid #000000; border-radius: 2.5rem; padding: 15px 50px; width: fit-content;height: fit-content;">
+                    <div  style="font-size: 20px; background-color: #ffffff; border: 2px solid #000000; border-radius: 2.5rem; padding: 15px 50px; width: fit-content;height: fit-content;">
                         <span>{{detailFish}}</span>
                     </div>
 <!--                    <div style="display: flex; flex-wrap: nowrap;" *ngIf="canvasImage !=''">-->
@@ -495,7 +495,7 @@
 
                 <div>
                     <div  *ngIf="!showFishBowl && !selectedFishBowl && infoCount < 2"
-                    style="border:4px #ca3d57 solid; position: absolute; width: 125px; height: 120px; border-radius: 1.5rem"> 
+                    style="border:4px #ca3d57 solid; position: absolute; width: 125px; height: 120px; border-radius: 1.5rem;background-color: #000000;"> 
                         <div style="position: absolute;
                         background-color: #ca3d57;
                         border-radius: 1.5rem;
@@ -533,7 +533,7 @@
 
                     
                     <div  *ngIf="selectedFishBowl && infoCount < 2"
-                    style="border:4px #ca3d57 solid; position: absolute; width: 125px; height: 570px; border-radius: 1.5rem">
+                    style="border:4px #ca3d57 solid; position: absolute; width: 125px; height: 570px; border-radius: 1.5rem;background-color: #000000;">
                         <div style="position: absolute;
                         background-color: #ca3d57;
                         border-radius: 1.5rem;
@@ -580,7 +580,7 @@
                     </div>
 
                     <div  *ngIf="!selectedFishBowl && infoCount == 2 && !showEtc"
-                    style="border:4px #ca3d57 solid; position: absolute; width: 125px; height: 120px; border-radius: 1.5rem"> 
+                    style="border:4px #ca3d57 solid; position: absolute; width: 125px; height: 120px; border-radius: 1.5rem;background-color: #000000;"> 
                         <div style="position: absolute;
                         background-color: #ca3d57;
                         border-radius: 1.5rem;
@@ -600,13 +600,12 @@
             </div>
 
             <div style="display: flex; flex-direction: column; width: 89vw; height:100vh;align-items: center;  justify-content: space-evenly;">
-                    <div class="btn-wrap">
-                        <!-- <button class="button-style del" (click)="removeSelected();"> DELETE</button> -->
-                        <button class="button-style" (click)="rasterize()">완료</button>
-                    </div>
+                <div class="btn-wrap">
+                    <!-- <button class="button-style del" (click)="removeSelected();"> DELETE</button> -->
+                    <button class="button-style" (click)="rasterize()">완료</button>
+                </div>
 
                 <app-dashboard-drag-and-drop [userEmail]="userEmail" #canvas></app-dashboard-drag-and-drop>
-
 
             </div>
             <div></div>

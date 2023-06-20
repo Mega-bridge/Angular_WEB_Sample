@@ -24,8 +24,29 @@
                          </div>
             </kendo-popup>
 
+
+<kendo-popup [anchor]="anchor1"
+        *ngIf="openFam"
+        [anchorAlign]="anchorAlign"
+        [popupAlign]="popupAlign"
+        [margin] ="{ horizontal: 20, vertical: 0 }"
+        class="popup-description"
+        >
+        <kendo-chiplist selection="single"
+                        (selectedChange)="selectFamilyType($event)">
+                <kendo-chip
+                  *ngFor="let chip of familyTypeList"
+                  [label]="chip.description"
+                  [selected]="chip.selected"
+                >
+                </kendo-chip>
+        </kendo-chiplist>
+</kendo-popup>
+
 <div class="control-wrap">
+        <button (click)="openFam = !openFam">open</button>
         <div class="control" #anchor1>
+               
                 <kendo-dropdownbutton 
                 [disabled]="!isSelected"
                 [data]="familyTypeList"

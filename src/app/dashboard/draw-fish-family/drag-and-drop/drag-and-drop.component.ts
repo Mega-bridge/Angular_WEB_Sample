@@ -67,6 +67,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     /** object data set 생성 */
     public mrDataSetModel: MrDataSetRequestModel = new MrDataSetRequestModel();
 
+    public openFam: boolean =false;
+
 
     public props = {
         canvasFill: '#ffffff',
@@ -261,6 +263,31 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         activeGroup?.set('name',e.id).setCoords();
         this.selectedFamilyType = e;
     }
+
+
+    /**
+     * 가족 관계 선택
+     * @param e
+     */
+    selectFamilyType(e:any){
+        console.log(e);
+        if (e.length != 0){
+            // this.familyTypeList[e].selected = true;
+            // 선택된 가족관계 id 할당
+            // this.selectedFamilyType = this.familyTypeList[e].id;
+            this.selectedFamilyType = this.familyTypeList[e];
+
+            // 가족 관계를 선택해야 물고기 선택 가능
+            // this.isFamilyAfterFish=true;
+        }
+        else {
+            this.selectedFamilyType = null;
+            // this.isFamilyAfterFish=false;
+        }
+
+
+    }
+
 
    
     
@@ -703,6 +730,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     drawingMode() {
         this.canvas.isDrawingMode = !this.canvas.isDrawingMode;
     }
+
+
 
 
 

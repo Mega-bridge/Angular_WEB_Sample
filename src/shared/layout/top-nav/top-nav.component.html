@@ -58,7 +58,7 @@
         
 
         
-        <div style="display: flex; flex-direction: column;align-items: center; color: #a0a0a0;">
+        <div style="display: flex; flex-direction: column;align-items: center; color: #a0a0a0; font-size: 13px;">
             <kendo-dropdownbutton
                     [data]="settings"
                     icon="user"
@@ -70,9 +70,10 @@
                     (itemClick)="onItemClick($event)"
                     class="top-dropdown"
             > 
-            <span style="font-size: 13px;">로그인 </span>
-            <span style="font-size: 13px;">∨</span>
+            
+            <span>∨</span>
             </kendo-dropdownbutton>
+            <span style="font-size: 13px; margin-right: 13px;">로그인</span>
         </div>
         
         
