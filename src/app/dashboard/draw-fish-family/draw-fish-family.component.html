@@ -602,13 +602,13 @@
                 <div></div>
             </div>
 
-            <div style="display: flex; flex-direction: column; width: 89vw; height:100vh;align-items: center;  justify-content: space-evenly;">
+            <div style="display: flex; flex-direction: column; width: 89vw; height:100vh;align-items: center;  justify-content: space-evenly; overflow: hidden;">
                 <div class="btn-wrap">
                     <!-- <button class="button-style del" (click)="removeSelected();"> DELETE</button> -->
                     <button class="button-style" (click)="rasterize()">완료</button>
                 </div>
 
-                <app-dashboard-drag-and-drop [userEmail]="userEmail" #canvas></app-dashboard-drag-and-drop>
+                <app-dashboard-drag-and-drop style="height: 80vh; min-height: 990px;" [userEmail]="userEmail" #canvas></app-dashboard-drag-and-drop>
 
             </div>
             <div></div>

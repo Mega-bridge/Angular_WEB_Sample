@@ -194,7 +194,12 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
          */
         this.canvas.on('selection:created',e => {
             console.log(e);
-            if(e.selected){
+
+            // 다중선택 확인 후 선택 취소 처리
+            if (this.canvas.getActiveObjects().length > 1) {
+                this.canvas.discardActiveObject();
+            }
+            else if(e.selected){
                 this.isSelected = true;
                 const selectedObject = e.selected[0];
                 this.getId();
@@ -203,6 +208,23 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 // console.log('object Id (timestamp): ' + this.props.id);
                 console.log('object Name: ' + selectedObject.name);
                 // console.log('-----------------------');
+
+                this.selectedFamilyType = selectedObject.name ? this.familyTypeList[Number(selectedObject.name)] : null;
+            
+            }
+
+        });
+        /**
+         * 선택된 object가 변경된 경우
+         */
+        this.canvas.on('selection:updated',e => {
+            // 다중선택 확인 후 선택 취소 처리
+            if (this.canvas.getActiveObjects().length > 1) {
+                this.canvas.discardActiveObject();
+            }
+            else if(e.selected){
+                this.isSelected = true;
+                const selectedObject = e.selected[0];
 
                 this.selectedFamilyType = selectedObject.name ? this.familyTypeList[Number(selectedObject.name)] : null;
             
@@ -277,19 +299,25 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
      */
     selectFamilyType(e:any){
         console.log(e);
-        if (e.length != 0){
-            // this.familyTypeList[e].selected = true;
-            // 선택된 가족관계 id 할당
-            // this.selectedFamilyType = this.familyTypeList[e].id;
-            this.selectedFamilyType = this.familyTypeList[e];
+        this.openFam = !this.openFam;
+        var activeGroup = this.canvas.getActiveObject();
+        
+        activeGroup?.set('name',e.id).setCoords();
+        this.selectedFamilyType = e;
 
-            // 가족 관계를 선택해야 물고기 선택 가능
-            // this.isFamilyAfterFish=true;
-        }
-        else {
-            this.selectedFamilyType = null;
-            // this.isFamilyAfterFish=false;
-        }
+        // if (e.length != 0){
+        //     // this.familyTypeList[e].selected = true;
+        //     // 선택된 가족관계 id 할당
+        //     // this.selectedFamilyType = this.familyTypeList[e].id;
+        //     this.selectedFamilyType = this.familyTypeList[e];
+
+        //     // 가족 관계를 선택해야 물고기 선택 가능
+        //     // this.isFamilyAfterFish=true;
+        // }
+        // else {
+        //     this.selectedFamilyType = null;
+        //     // this.isFamilyAfterFish=false;
+        // }
 
 
     }
@@ -413,6 +441,18 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 
         //     }
         // })
+    }
+
+
+
+    closeOpenControl(type ?:string):void {
+        this.openAngleControl = type === 'openAngleControl' ? !this.openAngleControl : false;
+        this.openSizeControl = type === 'openSizeControl' ? !this.openSizeControl : false;
+        this.openLeftControl = type === 'openLeftControl' ? !this.openLeftControl : false;
+        this.openTopControl = type === 'openTopControl' ? !this.openTopControl : false;
+       
+        
+
     }
    
 
