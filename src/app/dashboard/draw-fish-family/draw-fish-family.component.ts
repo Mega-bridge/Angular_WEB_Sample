@@ -110,7 +110,8 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     public second: number=0;
 
     public infoCount = 0;
-
+    public isSelectFirstFish: boolean = false;
+    public isSelectFirstEtc: boolean = false;
 
     ///// 어항 그리기 /////
 
@@ -638,6 +639,23 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         this.showRoundFishes = type === 'showRoundFishes' ? !this.showRoundFishes : false;
         this.showSharks = type === 'showSharks' ? !this.showSharks : false;
         this.showEels = type === 'showEels' ? !this.showEels : false;
+
+        switch(type){
+            case 'showFishes':
+            case 'showWhales':
+            case 'showRoundFishes':
+            case 'showSharks':
+            case 'showEels':
+                this.isSelectFirstFish = true;
+                break;
+            case 'showEtc':
+                this.isSelectFirstEtc = true;
+                break;
+            default:
+                break;
+        }
+
+
 
         if(type === 'showEtc'){
             this.showEtc = !this.showEtc;

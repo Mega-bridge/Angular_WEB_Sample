@@ -129,7 +129,7 @@
     <div   class="popup-background popup" >
         <div class="popup-canvas-wrap ">
             <kendo-popup [anchor]="anchor1"
-                         *ngIf="!showFishBowl && !selectedFishBowl && infoCount < 2"
+                         *ngIf="!showFishBowl && !selectedFishBowl && !isSelectFirstFish && !isSelectFirstEtc"
                          [anchorAlign]="centerAnchorAlign"
                          [popupAlign]="centerPopupAlign"
                          [margin] ="{ horizontal: 20, vertical: 0 }"
@@ -153,7 +153,7 @@
             </kendo-popup> -->
 
             <kendo-popup [anchor]="anchor4"
-                         *ngIf="selectedFishBowl && infoCount < 2"
+                         *ngIf="selectedFishBowl && !isSelectFirstFish"
                          [anchorAlign]="centerAnchorAlign"
                          [popupAlign]="centerPopupAlign"
                          [margin] ="{ horizontal: 20, vertical: 0 }"
@@ -166,7 +166,7 @@
 
 
             <kendo-popup [anchor]="anchor7"
-                         *ngIf="!selectedFishBowl && infoCount == 2"
+                         *ngIf="!selectedFishBowl && !isSelectFirstEtc && isSelectFirstFish"
                          [anchorAlign]="centerAnchorAlign"
                          [popupAlign]="centerPopupAlign"
                          [margin] ="{ horizontal: 20, vertical: 0 }"
@@ -494,8 +494,8 @@
                 </div>
 
                 <div>
-                    <div  *ngIf="!showFishBowl && !selectedFishBowl && infoCount < 2"
-                    style="border:4px #ca3d57 solid; position: absolute; width: 125px; height: 120px; border-radius: 1.5rem;background-color: #000000;"> 
+                    <div  *ngIf="!showFishBowl && !selectedFishBowl && !isSelectFirstFish && !isSelectFirstEtc "
+                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 120px; border-radius: 1.5rem;background-color: #000000;"> 
                         <div style="position: absolute;
                         background-color: #ca3d57;
                         border-radius: 1.5rem;
@@ -532,8 +532,8 @@
                     </div> -->
 
                     
-                    <div  *ngIf="selectedFishBowl && infoCount < 2"
-                    style="border:4px #ca3d57 solid; position: absolute; width: 125px; height: 570px; border-radius: 1.5rem;background-color: #000000;">
+                    <div  *ngIf="selectedFishBowl && !isSelectFirstFish"
+                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 570px; border-radius: 1.5rem;background-color: #000000;">
                         <div style="position: absolute;
                         background-color: #ca3d57;
                         border-radius: 1.5rem;
@@ -579,8 +579,8 @@
                         </div>
                     </div>
 
-                    <div  *ngIf="!selectedFishBowl && infoCount == 2 && !showEtc"
-                    style="border:4px #ca3d57 solid; position: absolute; width: 125px; height: 120px; border-radius: 1.5rem;background-color: #000000;"> 
+                    <div  *ngIf="!selectedFishBowl && !isSelectFirstEtc && isSelectFirstFish"
+                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 120px; border-radius: 1.5rem;background-color: #000000;"> 
                         <div style="position: absolute;
                         background-color: #ca3d57;
                         border-radius: 1.5rem;

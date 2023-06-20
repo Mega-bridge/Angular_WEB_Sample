@@ -39,7 +39,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
     public anchorAlign: Align = { horizontal: "left", vertical: "bottom" };
     public popupAlign: Align = { horizontal: "left", vertical: "top" };
-    public firstObject = 0;
+    public isSelectFirstFish = 0;
 
     public canvas: fabric.Canvas;
 
@@ -459,7 +459,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         
             this.canvas.add(image);
 
-            this.firstObject += 1;
+            this.isSelectFirstFish += 1;
 
             this.selectItemAfterAdded(image);
         });

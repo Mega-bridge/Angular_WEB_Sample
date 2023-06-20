@@ -3,7 +3,7 @@
 <!--        [ngStyle] = "{'background-image': 'url('+waterUrl+')'}"-->
 <!--        style=" background-repeat: no-repeat; background-size: 100% 100%;  border: 2px dashed #cccccc; "></canvas>-->
 <kendo-popup [anchor]="anchor1"
-                         *ngIf="firstObject == 1  && !selectedFamilyType?.description"
+                         *ngIf="isSelectFirstFish == 1  && !selectedFamilyType?.description"
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
                          [margin] ="{ horizontal: 20, vertical: 0 }"
