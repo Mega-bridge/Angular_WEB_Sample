@@ -35,9 +35,9 @@
         <kendo-chiplist selection="single"
                         (selectedChange)="selectFamilyType($event)">
                 <kendo-chip
-                  *ngFor="let chip of familyTypeList"
-                  [label]="chip.description"
-                  [selected]="chip.selected"
+                  *ngFor="let familyType of familyTypeList"
+                  [label]="familyType.description"
+                  [selected]="familyType.selected"
                 >
                 </kendo-chip>
         </kendo-chiplist>

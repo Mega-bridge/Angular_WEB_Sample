@@ -37,8 +37,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
     @Input() userEmail:string | null = '';
 
-    public anchorAlign: Align = { horizontal: "left", vertical: "bottom" };
-    public popupAlign: Align = { horizontal: "left", vertical: "top" };
+    public anchorAlign: Align = { horizontal: "left", vertical: "top" };
+    public popupAlign: Align = { horizontal: "left", vertical: "bottom" };
     public isSelectFirstFish = 0;
 
     public canvas: fabric.Canvas;
