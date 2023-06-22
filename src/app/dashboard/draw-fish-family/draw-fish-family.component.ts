@@ -518,7 +518,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
 
     }
 
-    
+
     /**
      * 회차별 오브젝트 순서 조회
      */
@@ -933,10 +933,10 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
                     this.canvas.rasterize(this.selectedSeq, this.startDate, result.detailFishId, this.patientInfoId);
 
                     // full screen 닫기
-                    this.closeFullscreen();
+                    // this.closeFullscreen();
 
                     // 저장 alert
-                    this.alertService.openAlert('성공적으로 저장되었습니다.');
+                    // this.alertService.openAlert('성공적으로 저장되었습니다.');
                 }
             }
         });

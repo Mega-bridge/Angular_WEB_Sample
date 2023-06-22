@@ -1,6 +1,7 @@
 import {
     AfterViewInit,
     asNativeElements,
+    ViewContainerRef,
     Component,
     ElementRef,
     Injectable,
@@ -18,6 +19,8 @@ import {AuthService} from "../../../../shared/service/auth.service";
 import { __values } from "tslib";
 import { MrFamilyCodeResponse } from "src/shared/model/response/mr-family-code.response.model";
 import {Align, PopupAnimation} from "@progress/kendo-angular-popup";
+import {DialogService} from "@progress/kendo-angular-dialog";
+import { ConfirmDialogComponent } from "src/shared/component/dialogs/confirm-dialog/confirm-dialog.component";
 
 
 @Component({
@@ -106,14 +109,11 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     // 컨드롤바 event handler
     public controlEventHandler: ((event: Event) => void) | null = null;
 
-    
-
-    
     /** object 선택 여부 */
     public isSelected: boolean = false;
+
     /** 보조 설명 없애기 위한,,, 첫번째 물고기 추가 여부 확인 */
     public isSelectFirstFish = 0;
-    public moved: any;
 
     /** object 추가 순서 */
     public objectSeq: number = 0;
@@ -128,11 +128,17 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         description: "가족관계를 선택해주세요..",
         id: null,
     };
+
+    public isFishObject: boolean = false;
    
     /** 팝업 위치 */
     public anchorAlign: Align = { horizontal: "left", vertical: "bottom" };
     public popupAlign: Align = { horizontal: "left", vertical: "top" };
 
+
+    /** 다이얼로그 생성 */
+    @ViewChild('dialog', {read: ViewContainerRef})
+    public dialogRef!: ViewContainerRef;
 
     /**
      *
@@ -143,6 +149,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         public mindReaderControlService: MindReaderControlService,
         private alertService: AlertService,
         private authService: AuthService,
+        private dialogService: DialogService,
     ) {
         this.canvas = new fabric.Canvas('canvas');
     }
@@ -207,6 +214,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
          */
         this.canvas.on('selection:created',e => {
             console.log(e);
+            
 
             // 다중선택 확인 후 선택 취소 처리
             if (this.canvas.getActiveObjects().length > 1) {
@@ -215,13 +223,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             else if(e.selected){
                 this.isSelected = true;
                 const selectedObject = e.selected[0];
-                this.getId();
-                console.log(selectedObject);
-                // console.log('///////////////////////');
-                // console.log('object Id (timestamp): ' + this.props.id);
-                console.log('object Name: ' + selectedObject.name);
-                // console.log('-----------------------');
-
+                this.isFishObject = selectedObject.toObject().isFish;
+                
                 this.selectedFamilyType = selectedObject.name ? this.familyTypeList[Number(selectedObject.name)] : null;
             
             }
@@ -238,6 +241,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             else if(e.selected){
                 this.isSelected = true;
                 const selectedObject = e.selected[0];
+                this.isFishObject = selectedObject.toObject().isFish;
 
                 this.selectedFamilyType = selectedObject.name ? this.familyTypeList[Number(selectedObject.name)] : null;
             
@@ -497,6 +501,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
      */
     getImgPolaroid(event: any, objectCodeId: any,selectedFamilyType?:any, top?: number, left?:number, scale?: number) {
         const el = event;
+        console.log(el);
         
         fabric.loadSVGFromURL(el, (objects, options) => {
             const image = fabric.util.groupSVGElements(objects, options);
@@ -515,8 +520,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 name: selectedFamilyType? selectedFamilyType.id : null
 
             });
-            this.extend(image, this.randomId(), new Date().getTime(),objectCodeId);
-            //console.log(image.toObject().id);
+            this.extend(image, this.randomId(), new Date().getTime(),objectCodeId,el.includes('/F_'));
+            
             image.scale(scale?scale: 0.2);
         
             this.canvas.add(image);
@@ -568,13 +573,14 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
      * @param createDate
      * @param objectCodeId
      */
-    extend(obj:any, id:any, createDate: number,objectCodeId:any) {
+    extend(obj:any, id:any, createDate: number,objectCodeId:any, isFish: boolean) {
         obj.toObject = ((toObject) => {
             return function() {
                 return fabric.util.object.extend(toObject.call(obj), {
                     id,
                     objectCodeId,
-                    createDate
+                    createDate,
+                    isFish
                 });
             };
         })(obj.toObject);
@@ -606,9 +612,6 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         this.props.id = this.canvas.getActiveObject()?.toObject().id;
 
     }
-    // getOpacity() {
-    //     this.props.opacity = this.getActiveStyle('opacity', null) * 100;
-    // }
 
 
     /**
@@ -623,8 +626,17 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             const image = new Image();
             image.src = this.canvas.toDataURL({format: 'png'});
 
-            // 회차별 dataSet 생성
-            this.createDataSet(dataSetSeq, startDate, detailFishId, patientInfoId,image.src);
+            // 가족관계 누락된 물고기 확인
+            const itemNameList = this.canvas.getObjects().filter(item => item.toObject().isFish && !item.name).map(item => item.name);
+            
+            if(itemNameList.length > 0){
+                this.checkFamilyTypeDialog();
+            }
+            else{
+                // 회차별 dataSet 생성
+                this.createDataSet(dataSetSeq, startDate, detailFishId, patientInfoId,image.src);
+            }
+            
     }
 
 
@@ -641,14 +653,13 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         // canvas 내 objectCodeId List
         const objectCodeList = this.canvas.getObjects().map(item => item.toObject().objectCodeId);
 
+
         // Object code 구하기
         await this.getObjectCode(0, objectCodeList);
         await this.getObjectCode(1, objectCodeList);
         await this.getObjectCode(2, objectCodeList);
 
         const endDate = new Date();
-        console.log("dataSetSeq");
-        console.log(dataSetSeq);
 
         // 회차별 데이터셋 생성 request model
         this.mrDataSetModel = {
@@ -791,6 +802,33 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
     drawingMode() {
         this.canvas.isDrawingMode = !this.canvas.isDrawingMode;
+    }
+
+
+    /**
+     * canvas 저장하기 실행
+     */
+    public checkFamilyTypeDialog() {
+        const dialog = this.dialogService.open({
+            title: "물고기의 가족관계가 누락되었습니다.",
+            content: ConfirmDialogComponent,
+            appendTo: this.dialogRef,
+            width: 450,
+            height: 200,
+            minWidth: 250,
+            
+        });
+        dialog.content.instance.text = '물고기의 가족관계가 누락되었습니다.<br>가족관계를 선택해주세요.';
+
+
+        // 저장 실행
+        dialog.result.subscribe((result: any) => {
+            if (result.text === 'yes') {
+                // 물고기 행동 정보 선택
+                
+            }
+
+        });
     }
 
 
