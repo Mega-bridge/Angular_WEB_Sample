@@ -4,14 +4,14 @@ import { Observable } from 'rxjs';
 import {UserModel} from "../model/user.model";
 import {MrFamilyCodeResponse} from "../model/response/mr-family-code.response.model";
 import {AuthService} from "./auth.service";
-
+import { environment } from 'src/environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserService {
 
-    public SEVER_URL = 'http://localhost:8080/user';
+    public SEVER_URL = environment.apiUrl + '/user';
 
     /**
      * 생성자

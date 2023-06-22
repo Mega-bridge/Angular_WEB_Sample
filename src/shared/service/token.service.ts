@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {AuthService} from "./auth.service";
+import { environment } from "src/environments/environment";
 
 @Injectable({
     providedIn: 'root'
@@ -24,9 +25,9 @@ export class TokenService implements HttpInterceptor{
         // http://localhost:8080/user 회원 생성 API url
         // http://localhost:8080/user/userList 기존 회원 전체 로드 API url
         switch (req.url){
-            case 'http://localhost:8080/auth/login':
-            case 'http://localhost:8080/user':
-            case 'http://localhost:8080/user/userList':
+            case  environment.apiUrl + '/auth/login':
+            case environment.apiUrl + '/user':
+            case environment.apiUrl + '/user/userList':
                 return next.handle(req);
             default:
                 let token=req.clone({
