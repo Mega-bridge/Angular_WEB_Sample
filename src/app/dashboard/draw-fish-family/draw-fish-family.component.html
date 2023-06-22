@@ -196,15 +196,15 @@
 
             <div class="pop-up-style">
                 <div class="pop-up-select-image-wrap">
-                    <div  class="pop-up-select-image" style=" border: 1px solid #e0e0e0;height: 400px; background-color: #ffffff;" >
-                        <div style="height: 400px; border-radius: 1.5rem;">
+                    <div  class="pop-up-select-image" >
+                        
                             <ng-container *ngFor="let img of fishBowlImgList" >
                                 <div class="img-wrap" style=" border-top: 1px solid #e0e0e0;"
                                     [style.background-color]="selectedFishBowl === img ? '#e0e0e0' : ''">
                                     <img  (click)="selectWater(img)" [src]="img"  alt=""/>
                                 </div>
                             </ng-container>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -527,16 +527,16 @@
                 <div style="
                 background-color: #252525;
                 color: #ca3d57;
-                width: 100%;
+                width: 150px;
                 height: 40px;
                 text-align: center;
-                padding-top: 20%;">
+                padding-top: 24px;">
                     Mind Reader
                 </div>
 
-                <div>
+                <div style="height: cal(90vh - 64px); width: 150px;">
                     <div  *ngIf="!showFishBowl && !selectedFishBowl && !isSelectFirstFish && !isSelectFirstEtc "
-                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 120px; border-radius: 1.5rem;background-color: #000000;"> 
+                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 12vh; border-radius: 1.5rem;background-color: #000000;"> 
                         <div style="position: absolute;
                         background-color: #ca3d57;
                         border-radius: 1.5rem;
@@ -575,7 +575,7 @@
 
                     
                     <div  *ngIf="selectedFishBowl && !isSelectFirstFish"
-                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 570px; border-radius: 1.5rem;background-color: #000000;">
+                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 65vh; border-radius: 1.5rem;background-color: #000000;">
                         <div style="position: absolute;
                         background-color: #ca3d57;
                         border-radius: 1.5rem;
@@ -623,7 +623,7 @@
                     </div>
 
                     <div  *ngIf="!selectedFishBowl && !isSelectFirstEtc && isSelectFirstFish"
-                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 120px; border-radius: 1.5rem;background-color: #000000;"> 
+                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 12vh; border-radius: 1.5rem;background-color: #000000;"> 
                         <div style="position: absolute;
                         background-color: #ca3d57;
                         border-radius: 1.5rem;
@@ -649,7 +649,12 @@
                     <button class="button-style" (click)="rasterize()">완료</button>
                 </div>
 
-                <app-dashboard-drag-and-drop style="height: 80vh; min-height: 990px;" [userEmail]="userEmail" #canvas></app-dashboard-drag-and-drop>
+                <app-dashboard-drag-and-drop style="height: 100vh;
+                width: calc(100vw - 150px);
+                overflow: auto;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;" [userEmail]="userEmail" #canvas></app-dashboard-drag-and-drop>
 
             </div>
             <div></div>

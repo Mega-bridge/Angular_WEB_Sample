@@ -66,8 +66,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
     /** canvas size */
     public size: any = {
-        width: 1200,
-        height: 900
+        width: 1000,
+        height: 750
     };
 
     /** 어항 코드 */
@@ -181,6 +181,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
         this.canvas.setWidth(this.size.width);
         this.canvas.setHeight(this.size.height);
+        
+        
         //
         //
         // window.addEventListener('resize', () => {
@@ -254,10 +256,12 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             //console.log(e);
             const movedObject: any = e.target;
             var centerPoint = movedObject.getCenterPoint();
-            // console.log(movedObject);
-            // console.log('////////Object Moving///////////////');
+            console.log(movedObject);
+            console.log('////////Object Moving///////////////');
             // console.log('centerPoint (X, Y): ' + centerPoint);
-            // console.log('-----------------------');
+            
+            console.log('centerPoint (X, Y): ' + movedObject);
+            console.log('-----------------------');
 
 
         });
@@ -283,7 +287,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             console.log('Object Width:' + modifiedObject?.getScaledWidth());
             console.log(typeof(modifiedObject?.getScaledWidth()));
             console.log('Object Height:' + modifiedObject?.getScaledHeight());
-            console.log('Object Height:' + modifiedObject?.scaleX);
+            console.log('Object scale:' + modifiedObject?.scaleX);
             // // console.log('상하 반전 여부:' + modifiedObject?.cacheHeight);
             // console.log('-----------------------');
 
@@ -485,10 +489,10 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         this.fishbowlUrl = opt;
         this.fishbowlCode = fishbowlCode;
         this.canvas.setBackgroundImage(this.fishbowlUrl, this.canvas.renderAll.bind(this.canvas), {
-            top: 40,
-            left: 40,
-            scaleX:0.5,
-            scaleY: 0.5
+            top: 20,
+            left: 15,
+            scaleX:0.42,
+            scaleY: 0.42
         });
 
     }

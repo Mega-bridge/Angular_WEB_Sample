@@ -54,7 +54,7 @@
 <div class="control-wrap">
         
         <div class="control" #anchor1  [style.OPACITY]="isSelected? '': '50%'">
-                <div [style.OPACITY]="isFishObject? '': '50%'" class="control-box" (click)="openFam = !openFam" style="flex-wrap: wrap; border-top-left-radius: 1.5rem; border-bottom-left-radius: 1.5rem;" [style.background-color]="openFam? '#ca3d57' : '#ffffff'" [style.pointer-events]="isSelected && isFishObject ? 'unset' : 'none'">
+                <div [style.OPACITY]="isFishObject? '': '50%'" class="control-box" (click)="openFam = !openFam" style="flex-direction: column; border-top-left-radius: 1.5rem; border-bottom-left-radius: 1.5rem;" [style.background-color]="openFam? '#ca3d57' : '#ffffff'" [style.pointer-events]="isSelected && isFishObject ? 'unset' : 'none'">
                         <span>관계 ▾</span>
                         <span *ngIf="selectedFamilyType"
                         style="border-radius: 1.5rem; 
@@ -127,9 +127,11 @@
         </div>
 </div>
 
+<div id="canvas-wrapper">
 <canvas id="canvas"
         #htmlCanvas
         style=" background-repeat: no-repeat; background-size: 100% 100%; "></canvas>
         
 
+</div>
 <ng-container #dialog></ng-container>
