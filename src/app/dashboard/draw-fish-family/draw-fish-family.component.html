@@ -72,7 +72,7 @@
                                 <span class="title" [style.background-color] ="selectedSeqIndex === seqItems.length -1 - i ? '#ca3d57' : ''" >{{seqItems[seqItems.length -1 - i].text}}</span> <br>
                             
                                 <div class="sub">
-                                    <span class="k-icon k-i-calendar" style="margin: 2px 5px;"></span> {{seqItems[seqItems.length -1 - i].date.getFullYear()}}. {{seqItems[seqItems.length -1 - i].date.getMonth()}}. {{seqItems[seqItems.length -1 - i].date.getDate()}} <br>
+                                    <span class="k-icon k-i-calendar" style="margin: 2px 5px;"></span> {{seqItems[seqItems.length -1 - i].date.getFullYear()}}. {{seqItems[seqItems.length -1 - i].date.getMonth()+1}}. {{seqItems[seqItems.length -1 - i].date.getDate()}} <br>
                                     <span class="k-icon k-i-clock" style="margin: 2px 5px;"></span> {{seqItems[seqItems.length -1 - i].hour}} : {{seqItems[seqItems.length -1 - i].minute}} : {{seqItems[seqItems.length -1 - i].second}} 
                                 </div>
                             
