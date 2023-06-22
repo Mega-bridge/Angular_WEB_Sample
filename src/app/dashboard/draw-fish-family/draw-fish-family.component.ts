@@ -78,7 +78,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     public detailFishList: MrDetailFishResponseModel[] = [];
 
     // 물고기 가족 행동 상세정보
-    public detailFish: string = '';
+    public detailFish: string | undefined = '';
 
 
     // popUp 위치
@@ -462,22 +462,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
 
                         
 
-                        // 설문 답안 불러오기
-                        this.mindReaderControlService.getAnswer(this.originDataSet[this.selectedSeq-1].id)
-                            .subscribe({
-                                next: async (data) => {
-                                    if (data){
-                                        this.resultAnswerData=data
-
-                                        console.log(this.resultAnswerData);
-                                        this.answerResult=true
-
-                                    }
-                                    else{
-                                        console.log('결과지 없슈! 기다리쇼!');
-                                    }
-                                }
-                            })
+                        
 
                     }
                 }
@@ -486,6 +471,9 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
 
             
     }
+
+
+   
 
 
 
@@ -505,6 +493,32 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         
     // }
 
+
+     /**
+     * 상담 결과지 불러오기
+     * @param item 
+     * @param index 
+     */
+     getResult(item: any, index: number){
+        this.mindReaderControlService.getAnswer(item.id)
+        .subscribe({
+            next: async (data) => {
+                if (data){
+                    this.resultAnswerData=data
+
+                    console.log(this.resultAnswerData);
+                    this.answerResult=true
+
+                }
+                else{
+                    console.log('결과지 없슈! 기다리쇼!');
+                }
+            }
+        })
+
+    }
+
+    
     /**
      * 회차별 오브젝트 순서 조회
      */
@@ -532,6 +546,8 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
 
         this.drawFishFamilyService.selectSeqItem(item,index);
 
+        if(item.id) this.getResult(item, index);
+
         this.selectSeqItem = item;
 
         if(index==item.seq){
@@ -543,7 +559,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         // 해당 DataSet의 어항 그림 화면에 적용
         this.canvasImage = this.seqItems[index].imgUrl;
         // 헤당 DataSet의 물고기 행동 설명
-        this.detailFish = item.detailFishDescription;
+        this.detailFish = this.seqItems[index].detailFishDescription;
 
         this.second = item.second;
         this.minute = item.minute;
@@ -555,6 +571,8 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         // 결과 보기 버튼 비활성
         this.answerResult=false
     }
+
+
 
 
     /**

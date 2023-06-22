@@ -37,14 +37,41 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
     @Input() userEmail:string | null = '';
 
-    public anchorAlign: Align = { horizontal: "left", vertical: "bottom" };
-    public popupAlign: Align = { horizontal: "left", vertical: "top" };
-    public isSelectFirstFish = 0;
 
     public canvas: fabric.Canvas;
 
+    public props = {
+        canvasFill: '#ffffff',
+        canvasImage: '',
+        id: null,
+        opacity: 0,
+        fill: null,
+        fontSize: null,
+        lineHeight: null,
+        charSpacing: null,
+        fontWeight: null,
+        fontStyle: null,
+        textAlign: null,
+        fontFamily: null,
+        TextDecoration: ''
+    };
+
+   
+
+    /** canvas img URL */
+    public url: string | ArrayBuffer = '';
+
+    /** canvas size */
+    public size: any = {
+        width: 1200,
+        height: 900
+    };
+
     /** 어항 코드 */
     public fishbowlCode: number = 0;
+
+     /** fish bowl img URL */
+     public fishbowlUrl: string = '';
 
     /** 어항 물 높이 */
     public waterHeight: number = 0;
@@ -70,55 +97,41 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     /** 가족선택 열기 */
     public openFam: boolean = false;
 
+    /** 컨트롤바 열기 */
     public openAngleControl: boolean = false;
     public openSizeControl: boolean = false;
     public openLeftControl: boolean = false;
     public openTopControl: boolean = false;
 
+    // 컨드롤바 event handler
+    public controlEventHandler: ((event: Event) => void) | null = null;
 
-    public props = {
-        canvasFill: '#ffffff',
-        canvasImage: '',
-        id: null,
-        opacity: 0,
-        fill: null,
-        fontSize: null,
-        lineHeight: null,
-        charSpacing: null,
-        fontWeight: null,
-        fontStyle: null,
-        textAlign: null,
-        fontFamily: null,
-        TextDecoration: ''
-    };
+    
 
-    public waterUrl: string = '';
-
-    /** canvas img URL */
-    public url: string | ArrayBuffer = '';
-    public size: any = {
-        width: 1200,
-        height: 900
-    };
-
-    public json: any;
+    
+    /** object 선택 여부 */
     public isSelected: boolean = false;
+    /** 보조 설명 없애기 위한,,, 첫번째 물고기 추가 여부 확인 */
+    public isSelectFirstFish = 0;
     public moved: any;
 
+    /** object 추가 순서 */
     public objectSeq: number = 0;
 
-    // 가족관계 리스트
+    /** 가족관계 리스트 */
     public familyTypeList : MrFamilyCodeResponse[] = [];
     /** 선택된 가족 관계 */
     public selectedFamilyType : any;
 
+    /** 가족 선택 default item */
     public defaultItem: { description: string; id: any } = {
         description: "가족관계를 선택해주세요..",
         id: null,
     };
    
-    
-    public controlEventHandler: ((event: Event) => void) | null = null;
+    /** 팝업 위치 */
+    public anchorAlign: Align = { horizontal: "left", vertical: "bottom" };
+    public popupAlign: Align = { horizontal: "left", vertical: "top" };
 
 
     /**
@@ -337,6 +350,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         var angleInputElement : HTMLInputElement | null = document.querySelector('#angle-control');
         var angleVal = activeGroup?.angle?.toString();
 
+
         // 사이즈
         var scaleInputElement : HTMLInputElement | null = document.querySelector('#scale-control');
         var scaleVal = activeGroup?.scaleX?.toString();
@@ -352,6 +366,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         // 각도
         if(angleInputElement){    
             angleInputElement.value = angleVal ? angleVal: '0';
+            console.log(angleVal);
+            console.log(angleInputElement.value);
         }
 
         // 사이즈
@@ -446,12 +462,12 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
 
     closeOpenControl(type ?:string):void {
+        this.updateControls();
+
         this.openAngleControl = type === 'openAngleControl' ? !this.openAngleControl : false;
         this.openSizeControl = type === 'openSizeControl' ? !this.openSizeControl : false;
         this.openLeftControl = type === 'openLeftControl' ? !this.openLeftControl : false;
         this.openTopControl = type === 'openTopControl' ? !this.openTopControl : false;
-       
-        
 
     }
    
@@ -462,9 +478,9 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
      * @param fishbowlCode
      */
     setWater(opt: string, fishbowlCode: number){
-        this.waterUrl = opt;
+        this.fishbowlUrl = opt;
         this.fishbowlCode = fishbowlCode;
-        this.canvas.setBackgroundImage(this.waterUrl, this.canvas.renderAll.bind(this.canvas), {
+        this.canvas.setBackgroundImage(this.fishbowlUrl, this.canvas.renderAll.bind(this.canvas), {
             top: 40,
             left: 40,
             scaleX:0.5,
