@@ -54,6 +54,8 @@ export class ModifyInputInfoComponent implements OnInit{
     public getId: string = '';
     // 사용자 아이디
     public userId: number = 0;
+    // 가족 선택했는지 확인
+    public familySelected: boolean = false;
 
     /**
      * 생성자
@@ -150,6 +152,7 @@ export class ModifyInputInfoComponent implements OnInit{
                         this.selectedGender=this.patientData.genderId;
                         this.selectedJob=this.patientData.jobId;
                         this.infoForm.patchValue({...data});
+
                     }
                 }
             });
@@ -164,6 +167,7 @@ export class ModifyInputInfoComponent implements OnInit{
             this.resultInfo = this.patientData.familyInfo.split(',').map(Number)
             this.selectedFamily = this.resultInfo.filter((value, index, array) => array.indexOf(value) === index);
             this.resultRelation  =this.patientData.familyRelation.split(',').map(Number)
+/*
 
             // 가족 구성원에 따른 가족 관계 이중 리스트
             this.familyData = this.selectedFamily.map((item, index) => {
@@ -179,10 +183,15 @@ export class ModifyInputInfoComponent implements OnInit{
             // numeric text box 에 들어갈 변수
             const uniqueArr = Array.from(new Set(this.resultInfo));
             this.resultInfo = uniqueArr.map((item) => this.resultInfo.filter((i) => i === item).length);
+*/
 
             // 가족 선택 리스트
             this.selectedFamily = this.selectedFamily.map(id => {
                 return this.familyList.find(item => item.id === id);
+            });
+            // 가족 관계 리스트
+            this.resultRelation = this.resultRelation.map(id => {
+                return this.familyRelation.find(item => item.id === id);
             });
         }
     }
@@ -207,16 +216,17 @@ export class ModifyInputInfoComponent implements OnInit{
         if(this.patientData!=undefined){
             this.userId=this.patientData.id
         }
-
-        this.familyInfo()
-        let resultFamilyRelation=this.selectedFamilyRelation.join(',');
-        let resultFamilyInfo=this.selectedFamilyList.join(',');
+        const selectedFamily = this.selectedFamily.map(i=>i.id).toString()
+        const selectFamilyRelation =this.resultRelation.map(i=>i.id).toString()
+        //this.familyInfo()
+/*        let resultFamilyRelation=this.selectedFamilyRelation.join(',');
+        let resultFamilyInfo=this.selectedFamilyList.join(',');*/
         const request: PatientInfoRequest = {
             id: this.userId,
             age: Number(this.infoForm.controls['age'].value),
-            familyInfo: resultFamilyInfo,
+            familyInfo: selectedFamily,
             familyNum: Number(this.infoForm.controls['familyNum'].value),
-            familyRelation: resultFamilyRelation,
+            familyRelation: selectFamilyRelation,
             genderId:this.infoForm.controls['genderId'].value,
             jobId: this.infoForm.controls['jobId'].value,
             userEmail: this.infoForm.controls['userEmail'].value,
@@ -239,8 +249,28 @@ export class ModifyInputInfoComponent implements OnInit{
      * 가족 구성원 추가 이벤트
      */
     addFamily(){
-        this.resultInfo.push(1);
-        this.familyData.push([]);
+        this.selectedFamily.push('')
+        this.selectedFamilyRelation.push('')
+        this.familySelected = true;
+
+/*        this.resultInfo.push(1);
+        this.familyData.push([]);*/
+    }
+
+    /**
+     * 가족 구성원 삭제 이벤트
+     */
+    subFamily(){
+        this.selectedFamily.pop()
+        this.selectedFamilyRelation.pop()
+        this.familySelected = false;
+    }
+
+    /**
+     * 가족 선택 이벤트
+     */
+    familySelect(){
+        this.familySelected = false;
     }
 
     /**

@@ -908,7 +908,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
 
 
     /**
-     * 물고기 가족 행동 정보 추가 다이얼로그 및 어항 정보 저
+     * 물고기 가족 행동 정보 추가 다이얼로그 및 어항 정보 저장
      */
     canvasStatusInfoDialog(){
 
