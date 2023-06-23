@@ -534,7 +534,7 @@
                     Mind Reader
                 </div>
 
-                <div style="height: calc(100% - 64px); width: 150px;">
+                <div style="height: calc(100% - 64px); width: 150px;    padding: 10px 0; overflow: scroll;">
                     <div  *ngIf="!showFishBowl && !selectedFishBowl && !isSelectFirstFish && !isSelectFirstEtc "
                     style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 12vh;     min-height: 92px; border-radius: 1.5rem;background-color: #000000;"> 
                         <div style="position: absolute;
@@ -623,7 +623,7 @@
                     </div>
 
                     <div  *ngIf="!selectedFishBowl && !isSelectFirstEtc && isSelectFirstFish"
-                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 12vh; min-height: 92px; border-radius: 1.5rem;background-color: #000000;"> 
+                    style="border:4px #ca3d57 solid; position: absolute; left:0px;top: 575px; width: 141px; height: 12vh; min-height: 92px; border-radius: 1.5rem;background-color: #000000;"> 
                         <div style="position: absolute;
                         background-color: #ca3d57;
                         border-radius: 1.5rem;
@@ -644,7 +644,7 @@
             </div>
 
             <div  style="display: flex; flex-direction: column; width: 89vw; height: calc(100vh - 20px); min-width: 1020px;
-                min-height: 700px;align-items: center;  justify-content: flex-start;">
+                min-height: 680px;align-items: center;  justify-content: flex-start;">
                 <div class="btn-wrap">
                     <!-- <button class="button-style del" (click)="removeSelected();"> DELETE</button> -->
                     <button class="button-style" (click)="rasterize()">완료</button>
