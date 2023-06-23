@@ -534,7 +534,7 @@
                     Mind Reader
                 </div>
 
-                <div style="height: cal(90vh - 64px); width: 150px;">
+                <div style="height: calc(100vh - 64px); width: 150px;">
                     <div  *ngIf="!showFishBowl && !selectedFishBowl && !isSelectFirstFish && !isSelectFirstEtc "
                     style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 12vh; border-radius: 1.5rem;background-color: #000000;"> 
                         <div style="position: absolute;
@@ -643,15 +643,14 @@
                 <div></div>
             </div>
 
-            <div  style="display: flex; flex-direction: column; width: 89vw; height:100vh;align-items: center;  justify-content: space-evenly; overflow: hidden;">
+            <div  style="display: flex; flex-direction: column; width: 89vw; height:100vh;align-items: center;  justify-content: flex-start;">
                 <div class="btn-wrap">
                     <!-- <button class="button-style del" (click)="removeSelected();"> DELETE</button> -->
                     <button class="button-style" (click)="rasterize()">완료</button>
                 </div>
 
-                <app-dashboard-drag-and-drop class="canvas-wrap-style" style="height: 100vh;
+                <app-dashboard-drag-and-drop  style="height: calc(100vh - 60px);
                 width: calc(100vw - 150px);
-                overflow: auto;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;" [userEmail]="userEmail" #canvas></app-dashboard-drag-and-drop>
