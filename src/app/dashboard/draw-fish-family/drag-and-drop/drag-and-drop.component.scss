@@ -74,7 +74,7 @@
  * (width/height가 지정되지 않으면 보이지 않음 */
  .canvas-wrap-style::-webkit-scrollbar {
   /* 스크롤바 전체 영역 */
-    width: 20px;
+    width: 30px;
   } 
   .canvas-wrap-style::-webkit-scrollbar-track {
     background-color: #f9f9f9;
@@ -90,7 +90,7 @@
   .canvas-wrap-style::-webkit-scrollbar-button:start:decrement, ::-webkit-scrollbar-button:end:increment {
   /*  스크롤의 화살표가 포함된 영역   */
     display:block;
-    height:20px;
+    height:30px;
     width:30px;
     border: solid;
     background-color: #f9f9f9;
@@ -100,7 +100,7 @@
 
   /* Up */
   .canvas-wrap-style::-webkit-scrollbar-button:start:decrement {
-    border-width: 0 10px 20px 10px;
+    border-width: 0 15px 30px 15px;
     border-color: transparent transparent #ca3d57 transparent;
     
   }
@@ -111,7 +111,7 @@
 
   /* Down */
   .canvas-wrap-style::-webkit-scrollbar-button:end:increment {
-    border-width: 20px 10px 0 10px;
+    border-width: 30px 15px 0 15px;
     border-color: #ca3d57 transparent transparent transparent;
   }
 
