@@ -366,6 +366,7 @@ kendo-drawer-container {
   height: calc(100vh - 60px);
   padding: 0;
   min-width: 1170px;
+  z-index: 999;
 
   kendo-drawer-content {
     width: 100%;
