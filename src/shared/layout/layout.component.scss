@@ -36,6 +36,7 @@
   display: grid;
   min-height: 100%;
   width: 100%;
+  min-width: 1170px;;
   //grid-template-columns: 10px calc(100vw - 10px) 10px ;
   grid-template-rows: 60px 1fr;
 }
