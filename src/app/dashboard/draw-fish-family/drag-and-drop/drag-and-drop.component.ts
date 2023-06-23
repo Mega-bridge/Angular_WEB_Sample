@@ -810,7 +810,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
 
     /**
-     * canvas 저장하기 실행
+     * canvas 물고기 가족 관계 누락 다이얼로그
      */
     public checkFamilyTypeDialog() {
         const dialog = this.dialogService.open({
