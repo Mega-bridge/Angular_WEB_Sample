@@ -113,12 +113,16 @@
   left: 0;
   width: 100%;
   height: 100%;
+  // min-width: 1170px;
+  // min-height: 700px;
+
   z-index: 1001;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
+  // overflow: scroll;
 
   &.popup {
     width: 100%;
@@ -128,14 +132,14 @@
     //border-radius: 5px;
     //box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     //padding: 10px;
-    overflow: auto;
+    overflow: scroll;
 
     .popup-canvas-wrap{
       display: flex;
       flex-direction: row;
       align-items: center;
-      //max-width: 1400px;
-      //max-height: 800px;
+      min-width: 1170px;
+      min-height: 700px;
       width: 100%;
       max-height: 100%;
       //margin: 10px;
@@ -151,8 +155,8 @@
         min-width: 150px;
         width: 150px;
         height: 100vh;
+        min-height: 700px;
         //border: #666666 dashed 1px;
-        overflow: auto;
         background-color: #323232 ;
 
 
@@ -160,6 +164,7 @@
           cursor: pointer;
           border-radius: 5px;
           height: 12vh;
+          min-height: 80px;
           .img-card-header{
             margin: 5px;
             //border-bottom: #f0f0f0 solid 1px;
@@ -214,7 +219,7 @@
       .pop-up-style{
         display: flex; 
         height: fit-content; 
-        max-height: 800px; 
+        max-height: 560px; 
         flex-direction: row;
 
         .pop-up-select-image-wrap{
@@ -281,6 +286,9 @@
       
       
     }
+
+
+    
   }
 
   .text-wrap{
@@ -324,6 +332,10 @@
       }
     }
   }
+
+
+
+  
 }
 
 
@@ -364,7 +376,8 @@
 kendo-drawer-container {
   position: absolute;
   width: 100%;
-  height: calc(100vh - 61px);
+  height: calc(100vh - 64px);
+  min-height: 640px;
   padding: 0;
   min-width: 1170px;
   z-index: 999;
@@ -392,3 +405,76 @@ kendo-drawer-container {
   margin-bottom: 10px;
 }
 
+
+/* "대부분 커스터마이징된" 스크롤바
+ * (width/height가 지정되지 않으면 보이지 않음 */
+ .popup-background::-webkit-scrollbar {
+  /* 스크롤바 전체 영역 */
+    width: 20px;
+    height: 20px;
+  } 
+  .popup-background::-webkit-scrollbar-track {
+    background-color: #f9f9f9;
+  /* 스크롤이 움직이는 영역  */
+  } 
+  .popup-background::-webkit-scrollbar-thumb {
+  /*  스크롤  */
+    background-color: #323232; 
+    border-radius:20px;
+  } 
+  
+  
+  .popup-background::-webkit-scrollbar-button:start:decrement, ::-webkit-scrollbar-button:end:increment {
+  /*  스크롤의 화살표가 포함된 영역   */
+    display:block;
+    height:20px;
+    width:20px;
+    border: solid;
+    background-color: #f9f9f9;
+    // color: #ffffff;
+  } 
+
+
+/* 가로 */
+    /* Left */
+    .popup-background::-webkit-scrollbar-button:horizontal:start:decrement {
+      border-width: 10px 20px 10px 0px;
+      border-color: transparent  #323232 transparent transparent;
+      
+    }
+
+
+    /* Right */
+    .popup-background::-webkit-scrollbar-button:horizontal:end:increment {
+      border-width:  10px 0px 10px 20px;
+      border-color:  transparent transparent transparent #323232;
+    }
+
+
+    /* 세로 */
+    /* Up */
+    .popup-background::-webkit-scrollbar-button:vertical:start:decrement {
+      border-width: 0 10px 20px 10px;
+      border-color: transparent transparent #323232 transparent;
+      
+    }
+
+    // .canvas-wrap-style::-webkit-scrollbar-button:single-button:vertical:start:decrement:hover {
+    //   border-color: transparent transparent #777777 transparent;
+    // }
+
+    /* Down */
+    .popup-background::-webkit-scrollbar-button:vertical:end:increment {
+      border-width: 20px 10px 0 10px;
+      border-color: #323232 transparent transparent transparent;
+    }
+
+  // .canvas-wrap-style::-webkit-scrollbar-button:vertical:single-button:end:increment:hover {
+  //   border-color: #777777 transparent transparent transparent;
+  // }
+
+
+  .popup-background::-webkit-scrollbar-corner {
+    /*  상하+좌우 스크롤이 만나는 공간   */
+          background-color: #323232;
+    } 
