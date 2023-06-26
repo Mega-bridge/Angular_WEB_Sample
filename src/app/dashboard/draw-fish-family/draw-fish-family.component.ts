@@ -847,7 +847,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         
         }
         else if(img.includes('_TA_')){
-            this.canvas.getImgPolaroid(img,objectCodeId[0],this.selectedFamilyType, 618, 10, 0.059);
+            this.canvas.getImgPolaroid(img,objectCodeId[0],this.selectedFamilyType, 84, 10, 0.42);
             
         }
         else{

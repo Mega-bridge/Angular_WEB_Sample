@@ -298,6 +298,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         });
 
 
+
     }
 
 
@@ -499,16 +500,19 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
     /**
      * 선택된 object canvas에 추가
-     * @param event
+     * @param imgURL
      * @param familyType
      * @param objectCodeId
      */
-    getImgPolaroid(event: any, objectCodeId: any,selectedFamilyType?:any, top?: number, left?:number, scale?: number) {
-        const el = event;
+    getImgPolaroid(imgURL: any, objectCodeId: any,selectedFamilyType?:any, top?: number, left?:number, scale?: number) {
+        // const el = 'assets/img/whale/웃는고래_물.png';
+        const el = imgURL;
         console.log(el);
-        
-        fabric.loadSVGFromURL(el, (objects, options) => {
-            const image = fabric.util.groupSVGElements(objects, options);
+        const imageElement = document.createElement('img');
+        const image = new fabric.Image(imageElement);
+
+        fabric.Image.fromURL(el, (img) => {
+            image.setElement(img.getElement());
             image.set({
                 left: left? left:400,
                 top: top? top:400,
@@ -516,16 +520,16 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 padding: 10,
                 cornerSize: 20,
                 cornerColor: 'rgba(255, 87, 34, 0.7)',
-                hasRotatingPoint: top? false:true,
-                hasControls : top? false: true,
+                hasRotatingPoint: top? true:true,
+                hasControls : top? true: true,
                 selectable: true,
-                evented: top? false:true,
-                strokeWidth:0,
+                evented: top? true:true,
                 name: selectedFamilyType || selectedFamilyType == 0 ? selectedFamilyType.id : null
 
             });
             this.extend(image, this.randomId(), new Date().getTime(),objectCodeId,el.includes('/F_'));
             
+            // image.fill = 'white';
             image.scale(scale?scale: 0.2);
         
             this.canvas.add(image);
@@ -533,7 +537,39 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             this.isSelectFirstFish += 1;
 
             this.selectItemAfterAdded(image);
-        });
+          });
+        
+        
+        
+        // fabric.loadSVGFromURL(el, (objects, options) => {
+        //     const image = fabric.util.groupSVGElements(objects, options);
+        //     image.set({
+        //         left: left? left:400,
+        //         top: top? top:400,
+        //         angle: 0,
+        //         padding: 10,
+        //         cornerSize: 20,
+        //         cornerColor: 'rgba(255, 87, 34, 0.7)',
+        //         hasRotatingPoint: top? false:true,
+        //         hasControls : top? false: true,
+        //         selectable: true,
+        //         evented: top? false:true,
+        //         stroke: '#fff',
+        //         name: selectedFamilyType || selectedFamilyType == 0 ? selectedFamilyType.id : null
+
+        //     });
+        //     this.extend(image, this.randomId(), new Date().getTime(),objectCodeId,el.includes('/F_'));
+            
+        //     console.log(image);
+        //     // image.fill = 'white';
+        //     image.scale(scale?scale: 0.2);
+        
+        //     this.canvas.add(image);
+
+        //     this.isSelectFirstFish += 1;
+
+        //     this.selectItemAfterAdded(image);
+        // });
     }
 
 
