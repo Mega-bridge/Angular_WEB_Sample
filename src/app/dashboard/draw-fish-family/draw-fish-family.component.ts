@@ -950,7 +950,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         const downloadLink = document.createElement('a');
         document.body.appendChild(downloadLink);
         downloadLink.href = this.canvasImage;
-        downloadLink.download = '[MindReader] ' + this.authService.getUserName() + '_' +this.seqItems[this.selectedSeqIndex].date.getFullYear() + '.' + this.seqItems[this.selectedSeqIndex].date.getMonth()+1 + '.'  + this.seqItems[this.selectedSeqIndex].date.getDate() + '.png';
+        downloadLink.download = '[MindReader] ' + this.authService.getUserName() + '_' +this.seqItems[this.selectedSeqIndex].date.getFullYear() + '.' + (this.seqItems[this.selectedSeqIndex].date.getMonth() + 1) + '.'  + this.seqItems[this.selectedSeqIndex].date.getDate() + '.png';
         downloadLink.click();
 
     }
