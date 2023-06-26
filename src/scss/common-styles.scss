@@ -5,7 +5,7 @@
 
 .detailFishDialogClass{
   &.k-dialog-wrapper .k-dialog {
-    overflow: hidden;
+    overflow: scroll;
     //background-color: #333333;
     //color: #FFFFFF;
     //box-shadow: 1px 1px 5px 1px #FFFFFF;
@@ -349,7 +349,7 @@
   position: absolute;
   border: 13px solid transparent;
   border-left-color: #ca3d57;
-  top: 35px;
+  top: 30px;
   left: 145px;
 
 }
@@ -362,7 +362,7 @@
   position: absolute;
   border: 13px solid transparent;
   border-left-color: #ca3d57;
-  top: 245px;
+  top: 238px;
   left: 145px;
 
 }
@@ -373,7 +373,7 @@
   position: absolute;
   border: 13px solid transparent;
   border-left-color: #ca3d57;
-  top: 35px;
+  top: 30px;
   left: 145px;
 
 }

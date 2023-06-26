@@ -521,7 +521,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 selectable: true,
                 evented: top? false:true,
                 strokeWidth:0,
-                name: selectedFamilyType? selectedFamilyType.id : null
+                name: selectedFamilyType || selectedFamilyType == 0 ? selectedFamilyType.id : null
 
             });
             this.extend(image, this.randomId(), new Date().getTime(),objectCodeId,el.includes('/F_'));
@@ -631,7 +631,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             image.src = this.canvas.toDataURL({format: 'png'});
 
             // 가족관계 누락된 물고기 확인
-            const itemNameList = this.canvas.getObjects().filter(item => item.toObject().isFish && !item.name).map(item => item.name);
+            const itemNameList = this.canvas.getObjects().filter(item => item.toObject().isFish && (!item.name && item.name != '0') ).map(item => item.name);
             
             if(itemNameList.length > 0){
                 this.checkFamilyTypeDialog();

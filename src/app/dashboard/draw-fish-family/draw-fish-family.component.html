@@ -536,7 +536,7 @@
 
                 <div style="height: calc(100% - 64px); width: 150px;    padding: 10px 0; overflow: scroll;">
                     <div  *ngIf="!showFishBowl && !selectedFishBowl && !isSelectFirstFish && !isSelectFirstEtc "
-                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 12vh;     min-height: 92px; border-radius: 1.5rem;background-color: #000000;"> 
+                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 11vh;     min-height: 82px; border-radius: 1.5rem;background-color: #000000;"> 
                         <div style="position: absolute;
                         background-color: #ca3d57;
                         border-radius: 1.5rem;
@@ -575,7 +575,7 @@
 
                     
                     <div  *ngIf="selectedFishBowl && !isSelectFirstFish"
-                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 65vh;min-height: 463px; border-radius: 1.5rem;background-color: #000000;">
+                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 61vh;min-height: 420px; border-radius: 1.5rem;background-color: #000000;">
                         <div style="position: absolute;
                         background-color: #ca3d57;
                         border-radius: 1.5rem;
@@ -623,7 +623,7 @@
                     </div>
 
                     <div  *ngIf="!selectedFishBowl && !isSelectFirstEtc && isSelectFirstFish"
-                    style="border:4px #ca3d57 solid; position: absolute; left:0px;top: 575px; width: 141px; height: 12vh; min-height: 92px; border-radius: 1.5rem;background-color: #000000;"> 
+                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 11vh; min-height: 82px; border-radius: 1.5rem;background-color: #000000;"> 
                         <div style="position: absolute;
                         background-color: #ca3d57;
                         border-radius: 1.5rem;
@@ -643,11 +643,18 @@
                 <div></div>
             </div>
 
-            <div  style="display: flex; flex-direction: column; width: 89vw; height: calc(100vh - 20px); min-width: 1020px;
-                min-height: 680px;align-items: center;  justify-content: flex-start;">
+            <div  style="display: flex; 
+            flex-direction: column; 
+            width: 89vw; 
+            height: calc(100vh - 20px); 
+            min-width: 1000px;
+            min-height: 680px;
+            align-items: center;  
+            justify-content: flex-start;">
                 <div class="btn-wrap">
                     <!-- <button class="button-style del" (click)="removeSelected();"> DELETE</button> -->
                     <button class="button-style" (click)="rasterize()">완료</button>
+                    <button class="button-style" style="background-color: #323232;" (click)="closeFullscreen()">닫기</button>
                 </div>
 
                 <app-dashboard-drag-and-drop  style="height: calc(100% - 60px);
