@@ -21,6 +21,7 @@ export class TopNavComponent implements OnInit,OnDestroy {
   public subscription2: Subscription;
   public subscription3: Subscription;
   public subscription4: Subscription;
+  public subscription5: Subscription;
 
   public seqItems : {id?: number, seq?: number,text: string, date?: string, imgUr?: string, hour?: number,minute?: number,second?: number,detailFishDescription?:string}[] = [];
   public userName: string | null = this.authService.getUserName();
@@ -32,6 +33,8 @@ export class TopNavComponent implements OnInit,OnDestroy {
   public selectSeqIndex : number  = 0;
 
   public isAdd: boolean = false;
+
+  public isAnswerResult : boolean = false;
 
   public settings = [
     { text: "추가정보" },
@@ -87,6 +90,12 @@ export class TopNavComponent implements OnInit,OnDestroy {
           this.selectedItem = item;
           this.selectedItem.id? this.isAdd = false : this.isAdd = true;
       });
+
+      this.subscription5 = drawFishFamilyService.isAnswerResult$.subscribe(
+        isAnswerResult => {
+          this.isAnswerResult = isAnswerResult;
+        }
+      )
 
 
 
@@ -310,6 +319,7 @@ export class TopNavComponent implements OnInit,OnDestroy {
     this.subscription2.unsubscribe();
     this.subscription3.unsubscribe();
     this.subscription4.unsubscribe();
+    this.subscription5.unsubscribe();
   }
 
 }
