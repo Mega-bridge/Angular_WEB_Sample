@@ -631,8 +631,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             image.src = this.canvas.toDataURL({format: 'png'});
 
             // 가족관계 누락된 물고기 확인
-            const itemNameList = this.canvas.getObjects().filter(item => item.toObject().isFish && !item.name && Number(item.name) != 0 ).map(item => item.name);
-            console.log( this.canvas.getObjects().filter(item => item.toObject().isFish));
+            const itemNameList = this.canvas.getObjects().filter(item => item.toObject().isFish && (!item.name && item.name != '0') ).map(item => item.name);
             
             if(itemNameList.length > 0){
                 this.checkFamilyTypeDialog();
