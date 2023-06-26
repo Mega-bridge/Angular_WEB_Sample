@@ -73,7 +73,7 @@
                             
                                 <div class="sub">
                                     <span class="k-icon k-i-calendar" style="margin: 2px 5px;"></span> {{seqItems[seqItems.length -1 - i].date.getFullYear()}}. {{seqItems[seqItems.length -1 - i].date.getMonth()+1}}. {{seqItems[seqItems.length -1 - i].date.getDate()}} <br>
-                                    <span class="k-icon k-i-clock" style="margin: 2px 5px;"></span> {{seqItems[seqItems.length -1 - i].hour}} : {{seqItems[seqItems.length -1 - i].minute}} : {{seqItems[seqItems.length -1 - i].second}} 
+                                    <span class="k-icon k-i-clock" style="margin: 2px 5px;"></span> {{seqItems[seqItems.length -1 - i].hour < 10 ? '0' + seqItems[seqItems.length -1 - i].hour : seqItems[seqItems.length -1 - i].hour}} : {{seqItems[seqItems.length -1 - i].minute < 10 ? '0'+seqItems[seqItems.length -1 - i].minute : seqItems[seqItems.length -1 - i].minute }} : {{seqItems[seqItems.length -1 - i].second < 10 ? '0' + seqItems[seqItems.length -1 - i].second : seqItems[seqItems.length -1 - i].second}} 
                                 </div>
                             
                                 <!-- <div style="width: 18px;
