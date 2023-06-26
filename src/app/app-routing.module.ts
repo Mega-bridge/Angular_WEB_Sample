@@ -24,6 +24,10 @@ const routes: Routes = [
     path: 'sign-up',
     component: SignUpComponent
   },
+  {
+    path: 'modify-input-info',
+    component: ModifyInputInfoComponent
+  },
 
   {
     path:'',
@@ -42,14 +46,11 @@ const routes: Routes = [
       //   path: 'sign-up',
       //   component: SignUpComponent
       // },
-      {
-        path: 'input-info',
-        component: InputInfoComponent
-      },
-      {
-        path: 'modify-input-info',
-        component: ModifyInputInfoComponent
-      },
+      // {
+      //   path: 'input-info',
+      //   component: InputInfoComponent
+      // },
+      
       {
         path: 'tutorial',
         canActivate: [AuthGuard],
