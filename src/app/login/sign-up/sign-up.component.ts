@@ -169,11 +169,13 @@ export class SignUpComponent implements OnInit{
                 this.alertService.openAlert('Email을 입력해주십시오.');
                 break;
             }
-             else if (checkNum==0){
-                this.alertService.openAlert('사용 가능한 Email입니다.')
-                this.idCheck = false;
-                break;
-            }
+             
+        }
+
+        if (checkNum==0){
+            this.alertService.openAlert('사용 가능한 Email입니다.')
+            this.idCheck = false;
+            
         }
     }
 
