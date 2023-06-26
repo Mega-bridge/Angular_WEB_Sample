@@ -25,8 +25,8 @@ const routes: Routes = [
     component: SignUpComponent
   },
   {
-    path: 'modify-input-info',
-    component: ModifyInputInfoComponent
+    path: 'input-info',
+    component: InputInfoComponent
   },
 
   {

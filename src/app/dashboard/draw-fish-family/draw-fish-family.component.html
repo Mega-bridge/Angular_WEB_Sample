@@ -25,13 +25,22 @@
             <div>
                 <div *ngIf="expanded" style="padding: 15px;font-size: 12px;">
                     <div class="result-answer-sub-title">최종결과</div>
-                    수고하셨습니다! <br>
-                    어항 속 모습을 통해 해석된 당신의 심리는 아래와 같습니다. <br>
+                    <div class="result-answer-sub-content">
+                        수고하셨습니다! <br>
+                        어항 속 모습을 통해 해석된 당신의 심리는 아래와 같습니다. <br>
+                    </div>
+                    
                     
                     <div class="result-answer-sub-title" >해석</div>
-                    <p  [innerHtml]="resultAnswerData.description">{{resultAnswerData.description}}</p>
+                    <div class="result-answer-sub-content">
+                        <p  [innerHtml]="resultAnswerData.description">{{resultAnswerData.description}}</p>
+                    </div>
+                    
                     
                     <div class="result-answer-sub-title">진단항목</div>
+                    <div class="result-answer-sub-content">
+
+                    </div>
 
                 </div>
             </div>
