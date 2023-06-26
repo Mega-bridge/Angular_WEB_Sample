@@ -42,6 +42,10 @@ export class DrawFishFamilyService {
      private openResult = new Subject<boolean>();
      openResult$ = this.openResult.asObservable();
 
+     /** 결과지 여부 */
+     private isAnswerResult = new Subject<boolean>();
+     isAnswerResult$ = this.isAnswerResult.asObservable();
+
     /**
      * 회차 정보 공유
      * @param data
@@ -106,6 +110,13 @@ export class DrawFishFamilyService {
      */
     saveSeqItem(){
         this.saveItem.next(true);
+    }
+
+    /**
+     * 결과지 여부
+     */
+    hasAnswerResult(yesNo : boolean){
+        this.isAnswerResult.next(yesNo);
     }
 
 

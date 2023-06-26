@@ -28,8 +28,8 @@
                     수고하셨습니다! <br>
                     어항 속 모습을 통해 해석된 당신의 심리는 아래와 같습니다. <br>
                     
-                    <div class="result-answer-sub-title">해석</div>
-                    {{resultAnswerData.description}}
+                    <div class="result-answer-sub-title" >해석</div>
+                    <p  [innerHtml]="resultAnswerData.description">{{resultAnswerData.description}}</p>
                     
                     <div class="result-answer-sub-title">진단항목</div>
 
@@ -73,7 +73,7 @@
                             
                                 <div class="sub">
                                     <span class="k-icon k-i-calendar" style="margin: 2px 5px;"></span> {{seqItems[seqItems.length -1 - i].date.getFullYear()}}. {{seqItems[seqItems.length -1 - i].date.getMonth()+1}}. {{seqItems[seqItems.length -1 - i].date.getDate()}} <br>
-                                    <span class="k-icon k-i-clock" style="margin: 2px 5px;"></span> {{seqItems[seqItems.length -1 - i].hour}} : {{seqItems[seqItems.length -1 - i].minute}} : {{seqItems[seqItems.length -1 - i].second}} 
+                                    <span class="k-icon k-i-clock" style="margin: 2px 5px;"></span> {{seqItems[seqItems.length -1 - i].hour < 10 ? '0' + seqItems[seqItems.length -1 - i].hour : seqItems[seqItems.length -1 - i].hour}} : {{seqItems[seqItems.length -1 - i].minute < 10 ? '0'+seqItems[seqItems.length -1 - i].minute : seqItems[seqItems.length -1 - i].minute }} : {{seqItems[seqItems.length -1 - i].second < 10 ? '0' + seqItems[seqItems.length -1 - i].second : seqItems[seqItems.length -1 - i].second}} 
                                 </div>
                             
                                 <!-- <div style="width: 18px;
@@ -122,7 +122,7 @@
 <!--                    <div style="display: flex; flex-wrap: nowrap;" *ngIf="canvasImage !=''">-->
 <!--&lt;!&ndash;                        <button class="button-style btn2" (click)="canvasDownload()" >그림 다운로드</button>&ndash;&gt;-->
 <!--                        <button class="button-style btn3" (click)="drawer.toggle()">검토 중</button>-->
-<!--                        <button *ngIf="answerResult" class="button-style btn4" (click)="drawer.toggle()">결과 보기</button>-->
+<!--                        <button *ngIf="isAnswerResult" class="button-style btn4" (click)="drawer.toggle()">결과 보기</button>-->
 <!--                    </div>-->
 
                 </div>

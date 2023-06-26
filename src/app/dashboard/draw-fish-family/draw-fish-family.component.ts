@@ -230,7 +230,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     public isPopupOpen: boolean = false;
 
     /** 결과 답안 검토 여부 */
-    public answerResult: boolean = false;
+    public isAnswerResult: boolean = false;
 
     /** 결과 답안 데이터 */
     public resultAnswerData: any;
@@ -505,12 +505,16 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
             next: async (data) => {
                 if (data){
                     this.resultAnswerData=data
+                    this.resultAnswerData.description = this.resultAnswerData.description.replace(/.,/g, '. </br>');
 
                     console.log(this.resultAnswerData);
-                    this.answerResult=true
+                    this.isAnswerResult=true
+
+                    this.drawFishFamilyService.hasAnswerResult(true);
 
                 }
                 else{
+                    this.drawFishFamilyService.hasAnswerResult(false);
                     console.log('결과지 없슈! 기다리쇼!');
                 }
             }
@@ -531,7 +535,6 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
                 }
             });
 
-        console.log(this.selectedObjectList);
     }
 
 
@@ -569,7 +572,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         // 해당 DataSet의 Object Seq 조회
         this.getSeqObjectCode(item.seq);
         // 결과 보기 버튼 비활성
-        this.answerResult=false
+        this.isAnswerResult=false
     }
 
 
@@ -950,7 +953,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
         const downloadLink = document.createElement('a');
         document.body.appendChild(downloadLink);
         downloadLink.href = this.canvasImage;
-        downloadLink.download = '[MindReader] ' + this.authService.getUserName() + '_' +this.seqItems[this.selectedSeqIndex].date.getFullYear() + '.' + this.seqItems[this.selectedSeqIndex].date.getMonth()+1 + '.'  + this.seqItems[this.selectedSeqIndex].date.getDate() + '.png';
+        downloadLink.download = '[MindReader] ' + this.authService.getUserName() + '_' +this.seqItems[this.selectedSeqIndex].date.getFullYear() + '.' + (this.seqItems[this.selectedSeqIndex].date.getMonth() + 1) + '.'  + this.seqItems[this.selectedSeqIndex].date.getDate() + '.png';
         downloadLink.click();
 
     }
@@ -995,7 +998,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
                     if (data){
                         this.resultAnswerData=data
                         // 결과 보기 버튼 활성화
-                        this.answerResult=true
+                        this.isAnswerResult=true
 
                     }
                 }
