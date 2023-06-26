@@ -134,19 +134,19 @@
                 <div class="input-info">
                     <kendo-formfield>
                         <kendo-label class="form-label" [for]="name"></kendo-label>
-                        <input style="background-color: #ffffff;width: 25%;height: 55px;border-radius: 35px;font-size: 20px;padding-left:3%" class="form-input" readonly formControlName="userName" kendoTextBox #name/>
+                        <input style="background-color: #ffffff;width:340px;max-width:340px;height: 55px;border-radius: 35px;font-size: 20px;padding-left:40px" class="form-input" readonly formControlName="userName" kendoTextBox #name/>
                     </kendo-formfield>
                 </div>
                 <div class="input-info">
                     <kendo-formfield>
                         <kendo-label class="form-label" [for]="age"></kendo-label>
-                        <input style="background-color: #ffffff;width: 25%;height: 55px;border-radius: 35px;font-size: 20px;padding-left:3%" class="form-input" readonly formControlName="age" kendoTextBox #age/>
+                        <input style="background-color: #ffffff;width:340px;max-width:340px;height: 55px;border-radius: 35px;font-size: 20px;padding-left:40px" class="form-input" readonly formControlName="age" kendoTextBox #age/>
                     </kendo-formfield>
                 </div>
                 <div class="input-info">
                     <kendo-label class="form-label" [for]="sex"></kendo-label>
                     <kendo-dropdownlist
-                            style="background-color: #ffffff;width: 25%;height: 55px;border-radius: 35px;margin-top:20px;font-size: 20px;padding-left:2%"
+                            style="background-color: #ffffff;width:340px;max-width:340px;height: 55px;border-radius: 35px;margin-top:20px;font-size: 20px;padding-left:30px"
                             [data]="genderList"
                             formControlName="genderId"
                             textField="description"
@@ -159,7 +159,7 @@
                 <div class="input-info" >
                     <kendo-label class="form-label" [for]="job" ></kendo-label>
                     <kendo-dropdownlist
-                            style="background-color: #ffffff;width: 25%;height: 55px;border-radius: 35px;margin-top:20px;font-size: 20px;padding-left:2%"
+                            style="background-color: #ffffff;width:340px;max-width:340px;height: 55px;border-radius: 35px;margin-top:20px;font-size: 20px;padding-left:30px"
                             [data]="jobList"
                             formControlName="jobId"
                             textField="description"
@@ -173,7 +173,7 @@
                 <div class="input-info">
                     <kendo-formfield >
                         <kendo-label class="form-label" [for]="familyNum"></kendo-label>
-                        <input style="background-color: #ffffff;width: 25%;height: 55px;border-radius: 35px;font-size: 20px;padding-left:3%" class="form-input" formControlName="familyNum" kendoTextBox #familyNum/>
+                        <input style="background-color: #ffffff;width:340px;max-width:340px;height: 55px;border-radius: 35px;font-size: 20px;padding-left:40px" class="form-input" formControlName="familyNum" kendoTextBox #familyNum/>
                     </kendo-formfield>
                 </div>
 
@@ -186,20 +186,21 @@
             </kendo-formfield>
         </div>-->
         <div class="input-info" style="text-align: -webkit-center;">
-            <div style="background-color: #ffffff;width: 25%;height: 55px;border-radius: 35px;margin-top:20px;text-align: left;">
-              <span class="input-info" style="font-size: 20px;padding-left:10%; " >
-                  <div style="float:left;margin-top:15px;padding-left: 50px">내가 생각하는 가족과의 관계</div>
+            <div style="background-color: #ffffff;height: 55px;border-radius: 35px;margin-top:20px;text-align: left;width:340px;max-width:340px">
+              <span class="input-info" style="font-size: 20px; " >
+                  <div style="float:left;margin-top:15px;padding-left: 40px">내가 생각하는 가족과의 관계</div>
 
-                  <div style="float:right"><button style="background-color: #FFFFFF;border:0;outline:0;font-size: 25px;margin-top:10px;margin-right: 15px" (click)="subFamily()" >-</button>
-                      <button  style="background-color: #FFFFFF;border:0;outline:0;font-size: 25px;margin-top:10px;margin-right: 30px" (click)="addFamily()" [disabled]="familySelected" >+</button>
+                  <div style="float:right">
+                      <button style="width:0px;background-color: #FFFFFF;border:0;outline:0;font-size: 25px;margin-top:10px;margin-right: 15px;" (click)="subFamily()" >-</button>
+                      <button  style="width:0px;background-color: #FFFFFF;border:0;outline:0;font-size: 25px;margin-top:10px;margin-right: 30px" (click)="addFamily()" [disabled]="familySelected" >+</button>
                 </div>
               </span>
             </div>
         </div>
         <div class="input-info" *ngFor="let family of selectedFamily;let i = index;" >
-            <span style="font-size: 25px;vertical-align: text-top;margin:10px;"> 나와 </span>
+            <span style="font-size: 25px;vertical-align: text-top;text-align: center"> 나와 </span>
             <kendo-dropdownlist
-                    style="padding-bottom:10px;background-color: #ffffff;width: 8%;height: 55px;border-radius: 35px;margin-top:20px;font-size: 20px;padding-left:2%"
+                    style="background-color: #ffffff;width: 180px;max-width:160px;height: 55px;border-radius: 35px;margin-top:20px;font-size: 20px;padding-left:40px"
                     [data]="familyList"
                     textField="description"
                     valueField="id"
@@ -211,7 +212,7 @@
             </kendo-dropdownlist>
             <span style="font-size: 25px;vertical-align: text-top;margin:10px;">  는  </span>
             <kendo-dropdownlist
-                    style="background-color: #ffffff;width: 11%;height: 55px;border-radius: 35px;margin-top:20px;font-size: 20px;padding-left:2%"
+                    style="background-color: #ffffff;width: 250px;min-width:230px;height: 55px;border-radius: 35px;margin-top:20px;font-size: 20px;padding-left:40px"
                     [data]="familyRelation"
                     textField="description"
                     valueField="id"
