@@ -85,6 +85,7 @@ export class TopNavComponent implements OnInit,OnDestroy {
     this.subscription4 = drawFishFamilyService.selectItem$.subscribe(
       item => {
           this.selectedItem = item;
+          this.selectedItem.id? this.isAdd = false : this.isAdd = true;
       });
 
 

@@ -101,12 +101,7 @@
 
 .drawer-style{
   height: 87vh;
-  kendo-drawer .k-drawer{
-    .k-drawer-mini{
-      border-left: #cccccc solid 1px;
-    }
-  }
-
+  min-height: 610px;
 
   .k-drawer-wrapper{
     display: flex;
@@ -354,7 +349,7 @@
   position: absolute;
   border: 13px solid transparent;
   border-left-color: #ca3d57;
-  top: 43px;
+  top: 35px;
   left: 145px;
 
 }
@@ -367,7 +362,7 @@
   position: absolute;
   border: 13px solid transparent;
   border-left-color: #ca3d57;
-  top: 267px;
+  top: 245px;
   left: 145px;
 
 }
@@ -378,7 +373,7 @@
   position: absolute;
   border: 13px solid transparent;
   border-left-color: #ca3d57;
-  top: 39px;
+  top: 35px;
   left: 145px;
 
 }

@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 import {LoginRequestModel} from "../model/request/login.request.model";
 import {LoginResultResponse} from "../model/response/login-result.response.model";
-
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -11,7 +11,7 @@ import {LoginResultResponse} from "../model/response/login-result.response.model
 })
 export class AuthService {
 
-    public SEVER_URL = 'http://localhost:8080/auth';
+    public SEVER_URL = environment.apiUrl + '/auth';
 
     /** 로그인한 email */
     public userEmail: string= '';

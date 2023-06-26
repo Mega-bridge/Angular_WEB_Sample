@@ -14,13 +14,14 @@ import {PatientInfoRequest} from "../model/request/patient-info.request.model";
 import {MrPatientInfoResponse} from "../model/response/mr-patient-info.response.model";
 import {MrDetailFishResponseModel} from "../model/response/mr-detail-fish.response.model";
 import {MrAnswerResponse} from "../model/response/mr-answer.response.model";
+import { environment } from "src/environments/environment";
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class MindReaderControlService {
-    public MR_CONTROL_URL = 'http://localhost:8080/mindReader';
+    public MR_CONTROL_URL = environment.apiUrl + '/mindReader';
 
     /**
      * @param http

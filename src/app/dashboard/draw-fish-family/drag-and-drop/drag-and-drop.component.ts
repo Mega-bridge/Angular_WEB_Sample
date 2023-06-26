@@ -1,6 +1,7 @@
 import {
     AfterViewInit,
     asNativeElements,
+    ViewContainerRef,
     Component,
     ElementRef,
     Injectable,
@@ -18,6 +19,8 @@ import {AuthService} from "../../../../shared/service/auth.service";
 import { __values } from "tslib";
 import { MrFamilyCodeResponse } from "src/shared/model/response/mr-family-code.response.model";
 import {Align, PopupAnimation} from "@progress/kendo-angular-popup";
+import {DialogService} from "@progress/kendo-angular-dialog";
+import { ConfirmDialogComponent } from "src/shared/component/dialogs/confirm-dialog/confirm-dialog.component";
 
 
 @Component({
@@ -37,14 +40,41 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
     @Input() userEmail:string | null = '';
 
-    public anchorAlign: Align = { horizontal: "left", vertical: "bottom" };
-    public popupAlign: Align = { horizontal: "left", vertical: "top" };
-    public isSelectFirstFish = 0;
 
     public canvas: fabric.Canvas;
 
+    public props = {
+        canvasFill: '#ffffff',
+        canvasImage: '',
+        id: null,
+        opacity: 0,
+        fill: null,
+        fontSize: null,
+        lineHeight: null,
+        charSpacing: null,
+        fontWeight: null,
+        fontStyle: null,
+        textAlign: null,
+        fontFamily: null,
+        TextDecoration: ''
+    };
+
+   
+
+    /** canvas img URL */
+    public url: string | ArrayBuffer = '';
+
+    /** canvas size */
+    public size: any = {
+        width: 1000,
+        height: 750
+    };
+
     /** 어항 코드 */
     public fishbowlCode: number = 0;
+
+     /** fish bowl img URL */
+     public fishbowlUrl: string = '';
 
     /** 어항 물 높이 */
     public waterHeight: number = 0;
@@ -70,56 +100,45 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     /** 가족선택 열기 */
     public openFam: boolean = false;
 
+    /** 컨트롤바 열기 */
     public openAngleControl: boolean = false;
     public openSizeControl: boolean = false;
     public openLeftControl: boolean = false;
     public openTopControl: boolean = false;
 
+    // 컨드롤바 event handler
+    public controlEventHandler: ((event: Event) => void) | null = null;
 
-    public props = {
-        canvasFill: '#ffffff',
-        canvasImage: '',
-        id: null,
-        opacity: 0,
-        fill: null,
-        fontSize: null,
-        lineHeight: null,
-        charSpacing: null,
-        fontWeight: null,
-        fontStyle: null,
-        textAlign: null,
-        fontFamily: null,
-        TextDecoration: ''
-    };
-
-    public waterUrl: string = '';
-
-    /** canvas img URL */
-    public url: string | ArrayBuffer = '';
-    public size: any = {
-        width: 1200,
-        height: 900
-    };
-
-    public json: any;
+    /** object 선택 여부 */
     public isSelected: boolean = false;
-    public moved: any;
 
+    /** 보조 설명 없애기 위한,,, 첫번째 물고기 추가 여부 확인 */
+    public isSelectFirstFish = 0;
+
+    /** object 추가 순서 */
     public objectSeq: number = 0;
 
-    // 가족관계 리스트
+    /** 가족관계 리스트 */
     public familyTypeList : MrFamilyCodeResponse[] = [];
     /** 선택된 가족 관계 */
     public selectedFamilyType : any;
 
+    /** 가족 선택 default item */
     public defaultItem: { description: string; id: any } = {
         description: "가족관계를 선택해주세요..",
         id: null,
     };
-   
-    
-    public controlEventHandler: ((event: Event) => void) | null = null;
 
+    public isFishObject: boolean = false;
+   
+    /** 팝업 위치 */
+    public anchorAlign: Align = { horizontal: "left", vertical: "bottom" };
+    public popupAlign: Align = { horizontal: "left", vertical: "top" };
+
+
+    /** 다이얼로그 생성 */
+    @ViewChild('dialog', {read: ViewContainerRef})
+    public dialogRef!: ViewContainerRef;
 
     /**
      *
@@ -130,6 +149,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         public mindReaderControlService: MindReaderControlService,
         private alertService: AlertService,
         private authService: AuthService,
+        private dialogService: DialogService,
     ) {
         this.canvas = new fabric.Canvas('canvas');
     }
@@ -161,6 +181,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
         this.canvas.setWidth(this.size.width);
         this.canvas.setHeight(this.size.height);
+        
+        
         //
         //
         // window.addEventListener('resize', () => {
@@ -194,6 +216,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
          */
         this.canvas.on('selection:created',e => {
             console.log(e);
+            
 
             // 다중선택 확인 후 선택 취소 처리
             if (this.canvas.getActiveObjects().length > 1) {
@@ -202,13 +225,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             else if(e.selected){
                 this.isSelected = true;
                 const selectedObject = e.selected[0];
-                this.getId();
-                console.log(selectedObject);
-                // console.log('///////////////////////');
-                // console.log('object Id (timestamp): ' + this.props.id);
-                console.log('object Name: ' + selectedObject.name);
-                // console.log('-----------------------');
-
+                this.isFishObject = selectedObject.toObject().isFish;
+                
                 this.selectedFamilyType = selectedObject.name ? this.familyTypeList[Number(selectedObject.name)] : null;
             
             }
@@ -225,6 +243,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             else if(e.selected){
                 this.isSelected = true;
                 const selectedObject = e.selected[0];
+                this.isFishObject = selectedObject.toObject().isFish;
 
                 this.selectedFamilyType = selectedObject.name ? this.familyTypeList[Number(selectedObject.name)] : null;
             
@@ -237,10 +256,12 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             //console.log(e);
             const movedObject: any = e.target;
             var centerPoint = movedObject.getCenterPoint();
-            // console.log(movedObject);
-            // console.log('////////Object Moving///////////////');
+            console.log(movedObject);
+            console.log('////////Object Moving///////////////');
             // console.log('centerPoint (X, Y): ' + centerPoint);
-            // console.log('-----------------------');
+            
+            console.log('centerPoint (X, Y): ' + movedObject);
+            console.log('-----------------------');
 
 
         });
@@ -266,7 +287,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             console.log('Object Width:' + modifiedObject?.getScaledWidth());
             console.log(typeof(modifiedObject?.getScaledWidth()));
             console.log('Object Height:' + modifiedObject?.getScaledHeight());
-            console.log('Object Height:' + modifiedObject?.scaleX);
+            console.log('Object scale:' + modifiedObject?.scaleX);
             // // console.log('상하 반전 여부:' + modifiedObject?.cacheHeight);
             // console.log('-----------------------');
 
@@ -337,6 +358,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         var angleInputElement : HTMLInputElement | null = document.querySelector('#angle-control');
         var angleVal = activeGroup?.angle?.toString();
 
+
         // 사이즈
         var scaleInputElement : HTMLInputElement | null = document.querySelector('#scale-control');
         var scaleVal = activeGroup?.scaleX?.toString();
@@ -352,6 +374,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         // 각도
         if(angleInputElement){    
             angleInputElement.value = angleVal ? angleVal: '0';
+            console.log(angleVal);
+            console.log(angleInputElement.value);
         }
 
         // 사이즈
@@ -446,12 +470,12 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
 
     closeOpenControl(type ?:string):void {
+        this.updateControls();
+
         this.openAngleControl = type === 'openAngleControl' ? !this.openAngleControl : false;
         this.openSizeControl = type === 'openSizeControl' ? !this.openSizeControl : false;
         this.openLeftControl = type === 'openLeftControl' ? !this.openLeftControl : false;
         this.openTopControl = type === 'openTopControl' ? !this.openTopControl : false;
-       
-        
 
     }
    
@@ -462,13 +486,13 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
      * @param fishbowlCode
      */
     setWater(opt: string, fishbowlCode: number){
-        this.waterUrl = opt;
+        this.fishbowlUrl = opt;
         this.fishbowlCode = fishbowlCode;
-        this.canvas.setBackgroundImage(this.waterUrl, this.canvas.renderAll.bind(this.canvas), {
-            top: 40,
-            left: 40,
-            scaleX:0.5,
-            scaleY: 0.5
+        this.canvas.setBackgroundImage(this.fishbowlUrl, this.canvas.renderAll.bind(this.canvas), {
+            top: 20,
+            left: 15,
+            scaleX:0.42,
+            scaleY: 0.42
         });
 
     }
@@ -481,6 +505,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
      */
     getImgPolaroid(event: any, objectCodeId: any,selectedFamilyType?:any, top?: number, left?:number, scale?: number) {
         const el = event;
+        console.log(el);
         
         fabric.loadSVGFromURL(el, (objects, options) => {
             const image = fabric.util.groupSVGElements(objects, options);
@@ -499,8 +524,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 name: selectedFamilyType? selectedFamilyType.id : null
 
             });
-            this.extend(image, this.randomId(), new Date().getTime(),objectCodeId);
-            //console.log(image.toObject().id);
+            this.extend(image, this.randomId(), new Date().getTime(),objectCodeId,el.includes('/F_'));
+            
             image.scale(scale?scale: 0.2);
         
             this.canvas.add(image);
@@ -552,13 +577,14 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
      * @param createDate
      * @param objectCodeId
      */
-    extend(obj:any, id:any, createDate: number,objectCodeId:any) {
+    extend(obj:any, id:any, createDate: number,objectCodeId:any, isFish: boolean) {
         obj.toObject = ((toObject) => {
             return function() {
                 return fabric.util.object.extend(toObject.call(obj), {
                     id,
                     objectCodeId,
-                    createDate
+                    createDate,
+                    isFish
                 });
             };
         })(obj.toObject);
@@ -590,9 +616,6 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         this.props.id = this.canvas.getActiveObject()?.toObject().id;
 
     }
-    // getOpacity() {
-    //     this.props.opacity = this.getActiveStyle('opacity', null) * 100;
-    // }
 
 
     /**
@@ -607,8 +630,17 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             const image = new Image();
             image.src = this.canvas.toDataURL({format: 'png'});
 
-            // 회차별 dataSet 생성
-            this.createDataSet(dataSetSeq, startDate, detailFishId, patientInfoId,image.src);
+            // 가족관계 누락된 물고기 확인
+            const itemNameList = this.canvas.getObjects().filter(item => item.toObject().isFish && !item.name).map(item => item.name);
+            
+            if(itemNameList.length > 0){
+                this.checkFamilyTypeDialog();
+            }
+            else{
+                // 회차별 dataSet 생성
+                this.createDataSet(dataSetSeq, startDate, detailFishId, patientInfoId,image.src);
+            }
+            
     }
 
 
@@ -625,14 +657,13 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         // canvas 내 objectCodeId List
         const objectCodeList = this.canvas.getObjects().map(item => item.toObject().objectCodeId);
 
+
         // Object code 구하기
         await this.getObjectCode(0, objectCodeList);
         await this.getObjectCode(1, objectCodeList);
         await this.getObjectCode(2, objectCodeList);
 
         const endDate = new Date();
-        console.log("dataSetSeq");
-        console.log(dataSetSeq);
 
         // 회차별 데이터셋 생성 request model
         this.mrDataSetModel = {
@@ -775,6 +806,33 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
     drawingMode() {
         this.canvas.isDrawingMode = !this.canvas.isDrawingMode;
+    }
+
+
+    /**
+     * canvas 물고기 가족 관계 누락 다이얼로그
+     */
+    public checkFamilyTypeDialog() {
+        const dialog = this.dialogService.open({
+            title: "물고기의 가족관계가 누락되었습니다.",
+            content: ConfirmDialogComponent,
+            appendTo: this.dialogRef,
+            width: 450,
+            height: 200,
+            minWidth: 250,
+            
+        });
+        dialog.content.instance.text = '물고기의 가족관계가 누락되었습니다.<br>가족관계를 선택해주세요.';
+
+
+        // 저장 실행
+        dialog.result.subscribe((result: any) => {
+            if (result.text === 'yes') {
+                // 물고기 행동 정보 선택
+                
+            }
+
+        });
     }
 
 
