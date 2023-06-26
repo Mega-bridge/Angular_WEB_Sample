@@ -505,6 +505,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
             next: async (data) => {
                 if (data){
                     this.resultAnswerData=data
+                    this.resultAnswerData.description = this.resultAnswerData.description.replace(/.,/g, '. </br>');
 
                     console.log(this.resultAnswerData);
                     this.answerResult=true
@@ -531,7 +532,6 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
                 }
             });
 
-        console.log(this.selectedObjectList);
     }
 
 
