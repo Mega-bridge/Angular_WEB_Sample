@@ -187,7 +187,7 @@ export class TopNavComponent implements OnInit,OnDestroy {
    * 사용자 추가정보 기입 수정 페이지로 이동
    */
   modifyInfo(){
-    this.router.navigateByUrl('/modify-input-info')
+    this.router.navigateByUrl('/input-info')
   }
 
   /**

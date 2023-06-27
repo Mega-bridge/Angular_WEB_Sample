@@ -25,6 +25,9 @@ export class SignUpComponent implements OnInit{
     /** id 체크 여부 */
     public idCheck: boolean = true;
 
+    /** input-info 경로 체크 */
+    public signupInput: number= 0;
+
     /**
      * 생성자
      * @param router
@@ -197,7 +200,7 @@ export class SignUpComponent implements OnInit{
    * 사용자 추가정보 기입 수정 페이지로 이동
    */
   modifyInfo(){
-    this.router.navigateByUrl('/modify-input-info')
+    this.router.navigate(['/input-info'],{ queryParams: {numberParam:this.signupInput }})
   }
 
 }

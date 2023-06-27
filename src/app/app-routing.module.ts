@@ -7,7 +7,7 @@ import {MainComponent} from "./main/main.component";
 import {SignUpComponent} from "./login/sign-up/sign-up.component";
 import {LoginComponent} from "./login/login.component";
 import {AuthGuard} from "../shared/service/auth.guard";
-import {ModifyInputInfoComponent} from "./input-info/modify/modify-input-info.component";
+
 
 const routes: Routes = [
 
@@ -46,10 +46,10 @@ const routes: Routes = [
       //   path: 'sign-up',
       //   component: SignUpComponent
       // },
-      // {
-      //   path: 'input-info',
-      //   component: InputInfoComponent
-      // },
+       {
+         path: 'input-info',
+         component: InputInfoComponent
+      },
       
       {
         path: 'tutorial',

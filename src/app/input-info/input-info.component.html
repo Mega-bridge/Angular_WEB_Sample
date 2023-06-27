@@ -1,125 +1,129 @@
-<div class="input-info-wrap">
-    <div class="info-form-wrap">
-        <div class="info-form-title">추가 정보 기입</div>
-        <div class="info-form-content">
-            당신의 추가적인 정보를 기입해주세요! <br>
-            좀 더 정확한 심리 진단에 도움이 됩니다.
-            <br><br>
-            <li>추가정보 기입은 선택사항입니다.</li>
-            <li>향후 지속적인 심리 검사를 원하시면 <b>E-mail</b>을 꼭 기입해주세요.</li>
+<div   style="   justify-content: center;
+  display: flex;
+  margin: 0 auto;
+  align-items: center;
+  min-height: 100%;
+  background-color: #ebebeb;">
+    <div style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 80%;
+    ">
+        <div style="font-size:45px;margin-bottom:4%;flex-direction: column;">
+            환영합니다!
+        </div>
+        <div style="text-align: center">
+            <span style="font-size: 30px;">당신에 대해서 조금 더 알려주세요!</span><br><br>
+            <span style="font-size: 18px;">조금 더 정확한 심리진단에 도움이 됩니다.</span>
         </div>
         <div  class="info-form">
             <form [formGroup]="infoForm">
                 <div>
                     <div class="input-info">
                         <kendo-formfield>
-                            <kendo-label class="form-label" [for]="name" text="이름"></kendo-label>
-                            <input class="form-input" formControlName="userName" kendoTextBox #name/>
+                            <kendo-label class="form-label" [for]="name"></kendo-label>
+                            <input placeholder="이름" style="background-color: #ffffff;width:500px;max-width:500px;height: 75px;border-radius: 35px;font-size: 20px;padding-left:40px" class="form-input" formControlName="userName" kendoTextBox #name/>
                         </kendo-formfield>
                     </div>
                     <div class="input-info">
-                        <!--                        <mat-form-field appearance="outline">-->
-                        <!--                            <mat-label >E-mail</mat-label>-->
-                        <!--                            <input matInput class="form-input" formControlName="email">-->
-                        <!--                        </mat-form-field>-->
                         <kendo-formfield>
-                            <kendo-label class="form-label" [for]="email" text="Email"></kendo-label>
-                            <input class="form-input" formControlName="userEmail" kendoTextBox #email/>
-                            <!--                            <kendo-formhint>Your active email</kendo-formhint>-->
-                            <!--            <kendo-formerror>Error: Not valid email format</kendo-formerror>-->
+                            <kendo-label class="form-label" [for]="age"></kendo-label>
+                            <input placeholder="생년월일(YYMMDD)" style="background-color: #ffffff;width:500px;max-width:500px;height: 75px;border-radius: 35px;font-size: 20px;padding-left:40px" class="form-input"  formControlName="age" kendoTextBox #age/>
                         </kendo-formfield>
                     </div>
                     <div class="input-info">
-                        <kendo-label class="form-label" [for]="sex" text="성별"></kendo-label>
-                        <!--                            <input class="form-input" formControlName="sex" kendoTextBox #sex/>-->
+                        <kendo-label class="form-label" [for]="sex"></kendo-label>
                         <kendo-dropdownlist
+                                style="background-color: #ffffff;width:500px;max-width:500px;height: 75px;border-radius: 35px;margin-top:20px;font-size: 20px;padding-left:30px"
+                                [defaultItem]="genderDefault"
                                 [data]="genderList"
-                                formControlName="genderCode"
+                                formControlName="genderId"
                                 textField="description"
                                 valueField="id"
+                                [valuePrimitive]="true"
                                 #sex
                                 class="form-input">
                         </kendo-dropdownlist>
                     </div>
-                    <div class="input-info">
-                        <kendo-formfield>
-                            <kendo-label class="form-label" [for]="age" text="나이"></kendo-label>
-                            <input class="form-input" formControlName="age" kendoTextBox #age/>
-                        </kendo-formfield>
-                    </div>
-
-                    <div class="input-info">
-                        <kendo-label class="form-label" [for]="job" text="직업/학년"></kendo-label>
+                    <div class="input-info" >
+                        <kendo-label class="form-label" [for]="job" ></kendo-label>
                         <kendo-dropdownlist
+                                style="background-color: #ffffff;width:500px;max-width:500px;height: 75px;border-radius: 35px;margin-top:20px;font-size: 20px;padding-left:30px"
+                                [defaultItem]="jobDefault"
                                 [data]="jobList"
-                                formControlName="jobCode"
+                                formControlName="jobId"
                                 textField="description"
                                 valueField="id"
+                                [valuePrimitive]="true"
                                 #job
                                 class="form-input">
                         </kendo-dropdownlist>
-                        <!--                        <input class="form-input" formControlName="job" kendoTextBox #job/>-->
                     </div>
 
                     <div class="input-info">
-                        <kendo-formfield>
-                            <kendo-label class="form-label" [for]="familyNum" text="가족 수"></kendo-label>
-                            <input class="form-input" formControlName="familyNum" kendoTextBox #familyNum/>
+                        <kendo-formfield >
+                            <kendo-label class="form-label" [for]="familyNum"></kendo-label>
+                            <input placeholder="현재 같이 살고 있는 가족의 수" style="background-color: #ffffff;width:500px;max-width:500px;height: 75px;border-radius: 35px;font-size: 20px;padding-left:40px" class="form-input" formControlName="familyNum" kendoTextBox #familyNum/>
                         </kendo-formfield>
                     </div>
 
                 </div>
             </form>
-            <div>
-                <div class="input-info">
-                    <kendo-label class="form-label"  text="가족 구성원">
-                        <kendo-multiselect
-                                class="form-input"
-                                [autoClose]="false"
-                                [data]="familyTypeList"
-                                textField="description"
-                                valueField="description"
-                                [(ngModel)]="selectedFamily"
-                        ></kendo-multiselect>
-                    </kendo-label>
-                    <!--                            <div style="display: flex; flex-wrap: wrap; width: 100%;">-->
-                    <!--                                <div *ngFor="let item of familyTypeList" style="font-size: 19px; margin: 5px 0; width: 50%;">-->
-                    <!--                                    <input  type="checkbox" (change)="checkedFamilyType($event, item.id)"/>{{item.description}}-->
-                    <!--                                </div>-->
-                    <!--                            </div>-->
-                    <div class="input-info">
-                        <kendo-label class="form-label" text="가족과의 관계">
-                                <div style="font-size:17px;margin-right: 2px" *ngFor="let family of selectedFamily; let i = index">
-                                    - {{family.description}}
-                                    <ng-container *ngIf="family.description!='나'">
-                                        <kendo-numerictextbox
-                                                [style.width.px]="80"
-                                                format="0"
-                                                [min]="0"
-                                                [max]="100"
-                                                [(ngModel)]="family.numericValue"
-                                        >
-                                        </kendo-numerictextbox>
-                                        <ng-container *ngFor="let j of [].constructor(family.numericValue); let k = index">
-                                            <div style="display: flex; flex-wrap: wrap; width: 100%;">
-                                                <div style="font-size: 15px;margin-top:7px">{{family.description}} {{k+1}}</div>
-                                                <div *ngFor="let item of familyRelation;let m = index" style="font-size: 15px; margin: 5px 5px;">
-                                                    <input type="radio"  name="{{family.description + k}}" value="{{family.id+'_'+item.id}}" [(ngModel)]="selectedValues[k * familyRelation.length+i]"/>
-                                                    {{item.description}}
-                                                </div>
-                                            </div>
-                                        </ng-container>
-                                    </ng-container>
-                                </div>
-                            </kendo-label>
-                        </div>
+            <!--        <div class="input-info">
+                        <kendo-formfield >
+                            <input placeholder="내가 생각하는 가족과의 관계" readonly style="background-color: #ffffff;width: 30%;height: 55px;border-radius: 35px;font-size: 20px;padding-left:2%;margin-top:20px" class="form-input" formControlName="familyNum" kendoTextBox #familyNum/>
+                            <button style="position: absolute;">+</button>
+                        </kendo-formfield>
+                    </div>-->
+            <div class="input-info" style="text-align: -webkit-center;">
+                <div style="background-color: #ffffff;height: 75px;border-radius: 35px;margin-top:20px;text-align: left;width:500px;max-width:500px">
+                  <span class="input-info" style="font-size: 20px; " >
+                      <div style="float:left;margin-top:25px;padding-left: 40px;color:#666667">내가 생각하는 가족과의 관계</div>
+
+                      <div style="float:right">
+                          <button style="width:0px;background-color: #FFFFFF;border:0;outline:0;font-size: 25px;margin-top:25px;margin-right: 15px;" (click)="subFamily()" >-</button>
+                          <button  style="width:0px;background-color: #FFFFFF;border:0;outline:0;font-size: 25px;margin-top:25px;margin-right: 30px" (click)="addFamily()" [disabled]="familySelected" >+</button>
                     </div>
-<!--                        <input class="form-input" formControlName="familyRelationCode" kendoTextBox #familyRelationCode/>-->
+                  </span>
                 </div>
+            </div>
+            <div class="input-info" *ngFor="let family of selectedFamily;let i = index;" >
+                <span style="font-size: 20px;vertical-align: text-top;text-align: center;color:gray">나와 </span>
+                <kendo-dropdownlist
+                        style="background-color: #ffffff;width: 140px;min-width:130px;height: 55px;border-radius: 35px;margin-bottom:10px;margin-top:20px;font-size: 20px;padding-left:20px;"
+                        [data]="familyList"
+                        textField="description"
+                        valueField="id"
+                        [(ngModel)]="selectedFamily[i]"
+                        (ngModelChange)="familySelect()"
+
+                        #job
+                        class="form-input">
+                </kendo-dropdownlist>
+                <span style="font-size: 20px;vertical-align: text-top;margin:10px;color:gray;">는 </span>
+                <kendo-dropdownlist
+                        style="background-color: #ffffff;width: 220px;min-width:200px;height: 55px;border-radius: 35px;margin-bottom:10px;margin-top:20px;font-size: 20px;padding-left:20px"
+                        [data]="familyRelation"
+                        textField="description"
+                        valueField="id"
+                        [(ngModel)]="resultRelation[i]"
+                        #job
+                        class="form-input">
+                </kendo-dropdownlist>
+            </div>
+
         </div>
-        <div style="padding: 10px 0;margin:40px 0;display: flex;justify-content: center;">
-            <button type="submit" mat-raised-button style="width: 500px; background-color: #fe5e23; color: #ffffff;" (click)="patientInfo()">START</button>
+        <div *ngIf="checkPath" style="padding: 10px 0;margin:10px 0;justify-content: center;">
+            <div style="display: flex;margin-bottom: 10px">
+                <button style="width: 500px; height:60px;background-color:#959595; color: #ffffff;font-size: 20px;border-radius: 40px;border-color:#959595;border-width: 0px; " (click)="modifyPatientInfo()">다음</button>
+            </div>
+            <div>
+                <button style="width: 500px; height:70px;font-size: 20px;border-radius: 40px;border-color: #ebebeb;border-width:0px;background-color: #ebebeb" (click)="modifyPatientInfo()">다음에 할래요</button>
+            </div>
+        </div>
+        <div *ngIf="!checkPath" style="padding: 10px 0;margin:10px 0;display: flex;justify-content: center; ">
+            <button style="width: 500px; height:70px;background-color:#000000; color: #ffffff;font-size: 20px;border-radius: 40px" (click)="modifyPatientInfo()">완료</button>
         </div>
     </div>
-
 </div>
