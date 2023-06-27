@@ -257,7 +257,7 @@ export class InputInfoComponent implements OnInit{
             .subscribe({
                 next: async (data) => {
                     if(data) {
-                        this.startTutorial();
+                        this.startDrawFish();
                     }
                 },
                 error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
@@ -321,6 +321,13 @@ export class InputInfoComponent implements OnInit{
      */
     startLogin() {
         this.router.navigateByUrl(`/login`);
+
+    }
+    /**
+     * 로그인 화면으로 이동
+     */
+    startDrawFish() {
+        this.router.navigateByUrl(`/DrawFishFamily`);
 
     }
 }
