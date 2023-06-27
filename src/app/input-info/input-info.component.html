@@ -11,32 +11,34 @@
     height: fit-content;
     margin-top: 40px;
     ">
-        <div style="font-size:45px;margin-bottom:4%;flex-direction: column;">
+        <div style="font-size:43px;margin-top:4%;margin-bottom:4%;flex-direction: column;text-align: center">
             환영합니다!
+            <div style="font-weight: 500">ㅡ</div>
         </div>
-        <div style="text-align: center">
-            <span style="font-size: 30px;">당신에 대해서 조금 더 알려주세요!</span><br><br>
-            <span style="font-size: 18px;">조금 더 정확한 심리진단에 도움이 됩니다.</span>
+
+        <div style="text-align: center;margin-bottom: 20px;">
+            <span style="font-size: 23px;">당신에 대해서 조금 더 알려주세요!</span><br>
+            <span style="font-size: 15px;">좀 더 정확한 심리진단에 도움이 됩니다.</span>
         </div>
-        <div  class="info-form">
+        <div  class="info-form" style="text-align: center">
             <form [formGroup]="infoForm">
-                <div>
+                <div >
                     <div class="input-info">
                         <kendo-formfield>
                             <kendo-label class="form-label" [for]="name"></kendo-label>
-                            <input placeholder="이름" style="background-color: #ffffff;width:500px;max-width:500px;height: 75px;border-radius: 35px;font-size: 20px;padding-left:40px" class="form-input" formControlName="userName" kendoTextBox #name/>
+                            <input placeholder="이름" style="background-color: #ffffff;width:440px;max-width:440px;height: 60px;border-radius: 35px;font-size: 20px;padding-left:40px" class="form-input" formControlName="userName" kendoTextBox #name/>
                         </kendo-formfield>
                     </div>
                     <div class="input-info">
                         <kendo-formfield>
                             <kendo-label class="form-label" [for]="age"></kendo-label>
-                            <input placeholder="생년월일(YYMMDD)" style="background-color: #ffffff;width:500px;max-width:500px;height: 75px;border-radius: 35px;font-size: 20px;padding-left:40px" class="form-input"  formControlName="age" kendoTextBox #age/>
+                            <input placeholder="생년월일(YYMMDD)" style="background-color: #ffffff;width:440px;max-width:440px;height: 60px;border-radius: 35px;font-size: 20px;padding-left:40px;margin-top:-10px" class="form-input"  formControlName="age" kendoTextBox #age/>
                         </kendo-formfield>
                     </div>
                     <div class="input-info">
                         <kendo-label class="form-label" [for]="sex"></kendo-label>
                         <kendo-dropdownlist
-                                style="background-color: #ffffff;width:500px;max-width:500px;height: 75px;border-radius: 35px;margin-top:20px;font-size: 20px;padding-left:30px"
+                                style="background-color: #ffffff;width:440px;max-width:440px;height: 60px;border-radius: 35px;margin-top:10px;font-size: 20px;padding-left:30px"
                                 [defaultItem]="genderDefault"
                                 [data]="genderList"
                                 formControlName="genderId"
@@ -50,7 +52,7 @@
                     <div class="input-info" >
                         <kendo-label class="form-label" [for]="job" ></kendo-label>
                         <kendo-dropdownlist
-                                style="background-color: #ffffff;width:500px;max-width:500px;height: 75px;border-radius: 35px;margin-top:20px;font-size: 20px;padding-left:30px"
+                                style="background-color: #ffffff;width:440px;max-width:440px;height: 60px;border-radius: 35px;margin-top:10px;font-size: 20px;padding-left:30px"
                                 [defaultItem]="jobDefault"
                                 [data]="jobList"
                                 formControlName="jobId"
@@ -65,7 +67,7 @@
                     <div class="input-info">
                         <kendo-formfield >
                             <kendo-label class="form-label" [for]="familyNum"></kendo-label>
-                            <input placeholder="현재 같이 살고 있는 가족의 수" style="background-color: #ffffff;width:500px;max-width:500px;height: 75px;border-radius: 35px;font-size: 20px;padding-left:40px" class="form-input" formControlName="familyNum" kendoTextBox #familyNum/>
+                            <input placeholder="현재 같이 살고 있는 가족의 수" style="background-color: #ffffff;width:440px;max-width:440px;height: 60px;border-radius: 35px;font-size: 20px;padding-left:40px;margin-top: -10px" class="form-input" formControlName="familyNum" kendoTextBox #familyNum/>
                         </kendo-formfield>
                     </div>
 
@@ -78,18 +80,18 @@
                         </kendo-formfield>
                     </div>-->
             <div class="input-info" style="text-align: -webkit-center;">
-                <div style="background-color: #ffffff;height: 75px;border-radius: 35px;margin-top:20px;text-align: left;width:500px;max-width:500px">
+                <div style="background-color: #ffffff;height: 60px;border-radius: 35px;margin-top:10px;text-align: left;width:440px;max-width:440px">
                   <span class="input-info" style="font-size: 20px; " >
-                      <div style="float:left;margin-top:25px;padding-left: 40px;color:#666667">내가 생각하는 가족과의 관계</div>
+                      <div style="float:left;margin-top:20px;padding-left: 40px;color:#666667">내가 생각하는 가족과의 관계</div>
 
                       <div style="float:right">
-                          <button style="width:0px;background-color: #FFFFFF;border:0;outline:0;font-size: 25px;margin-top:25px;margin-right: 15px;" (click)="subFamily()" >-</button>
-                          <button  style="width:0px;background-color: #FFFFFF;border:0;outline:0;font-size: 25px;margin-top:25px;margin-right: 30px" (click)="addFamily()" [disabled]="familySelected" >+</button>
+                          <button style="background-color: #FFFFFF;border:0;outline:0;font-size: 25px;margin-top:20px;margin-right: 15px;" (click)="subFamily()" >-</button>
+                          <button  style="background-color: #FFFFFF;border:0;outline:0;font-size: 25px;margin-top:20px;margin-right: 30px" (click)="addFamily()" [disabled]="familySelected" >+</button>
                     </div>
                   </span>
                 </div>
             </div>
-            <div class="input-info" *ngFor="let family of selectedFamily;let i = index;" >
+            <div class="input-info" *ngFor="let family of selectedFamily;let i = index;"style="text-align: center" >
                 <span style="font-size: 20px;vertical-align: text-top;text-align: center;color:gray">나와 </span>
                 <kendo-dropdownlist
                         style="background-color: #ffffff;width: 140px;min-width:130px;height: 55px;border-radius: 35px;margin-bottom:10px;margin-top:20px;font-size: 20px;padding-left:20px;"
@@ -124,7 +126,7 @@
             </div>
         </div>
         <div *ngIf="!checkPath" style="padding: 10px 0;margin:10px 0;display: flex;justify-content: center; ">
-            <button style="width: 500px; height:70px;background-color:#000000; color: #ffffff;font-size: 20px;border-radius: 40px" (click)="modifyPatientInfo()">완료</button>
+            <button style="width: 440px; height:70px;background-color:#000000; color: #ffffff;font-size: 20px;border-radius: 40px" (click)="modifyPatientInfo()">완료</button>
         </div>
     </div>
 </div>
