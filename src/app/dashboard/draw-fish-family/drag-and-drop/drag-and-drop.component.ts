@@ -103,8 +103,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     /** 컨트롤바 열기 */
     public openAngleControl: boolean = false;
     public openSizeControl: boolean = false;
-    public openLeftControl: boolean = false;
-    public openTopControl: boolean = false;
+    public flipXControl: boolean = false;
+    public flipYControl: boolean = false;
 
     // 컨드롤바 event handler
     public controlEventHandler: ((event: Event) => void) | null = null;
@@ -113,7 +113,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     public isSelected: boolean = false;
 
     /** 보조 설명 없애기 위한,,, 첫번째 물고기 추가 여부 확인 */
-    public isSelectFirstFish = 0;
+    public isSelectFirstFish : boolean = false;
 
     /** object 추가 순서 */
     public objectSeq: number = 0;
@@ -130,7 +130,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     };
 
     public isFishObject: boolean = false;
-   
+
     /** 팝업 위치 */
     public anchorAlign: Align = { horizontal: "left", vertical: "bottom" };
     public popupAlign: Align = { horizontal: "left", vertical: "top" };
@@ -216,7 +216,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
          */
         this.canvas.on('selection:created',e => {
             console.log(e);
-            
+            console.log(e.selected);
+
 
             // 다중선택 확인 후 선택 취소 처리
             if (this.canvas.getActiveObjects().length > 1) {
@@ -228,6 +229,13 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 this.isFishObject = selectedObject.toObject().isFish;
                 
                 this.selectedFamilyType = selectedObject.name ? this.familyTypeList[Number(selectedObject.name)] : null;
+
+                if(e.selected[0].top && e.selected[0].left){
+                
+                    var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
+                        
+                    controlBar?.setAttribute("style", "top: " + e.selected[0].top +"px; left: " + e.selected[0].left + "px;");
+                }
             
             }
 
@@ -236,6 +244,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
          * 선택된 object가 변경된 경우
          */
         this.canvas.on('selection:updated',e => {
+
             // 다중선택 확인 후 선택 취소 처리
             if (this.canvas.getActiveObjects().length > 1) {
                 this.canvas.discardActiveObject();
@@ -246,6 +255,13 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 this.isFishObject = selectedObject.toObject().isFish;
 
                 this.selectedFamilyType = selectedObject.name ? this.familyTypeList[Number(selectedObject.name)] : null;
+
+
+                if(e.selected[0].top && e.selected[0].left){
+                    var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
+                        
+                    controlBar?.setAttribute("style", "top: " + e.selected[0].top +"px; left: " + e.selected[0].left + "px;");
+                }
             
             }
 
@@ -264,6 +280,16 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             console.log('-----------------------');
 
 
+            if(e.target){
+                if(e.target.top && e.target.left){
+                console.log(e.target.top);
+                var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
+                    
+                controlBar?.setAttribute("style", "top: " + e.target.top +"px; left: " + e.target.left + "px;");
+                }
+            }
+
+
         });
 
         // 각도값
@@ -273,6 +299,17 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             // console.log('angle: ' + movedObject.angle);
             // console.log('-----------------------');
             
+            
+
+            if(e.target){
+                if(e.target.top && e.target.left){
+                console.log(e.target.top);
+                var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
+                    
+                controlBar?.setAttribute("style", "top: " + (e.target.top - 90) +"px; left: " + (e.target.left - 240) + "px;");
+                }
+            }
+
             this.updateControls();
         })
 
@@ -281,9 +318,9 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         this.canvas.on('object:modified', e => {
             //console.log(e);
             const modifiedObject = e.target;
-            // console.log('////////Object Modified///////////////');
-            // console.log('좌우 반전 여부:' + modifiedObject?.flipX);
-            // console.log('상하 반전 여부:' + modifiedObject?.flipY);
+            console.log('////////Object Modified///////////////');
+            console.log('좌우 반전 여부:' + modifiedObject?.flipX);
+            console.log('상하 반전 여부:' + modifiedObject?.flipY);
             console.log('Object Width:' + modifiedObject?.getScaledWidth());
             console.log(typeof(modifiedObject?.getScaledWidth()));
             console.log('Object Height:' + modifiedObject?.getScaledHeight());
@@ -293,6 +330,17 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
             this.controlCount += 1;
             // console.log('control Count: ' + this.controlCount);
+            
+
+            if(e.target){
+                if(e.target.top && e.target.left){
+                console.log(e.target.top);
+                var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
+                    
+                controlBar?.setAttribute("style", "top: " + e.target.top +"px; left: " + e.target.left + "px;");
+                }
+            }
+
             this.updateControls();
             
         });
@@ -365,8 +413,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         var scaleVal = activeGroup?.scaleX?.toString();
 
         // left
-        var leftInputElement : HTMLInputElement | null = document.querySelector('#left-control');
-        var leftVal = activeGroup?.left?.toString();
+        // var leftInputElement : HTMLInputElement | null = document.querySelector('#left-control');
+        // var leftVal = activeGroup?.left?.toString();
 
         // top
         var topInputElement : HTMLInputElement | null = document.querySelector('#top-control');
@@ -385,9 +433,9 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         }
 
         // left
-        if(leftInputElement){
-            leftInputElement.value = leftVal ? leftVal : '400';
-        }
+        // if(leftInputElement){
+        //     leftInputElement.value = leftVal ? leftVal : '400';
+        // }
 
         // top
         if(topInputElement){
@@ -402,30 +450,47 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
      * @param val 
      */
     changeControl(htmlId: string, type: string){
-        var control: HTMLInputElement | null = document.querySelector(htmlId);
+        
         var activeGroup = this.canvas.getActiveObject();
         
-        
-        if(control && activeGroup?.evented){
-
+        if(activeGroup?.evented){
             
-            if (this.controlEventHandler) {
-                control.removeEventListener('input', this.controlEventHandler);
-            } 
+            if(htmlId){
 
-            if (activeGroup && control?.value) {
+                var control: HTMLInputElement | null = document.querySelector(htmlId);
+
+                if (this.controlEventHandler) {
+                    control?.removeEventListener('input', this.controlEventHandler);
+                } 
+    
+                if (control?.value) {
+                    switch (type) {
+                        case 'angle':
+                            activeGroup.set('angle', parseInt(control.value, 10)).setCoords();
+                            break;
+                        case 'scale':
+                            activeGroup.scale(parseFloat(control.value)).setCoords();
+                            break;
+                        default:
+                            break;
+    
+                    }
+                    
+                }
+                
+            }
+
+            else {
                 switch (type) {
-                    case 'angle':
-                        activeGroup.set('angle', parseInt(control.value, 10)).setCoords();
+                    case 'flipX':
+                        this.flipXControl = !this.flipXControl;
+                        activeGroup.set('flipX',this.flipXControl);
+                        // activeGroup.set('left', parseInt(control.value, 10)).setCoords();
                         break;
-                    case 'scale':
-                        activeGroup.scale(parseFloat(control.value)).setCoords();
-                        break;
-                    case 'left':
-                        activeGroup.set('left', parseInt(control.value, 10)).setCoords();
-                        break;
-                    case 'top':
-                        activeGroup.set('top', parseInt(control.value, 10)).setCoords();
+                    case 'flipY':
+                        this.flipYControl = !this.flipYControl;
+                        activeGroup.set('flipY',this.flipYControl);
+                        // activeGroup.set('top', parseInt(control.value, 10)).setCoords();
                         break;
                     default:
                         break;
@@ -436,9 +501,11 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
             this.canvas.requestRenderAll();
             this.canvas.renderAll();    
-            
         }
+
         
+
+
         // var activeGroups = this.canvas.getActiveObjects();
         // activeGroups.forEach((object:fabric.Object) => {
         //     if(control){
@@ -475,9 +542,11 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
         this.openAngleControl = type === 'openAngleControl' ? !this.openAngleControl : false;
         this.openSizeControl = type === 'openSizeControl' ? !this.openSizeControl : false;
-        this.openLeftControl = type === 'openLeftControl' ? !this.openLeftControl : false;
-        this.openTopControl = type === 'openTopControl' ? !this.openTopControl : false;
+        // this.flipXControl = type === 'flipXControl' ? !this.flipXControl : false;
+        // this.flipYControl = type === 'flipYControl' ? !this.flipYControl : false;
 
+
+        
     }
    
 
@@ -536,7 +605,9 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         
             this.canvas.add(image);
 
-            this.isSelectFirstFish += 1;
+            // 첫번째 객체 선택 여부 확인
+            this.canvas.getObjects().length > 1 ? this.isSelectFirstFish = false : this.isSelectFirstFish = true; 
+            
 
             this.selectItemAfterAdded(image);
           });

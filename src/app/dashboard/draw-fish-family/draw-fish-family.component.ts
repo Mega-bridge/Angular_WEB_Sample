@@ -40,6 +40,8 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
     /** data set */
     public originDataSet: any[] = [];
 
+    public dataLoaded: boolean = false;
+
     /** user email */
     public userEmail: string |null = '';
 
@@ -450,6 +452,7 @@ export class DrawFishFamilyComponent implements OnInit,OnDestroy{
                         // 마지막 seq 조회
                         this.selectedSeq = data[data.length - 1].seq;
                         
+                        this.dataLoaded = !this.dataLoaded;
 
                         // 기존 DataSet이 있지만 모두 삭제되어 사용자에게 보여줄 DataSet이 없을 경우 미실행
                         if(this.seqItems.length != 0){

@@ -62,7 +62,9 @@
                     <div class="card-title"> 
                         <span></span>
                         <span>회차 추가</span>
-                        <span style="
+                        <span [style.OPACITY]="dataLoaded? '': '50%'"
+                        [style.pointer-events]="dataLoaded ? 'unset' : 'none'"
+                        style="
                             padding: 5px;
                             border: #cccccc solid 1px;
                             border-radius: 50%;
@@ -676,8 +678,8 @@
                 width: 100%;
                 display: flex;
                 flex-direction: column;
-                justify-content: flex-start;
-                align-items: center;" [userEmail]="userEmail" #canvas></app-dashboard-drag-and-drop>
+                justify-content: center;
+                align-items: center; " [userEmail]="userEmail" #canvas></app-dashboard-drag-and-drop>
 
             </div>
             <div></div>
