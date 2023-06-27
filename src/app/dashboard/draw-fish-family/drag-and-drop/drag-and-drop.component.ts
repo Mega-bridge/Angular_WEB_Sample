@@ -207,6 +207,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
          */
         this.canvas.on('selection:cleared', e =>{
             this.isSelected = false;
+            this.openFam = false;
         })
         
         
