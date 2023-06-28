@@ -658,30 +658,29 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
      */
     removeSelected(object?: any) {
         let data:any;
-        const activeGroup = object ? object :this.canvas.getActiveObject();
-        if (activeGroup) {
-            data = activeGroup.map((item:fabric.Object) => {
-                const mrList: MrObjectModel = {
-                    angle: item.angle,
-                    dataSetSeq: 1,
-                    name: item.name != null ? Number(item.name) : null,
-                    objectCodeId: item.toObject().objectCodeId,
-                    userEmail: this.userEmail ? this.userEmail : '',
-                    width: item.getScaledWidth(),
-                    height: item.getScaledHeight(),
-                    x: item.getCenterPoint().x,
-                    y: item.getCenterPoint().y,
-                    objectSeq: item.toObject().id,
-                    createDate: item.toObject().createDate,
-                };
-                return mrList;
-            })
-            this.allMrObjectModelList.push(data[0]);
+        const activeObject = object ? object[0] : this.canvas.getActiveObject();
+        if (activeObject) {
+            const mrList: MrObjectModel = {
+                angle: activeObject.angle,
+                dataSetSeq: 1,
+                name: activeObject.name != null ? Number(activeObject.name) : null,
+                objectCodeId: activeObject.toObject().objectCodeId,
+                userEmail: this.userEmail ? this.userEmail : '',
+                width: activeObject.getScaledWidth(),
+                height: activeObject.getScaledHeight(),
+                x: activeObject.getCenterPoint().x,
+                y: activeObject.getCenterPoint().y,
+                objectSeq: activeObject.toObject().id,
+                createDate: activeObject.toObject().createDate,
+            };
+            
+            this.allMrObjectModelList.push(mrList);
             this.canvas.discardActiveObject();
-            const self = this;
-            activeGroup.forEach((object:fabric.Object) => {
-                self.canvas.remove(object);
-            });
+            this.canvas.remove(activeObject);
+            // const self = this;
+            // activeGroup.forEach((object:fabric.Object) => {
+            //     self.canvas.remove(object);
+            // });
         }
     }
 
