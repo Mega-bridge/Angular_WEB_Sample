@@ -111,7 +111,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
     /** object 선택 여부 */
     public isSelected: boolean = false;
-
+    public hasEvent: boolean = false;
+    
     /** 보조 설명 없애기 위한,,, 첫번째 물고기 추가 여부 확인 */
     public isSelectFirstFish : boolean = false;
 
@@ -164,6 +165,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                     }
                 }
             });
+            
     }
 
     ngAfterViewInit(): void {
@@ -176,29 +178,33 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             backgroundColor:''
 
         });
-        // this.canvas.setWidth(window.innerWidth * 0.61);
-        // this.canvas.setHeight(window.innerHeight * 0.7);
+        this.canvas.setWidth(window.innerHeight * 0.8);
+        this.canvas.setHeight(window.innerHeight * 0.6);
 
-        this.canvas.setWidth(this.size.width);
-        this.canvas.setHeight(this.size.height);
+       
+        // this.canvas.setWidth(this.size.width);
+        // this.canvas.setHeight(this.size.height);
         
         
-        //
-        //
-        // window.addEventListener('resize', () => {
-        //     this.canvas.setWidth(window.innerWidth * 0.7);
-        //     this.canvas.setHeight(window.innerHeight * 0.7);
-        //     this.canvas.renderAll();
-        //
-        //     // const canvasEl = document.getElementById('canvas');
-        //     // if(canvasEl && canvasEl instanceof HTMLCanvasElement){
-        //     //
-        //     //     // canvasEl.width = window.innerWidth;
-        //     //     // canvasEl.height = window.innerHeight;
-        //     //     this.canvas.renderAll();
-        //     // }
-        //
-        // });
+        
+        
+        window.addEventListener('resize', () => {
+            // this.canvas.setWidth(window.innerHeight * 0.6);
+            // this.canvas.setHeight(window.innerHeight * 0.45);
+
+            this.canvas.setWidth(window.innerHeight * 0.8);
+            this.canvas.setHeight(window.innerHeight * 0.6);
+            this.canvas.renderAll();
+        
+            // const canvasEl = document.getElementById('canvas');
+            // if(canvasEl && canvasEl instanceof HTMLCanvasElement){
+            //
+            //     // canvasEl.width = window.innerWidth;
+            //     // canvasEl.height = window.innerHeight;
+            //     this.canvas.renderAll();
+            // }
+        
+        });
 
 
         
@@ -208,6 +214,9 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         this.canvas.on('selection:cleared', e =>{
             this.isSelected = false;
             this.openFam = false;
+            this.hasEvent = false;
+
+            this.closeOpenControl();
         })
         
         
@@ -232,10 +241,11 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 this.selectedFamilyType = selectedObject.name ? this.familyTypeList[Number(selectedObject.name)] : null;
 
                 if(e.selected[0].top && e.selected[0].left){
-                
+                    e.selected[0].hasControls ? this.hasEvent = true : this.hasEvent = false;
+                    console.log( e.selected[0].getCenterPoint());
                     var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
                         
-                    controlBar?.setAttribute("style", "top: " + e.selected[0].top +"px; left: " + e.selected[0].left + "px;");
+                    controlBar?.setAttribute("style", "top: " + e.selected[0].getCenterPoint().y +"px; left: " + e.selected[0].getCenterPoint().x + "px;");
                 }
             
             }
@@ -245,6 +255,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
          * 선택된 object가 변경된 경우
          */
         this.canvas.on('selection:updated',e => {
+
+            this.closeOpenControl();
 
             // 다중선택 확인 후 선택 취소 처리
             if (this.canvas.getActiveObjects().length > 1) {
@@ -259,9 +271,10 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
 
                 if(e.selected[0].top && e.selected[0].left){
+                    e.selected[0].hasControls ? this.hasEvent = true : this.hasEvent = false;
                     var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
                         
-                    controlBar?.setAttribute("style", "top: " + e.selected[0].top +"px; left: " + e.selected[0].left + "px;");
+                    controlBar?.setAttribute("style", "top: " + e.selected[0].getCenterPoint().y +"px; left: " + e.selected[0].getCenterPoint().x + "px;");
                 }
             
             }
@@ -286,7 +299,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 console.log(e.target.top);
                 var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
                     
-                controlBar?.setAttribute("style", "top: " + e.target.top +"px; left: " + e.target.left + "px;");
+                controlBar?.setAttribute("style", "top: " + e.target.getCenterPoint().y +"px; left: " + e.target.getCenterPoint().x + "px;");
                 }
             }
 
@@ -307,7 +320,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 console.log(e.target.top);
                 var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
                     
-                controlBar?.setAttribute("style", "top: " + (e.target.top - 90) +"px; left: " + (e.target.left - 240) + "px;");
+                controlBar?.setAttribute("style", "top: " + e.target.getCenterPoint().y +"px; left: " + e.target.getCenterPoint().x + "px;");
                 }
             }
 
@@ -338,7 +351,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 console.log(e.target.top);
                 var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
                     
-                controlBar?.setAttribute("style", "top: " + e.target.top +"px; left: " + e.target.left + "px;");
+                controlBar?.setAttribute("style", "top: " + e.target.getCenterPoint().y +"px; left: " + e.target.getCenterPoint().x + "px;");
                 }
             }
 
@@ -560,11 +573,17 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         this.fishbowlUrl = opt;
         this.fishbowlCode = fishbowlCode;
         this.canvas.setBackgroundImage(this.fishbowlUrl, this.canvas.renderAll.bind(this.canvas), {
-            top: 20,
-            left: 15,
-            scaleX:0.42,
-            scaleY: 0.42
+            top: 20 / (750 / (window.innerHeight * 0.6)),
+            left: 15 / (1000 / (window.innerHeight * 0.8)),
+            scaleX:0.42 / (1000 / (window.innerHeight * 0.8)),
+            scaleY: 0.42 / (750 / (window.innerHeight * 0.6))
         });
+
+        console.log(0.42 / (1000 / (window.innerHeight * 0.8)));
+        console.log(0.42 / (750 / (window.innerHeight * 0.6)));
+        console.log(20 / (750 / (window.innerHeight * 0.6)));
+        console.log(15 / (1000 / (window.innerHeight * 0.8)));
+        console.log(1000 / (window.innerHeight * 0.8));
 
     }
 
@@ -574,28 +593,28 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
      * @param familyType
      * @param objectCodeId
      */
-    getImgPolaroid(imgURL: any, objectCodeId: any,selectedFamilyType?:any, top?: number, left?:number, scale?: number) {
+    getImgPolaroid(imgURL: any, objectCodeId: any,selectedFamilyType?:any, scale?: number) {
         // const el = 'assets/img/whale/웃는고래_물.png';
         const el = imgURL;
         console.log(el);
         const imageElement = document.createElement('img');
         const image = new fabric.Image(imageElement);
 
-        fabric.Image.fromURL(el, (img) => {
+        fabric.Image.fromURL(imgURL, (img) => {
             image.setElement(img.getElement());
             image.set({
-                left: left? left:400,
-                top: top? top:400,
+                left:(window.innerHeight * 0.8) / 2,
+                top: (window.innerHeight * 0.6) / 2,
                 angle: 0,
                 padding: 10,
                 borderColor: 'green',
                 cornerColor: 'green',
-                cornerSize: 6,
+                cornerSize: 10,
                 transparentCorners: false,
-                hasRotatingPoint: top? true:true,
-                hasControls : top? true: true,
+                hasRotatingPoint: scale? false:true,
+                hasControls : scale? false: true,
                 selectable: true,
-                evented: top? true:true,
+                evented: scale? false:true,
                 name: selectedFamilyType || selectedFamilyType == 0 ? selectedFamilyType.id : null
 
             });
@@ -603,7 +622,15 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             
             // image.fill = 'white';
             image.scale(scale?scale: 0.2);
-        
+            if(imgURL.includes('_TA_')){
+                image.top = window.innerHeight * 0.6 - image.getScaledHeight() - 4; 
+                image.left = 15 / (1000 / (window.innerHeight * 0.8));
+            }
+            else if(imgURL.includes('_HA_')){
+                image.top = 20 / (750 / (window.innerHeight * 0.6)); 
+                image.left = 15 / (1000 / (window.innerHeight * 0.8));
+            }
+           
             this.canvas.add(image);
 
             // 첫번째 객체 선택 여부 확인
@@ -614,36 +641,6 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
           });
         
         
-        
-        // fabric.loadSVGFromURL(el, (objects, options) => {
-        //     const image = fabric.util.groupSVGElements(objects, options);
-        //     image.set({
-        //         left: left? left:400,
-        //         top: top? top:400,
-        //         angle: 0,
-        //         padding: 10,
-        //         cornerSize: 20,
-        //         cornerColor: 'rgba(255, 87, 34, 0.7)',
-        //         hasRotatingPoint: top? false:true,
-        //         hasControls : top? false: true,
-        //         selectable: true,
-        //         evented: top? false:true,
-        //         stroke: '#fff',
-        //         name: selectedFamilyType || selectedFamilyType == 0 ? selectedFamilyType.id : null
-
-        //     });
-        //     this.extend(image, this.randomId(), new Date().getTime(),objectCodeId,el.includes('/F_'));
-            
-        //     console.log(image);
-        //     // image.fill = 'white';
-        //     image.scale(scale?scale: 0.2);
-        
-        //     this.canvas.add(image);
-
-        //     this.isSelectFirstFish += 1;
-
-        //     this.selectItemAfterAdded(image);
-        // });
     }
 
 
@@ -869,10 +866,10 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                     name: item.name != null ? Number(item.name) : null,
                     objectCodeId: item.toObject().objectCodeId,
                     userEmail: this.userEmail? this.userEmail : '' ,
-                    width:  item.getScaledWidth(),
-                    height: item.getScaledHeight(),
-                    x: item.getCenterPoint().x,
-                    y: item.getCenterPoint().y,
+                    width:  item.getScaledWidth() * (1000 / (window.innerHeight * 0.8)),
+                    height: item.getScaledHeight() * (750 / (window.innerHeight * 0.6)),
+                    x: item.getCenterPoint().x * (1000 / (window.innerHeight * 0.8)),
+                    y: item.getCenterPoint().y * (750 / (window.innerHeight * 0.6)),
                     objectSeq: item.toObject().id,
                     createDate: item.toObject().createDate,
                 };

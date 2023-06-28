@@ -431,10 +431,10 @@
 
             <!-- 물고기 외 -->
             <kendo-popup [anchor]="anchor7"
-                         [anchorAlign]="anchorAlign"
-                         [popupAlign]="popupAlign"
+                         [anchorAlign]="bottomAnchorAlign"
+                         [popupAlign]="bottomPopupAlign"
                          [animate]="animate"
-                         [margin]="{ horizontal: 30, vertical: -470 }"
+                         [margin]="{ horizontal: 30, vertical: 0 }"
                          *ngIf="showEtc"
                          class="draw-popup label"
                          >
@@ -551,9 +551,9 @@
                     Mind Reader
                 </div>
 
-                <div style="height: fit-content; width: 150px;    padding: 10px 0; overflow: scroll;">
+                <div style="height: calc(100vh - 60px); width: 150px;    padding: 10px 0; overflow: scroll; ">
                     <div  *ngIf="!showFishBowl && !selectedFishBowl && !isSelectFirstFish && !isSelectFirstEtc "
-                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 11vh;     min-height: 82px; border-radius: 1.5rem;background-color: #000000;"> 
+                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 11vh;     border-radius: 1.5rem;background-color: #000000;"> 
                         <div style="position: absolute;
                         background-color: #ca3d57;
                         border-radius: 1.5rem;
@@ -592,7 +592,7 @@
 
                     
                     <div  *ngIf="selectedFishBowl && !isSelectFirstFish"
-                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 61vh;min-height: 420px; border-radius: 1.5rem;background-color: #000000;">
+                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 61vh; border-radius: 1.5rem;background-color: #000000;">
                         <div style="position: absolute;
                         background-color: #ca3d57;
                         border-radius: 1.5rem;
@@ -640,7 +640,7 @@
                     </div>
 
                     <div  *ngIf="!selectedFishBowl && !isSelectFirstEtc && isSelectFirstFish"
-                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 11vh; min-height: 82px; border-radius: 1.5rem;background-color: #000000;"> 
+                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 11vh; border-radius: 1.5rem;background-color: #000000;"> 
                         <div style="position: absolute;
                         background-color: #ca3d57;
                         border-radius: 1.5rem;
@@ -662,9 +662,9 @@
 
             <div  style="display: flex; 
             flex-direction: column; 
-            
             align-items: center;  
-            justify-content: flex-start;">
+            justify-content: flex-start;
+            width: 100%;">
                 <div class="btn-wrap">
                     <!-- <button class="button-style del" (click)="removeSelected();"> DELETE</button> -->
                     <button class="button-style" (click)="rasterize()">완료</button>
