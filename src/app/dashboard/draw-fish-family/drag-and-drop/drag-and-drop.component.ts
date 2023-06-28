@@ -111,7 +111,10 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
     /** object 선택 여부 */
     public isSelected: boolean = false;
+    /** event 사용 여부 */
     public hasEvent: boolean = false;
+    public isInTable : boolean = false;
+    public isInHandle: boolean = false;
     
     /** 보조 설명 없애기 위한,,, 첫번째 물고기 추가 여부 확인 */
     public isSelectFirstFish : boolean = false;
@@ -234,14 +237,15 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 this.canvas.discardActiveObject();
             }
             else if(e.selected){
-                this.isSelected = true;
+                // this.isSelected = true;
                 const selectedObject = e.selected[0];
                 this.isFishObject = selectedObject.toObject().isFish;
                 
                 this.selectedFamilyType = selectedObject.name ? this.familyTypeList[Number(selectedObject.name)] : null;
 
-                if(e.selected[0].top && e.selected[0].left){
-                    e.selected[0].hasControls ? this.hasEvent = true : this.hasEvent = false;
+                if(e.selected[0].top && e.selected[0].left && e.selected[0].hasControls){
+                    this.isSelected = true;
+                    // e.selected[0].hasControls ? this.hasEvent = true : this.hasEvent = false;
                     console.log( e.selected[0].getCenterPoint());
                     var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
                         
@@ -263,15 +267,16 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 this.canvas.discardActiveObject();
             }
             else if(e.selected){
-                this.isSelected = true;
+                // this.isSelected = true;
                 const selectedObject = e.selected[0];
                 this.isFishObject = selectedObject.toObject().isFish;
 
                 this.selectedFamilyType = selectedObject.name ? this.familyTypeList[Number(selectedObject.name)] : null;
 
 
-                if(e.selected[0].top && e.selected[0].left){
-                    e.selected[0].hasControls ? this.hasEvent = true : this.hasEvent = false;
+                if(e.selected[0].top && e.selected[0].left && e.selected[0].hasControls){
+                    this.isSelected = true;
+                    // e.selected[0].hasControls ? this.hasEvent = true : this.hasEvent = false;
                     var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
                         
                     controlBar?.setAttribute("style", "top: " + e.selected[0].getCenterPoint().y +"px; left: " + e.selected[0].getCenterPoint().x + "px;");
@@ -623,12 +628,16 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             // image.fill = 'white';
             image.scale(scale?scale: 0.2);
             if(imgURL.includes('_TA_')){
+                this.isInTable = true;
                 image.top = window.innerHeight * 0.6 - image.getScaledHeight() - 4; 
                 image.left = 15 / (1000 / (window.innerHeight * 0.8));
+                image.name = 'table';
             }
             else if(imgURL.includes('_HA_')){
+                this.isInHandle = true;
                 image.top = 20 / (750 / (window.innerHeight * 0.6)); 
                 image.left = 15 / (1000 / (window.innerHeight * 0.8));
+                image.name = 'handle';
             }
            
             this.canvas.add(image);
@@ -647,11 +656,11 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     /**
      * 선택된 object 삭제
      */
-    removeSelected() {
+    removeSelected(object?: any) {
         let data:any;
-        const activeGroup = this.canvas.getActiveObjects();
+        const activeGroup = object ? object :this.canvas.getActiveObject();
         if (activeGroup) {
-            data = activeGroup.map((item:fabric.Object, index) => {
+            data = activeGroup.map((item:fabric.Object) => {
                 const mrList: MrObjectModel = {
                     angle: item.angle,
                     dataSetSeq: 1,
@@ -940,6 +949,16 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             }
 
         });
+    }
+
+    /**
+     * 테이블, 손잡이 제거
+     * @param type 
+     */
+    deleteTableHandle(type: string) {
+        type == 'handle' ? this.isInHandle = false : this.isInTable = false;
+        const object = this.canvas.getObjects().filter(item => item.name == type);
+        this.removeSelected(object);
     }
 
 

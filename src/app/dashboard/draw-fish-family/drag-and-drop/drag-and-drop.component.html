@@ -54,9 +54,15 @@
 
 
 <div id="canvas-wrapper" class="canvas-wrap-style" >
+        <div> 
+                <button [disabled]="!isInHandle" (click)="deleteTableHandle('handle')">손잡이 지우기</button>
+                <button [disabled]="!isInTable" (click)="deleteTableHandle('table')">테이블 지우기</button>
+        </div>
+
         <canvas id="canvas"
                 #htmlCanvas
-                style=" background-repeat: no-repeat; background-size: 100% 100%; ">
+                style=" background-repeat: no-repeat; background-size: 100% 100%;
+                border: 1px dashed #000000">
         </canvas>
 
         <div id="control-wrap" class="control-wrap"  [style.display]="isSelected ? 'unset' : 'none'">
@@ -94,8 +100,7 @@
         
                         <div class="control-box" (click)="closeOpenControl('openAngleControl')" 
                         [style.border-right]="openAngleControl ? 'none': '1px solid #d0d0d0'" 
-                        [style.pointer-events]="hasEvent ? 'unset' : 'none'" 
-                        [style.OPACITY]="hasEvent? '': '50%'">
+                        >
                                 <span class="control-box-item">회전</span> 
                         </div>
                         <div class="control-box" [style.display]="openAngleControl ? 'flex' : 'none'" >
@@ -106,8 +111,7 @@
         
                         <div class="control-box" (click)="closeOpenControl('openSizeControl')" 
                         [style.border-right]="openSizeControl ? 'none': '1px solid #d0d0d0'" 
-                        [style.pointer-events]="hasEvent ? 'unset' : 'none'" 
-                        [style.OPACITY]="hasEvent? '': '50%'">
+                        >
                                 <span>크기</span> 
                         </div>
                         <div class="control-box" [style.display]="openSizeControl ? 'flex' : 'none'" >
@@ -117,8 +121,7 @@
         
                         <div class="control-box" (click)="changeControl('','flipX')" 
                         [style.border-right]="flipXControl ? 'none': '1px solid #d0d0d0'" 
-                        [style.pointer-events]="hasEvent ? 'unset' : 'none'" 
-                        [style.OPACITY]="hasEvent? '': '50%'">
+                        >
                                 <span class="control-box-item">좌우</span> 
                         </div>
                         <!-- <div class="control-box" *ngIf="openLeftControl">
@@ -130,8 +133,7 @@
         
                         <div class="control-box" (click)="changeControl('','flipY')" 
                         [style.border-right]="flipYControl ? 'none': '1px solid #d0d0d0'" 
-                        [style.pointer-events]="hasEvent ? 'unset' : 'none'" 
-                        [style.OPACITY]="hasEvent? '': '50%'">
+                        >
                                 <span class="control-box-item">위아래</span> 
                         </div>
                         <!-- <div class="control-box" *ngIf="openTopControl">
@@ -147,5 +149,7 @@
                         
                 </div>
         </div>
+
+        
 </div>
 <ng-container #dialog></ng-container>
