@@ -672,6 +672,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 y: activeObject.getCenterPoint().y,
                 objectSeq: activeObject.toObject().id,
                 createDate: activeObject.toObject().createDate,
+                flip: activeObject.flipX
             };
             
             this.allMrObjectModelList.push(mrList);
@@ -880,6 +881,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                     y: item.getCenterPoint().y * (750 / (window.innerHeight * 0.6)),
                     objectSeq: item.toObject().id,
                     createDate: item.toObject().createDate,
+                    flip: item.flipX
                 };
                 return mrList;
             }
