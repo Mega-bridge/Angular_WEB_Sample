@@ -88,7 +88,7 @@
     justify-content: flex-start;
     
     // min-width: 900px;
-    width: 100%;
+    width: 90%;
     height: 100%;
     padding-top: 2vh;
     //width:50%;
@@ -143,8 +143,9 @@
       width: 100%;
       min-width: fit-content;
       //margin: 10px;
-      justify-content: space-between;
-      background-color: #ebebeb;
+      justify-content: flex-start;
+      background-color: #000000;
+      
 
 
       .img-card-wrap{
@@ -317,8 +318,9 @@
     display:flex;
     justify-content: flex-end;
     // margin-bottom: 20px;
-    width: 90%;
-    margin-top: 1vh;
+    width: 100%;
+    height: 64px;
+    // margin-top: 1vh;
 
     .button-style{
       cursor: pointer;

@@ -71,12 +71,12 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     };
 
     /** canvas 사이즈 */
-    public canvasWidth = window.innerHeight * 0.8;
-    public canvasHeight = window.innerHeight * 0.8;
+    public canvasWidth = window.innerHeight - 66;
+    public canvasHeight = window.innerHeight - 66;
 
     /** 상담사 canvas 1000 x 1000 에서 scale된 정도 계산 */
-    public canvasWidthScaled = 1000 / (window.innerHeight * 0.8);
-    public canvasHeightScaled = 1000 / (window.innerHeight * 0.8);
+    public canvasWidthScaled = 1000 / this.canvasWidth;
+    public canvasHeightScaled = 1000 / this.canvasHeight;
     
 
     /** 어항 코드 */
@@ -208,12 +208,12 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
          */
         window.addEventListener('resize', () => {
 
-            this.canvasWidth = window.innerHeight * 0.8;
-            this.canvasHeight = window.innerHeight * 0.8;
+            this.canvasWidth = window.innerHeight - 66;
+            this.canvasHeight = window.innerHeight -66;
         
             /** 상담사 canvas 1000 x 1000 에서 scale된 정도 계산 */
-            this.canvasWidthScaled = 1000 / (window.innerHeight * 0.8);
-            this.canvasHeightScaled = 1000 / (window.innerHeight * 0.8);
+            this.canvasWidthScaled = 1000 / this.canvasWidth;
+            this.canvasHeightScaled = 1000 / this.canvasHeight;
 
             this.canvas.setWidth(this.canvasWidth);
             this.canvas.setHeight(this.canvasHeight);   

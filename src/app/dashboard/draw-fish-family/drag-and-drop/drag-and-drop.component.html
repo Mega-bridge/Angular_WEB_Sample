@@ -51,18 +51,15 @@
         </kendo-chiplist>
 </kendo-popup>
 
-
-<div style="border: 5px;"></div>
 <div id="canvas-wrapper" class="canvas-wrap-style" >
-        <div> 
+        <!-- <div> 
                 <button [disabled]="!isInHandle" (click)="deleteTableHandle('handle')">손잡이 지우기</button>
                 <button [disabled]="!isInTable" (click)="deleteTableHandle('table')">테이블 지우기</button>
-        </div>
+        </div> -->
 
         <canvas id="canvas"
                 #htmlCanvas
-                style=" background-repeat: no-repeat; background-size: 100% 100%;
-                border: 1px dashed #000000">
+                style=" background-repeat: no-repeat; background-size: 100% 100%;">
         </canvas>
 
         <div id="control-wrap" class="control-wrap"  [style.display]="isSelected ? 'unset' : 'none'">
