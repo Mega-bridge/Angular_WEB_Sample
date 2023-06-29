@@ -70,6 +70,12 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         height: 750
     };
 
+    public canvasWidth = window.innerHeight * 0.8;
+    public canvasHeight = window.innerHeight * 0.8;
+    public canvasWidthScaled = 1000 / (window.innerHeight * 0.8);
+    public canvasHeightScaled = 1000 / (window.innerHeight * 0.8);
+    
+
     /** 어항 코드 */
     public fishbowlCode: number = 0;
 
@@ -181,8 +187,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             backgroundColor:''
 
         });
-        this.canvas.setWidth(window.innerHeight * 0.8);
-        this.canvas.setHeight(window.innerHeight * 0.6);
+        this.canvas.setWidth(this.canvasWidth);
+        this.canvas.setHeight(this.canvasHeight);
 
        
         // this.canvas.setWidth(this.size.width);
@@ -195,8 +201,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             // this.canvas.setWidth(window.innerHeight * 0.6);
             // this.canvas.setHeight(window.innerHeight * 0.45);
 
-            this.canvas.setWidth(window.innerHeight * 0.8);
-            this.canvas.setHeight(window.innerHeight * 0.6);
+            this.canvas.setWidth(this.canvasWidth);
+            this.canvas.setHeight(this.canvasHeight);   
             this.canvas.renderAll();
         
             // const canvasEl = document.getElementById('canvas');
@@ -578,17 +584,11 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         this.fishbowlUrl = opt;
         this.fishbowlCode = fishbowlCode;
         this.canvas.setBackgroundImage(this.fishbowlUrl, this.canvas.renderAll.bind(this.canvas), {
-            top: 20 / (750 / (window.innerHeight * 0.6)),
-            left: 15 / (1000 / (window.innerHeight * 0.8)),
-            scaleX:0.42 / (1000 / (window.innerHeight * 0.8)),
-            scaleY: 0.42 / (750 / (window.innerHeight * 0.6))
+            top: 275 / this.canvasHeightScaled,
+            left: 15 / this.canvasWidthScaled,
+            scaleX:0.42 /  this.canvasWidthScaled,
+            scaleY: 0.42 / this.canvasHeightScaled
         });
-
-        console.log(0.42 / (1000 / (window.innerHeight * 0.8)));
-        console.log(0.42 / (750 / (window.innerHeight * 0.6)));
-        console.log(20 / (750 / (window.innerHeight * 0.6)));
-        console.log(15 / (1000 / (window.innerHeight * 0.8)));
-        console.log(1000 / (window.innerHeight * 0.8));
 
     }
 
@@ -602,14 +602,15 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         // const el = 'assets/img/whale/웃는고래_물.png';
         const el = imgURL;
         console.log(el);
+        console.log(objectCodeId);
         const imageElement = document.createElement('img');
         const image = new fabric.Image(imageElement);
 
         fabric.Image.fromURL(imgURL, (img) => {
             image.setElement(img.getElement());
             image.set({
-                left:(window.innerHeight * 0.8) / 2,
-                top: (window.innerHeight * 0.6) / 2,
+                left:this.canvasWidth / 2,
+                top: this.canvasHeight / 2,
                 angle: 0,
                 padding: 10,
                 borderColor: 'green',
@@ -625,18 +626,25 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             });
             this.extend(image, this.randomId(), new Date().getTime(),objectCodeId,el.includes('/F_'));
             
-            // image.fill = 'white';
-            image.scale(scale?scale: 0.2);
-            if(imgURL.includes('_TA_')){
+            image.scale(0.2);
+
+            if(objectCodeId == 76){
                 this.isInTable = true;
-                image.top = window.innerHeight * 0.6 - image.getScaledHeight() - 4; 
-                image.left = 15 / (1000 / (window.innerHeight * 0.8));
+                image.scale(1);
+                image.scaleX = 0.42 / this.canvasWidthScaled;
+                image.scaleY = 0.42 / this.canvasHeightScaled;
+                image.top = this.canvasHeight - image.getScaledHeight();
+                image.left = 15 / this.canvasWidthScaled;
+                
                 image.name = 'table';
             }
-            else if(imgURL.includes('_HA_')){
+            else if(objectCodeId == 75){
                 this.isInHandle = true;
-                image.top = 20 / (750 / (window.innerHeight * 0.6)); 
-                image.left = 15 / (1000 / (window.innerHeight * 0.8));
+                image.scale(1);
+                image.scaleX = 0.42 / this.canvasWidthScaled;
+                image.scaleY = 0.42 / this.canvasHeightScaled;
+                image.top = 275 / this.canvasHeightScaled;
+                image.left = 15 / this.canvasWidthScaled;
                 image.name = 'handle';
             }
            
@@ -875,10 +883,10 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                     name: item.name != null ? Number(item.name) : null,
                     objectCodeId: item.toObject().objectCodeId,
                     userEmail: this.userEmail? this.userEmail : '' ,
-                    width:  item.getScaledWidth() * (1000 / (window.innerHeight * 0.8)),
-                    height: item.getScaledHeight() * (750 / (window.innerHeight * 0.6)),
-                    x: item.getCenterPoint().x * (1000 / (window.innerHeight * 0.8)),
-                    y: item.getCenterPoint().y * (750 / (window.innerHeight * 0.6)),
+                    width:  item.getScaledWidth() * this.canvasWidthScaled,
+                    height: item.getScaledHeight() * this.canvasHeightScaled,
+                    x: item.getCenterPoint().x * this.canvasWidthScaled,
+                    y: item.getCenterPoint().y * this.canvasHeightScaled,
                     objectSeq: item.toObject().id,
                     createDate: item.toObject().createDate,
                     flip: item.flipX
