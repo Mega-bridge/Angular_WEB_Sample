@@ -21,6 +21,7 @@ export class MrObjectModel {
     public angle: number | undefined = 0;
     public width: number = 0;
     public height: number = 0;
+    public flip: boolean | undefined = false;
 
     // 저장된 순서
     public objectSeq: number = 0;

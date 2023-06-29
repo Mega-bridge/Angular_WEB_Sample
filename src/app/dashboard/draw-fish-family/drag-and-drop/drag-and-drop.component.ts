@@ -103,17 +103,21 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     /** 컨트롤바 열기 */
     public openAngleControl: boolean = false;
     public openSizeControl: boolean = false;
-    public openLeftControl: boolean = false;
-    public openTopControl: boolean = false;
+    public flipXControl: boolean = false;
+    public flipYControl: boolean = false;
 
     // 컨드롤바 event handler
     public controlEventHandler: ((event: Event) => void) | null = null;
 
     /** object 선택 여부 */
     public isSelected: boolean = false;
-
+    /** event 사용 여부 */
+    public hasEvent: boolean = false;
+    public isInTable : boolean = false;
+    public isInHandle: boolean = false;
+    
     /** 보조 설명 없애기 위한,,, 첫번째 물고기 추가 여부 확인 */
-    public isSelectFirstFish = 0;
+    public isSelectFirstFish : boolean = false;
 
     /** object 추가 순서 */
     public objectSeq: number = 0;
@@ -130,7 +134,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     };
 
     public isFishObject: boolean = false;
-   
+
     /** 팝업 위치 */
     public anchorAlign: Align = { horizontal: "left", vertical: "bottom" };
     public popupAlign: Align = { horizontal: "left", vertical: "top" };
@@ -164,6 +168,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                     }
                 }
             });
+            
     }
 
     ngAfterViewInit(): void {
@@ -176,29 +181,33 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             backgroundColor:''
 
         });
-        // this.canvas.setWidth(window.innerWidth * 0.61);
-        // this.canvas.setHeight(window.innerHeight * 0.7);
+        this.canvas.setWidth(window.innerHeight * 0.8);
+        this.canvas.setHeight(window.innerHeight * 0.6);
 
-        this.canvas.setWidth(this.size.width);
-        this.canvas.setHeight(this.size.height);
+       
+        // this.canvas.setWidth(this.size.width);
+        // this.canvas.setHeight(this.size.height);
         
         
-        //
-        //
-        // window.addEventListener('resize', () => {
-        //     this.canvas.setWidth(window.innerWidth * 0.7);
-        //     this.canvas.setHeight(window.innerHeight * 0.7);
-        //     this.canvas.renderAll();
-        //
-        //     // const canvasEl = document.getElementById('canvas');
-        //     // if(canvasEl && canvasEl instanceof HTMLCanvasElement){
-        //     //
-        //     //     // canvasEl.width = window.innerWidth;
-        //     //     // canvasEl.height = window.innerHeight;
-        //     //     this.canvas.renderAll();
-        //     // }
-        //
-        // });
+        
+        
+        window.addEventListener('resize', () => {
+            // this.canvas.setWidth(window.innerHeight * 0.6);
+            // this.canvas.setHeight(window.innerHeight * 0.45);
+
+            this.canvas.setWidth(window.innerHeight * 0.8);
+            this.canvas.setHeight(window.innerHeight * 0.6);
+            this.canvas.renderAll();
+        
+            // const canvasEl = document.getElementById('canvas');
+            // if(canvasEl && canvasEl instanceof HTMLCanvasElement){
+            //
+            //     // canvasEl.width = window.innerWidth;
+            //     // canvasEl.height = window.innerHeight;
+            //     this.canvas.renderAll();
+            // }
+        
+        });
 
 
         
@@ -207,6 +216,10 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
          */
         this.canvas.on('selection:cleared', e =>{
             this.isSelected = false;
+            this.openFam = false;
+            this.hasEvent = false;
+
+            this.closeOpenControl();
         })
         
         
@@ -216,18 +229,28 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
          */
         this.canvas.on('selection:created',e => {
             console.log(e);
-            
+            console.log(e.selected);
+
 
             // 다중선택 확인 후 선택 취소 처리
             if (this.canvas.getActiveObjects().length > 1) {
                 this.canvas.discardActiveObject();
             }
             else if(e.selected){
-                this.isSelected = true;
+                // this.isSelected = true;
                 const selectedObject = e.selected[0];
                 this.isFishObject = selectedObject.toObject().isFish;
                 
                 this.selectedFamilyType = selectedObject.name ? this.familyTypeList[Number(selectedObject.name)] : null;
+
+                if(e.selected[0].top && e.selected[0].left && e.selected[0].hasControls){
+                    this.isSelected = true;
+                    // e.selected[0].hasControls ? this.hasEvent = true : this.hasEvent = false;
+                    console.log( e.selected[0].getCenterPoint());
+                    var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
+                        
+                    controlBar?.setAttribute("style", "top: " + e.selected[0].getCenterPoint().y +"px; left: " + e.selected[0].getCenterPoint().x + "px;");
+                }
             
             }
 
@@ -236,16 +259,28 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
          * 선택된 object가 변경된 경우
          */
         this.canvas.on('selection:updated',e => {
+
+            this.closeOpenControl();
+
             // 다중선택 확인 후 선택 취소 처리
             if (this.canvas.getActiveObjects().length > 1) {
                 this.canvas.discardActiveObject();
             }
             else if(e.selected){
-                this.isSelected = true;
+                // this.isSelected = true;
                 const selectedObject = e.selected[0];
                 this.isFishObject = selectedObject.toObject().isFish;
 
                 this.selectedFamilyType = selectedObject.name ? this.familyTypeList[Number(selectedObject.name)] : null;
+
+
+                if(e.selected[0].top && e.selected[0].left && e.selected[0].hasControls){
+                    this.isSelected = true;
+                    // e.selected[0].hasControls ? this.hasEvent = true : this.hasEvent = false;
+                    var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
+                        
+                    controlBar?.setAttribute("style", "top: " + e.selected[0].getCenterPoint().y +"px; left: " + e.selected[0].getCenterPoint().x + "px;");
+                }
             
             }
 
@@ -264,6 +299,16 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             console.log('-----------------------');
 
 
+            if(e.target){
+                if(e.target.top && e.target.left){
+                console.log(e.target.top);
+                var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
+                    
+                controlBar?.setAttribute("style", "top: " + e.target.getCenterPoint().y +"px; left: " + e.target.getCenterPoint().x + "px;");
+                }
+            }
+
+
         });
 
         // 각도값
@@ -273,6 +318,17 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             // console.log('angle: ' + movedObject.angle);
             // console.log('-----------------------');
             
+            
+
+            if(e.target){
+                if(e.target.top && e.target.left){
+                console.log(e.target.top);
+                var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
+                    
+                controlBar?.setAttribute("style", "top: " + e.target.getCenterPoint().y +"px; left: " + e.target.getCenterPoint().x + "px;");
+                }
+            }
+
             this.updateControls();
         })
 
@@ -281,9 +337,9 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         this.canvas.on('object:modified', e => {
             //console.log(e);
             const modifiedObject = e.target;
-            // console.log('////////Object Modified///////////////');
-            // console.log('좌우 반전 여부:' + modifiedObject?.flipX);
-            // console.log('상하 반전 여부:' + modifiedObject?.flipY);
+            console.log('////////Object Modified///////////////');
+            console.log('좌우 반전 여부:' + modifiedObject?.flipX);
+            console.log('상하 반전 여부:' + modifiedObject?.flipY);
             console.log('Object Width:' + modifiedObject?.getScaledWidth());
             console.log(typeof(modifiedObject?.getScaledWidth()));
             console.log('Object Height:' + modifiedObject?.getScaledHeight());
@@ -293,9 +349,21 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
             this.controlCount += 1;
             // console.log('control Count: ' + this.controlCount);
+            
+
+            if(e.target){
+                if(e.target.top && e.target.left){
+                console.log(e.target.top);
+                var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
+                    
+                controlBar?.setAttribute("style", "top: " + e.target.getCenterPoint().y +"px; left: " + e.target.getCenterPoint().x + "px;");
+                }
+            }
+
             this.updateControls();
             
         });
+
 
 
     }
@@ -364,8 +432,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         var scaleVal = activeGroup?.scaleX?.toString();
 
         // left
-        var leftInputElement : HTMLInputElement | null = document.querySelector('#left-control');
-        var leftVal = activeGroup?.left?.toString();
+        // var leftInputElement : HTMLInputElement | null = document.querySelector('#left-control');
+        // var leftVal = activeGroup?.left?.toString();
 
         // top
         var topInputElement : HTMLInputElement | null = document.querySelector('#top-control');
@@ -384,9 +452,9 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         }
 
         // left
-        if(leftInputElement){
-            leftInputElement.value = leftVal ? leftVal : '400';
-        }
+        // if(leftInputElement){
+        //     leftInputElement.value = leftVal ? leftVal : '400';
+        // }
 
         // top
         if(topInputElement){
@@ -401,30 +469,47 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
      * @param val 
      */
     changeControl(htmlId: string, type: string){
-        var control: HTMLInputElement | null = document.querySelector(htmlId);
+        
         var activeGroup = this.canvas.getActiveObject();
         
-        
-        if(control && activeGroup?.evented){
-
+        if(activeGroup?.evented){
             
-            if (this.controlEventHandler) {
-                control.removeEventListener('input', this.controlEventHandler);
-            } 
+            if(htmlId){
 
-            if (activeGroup && control?.value) {
+                var control: HTMLInputElement | null = document.querySelector(htmlId);
+
+                if (this.controlEventHandler) {
+                    control?.removeEventListener('input', this.controlEventHandler);
+                } 
+    
+                if (control?.value) {
+                    switch (type) {
+                        case 'angle':
+                            activeGroup.set('angle', parseInt(control.value, 10)).setCoords();
+                            break;
+                        case 'scale':
+                            activeGroup.scale(parseFloat(control.value)).setCoords();
+                            break;
+                        default:
+                            break;
+    
+                    }
+                    
+                }
+                
+            }
+
+            else {
                 switch (type) {
-                    case 'angle':
-                        activeGroup.set('angle', parseInt(control.value, 10)).setCoords();
+                    case 'flipX':
+                        this.flipXControl = !this.flipXControl;
+                        activeGroup.set('flipX',this.flipXControl);
+                        // activeGroup.set('left', parseInt(control.value, 10)).setCoords();
                         break;
-                    case 'scale':
-                        activeGroup.scale(parseFloat(control.value)).setCoords();
-                        break;
-                    case 'left':
-                        activeGroup.set('left', parseInt(control.value, 10)).setCoords();
-                        break;
-                    case 'top':
-                        activeGroup.set('top', parseInt(control.value, 10)).setCoords();
+                    case 'flipY':
+                        this.flipYControl = !this.flipYControl;
+                        activeGroup.set('flipY',this.flipYControl);
+                        // activeGroup.set('top', parseInt(control.value, 10)).setCoords();
                         break;
                     default:
                         break;
@@ -435,9 +520,11 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
             this.canvas.requestRenderAll();
             this.canvas.renderAll();    
-            
         }
+
         
+
+
         // var activeGroups = this.canvas.getActiveObjects();
         // activeGroups.forEach((object:fabric.Object) => {
         //     if(control){
@@ -474,9 +561,11 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
         this.openAngleControl = type === 'openAngleControl' ? !this.openAngleControl : false;
         this.openSizeControl = type === 'openSizeControl' ? !this.openSizeControl : false;
-        this.openLeftControl = type === 'openLeftControl' ? !this.openLeftControl : false;
-        this.openTopControl = type === 'openTopControl' ? !this.openTopControl : false;
+        // this.flipXControl = type === 'flipXControl' ? !this.flipXControl : false;
+        // this.flipYControl = type === 'flipYControl' ? !this.flipYControl : false;
 
+
+        
     }
    
 
@@ -489,83 +578,110 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         this.fishbowlUrl = opt;
         this.fishbowlCode = fishbowlCode;
         this.canvas.setBackgroundImage(this.fishbowlUrl, this.canvas.renderAll.bind(this.canvas), {
-            top: 20,
-            left: 15,
-            scaleX:0.42,
-            scaleY: 0.42
+            top: 20 / (750 / (window.innerHeight * 0.6)),
+            left: 15 / (1000 / (window.innerHeight * 0.8)),
+            scaleX:0.42 / (1000 / (window.innerHeight * 0.8)),
+            scaleY: 0.42 / (750 / (window.innerHeight * 0.6))
         });
+
+        console.log(0.42 / (1000 / (window.innerHeight * 0.8)));
+        console.log(0.42 / (750 / (window.innerHeight * 0.6)));
+        console.log(20 / (750 / (window.innerHeight * 0.6)));
+        console.log(15 / (1000 / (window.innerHeight * 0.8)));
+        console.log(1000 / (window.innerHeight * 0.8));
 
     }
 
     /**
      * 선택된 object canvas에 추가
-     * @param event
+     * @param imgURL
      * @param familyType
      * @param objectCodeId
      */
-    getImgPolaroid(event: any, objectCodeId: any,selectedFamilyType?:any, top?: number, left?:number, scale?: number) {
-        const el = event;
+    getImgPolaroid(imgURL: any, objectCodeId: any,selectedFamilyType?:any, scale?: number) {
+        // const el = 'assets/img/whale/웃는고래_물.png';
+        const el = imgURL;
         console.log(el);
-        
-        fabric.loadSVGFromURL(el, (objects, options) => {
-            const image = fabric.util.groupSVGElements(objects, options);
+        const imageElement = document.createElement('img');
+        const image = new fabric.Image(imageElement);
+
+        fabric.Image.fromURL(imgURL, (img) => {
+            image.setElement(img.getElement());
             image.set({
-                left: left? left:400,
-                top: top? top:400,
+                left:(window.innerHeight * 0.8) / 2,
+                top: (window.innerHeight * 0.6) / 2,
                 angle: 0,
                 padding: 10,
-                cornerSize: 20,
-                cornerColor: 'rgba(255, 87, 34, 0.7)',
-                hasRotatingPoint: top? false:true,
-                hasControls : top? false: true,
+                borderColor: 'green',
+                cornerColor: 'green',
+                cornerSize: 10,
+                transparentCorners: false,
+                hasRotatingPoint: scale? false:true,
+                hasControls : scale? false: true,
                 selectable: true,
-                evented: top? false:true,
-                strokeWidth:0,
+                evented: scale? false:true,
                 name: selectedFamilyType || selectedFamilyType == 0 ? selectedFamilyType.id : null
 
             });
             this.extend(image, this.randomId(), new Date().getTime(),objectCodeId,el.includes('/F_'));
             
+            // image.fill = 'white';
             image.scale(scale?scale: 0.2);
-        
+            if(imgURL.includes('_TA_')){
+                this.isInTable = true;
+                image.top = window.innerHeight * 0.6 - image.getScaledHeight() - 4; 
+                image.left = 15 / (1000 / (window.innerHeight * 0.8));
+                image.name = 'table';
+            }
+            else if(imgURL.includes('_HA_')){
+                this.isInHandle = true;
+                image.top = 20 / (750 / (window.innerHeight * 0.6)); 
+                image.left = 15 / (1000 / (window.innerHeight * 0.8));
+                image.name = 'handle';
+            }
+           
             this.canvas.add(image);
 
-            this.isSelectFirstFish += 1;
+            // 첫번째 객체 선택 여부 확인
+            this.canvas.getObjects().length > 1 ? this.isSelectFirstFish = false : this.isSelectFirstFish = true; 
+            
 
             this.selectItemAfterAdded(image);
-        });
+          });
+        
+        
     }
 
 
     /**
      * 선택된 object 삭제
      */
-    removeSelected() {
+    removeSelected(object?: any) {
         let data:any;
-        const activeGroup = this.canvas.getActiveObjects();
-        if (activeGroup) {
-            data = activeGroup.map((item:fabric.Object, index) => {
-                const mrList: MrObjectModel = {
-                    angle: item.angle,
-                    dataSetSeq: 1,
-                    name: item.name != null ? Number(item.name) : null,
-                    objectCodeId: item.toObject().objectCodeId,
-                    userEmail: this.userEmail ? this.userEmail : '',
-                    width: item.getScaledWidth(),
-                    height: item.getScaledHeight(),
-                    x: item.getCenterPoint().x,
-                    y: item.getCenterPoint().y,
-                    objectSeq: item.toObject().id,
-                    createDate: item.toObject().createDate,
-                };
-                return mrList;
-            })
-            this.allMrObjectModelList.push(data[0]);
+        const activeObject = object ? object[0] : this.canvas.getActiveObject();
+        if (activeObject) {
+            const mrList: MrObjectModel = {
+                angle: activeObject.angle,
+                dataSetSeq: 1,
+                name: activeObject.name != null ? Number(activeObject.name) : null,
+                objectCodeId: activeObject.toObject().objectCodeId,
+                userEmail: this.userEmail ? this.userEmail : '',
+                width: activeObject.getScaledWidth(),
+                height: activeObject.getScaledHeight(),
+                x: activeObject.getCenterPoint().x,
+                y: activeObject.getCenterPoint().y,
+                objectSeq: activeObject.toObject().id,
+                createDate: activeObject.toObject().createDate,
+                flip: activeObject.flipX
+            };
+            
+            this.allMrObjectModelList.push(mrList);
             this.canvas.discardActiveObject();
-            const self = this;
-            activeGroup.forEach((object:fabric.Object) => {
-                self.canvas.remove(object);
-            });
+            this.canvas.remove(activeObject);
+            // const self = this;
+            // activeGroup.forEach((object:fabric.Object) => {
+            //     self.canvas.remove(object);
+            // });
         }
     }
 
@@ -759,12 +875,13 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                     name: item.name != null ? Number(item.name) : null,
                     objectCodeId: item.toObject().objectCodeId,
                     userEmail: this.userEmail? this.userEmail : '' ,
-                    width:  item.getScaledWidth(),
-                    height: item.getScaledHeight(),
-                    x: item.getCenterPoint().x,
-                    y: item.getCenterPoint().y,
+                    width:  item.getScaledWidth() * (1000 / (window.innerHeight * 0.8)),
+                    height: item.getScaledHeight() * (750 / (window.innerHeight * 0.6)),
+                    x: item.getCenterPoint().x * (1000 / (window.innerHeight * 0.8)),
+                    y: item.getCenterPoint().y * (750 / (window.innerHeight * 0.6)),
                     objectSeq: item.toObject().id,
                     createDate: item.toObject().createDate,
+                    flip: item.flipX
                 };
                 return mrList;
             }
@@ -833,6 +950,16 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             }
 
         });
+    }
+
+    /**
+     * 테이블, 손잡이 제거
+     * @param type 
+     */
+    deleteTableHandle(type: string) {
+        type == 'handle' ? this.isInHandle = false : this.isInTable = false;
+        const object = this.canvas.getObjects().filter(item => item.name == type);
+        this.removeSelected(object);
     }
 
 

@@ -5,6 +5,7 @@
   align-items: center;
   height: 100%;
   background-color: #ebebeb;
+  overflow: scroll;
 
   .sign-up-wrap{
     // border-radius:10px;
@@ -13,6 +14,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 80%;
 
     .title{
       width:100%;

@@ -25,13 +25,22 @@
             <div>
                 <div *ngIf="expanded" style="padding: 15px;font-size: 12px;">
                     <div class="result-answer-sub-title">최종결과</div>
-                    수고하셨습니다! <br>
-                    어항 속 모습을 통해 해석된 당신의 심리는 아래와 같습니다. <br>
+                    <div class="result-answer-sub-content">
+                        수고하셨습니다! <br>
+                        어항 속 모습을 통해 해석된 당신의 심리는 아래와 같습니다. <br>
+                    </div>
                     
-                    <div class="result-answer-sub-title">해석</div>
-                    {{resultAnswerData.description}}
+                    
+                    <div class="result-answer-sub-title" >해석</div>
+                    <div class="result-answer-sub-content">
+                        <p  [innerHtml]="resultAnswerData.description">{{resultAnswerData.description}}</p>
+                    </div>
+                    
                     
                     <div class="result-answer-sub-title">진단항목</div>
+                    <div class="result-answer-sub-content">
+
+                    </div>
 
                 </div>
             </div>
@@ -49,11 +58,13 @@
             >
             </kendo-loader> -->
             <div class="side">
-                <div style="background-color: #ffffff; margin-bottom: 4%; border-radius: 1.5rem; height: 48%; box-shadow: 0px 0px 13px 0px #979797;min-height: 300px;">
+                <div style="background-color: #ffffff; margin-bottom: 4%; border-radius: 1.5rem; height: 48%; box-shadow: 0px 0px 13px 0px #979797;">
                     <div class="card-title"> 
                         <span></span>
                         <span>회차 추가</span>
-                        <span style="
+                        <span [style.OPACITY]="dataLoaded? '': '50%'"
+                        [style.pointer-events]="dataLoaded ? 'unset' : 'none'"
+                        style="
                             padding: 5px;
                             border: #cccccc solid 1px;
                             border-radius: 50%;
@@ -72,8 +83,14 @@
                                 <span class="title" [style.background-color] ="selectedSeqIndex === seqItems.length -1 - i ? '#ca3d57' : ''" >{{seqItems[seqItems.length -1 - i].text}}</span> <br>
                             
                                 <div class="sub">
-                                    <span class="k-icon k-i-calendar" style="margin: 2px 5px;"></span> {{seqItems[seqItems.length -1 - i].date.getFullYear()}}. {{seqItems[seqItems.length -1 - i].date.getMonth()+1}}. {{seqItems[seqItems.length -1 - i].date.getDate()}} <br>
-                                    <span class="k-icon k-i-clock" style="margin: 2px 5px;"></span> {{seqItems[seqItems.length -1 - i].hour}} : {{seqItems[seqItems.length -1 - i].minute}} : {{seqItems[seqItems.length -1 - i].second}} 
+                                    <span class="k-icon k-i-calendar" style="margin: 2px 5px;"></span> 
+                                    {{ seqItems[seqItems.length -1 - i].date.getFullYear()}}. 
+                                    {{ (seqItems[seqItems.length -1 - i].date.getMonth() + 1) < 10 ? '0' + (seqItems[seqItems.length -1 - i].date.getMonth()+1) : (seqItems[seqItems.length -1 - i].date.getMonth() + 1) }}. 
+                                    {{ seqItems[seqItems.length -1 - i].date.getDate() < 10 ? '0' + seqItems[seqItems.length -1 - i].date.getDate() : seqItems[seqItems.length -1 - i].date.getDate()}} <br>
+                                    <span class="k-icon k-i-clock" style="margin: 2px 5px;"></span> 
+                                    {{ seqItems[seqItems.length -1 - i].hour < 10 ? '0' + seqItems[seqItems.length -1 - i].hour : seqItems[seqItems.length -1 - i].hour}}
+                                     : {{ seqItems[seqItems.length -1 - i].minute < 10 ? '0'+seqItems[seqItems.length -1 - i].minute : seqItems[seqItems.length -1 - i].minute }}
+                                     : {{ seqItems[seqItems.length -1 - i].second < 10 ? '0' + seqItems[seqItems.length -1 - i].second : seqItems[seqItems.length -1 - i].second}} 
                                 </div>
                             
                                 <!-- <div style="width: 18px;
@@ -92,7 +109,7 @@
                     </div>
                 </div>
     
-                <div style="background-color: #ffffff; border-radius: 1.5rem; height: 48%; box-shadow: 0px 0px 13px 0px #979797;min-height: 300px;">
+                <div style="background-color: #ffffff; border-radius: 1.5rem; height: 48%; box-shadow: 0px 0px 13px 0px #979797;">
                     <div class="card-title"> 
                         <span></span>
                         <span>추가된 순서</span>
@@ -115,14 +132,14 @@
 
                 <div class="image-container"  [ngStyle] = "{'background-image': 'url('+canvasImage+')'}">
                 </div>
-                <div *ngIf="detailFish" style="display: flex;flex-direction: row; justify-content: center;align-items: center;flex-wrap: nowrap;padding-bottom: 50px;">
+                <div *ngIf="detailFish" style="display: flex;flex-direction: row; justify-content: center;align-items: center;flex-wrap: nowrap;">
                     <div  style="font-size: 20px; background-color: #ffffff; border: 2px solid #000000; border-radius: 2.5rem; padding: 15px 50px; width: fit-content;height: fit-content;">
                         <span>{{detailFish}}</span>
                     </div>
 <!--                    <div style="display: flex; flex-wrap: nowrap;" *ngIf="canvasImage !=''">-->
 <!--&lt;!&ndash;                        <button class="button-style btn2" (click)="canvasDownload()" >그림 다운로드</button>&ndash;&gt;-->
 <!--                        <button class="button-style btn3" (click)="drawer.toggle()">검토 중</button>-->
-<!--                        <button *ngIf="answerResult" class="button-style btn4" (click)="drawer.toggle()">결과 보기</button>-->
+<!--                        <button *ngIf="isAnswerResult" class="button-style btn4" (click)="drawer.toggle()">결과 보기</button>-->
 <!--                    </div>-->
 
                 </div>
@@ -137,9 +154,9 @@
         <div class="popup-canvas-wrap ">
             <kendo-popup [anchor]="anchor1"
                          *ngIf="!showFishBowl && !selectedFishBowl && !isSelectFirstFish && !isSelectFirstEtc"
-                         [anchorAlign]="anchorAlign"
-                         [popupAlign]="popupAlign"
-                         [margin] ="{ horizontal: 25, vertical: 20 }"
+                         [anchorAlign]="centerAnchorAlign"
+                         [popupAlign]="centerPopupAlign"
+                         [margin] ="{ horizontal: 25, vertical: 0 }"
                          class="popup-description"
                          >
                          <div style="font-size: 17px; border: 3px solid #ca3d57; padding: 10px 15px;  width: fit-content; border-radius: 1.5rem;">
@@ -159,11 +176,11 @@
                          </div>
             </kendo-popup> -->
 
-            <kendo-popup [anchor]="anchor2"
+            <kendo-popup [anchor]="anchor4"
                          *ngIf="selectedFishBowl && !isSelectFirstFish"
-                         [anchorAlign]="anchorAlign"
-                         [popupAlign]="popupAlign"
-                         [margin] ="{ horizontal: 25, vertical: 230 }"
+                         [anchorAlign]="centerAnchorAlign"
+                         [popupAlign]="centerPopupAlign"
+                         [margin] ="{ horizontal: 25, vertical: 0 }"
                          class="popup-description"
                          >
                          <div style="font-size: 17px; border: 3px solid #ca3d57; padding: 10px 15px;  width: fit-content; border-radius: 1.5rem;">
@@ -174,9 +191,9 @@
 
             <kendo-popup [anchor]="anchor7"
                          *ngIf="!selectedFishBowl && !isSelectFirstEtc && isSelectFirstFish"
-                         [anchorAlign]="anchorAlign"
-                         [popupAlign]="popupAlign"
-                         [margin] ="{ horizontal: 25, vertical: 20 }"
+                         [anchorAlign]="centerAnchorAlign"
+                         [popupAlign]="centerPopupAlign"
+                         [margin] ="{ horizontal: 25, vertical: 0 }"
                          class="popup-description"
                          >
                          <div style="font-size: 17px; border: 3px solid #ca3d57; padding: 10px 15px;  width: fit-content; border-radius: 1.5rem;">
@@ -258,7 +275,7 @@
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
                          [animate]="animate"
-                         [margin]="{ horizontal: 30, vertical: -210 }"
+                         [margin]="{ horizontal: 30, vertical: -190 }"
                          *ngIf="showRoundFishes"
                          class="draw-popup label">
 
@@ -298,7 +315,7 @@
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
                          [animate]="animate"
-                         [margin]="{ horizontal: 30, vertical: -290 }"
+                         [margin]="{ horizontal: 30, vertical: -250 }"
                          *ngIf="showWhales"
                          class="draw-popup label">
 
@@ -338,7 +355,7 @@
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
                          [animate]="animate"
-                         [margin]="{ horizontal: 30, vertical: -380 }"
+                         [margin]="{ horizontal: 30, vertical: -310 }"
                          *ngIf="showSharks"
                          class="draw-popup label">
 
@@ -377,7 +394,7 @@
                          [anchorAlign]="anchorAlign"
                          [popupAlign]="popupAlign"
                          [animate]="animate"
-                         [margin]="{ horizontal: 30, vertical: -400 }"
+                         [margin]="{ horizontal: 30, vertical: -370 }"
                          *ngIf="showEels"
                          class="draw-popup label">
 
@@ -414,10 +431,10 @@
 
             <!-- 물고기 외 -->
             <kendo-popup [anchor]="anchor7"
-                         [anchorAlign]="anchorAlign"
-                         [popupAlign]="popupAlign"
+                         [anchorAlign]="bottomAnchorAlign"
+                         [popupAlign]="bottomPopupAlign"
                          [animate]="animate"
-                         [margin]="{ horizontal: 30, vertical: -470 }"
+                         [margin]="{ horizontal: 30, vertical: 0 }"
                          *ngIf="showEtc"
                          class="draw-popup label"
                          >
@@ -534,9 +551,9 @@
                     Mind Reader
                 </div>
 
-                <div style="height: calc(100% - 64px); width: 150px;    padding: 10px 0; overflow: scroll;">
+                <div style="height: calc(100vh - 60px); width: 150px;    padding: 10px 0; overflow: scroll; ">
                     <div  *ngIf="!showFishBowl && !selectedFishBowl && !isSelectFirstFish && !isSelectFirstEtc "
-                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 11vh;     min-height: 82px; border-radius: 1.5rem;background-color: #000000;"> 
+                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 11vh;     border-radius: 1.5rem;background-color: #000000;"> 
                         <div style="position: absolute;
                         background-color: #ca3d57;
                         border-radius: 1.5rem;
@@ -575,7 +592,7 @@
 
                     
                     <div  *ngIf="selectedFishBowl && !isSelectFirstFish"
-                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 61vh;min-height: 420px; border-radius: 1.5rem;background-color: #000000;">
+                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 57vh; border-radius: 1.5rem;background-color: #000000;">
                         <div style="position: absolute;
                         background-color: #ca3d57;
                         border-radius: 1.5rem;
@@ -623,7 +640,7 @@
                     </div>
 
                     <div  *ngIf="!selectedFishBowl && !isSelectFirstEtc && isSelectFirstFish"
-                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 11vh; min-height: 82px; border-radius: 1.5rem;background-color: #000000;"> 
+                    style="border:4px #ca3d57 solid; position: absolute; left:0px; width: 141px; height: 11vh; border-radius: 1.5rem;background-color: #000000;"> 
                         <div style="position: absolute;
                         background-color: #ca3d57;
                         border-radius: 1.5rem;
@@ -645,24 +662,20 @@
 
             <div  style="display: flex; 
             flex-direction: column; 
-            width: 89vw; 
-            height: calc(100vh - 20px); 
-            min-width: 1000px;
-            min-height: 680px;
             align-items: center;  
-            justify-content: flex-start;">
+            justify-content: flex-start;
+            width: 100%;">
                 <div class="btn-wrap">
                     <!-- <button class="button-style del" (click)="removeSelected();"> DELETE</button> -->
                     <button class="button-style" (click)="rasterize()">완료</button>
                     <button class="button-style" style="background-color: #323232;" (click)="closeFullscreen()">닫기</button>
                 </div>
 
-                <app-dashboard-drag-and-drop  style="height: calc(100% - 60px);
-                width: 100%;
+                <app-dashboard-drag-and-drop  style="
                 display: flex;
                 flex-direction: column;
-                justify-content: flex-start;
-                align-items: center;" [userEmail]="userEmail" #canvas></app-dashboard-drag-and-drop>
+                justify-content: center;
+                align-items: center; " [userEmail]="userEmail" #canvas></app-dashboard-drag-and-drop>
 
             </div>
             <div></div>

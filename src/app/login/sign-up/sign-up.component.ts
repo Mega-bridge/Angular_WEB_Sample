@@ -5,6 +5,8 @@ import {AlertService} from "../../../shared/service/alert.service";
 import {UserService} from "../../../shared/service/user.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {UserModel} from "../../../shared/model/user.model";
+import { LoginRequestModel } from "src/shared/model/request/login.request.model";
+import { AuthService } from "src/shared/service/auth.service";
 
 @Component({
     selector: 'app-sign-up',
@@ -23,6 +25,9 @@ export class SignUpComponent implements OnInit{
     /** id 체크 여부 */
     public idCheck: boolean = true;
 
+    /** input-info 경로 체크 */
+    public signupInput: number= 0;
+
     /**
      * 생성자
      * @param router
@@ -33,6 +38,7 @@ export class SignUpComponent implements OnInit{
         private router: Router,
         private alertService: AlertService,
         private userProvider :UserService,
+        private authService: AuthService,
 
     ) {}
 
@@ -94,8 +100,46 @@ export class SignUpComponent implements OnInit{
                     next: async (response)=>{
                         if(response){
                             this.alertService.openAlert('회원가입이 완료되었습니다.');
-                            // 회원 가입후 로그인
+                            
+                            // 회원 가입후 로그인 실행
                             this.login();
+
+                            const request: LoginRequestModel = {
+                                email: this.signUpForm.controls['email'].value,
+                                password: this.signUpForm.controls['password'].value
+                            }
+                            // login 실행
+                            this.authService.login(request)
+                                .subscribe({
+                                    next: async (response) => {
+                                        if (response) {
+                                            if (this.authService.isAuthenticated()) {
+                                                setTimeout(() => {
+                                                    window.location.reload();
+                                                }, 15);
+                    
+                                                // 로그인 성공 시 튜토리얼로 이동
+                                                this.modifyInfo();
+                                                
+                                            }
+                    
+                                        }
+                                    },
+                                    // http error message 출력
+                                    error: (err: HttpErrorResponse) => {
+                                        if(err.status == 401){
+                                            this.alertService.openAlert('존재하지 않는 아이디입니다.')
+                                        }
+                                        else if (err.status == 400){
+                                            this.alertService.openAlert('비밀번호를 다시 한 번 확인해주세요.')
+                                        }
+                                        else {
+                                            this.alertService.openAlert(err.message)
+                                        }
+                    
+                    
+                                    }
+                                })
                         }
                     },
                     // http error message 출력
@@ -128,11 +172,13 @@ export class SignUpComponent implements OnInit{
                 this.alertService.openAlert('Email을 입력해주십시오.');
                 break;
             }
-             else if (checkNum==0){
-                this.alertService.openAlert('사용 가능한 Email입니다.')
-                this.idCheck = false;
-                break;
-            }
+             
+        }
+
+        if (checkNum==0){
+            this.alertService.openAlert('사용 가능한 Email입니다.')
+            this.idCheck = false;
+            
         }
     }
 
@@ -149,5 +195,12 @@ export class SignUpComponent implements OnInit{
     login() {
         this.router.navigateByUrl(`/login`);
     }
+
+    /**
+   * 사용자 추가정보 기입 수정 페이지로 이동
+   */
+  modifyInfo(){
+    this.router.navigate(['/input-info'],{ queryParams: {numberParam:this.signupInput }})
+  }
 
 }

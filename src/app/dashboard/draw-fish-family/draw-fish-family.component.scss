@@ -19,12 +19,12 @@
     border-top-left-radius: 1.5rem;
     border-top-right-radius: 1.5rem;
     height: 35px;
-    font-size: 15 px;
+    font-size: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    margin-bottom: 10px;
+    // margin-bottom: 10px;
 
     // width: 210px;
     // height: 25px;
@@ -43,12 +43,12 @@
   }
 
   .card-seq-wrap{
-    height: 75%;
+    height: calc(100% - 55px);
     overflow-y: scroll;
     .card-seq{
       height: 40px;
       cursor: pointer;
-      padding: 15px 25px;
+      padding: 15px 20px;
       display: flex;
       align-items: center;
 
@@ -73,22 +73,24 @@
 
 .container{
   width: 100%;
-  height: 100%;
+  min-width: 600px;
+  // min-height: 650px;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   background-color: #ebebeb;
   padding-left: 240px;
-  padding-top: 15px;
+  overflow: hidden;
 
   .canvas-wrap{
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: flex-start;
     
-    min-width: 900px;
-    width: calc(100vw - 240px);
+    // min-width: 900px;
+    width: 100%;
     height: 100%;
+    // padding-top: 15px;
     //margin-top: 1vh;
     //width:50%;
 
@@ -122,7 +124,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  // overflow: scroll;
+  overflow: auto;
 
   &.popup {
     width: 100%;
@@ -132,16 +134,15 @@
     //border-radius: 5px;
     //box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     //padding: 10px;
-    overflow: scroll;
+    // overflow: scroll;
 
     .popup-canvas-wrap{
       display: flex;
       flex-direction: row;
-      align-items: center;
-      min-width: 1150px;
-      min-height: 680px;
+      height: 100%;
+      // min-height: 830px;
       width: 100%;
-      max-height: 100%;
+      min-width: fit-content;
       //margin: 10px;
       justify-content: space-between;
       background-color: #ebebeb;
@@ -154,8 +155,7 @@
         justify-content: space-between;
         min-width: 150px;
         width: 150px;
-        height: calc(100vh - 20px);
-        min-height: 680px;
+        height: 100vh;
         //border: #666666 dashed 1px;
         background-color: #323232 ;
 
@@ -164,7 +164,7 @@
           cursor: pointer;
           border-radius: 5px;
           height: 11vh;
-          min-height: 80px;
+          // min-height: 80px;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -224,13 +224,14 @@
       .pop-up-style{
         display: flex; 
         height: fit-content; 
-        max-height: 560px; 
+        max-height: 70vh; 
         flex-direction: row;
 
         .pop-up-select-image-wrap{
           display: flex;
           flex-direction: column;
           align-items: center;
+          justify-content: center;
           width: 100%;
           background-color: #ffffff;
           box-shadow: 0px 0px 18px -4px #979797; 
@@ -255,8 +256,8 @@
             border-radius: 1.5rem;
             //width: min-content;
             height: fit-content;
-            max-height: 800px;
-            min-height: 370px;
+            max-height: 80vh;
+            // min-height: 370px;
             overflow: auto;
             background-color: #ffffff;
             text-align: center;
@@ -382,10 +383,9 @@ kendo-drawer-container {
   position: absolute;
   width: 100%;
   height: calc(100vh - 64px);
-  min-height: 640px;
   padding: 0;
-  min-width: 1170px;
   z-index: 999;
+  
 
   kendo-drawer-content {
     width: 100%;
@@ -410,6 +410,10 @@ kendo-drawer-container {
   margin-bottom: 10px;
 }
 
+.result-answer-sub-content{
+  padding: 5px 30px;
+  margin-bottom: 10px;
+}
 
 /* "대부분 커스터마이징된" 스크롤바
  * (width/height가 지정되지 않으면 보이지 않음 */
