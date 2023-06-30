@@ -216,9 +216,9 @@
                     <div  class="pop-up-select-image" >
                         
                             <ng-container *ngFor="let img of fishBowlImgList" >
-                                <div class="img-wrap" style=" border-top: 1px solid #e0e0e0;"
+                                <div class="img-wrap" (click)="selectWater(img)"  style=" border-top: 1px solid #e0e0e0;"
                                     [style.background-color]="selectedFishBowl === img ? '#e0e0e0' : ''">
-                                    <img  (click)="selectWater(img)" [src]="img"  alt=""/>
+                                    <img  [src]="img"  alt=""/>
                                 </div>
                             </ng-container>
                         
@@ -243,9 +243,9 @@
                                 <div  class="pop-up-select-image" >
                                     <span>표정</span>
                                     <ng-container *ngFor="let faceImg of generalFaceImgList">
-                                        <div class="img-wrap"
+                                        <div class="img-wrap" (click)="selectFishFace($event,faceImg,'GE')" 
                                             [style.background-color]="selectedFishFace === faceImg ? '#e0e0e0' : ''">
-                                            <img  (click)="selectFishFace($event,faceImg,'GE')" [src]="faceImg"  alt=""/>
+                                            <img  [src]="faceImg"  alt=""/>
                                         </div>
                                     </ng-container>
                                 </div>
@@ -256,9 +256,9 @@
                                     <div  class="pop-up-select-image" >
                                         <span>비늘</span>
                                         <ng-container *ngFor="let bodyImg of generalBodyImgList;let i = index">
-                                            <div  class="img-wrap"
+                                            <div  class="img-wrap" (click)="selectFishBody($event,bodyImg)"
                                                 [style.background-color]="selectedFishBody === bodyImg ? '#e0e0e0' : ''">
-                                                <img  (click)="selectFishBody($event,bodyImg)" [src]="bodyImg"  alt=""/>
+                                                <img   [src]="bodyImg"  alt=""/>
                                             </div>
                                         </ng-container>
                                     </div>
@@ -284,9 +284,9 @@
                                 <div  class="pop-up-select-image" >
                                     <span>표정</span>
                                     <ng-container *ngFor="let faceImg of roundFaceImgList">
-                                        <div class="img-wrap"
+                                        <div class="img-wrap" (click)="selectFishFace($event,faceImg,'RO')" 
                                             [style.background-color]="selectedFishFace === faceImg ? '#e0e0e0' : ''">
-                                            <img  (click)="selectFishFace($event,faceImg,'RO')" [src]="faceImg"  alt=""/>
+                                            <img  [src]="faceImg"  alt=""/>
                                         </div>
                                     </ng-container>
                                 </div>
@@ -297,9 +297,9 @@
                                     <div  class="pop-up-select-image" >
                                         <span>비늘</span>
                                         <ng-container *ngFor="let bodyImg of roundBodyImgList;let i = index">
-                                            <div  class="img-wrap"
+                                            <div  class="img-wrap"  (click)="selectFishBody($event,bodyImg)" 
                                                 [style.background-color]="selectedFishBody === bodyImg ? '#e0e0e0' : ''">
-                                                <img  (click)="selectFishBody($event,bodyImg)" [src]="bodyImg"  alt=""/>
+                                                <img [src]="bodyImg"  alt=""/>
                                             </div>
                                         </ng-container>
                                     </div>
@@ -324,9 +324,9 @@
                                 <div  class="pop-up-select-image" >
                                     <span>표정</span>
                                     <ng-container *ngFor="let faceImg of whaleFaceImgList">
-                                        <div class="img-wrap"
+                                        <div class="img-wrap" (click)="selectFishFace($event,faceImg,'WH')"
                                             [style.background-color]="selectedFishFace === faceImg ? '#e0e0e0' : ''">
-                                            <img  (click)="selectFishFace($event,faceImg,'WH')" [src]="faceImg"  alt="smile"/>
+                                            <img [src]="faceImg"  alt="smile"/>
                                         </div>
                                     </ng-container>
                                 </div>
@@ -337,9 +337,9 @@
                                     <div  class="pop-up-select-image" >
                                         <span>비늘</span>
                                         <ng-container *ngFor="let bodyImg of whaleBodyImgList;let i = index">
-                                            <div  class="img-wrap"
+                                            <div  class="img-wrap" (click)="selectFishBody($event,bodyImg)"
                                                 [style.background-color]="selectedFishBody === bodyImg ? '#e0e0e0' : ''">
-                                                <img  (click)="selectFishBody($event,bodyImg)" [src]="bodyImg"  alt=""/>
+                                                <img [src]="bodyImg"  alt=""/>
                                             </div>
                                         </ng-container>
                                     </div>
@@ -364,9 +364,9 @@
                                 <div  class="pop-up-select-image" >
                                     <span>표정</span>
                                     <ng-container *ngFor="let faceImg of sharkFaceImgList">
-                                        <div class="img-wrap"
+                                        <div class="img-wrap" (click)="selectFishFace($event,faceImg,'SH')"
                                             [style.background-color]="selectedFishFace === faceImg ? '#e0e0e0' : ''">
-                                            <img  (click)="selectFishFace($event,faceImg,'SH')" [src]="faceImg"  alt="smile"/>
+                                            <img [src]="faceImg"  alt="smile"/>
                                         </div>
                                     </ng-container>
                                 </div>
@@ -377,9 +377,9 @@
                                     <div  class="pop-up-select-image" >
                                         <span>비늘</span>
                                         <ng-container *ngFor="let bodyImg of sharkBodyImgList;let i = index">
-                                            <div  class="img-wrap"
+                                            <div  class="img-wrap" (click)="selectFishBody($event,bodyImg)"
                                                 [style.background-color]="selectedFishBody === bodyImg ? '#e0e0e0' : ''">
-                                                <img  (click)="selectFishBody($event,bodyImg)" [src]="bodyImg"  alt=""/>
+                                                <img [src]="bodyImg"  alt=""/>
                                             </div>
                                         </ng-container>
                                     </div>
@@ -403,9 +403,9 @@
                                 <div  class="pop-up-select-image" >
                                     <span>표정</span>
                                     <ng-container *ngFor="let faceImg of eelFaceImgList">
-                                        <div  class="img-wrap"
+                                        <div  class="img-wrap" (click)="selectFishFace($event,faceImg,'EE')"
                                             [style.background-color]="selectedFishFace === faceImg ? '#e0e0e0' : ''">
-                                            <img  (click)="selectFishFace($event,faceImg,'EE')" [src]="faceImg"  alt="smile"/>
+                                            <img  [src]="faceImg"  alt="smile"/>
                                         </div>
                                     </ng-container>
                                 </div>
@@ -416,9 +416,9 @@
                                     <div  class="pop-up-select-image" >
                                         <span>비늘</span>
                                         <ng-container *ngFor="let bodyImg of eelBodyImgList;let i = index">
-                                            <div  class="img-wrap"
+                                            <div  class="img-wrap" (click)="selectFishBody($event,bodyImg)" 
                                                 [style.background-color]="selectedFishBody === bodyImg ? '#e0e0e0' : ''">
-                                                <img  (click)="selectFishBody($event,bodyImg)" [src]="bodyImg"  alt=""/>
+                                                <img  [src]="bodyImg"  alt=""/>
                                             </div>
                                         </ng-container>
                                     </div>
@@ -444,48 +444,48 @@
                         <div class="pop-up-select-image-wrap etc">
                             <div  *ngIf="showEtc_0" class="pop-up-select-image">
                                 <ng-container *ngFor="let img of etc_0_ImgList" >
-                                    <div class="img-wrap" >
-                                        <img  (click)="selectEtcObject($event, img)" [src]= "img"/>
+                                    <div class="img-wrap" (click)="selectEtcObject($event, img)" >
+                                        <img   [src]= "img"/>
                                     </div>
                                 </ng-container>
                             </div>
 
                             <div *ngIf="showEtc_1" class="pop-up-select-image" style="justify-content: center;">
                                 <ng-container  *ngFor="let img of etc_1_ImgList;let i = index">
-                                    <div class="img-wrap" [style.border-bottom] = "i == 0? '1px solid #e0e0e0' : 'none' ">
-                                        <img  (click)="selectEtcObject($event, img)" [src]= "img"/>
+                                    <div class="img-wrap" (click)="selectEtcObject($event, img)" [style.border-bottom] = "i == 0? '1px solid #e0e0e0' : 'none' ">
+                                        <img   [src]= "img"/>
                                     </div>
                                 </ng-container>
                             </div>
 
                             <div *ngIf="showEtc_2" class="pop-up-select-image" style="max-height: 560px;">
                                 <ng-container *ngFor="let img of etc_2_ImgList">
-                                    <div class="img-wrap">
-                                        <img  (click)="selectEtcObject($event, img)" [src]= "img"/>
+                                    <div class="img-wrap" (click)="selectEtcObject($event, img)">
+                                        <img   [src]= "img"/>
                                     </div>
                                 </ng-container>
                             </div>
 
                             <div *ngIf="showEtc_3" class="pop-up-select-image" style="justify-content: center;">
                                 <ng-container *ngFor="let img of etc_3_ImgList;let i = index">
-                                    <div class="img-wrap" [style.border-bottom] = "i == 0? '1px solid #e0e0e0' : 'none' ">
-                                        <img  (click)="selectEtcObject($event, img)" [src]= "img"/>
+                                    <div class="img-wrap" (click)="selectEtcObject($event, img)" [style.border-bottom] = "i == 0? '1px solid #e0e0e0' : 'none' ">
+                                        <img [src]= "img"/>
                                     </div>
                                 </ng-container>    
                             </div>
                             
                             <div *ngIf="showEtc_4" class="pop-up-select-image" style="max-height: 560px;" >
                                 <ng-container *ngFor="let img of etc_4_ImgList" >
-                                    <div class="img-wrap" >
-                                        <img  (click)="selectEtcObject($event, img)" [src]= "img"/>
+                                    <div class="img-wrap" (click)="selectEtcObject($event, img)" >
+                                        <img  [src]= "img"/>
                                     </div>
                                 </ng-container>
                             </div>
                             
                             <div *ngIf="showEtc_5" class="pop-up-select-image" style="max-height: 560px;">
                                 <ng-container *ngFor="let img of etc_5_ImgList" >
-                                    <div class="img-wrap" >
-                                        <img  (click)="selectEtcObject($event, img)" [src]= "img"/>
+                                    <div class="img-wrap" (click)="selectEtcObject($event, img)">
+                                        <img   [src]= "img"/>
                                     </div>
                                 </ng-container>
                             </div>

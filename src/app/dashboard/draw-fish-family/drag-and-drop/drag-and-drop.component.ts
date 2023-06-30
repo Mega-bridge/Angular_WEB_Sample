@@ -268,7 +268,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                     console.log( e.selected[0].getCenterPoint());
                     var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
                         
-                    controlBar?.setAttribute("style", "top: " + e.selected[0].getCenterPoint().y +"px; left: " + e.selected[0].getCenterPoint().x + "px;");
+                    controlBar?.setAttribute("style", "top: " + e.selected[0].top +"px; left: " + e.selected[0].getCenterPoint().x + "px;");
                 }
                 else if(e.selected[0].top && e.selected[0].left){
                     this.isSelected = false;
@@ -306,14 +306,14 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                     // e.selected[0].hasControls ? this.hasEvent = true : this.hasEvent = false;
                     var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
                         
-                    controlBar?.setAttribute("style", "top: " + e.selected[0].getCenterPoint().y +"px; left: " + e.selected[0].getCenterPoint().x + "px;");
+                    controlBar?.setAttribute("style", "top: " + e.selected[0].top +"px; left: " + e.selected[0].getCenterPoint().x + "px;");
                 }
                 else if(e.selected[0].top && e.selected[0].left){
                     this.isSelected = false;
                     this.isEtcSelected = true;
                     var deleteBtn: HTMLDivElement | null = document.querySelector('#delete-btn');
                     
-                    deleteBtn?.setAttribute("style", "top: " + (e.selected[0].top - 20) +"px; left: " + (e.selected[0].left - 10) + "px;");
+                    deleteBtn?.setAttribute("style", "top: " + (e.selected[0].top - 20) +"px; left: " + (e.selected[0].left + 20) + "px;");
                 }
             
             }
@@ -339,7 +339,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 console.log(e.target.top);
                 var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
                     
-                controlBar?.setAttribute("style", "top: " + e.target.getCenterPoint().y +"px; left: " + e.target.getCenterPoint().x + "px;");
+                controlBar?.setAttribute("style", "top: " + e.target.top +"px; left: " + e.target.getCenterPoint().x + "px;");
+                
                 }
             }
 
@@ -361,7 +362,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 console.log(e.target.top);
                 var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
                     
-                controlBar?.setAttribute("style", "top: " + e.target.getCenterPoint().y +"px; left: " + e.target.getCenterPoint().x + "px;");
+                controlBar?.setAttribute("style", "top: " + e.target.top +"px; left: " + e.target.getCenterPoint().x + "px;");
                 }
             }
 
@@ -390,7 +391,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 console.log(e.target.top);
                 var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
                     
-                controlBar?.setAttribute("style", "top: " + e.target.getCenterPoint().y +"px; left: " + e.target.getCenterPoint().x + "px;");
+                controlBar?.setAttribute("style", "top: " + e.target.top +"px; left: " + e.target.getCenterPoint().x + "px;");
                 }
             }
 

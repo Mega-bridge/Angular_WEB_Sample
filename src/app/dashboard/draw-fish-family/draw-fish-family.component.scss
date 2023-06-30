@@ -269,13 +269,12 @@
               padding: 15px;
               // border-right: 1px solid #e0e0e0;
               border-bottom: 1px solid #e0e0e0;
+              cursor: pointer;
+              -webkit-transition: .3s ease-in-out;
+              transition: .3s ease-in-out;
     
               img{
                 width: 90px;
-                cursor: pointer;
-                -webkit-transition: .3s ease-in-out;
-                transition: .3s ease-in-out;
-    
               }
     
               &:hover {
