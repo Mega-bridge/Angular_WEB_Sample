@@ -124,6 +124,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
     /** object 선택 여부 */
     public isSelected: boolean = false;
+    public isEtcSelected: boolean = false;
     /** event 사용 여부 */
     public hasEvent: boolean = false;
     
@@ -228,6 +229,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
          */
         this.canvas.on('selection:cleared', e =>{
             this.isSelected = false;
+            this.isEtcSelected = false;
             this.openFam = false;
             this.hasEvent = false;
 
@@ -242,6 +244,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         this.canvas.on('selection:created',e => {
             console.log(e);
             console.log(e.selected);
+            
 
 
             // 다중선택 확인 후 선택 취소 처리
@@ -252,17 +255,27 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 // this.isSelected = true;
                 const selectedObject = e.selected[0];
 
+                
+
                 this.isFishObject = selectedObject.toObject().isFish;
                 this.selectedFamilyType = selectedObject.name ? this.familyTypeList[Number(selectedObject.name)] : null;
 
                 // conttrol바 위치 지정
                 if(e.selected[0].top && e.selected[0].left && e.selected[0].hasControls){
                     this.isSelected = true;
+                    this.isEtcSelected = false;
                     // e.selected[0].hasControls ? this.hasEvent = true : this.hasEvent = false;
                     console.log( e.selected[0].getCenterPoint());
                     var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
                         
                     controlBar?.setAttribute("style", "top: " + e.selected[0].getCenterPoint().y +"px; left: " + e.selected[0].getCenterPoint().x + "px;");
+                }
+                else if(e.selected[0].top && e.selected[0].left){
+                    this.isSelected = false;
+                    this.isEtcSelected = true;
+                    var deleteBtn: HTMLDivElement | null = document.querySelector('#delete-btn');
+                    
+                    deleteBtn?.setAttribute("style", "top: " + (e.selected[0].top - 20) +"px; left: " + (e.selected[0].left - 10) + "px;");
                 }
             
             }
@@ -289,10 +302,18 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 // conttrol바 위치 지정
                 if(e.selected[0].top && e.selected[0].left && e.selected[0].hasControls){
                     this.isSelected = true;
+                    this.isEtcSelected = false;
                     // e.selected[0].hasControls ? this.hasEvent = true : this.hasEvent = false;
                     var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
                         
                     controlBar?.setAttribute("style", "top: " + e.selected[0].getCenterPoint().y +"px; left: " + e.selected[0].getCenterPoint().x + "px;");
+                }
+                else if(e.selected[0].top && e.selected[0].left){
+                    this.isSelected = false;
+                    this.isEtcSelected = true;
+                    var deleteBtn: HTMLDivElement | null = document.querySelector('#delete-btn');
+                    
+                    deleteBtn?.setAttribute("style", "top: " + (e.selected[0].top - 20) +"px; left: " + (e.selected[0].left - 10) + "px;");
                 }
             
             }
@@ -304,8 +325,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             //console.log(e);
             const movedObject: any = e.target;
             var centerPoint = movedObject.getCenterPoint();
-            console.log(movedObject);
             console.log('////////Object Moving///////////////');
+            console.log(movedObject);
             // console.log('centerPoint (X, Y): ' + centerPoint);
             
             console.log('centerPoint (X, Y): ' + movedObject);
@@ -601,13 +622,14 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 hasRotatingPoint: objectCodeId == 75 || objectCodeId == 76 ? false : true,
                 hasControls : objectCodeId == 75 || objectCodeId == 76 ? false : true,
                 selectable: true,
-                evented: objectCodeId == 75 || objectCodeId == 76 ? false : true,
+                evented: objectCodeId == 75 || objectCodeId == 76 ? true : true,
                 name: selectedFamilyType || selectedFamilyType == 0 ? selectedFamilyType.id : null
 
             });
             this.extend(image, this.randomId(), new Date().getTime(),objectCodeId,imgURL.includes('/F_'));
             
             image.scale(0.2);
+            
 
             if(objectCodeId == 76){
                 this.isInTable = true;
@@ -616,20 +638,30 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 image.scaleY = 0.42 / this.canvasHeightScaled;
                 image.top = this.canvasHeight - image.getScaledHeight();
                 image.left = 15 / this.canvasWidthScaled;
+                image.lockMovementX = true;
+                image.lockMovementY = true;
                 
                 image.name = 'table';
+                this.canvas.sendToBack(image);
+
             }
             else if(objectCodeId == 75){
                 this.isInHandle = true;
                 image.scale(1);
                 image.scaleX = 0.42 / this.canvasWidthScaled;
                 image.scaleY = 0.42 / this.canvasHeightScaled;
-                image.top = 275 / this.canvasHeightScaled;
+                image.top = 555 / this.canvasHeightScaled;
                 image.left = 15 / this.canvasWidthScaled;
+                image.lockMovementX = true;
+                image.lockMovementY = true;
+
                 image.name = 'handle';
+                this.canvas.sendToBack(image);
+            }
+            else{
+                this.canvas.add(image);
             }
            
-            this.canvas.add(image);
 
             // 첫번째 객체 선택 여부 확인
             this.canvas.getObjects().length > 1 ? this.isSelectFirstFish = false : this.isSelectFirstFish = true; 
