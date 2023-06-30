@@ -62,9 +62,11 @@
                 style=" background-repeat: no-repeat; background-size: 100% 100%;">
         </canvas>
 
-        <div id="delete-btn" class="delete-btn" (click)="removeSelected();"
-        [style.display]="isEtcSelected ? 'unset' : 'none'">
-        x</div>
+        <div id="delete-btn"  (click)="removeSelected()"
+        [style.pointer-events]="isEtcSelected ? 'unset' : 'none'" class="delete-btn"
+        [style.display]="isEtcSelected ? 'unset' : 'none'" >
+        <span>X</span>
+        </div>
 
         <div id="control-wrap" class="control-wrap"  [style.display]="isSelected ? 'unset' : 'none'">
         
@@ -141,7 +143,7 @@
                         </div> -->
                         
         
-                        <div class="control-box"  (click)="removeSelected();" style="border-top-right-radius: 1.5rem; border-bottom-right-radius: 1.5rem;" [style.pointer-events]="isSelected ? 'unset' : 'none'">
+                        <div class="control-box"  (click)="removeSelected()" style="border-top-right-radius: 1.5rem; border-bottom-right-radius: 1.5rem;" [style.pointer-events]="isSelected ? 'unset' : 'none'">
                                 <span>지우기</span>
                                 <!-- <button [disabled]="!isSelected" class="button-style del" (click)="removeSelected();">지우기</button> -->
                         </div>

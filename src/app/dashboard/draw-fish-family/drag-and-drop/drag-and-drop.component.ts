@@ -258,14 +258,13 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 
 
                 this.isFishObject = selectedObject.toObject().isFish;
-                this.selectedFamilyType = selectedObject.name ? this.familyTypeList[Number(selectedObject.name)] : null;
+                this.selectedFamilyType = selectedObject.name || Number(selectedObject.name) == 0 ? this.familyTypeList[Number(selectedObject.name)] : null;
 
                 // conttrol바 위치 지정
                 if(e.selected[0].top && e.selected[0].left && e.selected[0].hasControls){
                     this.isSelected = true;
                     this.isEtcSelected = false;
-                    // e.selected[0].hasControls ? this.hasEvent = true : this.hasEvent = false;
-                    console.log( e.selected[0].getCenterPoint());
+                    
                     var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
                         
                     controlBar?.setAttribute("style", "top: " + e.selected[0].top +"px; left: " + e.selected[0].getCenterPoint().x + "px;");
@@ -275,7 +274,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                     this.isEtcSelected = true;
                     var deleteBtn: HTMLDivElement | null = document.querySelector('#delete-btn');
                     
-                    deleteBtn?.setAttribute("style", "top: " + (e.selected[0].top - 20) +"px; left: " + (e.selected[0].left - 10) + "px;");
+                    deleteBtn?.setAttribute("style", "top: " + (e.selected[0].top - 40) +"px; left: " + (e.selected[0].left - 10) + "px;");
                 }
             
             }
@@ -297,7 +296,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 const selectedObject = e.selected[0];
                 this.isFishObject = selectedObject.toObject().isFish;
 
-                this.selectedFamilyType = selectedObject.name ? this.familyTypeList[Number(selectedObject.name)] : null;
+                this.selectedFamilyType = selectedObject.name || Number(selectedObject.name) == 0 ? this.familyTypeList[Number(selectedObject.name)] : null;
 
                 // conttrol바 위치 지정
                 if(e.selected[0].top && e.selected[0].left && e.selected[0].hasControls){
@@ -313,7 +312,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                     this.isEtcSelected = true;
                     var deleteBtn: HTMLDivElement | null = document.querySelector('#delete-btn');
                     
-                    deleteBtn?.setAttribute("style", "top: " + (e.selected[0].top - 20) +"px; left: " + (e.selected[0].left + 20) + "px;");
+                    deleteBtn?.setAttribute("style", "top: " + (e.selected[0].top - 40) +"px; left: " + (e.selected[0].left - 10) + "px;");
                 }
             
             }
@@ -603,7 +602,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
      * @param familyType
      * @param objectCodeId
      */
-    getImgPolaroid(imgURL: any, objectCodeId: any,selectedFamilyType?:any) {
+    getImgPolaroid(imgURL: any, objectCodeId: any) {
         // imgURL = 'assets/img/whale/웃는고래_물.png';
        
         const imageElement = document.createElement('img');
@@ -624,7 +623,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 hasControls : objectCodeId == 75 || objectCodeId == 76 ? false : true,
                 selectable: true,
                 evented: objectCodeId == 75 || objectCodeId == 76 ? true : true,
-                name: selectedFamilyType || selectedFamilyType == 0 ? selectedFamilyType.id : null
+                
 
             });
             this.extend(image, this.randomId(), new Date().getTime(),objectCodeId,imgURL.includes('/F_'));
@@ -643,6 +642,11 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 image.lockMovementY = true;
                 
                 image.name = 'table';
+                
+
+                this.canvas.add(image);
+                this.canvas.discardActiveObject().renderAll();
+                this.canvas.setActiveObject(image);
                 this.canvas.sendToBack(image);
 
             }
@@ -657,18 +661,27 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 image.lockMovementY = true;
 
                 image.name = 'handle';
+
+                this.canvas.add(image);
+                this.canvas.discardActiveObject().renderAll();
+                this.canvas.setActiveObject(image);
                 this.canvas.sendToBack(image);
             }
             else{
                 this.canvas.add(image);
+                this.canvas.discardActiveObject().renderAll();
+                this.canvas.setActiveObject(image);
+                this.canvas.bringToFront(image);
             }
-           
 
+
+            
             // 첫번째 객체 선택 여부 확인
             this.canvas.getObjects().length > 1 ? this.isSelectFirstFish = false : this.isSelectFirstFish = true; 
             
 
-            this.selectItemAfterAdded(image);
+            
+            // this.selectItemAfterAdded(image);
           });
         
         
@@ -680,7 +693,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
      */
     removeSelected(object?: any) {
         let data:any;
-        const activeObject = object ? object[0] : this.canvas.getActiveObject();
+        const activeObject = this.canvas.getActiveObject();
+        console.log(activeObject);
         if (activeObject) {
             const mrList: MrObjectModel = {
                 angle: activeObject.angle,
@@ -696,7 +710,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 createDate: activeObject.toObject().createDate,
                 flip: activeObject.flipX
             };
-            
+            console.log(Number(activeObject.name));
             this.allMrObjectModelList.push(mrList);
             this.canvas.discardActiveObject();
             this.canvas.remove(activeObject);
