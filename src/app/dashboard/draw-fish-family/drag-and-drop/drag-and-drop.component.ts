@@ -152,6 +152,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     public isInTable : boolean = false;
     /** handle object canvas 포함 여부 */
     public isInHandle: boolean = false;
+    public center :any;
 
     /** 팝업 위치 */
     public anchorAlign: Align = { horizontal: "left", vertical: "bottom" };
@@ -254,6 +255,8 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             else if(e.selected){
                 // this.isSelected = true;
                 const selectedObject = e.selected[0];
+                this.center = e.selected[0].getCenterPoint();
+                console.log(this.center);
 
                 
 
@@ -294,6 +297,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             else if(e.selected){
                 // this.isSelected = true;
                 const selectedObject = e.selected[0];
+                this.center = e.selected[0].getCenterPoint();
                 this.isFishObject = selectedObject.toObject().isFish;
 
                 this.selectedFamilyType = selectedObject.name || Number(selectedObject.name) == 0 ? this.familyTypeList[Number(selectedObject.name)] : null;
@@ -334,6 +338,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
 
             // conttrol바 위치 지정
             if(e.target){
+                this.center = e.target.getCenterPoint();
                 if(e.target.top && e.target.left){
                 console.log(e.target.top);
                 var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
@@ -350,13 +355,17 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         this.canvas.on('object:rotating', e => {
             const movedObject: any = e.target;
             // console.log('////////Object Rotating///////////////');
-            // console.log('angle: ' + movedObject.angle);
+            console.log('angle: ' + movedObject.angle);
+            console.log('angle: ' + movedObject.left);
+            console.log('angle: ' + movedObject.top);
+            console.log('angle: ' + movedObject.getCenterPoint());
             // console.log('-----------------------');
             
             
 
             // conttrol바 위치 지정
             if(e.target){
+                this.center = e.target.getCenterPoint();
                 if(e.target.top && e.target.left){
                 console.log(e.target.top);
                 var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
@@ -386,6 +395,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             
 
             if(e.target){
+                this.center = e.target.getCenterPoint();
                 if(e.target.top && e.target.left){
                 console.log(e.target.top);
                 var controlBar: HTMLDivElement | null = document.querySelector('#control-wrap');
@@ -521,6 +531,24 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                     switch (type) {
                         case 'angle':
                             activeGroup.set('angle', parseInt(control.value, 10)).setCoords();
+                            
+                            var angleInRadians = fabric.util.degreesToRadians(Number(control.value));
+                            var dx = this.center.x  - ((activeGroup.getScaledWidth() - 0) / 2) * Math.cos(angleInRadians);
+                            var dy =  
+                            angleInRadians == 0 ? this.center.y - ((activeGroup.getScaledHeight() - 0) / 2) 
+                            : this.center.y - ((activeGroup.getScaledHeight() - 0) / 2) * Math.sin(angleInRadians);
+                           
+                            console.log(this.center);
+                            console.log(dx);
+                            console.log(dy);
+                            if(activeGroup.left && activeGroup.top){
+                                activeGroup.set('left', 
+                            dx).setCoords();
+                                activeGroup.set('top',
+                                 dy).setCoords();
+                            }
+                            
+                            
                             break;
                         case 'scale':
                             activeGroup.scale(parseFloat(control.value)).setCoords();
@@ -544,6 +572,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                         break;
                     case 'flipY':
                         this.flipYControl = !this.flipYControl;
+                        // activeGroup.set('angle', parseInt(control.value, 10)).setCoords();
                         activeGroup.set('flipY',this.flipYControl);
                         // activeGroup.set('top', parseInt(control.value, 10)).setCoords();
                         break;
@@ -624,11 +653,13 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 selectable: true,
                 evented: objectCodeId == 75 || objectCodeId == 76 ? true : true,
                 
+                
 
             });
             this.extend(image, this.randomId(), new Date().getTime(),objectCodeId,imgURL.includes('/F_'));
             
             image.scale(0.2);
+            
             
 
             if(objectCodeId == 76){
@@ -710,7 +741,7 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
                 createDate: activeObject.toObject().createDate,
                 flip: activeObject.flipX
             };
-            console.log(Number(activeObject.name));
+            
             this.allMrObjectModelList.push(mrList);
             this.canvas.discardActiveObject();
             this.canvas.remove(activeObject);
