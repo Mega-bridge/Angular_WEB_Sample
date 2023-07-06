@@ -67,16 +67,15 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
     /** canvas size */
     public size: any = {
         width: 1000,
-        height: 1000
+        height: 562.5
     };
 
     /** canvas 사이즈 */
-    public canvasWidth = window.innerHeight - 66;
-    public canvasHeight = window.innerHeight - 66;
-
+    public canvasWidth = (window.innerWidth - 155);
+    public canvasHeight = (window.innerWidth - 155) * 9 / 16;
     /** 상담사 canvas 1000 x 1000 에서 scale된 정도 계산 */
     public canvasWidthScaled = 1000 / this.canvasWidth;
-    public canvasHeightScaled = 1000 / this.canvasHeight;
+    public canvasHeightScaled = 562.5 / this.canvasHeight;
     
 
     /** 어항 코드 */
@@ -210,12 +209,12 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
          */
         window.addEventListener('resize', () => {
 
-            this.canvasWidth = window.innerHeight - 66;
-            this.canvasHeight = window.innerHeight -66;
+            this.canvasWidth = (window.innerWidth - 155);
+            this.canvasHeight = (window.innerWidth - 155) * 9 / 16;
         
             /** 상담사 canvas 1000 x 1000 에서 scale된 정도 계산 */
             this.canvasWidthScaled = 1000 / this.canvasWidth;
-            this.canvasHeightScaled = 1000 / this.canvasHeight;
+            this.canvasHeightScaled = 562.5 / this.canvasHeight;
 
             this.canvas.setWidth(this.canvasWidth);
             this.canvas.setHeight(this.canvasHeight);   
@@ -617,10 +616,10 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
         this.fishbowlUrl = opt;
         this.fishbowlCode = fishbowlCode;
         this.canvas.setBackgroundImage(this.fishbowlUrl, this.canvas.renderAll.bind(this.canvas), {
-            top: 275 / this.canvasHeightScaled,
-            left: 15 / this.canvasWidthScaled,
-            scaleX:0.42 /  this.canvasWidthScaled,
-            scaleY: 0.42 / this.canvasHeightScaled
+            top: 100 / this.canvasHeightScaled,
+            left: 200 / this.canvasWidthScaled,
+            scaleX:0.25 /  this.canvasWidthScaled,
+            scaleY: 0.25 / this.canvasHeightScaled
         });
 
     }
@@ -665,10 +664,10 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             if(objectCodeId == 76){
                 this.isInTable = true;
                 image.scale(1);
-                image.scaleX = 0.42 / this.canvasWidthScaled;
-                image.scaleY = 0.42 / this.canvasHeightScaled;
+                image.scaleX = 0.36 / this.canvasWidthScaled;
+                image.scaleY = 0.36 / this.canvasHeightScaled;
                 image.top = this.canvasHeight - image.getScaledHeight();
-                image.left = 15 / this.canvasWidthScaled;
+                image.left = 80 / this.canvasWidthScaled;
                 image.lockMovementX = true;
                 image.lockMovementY = true;
                 
@@ -684,10 +683,10 @@ export class DragAndDropComponent implements OnInit,AfterViewInit{
             else if(objectCodeId == 75){
                 this.isInHandle = true;
                 image.scale(1);
-                image.scaleX = 0.42 / this.canvasWidthScaled;
-                image.scaleY = 0.42 / this.canvasHeightScaled;
-                image.top = 555 / this.canvasHeightScaled;
-                image.left = 15 / this.canvasWidthScaled;
+                image.scaleX = 0.25 / this.canvasWidthScaled;
+                image.scaleY = 0.25 / this.canvasHeightScaled;
+                image.top = 270 / this.canvasHeightScaled;
+                image.left = 200 / this.canvasWidthScaled;
                 image.lockMovementX = true;
                 image.lockMovementY = true;
 
