@@ -18,8 +18,7 @@ import {AuthService} from "../../shared/service/auth.service";
 })
 
 export class InputInfoComponent implements OnInit{
-
-    // 가족 리스트
+// 가족 리스트
     public familyList : MrFamilyCodeResponse[] = [];
     // 가족 관계 리스트
     public familyRelation: MrFamilyRelationCodeResponse[] = [];
@@ -56,6 +55,8 @@ export class InputInfoComponent implements OnInit{
     public userId: number = 0;
     // 가족 선택했는지 확인
     public familySelected: boolean = false;
+    public userData:any;
+
     /** default item */
     public jobDefault:{id:number;code:string;description:string}={
         id:99,
@@ -67,7 +68,17 @@ export class InputInfoComponent implements OnInit{
         code:'',
         description:'성별',
     }
+    // input form
+    public infoForm: FormGroup = new FormGroup({
+        userEmail: new FormControl(''), // 사용자 이메일
+        userName: new FormControl(''), // 사용자 성명
+        age: new FormControl(), // 나이
+        familyNum: new FormControl(), // 가족 수
+        jobId: new FormControl(), // 직업 코드
+        genderId: new FormControl(), // 성별 코드
+    });
     public checkPath:any;
+
     /**
      * 생성자
      * @param mindReaderControlService
@@ -84,64 +95,10 @@ export class InputInfoComponent implements OnInit{
     ) {
     }
 
-    // input form
-    public infoForm: FormGroup = new FormGroup({
-        userEmail: new FormControl(''), // 사용자 이메일
-        userName: new FormControl(''), // 사용자 성명
-        age: new FormControl(), // 나이
-        familyNum: new FormControl(), // 가족 수
-        jobId: new FormControl(), // 직업 코드
-        genderId: new FormControl(), // 성별 코드
-    });
-
     /**
      * 초기화
      */
     ngOnInit() {
-
-        this.route.queryParams.subscribe(params => {
-            if(params['numberParam']=='0'){
-                this.checkPath=true;
-            }else{this.checkPath=false;}
-        })
-
-        this.getId=String(this.authService.getUserEmail());
-        this.infoForm.patchValue({ userEmail: this.authService.getUserEmail() });
-        this.infoForm.patchValue({ userName: this.authService.getUserName() });
-
-        // 데이터 로드
-        this.loadData();
-        setTimeout(()=>{
-            this.dataSetting();
-        },1000);
-
-
-
-    }
-
-    /**
-     * 데이터 로드
-     */
-    loadData(){
-        // 가족 리스트 조회
-        this.mindReaderControlService.getFamily()
-            .subscribe({
-                next: async (data) => {
-                    if (data){
-                        this.familyList  = data
-                    }
-                }
-            });
-        // 가족 관계 리스트 조회
-        this.mindReaderControlService.getFamilyRelation()
-            .subscribe({
-                next: async (data) => {
-                    if (data){
-                        this.familyRelation  = data
-                    }
-                }
-            });
-
         // 성별 리스트 조회
         this.mindReaderControlService.getGender()
             .subscribe({
@@ -170,6 +127,48 @@ export class InputInfoComponent implements OnInit{
                         this.patientData=data
                         this.selectedGender=this.patientData.genderId;
                         this.selectedJob=this.patientData.jobId;
+
+
+
+                        // 가족 리스트 조회
+                        this.mindReaderControlService.getFamily()
+                            .subscribe({
+                                next: async (data) => {
+                                    if (data){
+                                        this.familyList  = data
+                                        if(this.patientData.familyInfo!=""){
+                                            this.selectedFamily = this.patientData.familyInfo.split(',').map(Number)
+                                            //this.selectedFamily = this.resultInfo.filter((value, index, array) => array.indexOf(value) === index);
+                                            // 가족 선택 리스트
+                                            this.selectedFamily = this.selectedFamily.map(id => {
+                                                return this.familyList.find(item => item.id === id);
+                                            });
+                                        }else{
+                                            this.selectedFamily=[];
+                                        }
+                                    }
+                                }
+                            });
+                        // 가족 관계 리스트 조회
+                        this.mindReaderControlService.getFamilyRelation()
+                            .subscribe({
+                                next: async (data) => {
+                                    if (data){
+                                        this.familyRelation  = data
+                                        if(this.patientData.familyRelation!=""){
+                                            this.resultRelation  =this.patientData.familyRelation.split(',').map(Number)
+                                            // 가족 관계 리스트
+                                            this.resultRelation = this.resultRelation.map(id => {
+                                                return this.familyRelation.find(item => item.id === id);
+                                            });
+                                        }else{
+                                            this.resultRelation=[];
+                                        }
+                                    }
+                                }
+                            });
+
+
                         this.infoForm.patchValue({...data});
 
                     }
@@ -178,56 +177,41 @@ export class InputInfoComponent implements OnInit{
     }
 
     /**
-     * 홈페이지 리로드시 가족 구성원, 관계 데이터 세팅
+     * 가족 구성원 추가 이벤트
      */
-    dataSetting(){
-        if(this.patientData!=undefined){
+    addFamily(){
+        this.selectedFamily.push({
+            "id": 999,
+            "code": "",
+            "description": ""
+        })
+        this.resultRelation.push(
+            {
+                "id": 999,
+                "code": "",
+                "description": ""
+            }
+        )
+        this.familySelected = true;
 
-            this.resultInfo = this.patientData.familyInfo.split(',').map(Number)
-            this.selectedFamily = this.resultInfo.filter((value, index, array) => array.indexOf(value) === index);
-            this.resultRelation  =this.patientData.familyRelation.split(',').map(Number)
-            /*
+        /*        this.resultInfo.push(1);
+                this.familyData.push([]);*/
+    }
 
-                        // 가족 구성원에 따른 가족 관계 이중 리스트
-                        this.familyData = this.selectedFamily.map((item, index) => {
-                            const list = this.resultRelation.splice(0, this.resultInfo.filter(item2 => item2 == item).length).map((item3, index1) => {
-                                if (this.resultInfo.filter(item2 => item2 == item).length == index1) {
-                                    this.resultRelation = this.resultRelation.slice(index + 1);
-                                }
-                                return `${item}_${item3}`;
-                            });
-                            return list;
-                        });
-
-                        // numeric text box 에 들어갈 변수
-                        const uniqueArr = Array.from(new Set(this.resultInfo));
-                        this.resultInfo = uniqueArr.map((item) => this.resultInfo.filter((i) => i === item).length);
-            */
-
-            // 가족 선택 리스트
-            this.selectedFamily = this.selectedFamily.map(id => {
-                return this.familyList.find(item => item.id === id);
-            });
-            // 가족 관계 리스트
-            this.resultRelation = this.resultRelation.map(id => {
-                return this.familyRelation.find(item => item.id === id);
-            });
-        }
+    /**
+     * 가족 구성원 삭제 이벤트
+     */
+    subFamily(){
+        this.selectedFamily.pop()
+        this.resultRelation.pop()
+        this.familySelected = false;
     }
     /**
-     * 가족 데이터
+     * 가족 선택 이벤트
      */
-    familyInfo(){
-        const test2: string[] = [].concat.apply([],this.familyData);
-        test2.forEach(item => {
-            const splitted = item.split('_');
-            this.selectedFamilyList.push(splitted[0]);
-            this.selectedFamilyList.join(',');
-            this.selectedFamilyRelation.push(splitted[1]);
-            this.selectedValues=this.selectedFamilyRelation
-        });
+    familySelect(){
+        this.familySelected = false;
     }
-
     /**
      * 추가 정보 수정하기
      */
@@ -235,8 +219,8 @@ export class InputInfoComponent implements OnInit{
         if(this.patientData!=undefined){
             this.userId=this.patientData.id
         }
-        const selectedFamily = this.selectedFamily.map(i=>i.id).toString()
-        const selectFamilyRelation =this.resultRelation.map(i=>i.id).toString()
+        const selectedFamily = this.selectedFamily.map(i=>i.id).filter(id => id !== 999).toString();
+        const selectFamilyRelation = this.resultRelation.map(i=>i.id).filter(id => id !== 999).toString();
         //this.familyInfo()
         /*        let resultFamilyRelation=this.selectedFamilyRelation.join(',');
                 let resultFamilyInfo=this.selectedFamilyList.join(',');*/
@@ -257,72 +241,15 @@ export class InputInfoComponent implements OnInit{
             .subscribe({
                 next: async (data) => {
                     if(data) {
+                        this.alertService.openAlert('수정되었습니다.');
                         this.startDrawFish();
+                        this.userData=[];
                     }
                 },
                 error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
             });
     }
 
-    /**
-     * 가족 구성원 추가 이벤트
-     */
-    addFamily(){
-        this.selectedFamily.push('')
-        this.selectedFamilyRelation.push('')
-        this.familySelected = true;
-
-        /*        this.resultInfo.push(1);
-                this.familyData.push([]);*/
-    }
-
-    /**
-     * 가족 구성원 삭제 이벤트
-     */
-    subFamily(){
-        this.selectedFamily.pop()
-        this.selectedFamilyRelation.pop()
-        this.familySelected = false;
-    }
-
-    /**
-     * 가족 선택 이벤트
-     */
-    familySelect(){
-        this.familySelected = false;
-    }
-
-    /**
-     * numeric text box 클릭 이벤트
-     * @param event
-     * @param myValue
-     * @param i
-     */
-    clickTextBox(event:any,myValue:any,i:any){
-        if (event.target.className.includes('down') || event.target.className.includes('decrease')){
-            this.familyData[i][this.familyData[i].length - 1] = null;
-            this.familyData[i] =this.familyData[i].filter((item: any) => item !== null);
-        }
-        else{
-            this.familyData[i].push(String(myValue.id) + '_0');
-        }
-    }
-
-
-    /**
-     * 튜토리얼 화면으로 이동
-     */
-    startTutorial() {
-        this.router.navigateByUrl(`/tutorial`);
-
-    }
-    /**
-     * 로그인 화면으로 이동
-     */
-    startLogin() {
-        this.router.navigateByUrl(`/login`);
-
-    }
     /**
      * 로그인 화면으로 이동
      */
